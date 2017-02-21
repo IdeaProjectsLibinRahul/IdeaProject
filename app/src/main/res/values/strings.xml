@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">IdeaProject</string>
+    <string name="collection">Collection</string>
+    <string name="retention">Retention</string>
+    <string name="activities">Activities</string>
+    <string name="new_activities">New Activities</string>
+    <string name="reminders">Reminders</string>
+    <string name="logout">Logout</string>
 </resources>
