@@ -1,4 +1,4 @@
-package tech.libin.rahul.ideaproject.components;
+package tech.libin.rahul.ideaproject.views.basecomponents;
 
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import tech.libin.rahul.ideaproject.R;
+import tech.libin.rahul.ideaproject.views.utils.ApplicationContextHolder;
 
 /**
  * Created by libin on 21/02/17.
@@ -34,6 +35,14 @@ public abstract class FOSBaseActivity extends AppCompatActivity {
         setHasToolBar();
         setToolbarElevation();
         setToolBar();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        ApplicationContextHolder contextHolder = ApplicationContextHolder.getInstance();
+        contextHolder.setContext(this);
     }
 
     protected abstract void setToolbarElevation();
