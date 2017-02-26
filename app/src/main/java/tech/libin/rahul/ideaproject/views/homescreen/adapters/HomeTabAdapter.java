@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import tech.libin.rahul.ideaproject.R;
+import tech.libin.rahul.ideaproject.views.homescreen.fragments.FOSActivityTab;
 
 /**
  * Created by libin on 22/02/17.
@@ -15,6 +16,7 @@ public class HomeTabAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 3;
     private String tabTitles[];
     private Context context;
+    private Fragment[] fragments = new Fragment[]{new FOSActivityTab(), new Fragment(), new Fragment()};
 
     public HomeTabAdapter(Context context, FragmentManager fm) {
         super(fm);
@@ -27,7 +29,7 @@ public class HomeTabAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return new Fragment();
+        return fragments[position];
     }
 
     @Override
