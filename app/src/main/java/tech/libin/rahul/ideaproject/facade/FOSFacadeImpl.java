@@ -4,6 +4,8 @@ import tech.libin.rahul.ideaproject.service.FOSService;
 import tech.libin.rahul.ideaproject.service.FOSServiceImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
 import tech.libin.rahul.ideaproject.service.models.UserModel;
+import tech.libin.rahul.ideaproject.views.models.Login;
+import tech.libin.rahul.ideaproject.views.models.User;
 
 /**
  * Created by 10945 on 10/27/2016.
@@ -17,7 +19,7 @@ public class FOSFacadeImpl implements FOSFacade {
     }
 
     @Override
-    public void registerUser(UserModel userModel, ServiceCallback<UserModel> callback) {
-        fosService.registerUser(userModel, callback);
+    public void doLogin(Login login, ServiceCallback<User> callback) {
+        fosService.doLogin(login,callback);
     }
 }
