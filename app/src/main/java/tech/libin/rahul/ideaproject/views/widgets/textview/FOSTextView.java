@@ -47,7 +47,7 @@ public class FOSTextView extends TextView {
             TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.FOSTextView, 0, 0);
 
             try {
-                int font = attributes.getInteger(R.styleable.FOSTextView_fos_textview_font, 0);
+                int font = attributes.getInteger(R.styleable.FOSTextView_fos_textview_font, 9);
                 int fontStyle = attributes.getInteger(R.styleable.FOSTextView_fos_textview_fontstyle, 0);
 
                 switch (font) {
@@ -58,9 +58,16 @@ public class FOSTextView extends TextView {
                         setFont(fontStyle, context, Fonts.METANOIA_FONT);
                         break;
 
+                    case 2:
+                        setFont(fontStyle, context, Fonts.SANSATION_REGULAR);
+                        break;
+
+                    case 9:
+                        setFont(fontStyle, context, Fonts.DEFAULT_FONT);
+                        break;
+
                     default:
-                        Typeface type = Typeface.createFromAsset(context.getAssets(), Fonts.DEFAULT_FONT);
-                        this.setTypeface(type);
+                        setFont(fontStyle, context, Fonts.DEFAULT_FONT);
                 }
 
 

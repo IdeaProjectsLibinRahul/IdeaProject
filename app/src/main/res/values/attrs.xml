@@ -4,13 +4,15 @@
         <attr name="fos_textview_font" format="enum">
             <enum name="geosans" value="0" />
             <enum name="metanoia" value="1" />
-            <enum name="normal" value="2" />
+            <enum name="sansation" value="2" />
+            <enum name="normal" value="3" />
         </attr>
         <attr name="fos_textview_fontstyle" format="enum">
             <enum name="normal" value="0" />
             <enum name="bold" value="1" />
             <enum name="bolditalic" value="2" />
             <enum name="italic" value="3" />
+            <enum name="light" value="4" />
         </attr>
     </declare-styleable>
 
@@ -24,6 +26,7 @@
             <enum name="bold" value="1" />
             <enum name="bolditalic" value="2" />
             <enum name="italic" value="3" />
+            <enum name="light" value="4" />
         </attr>
     </declare-styleable>
 
@@ -37,6 +40,7 @@
             <enum name="bold" value="1" />
             <enum name="bolditalic" value="2" />
             <enum name="italic" value="3" />
+            <enum name="light" value="4" />
         </attr>
     </declare-styleable>
 

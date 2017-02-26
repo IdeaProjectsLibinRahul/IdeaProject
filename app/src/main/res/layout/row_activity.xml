@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/row_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            android:id="@+id/row_name"
+            style="@style/RowActivityName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Mr. Sonu A" />
+
+        <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            android:id="@+id/row_top_right"
+            style="@style/RowActivityTopRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ser+" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            android:id="@+id/row_number"
+            style="@style/RowActivityNumber"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="+917025029992" />
+
+        <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            android:id="@+id/row_bottom_middle"
+            style="@style/RowActivityBottomCenter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Ser+" />
+
+        <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            android:id="@+id/row_bottom_right"
+            style="@style/RowActivityBottomRight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="₹ 5035.31" />
+    </LinearLayout>
+</LinearLayout>

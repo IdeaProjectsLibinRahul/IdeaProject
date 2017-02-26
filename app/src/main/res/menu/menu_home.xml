@@ -7,4 +7,10 @@
         android:icon="@mipmap/ic_power"
         android:title="@string/logout"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@mipmap/ic_search"
+        android:title="@string/search"
+        app:showAsAction="always" />
 </menu>

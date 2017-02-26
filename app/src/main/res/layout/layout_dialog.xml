@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+        android:id="@+id/dialogTitle"
+        style="@style/DialogTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Dialog Title" />
+
+    <View
+        style="@style/DialogDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+    <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+        android:id="@+id/dialogMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill_horizontal"
+        android:layout_margin="10dp"
+        android:text="@string/lorem_ipsum" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <tech.libin.rahul.ideaproject.views.widgets.button.FOSButton
+            android:id="@+id/button_dialog_ok"
+            style="@style/BottomButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:text="@string/ok" />
+
+    </RelativeLayout>
+
+</LinearLayout>

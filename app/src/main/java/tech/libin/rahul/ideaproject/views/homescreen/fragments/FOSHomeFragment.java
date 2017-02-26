@@ -6,8 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import tech.libin.rahul.ideaproject.R;
+import tech.libin.rahul.ideaproject.events.DetailsEvent;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
+import tech.libin.rahul.ideaproject.views.homescreen.viewmodels.ActivityModel;
 
 /**
  * Created by libin on 21/02/17.
@@ -28,11 +33,24 @@ public class FOSHomeFragment extends FOSBaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setCollectionsHome();
+        showCollectionsHome();
     }
 
-    private void setCollectionsHome() {
+    private void showCollectionsHome() {
         FOSCollectionFragment collectionFragment = new FOSCollectionFragment();
         addFragment(R.id.home_container, collectionFragment);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(DetailsEvent event) {
+        ActivityModel model = event.getModel();
+        if (model != null) {
+            showDetailsPage();
+        }
+    }
+
+    private void showDetailsPage() {
+        FOSActivityDetailsFragment fragment = new FOSActivityDetailsFragment();
+        addFragmentWithBackStack(R.id.home_container, fragment);
     }
 }
