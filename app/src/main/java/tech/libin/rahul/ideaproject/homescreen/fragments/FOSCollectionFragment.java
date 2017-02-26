@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import tech.libin.rahul.ideaproject.R;
-import tech.libin.rahul.ideaproject.components.FOSBaseFragment;
+import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
 import tech.libin.rahul.ideaproject.homescreen.adapters.HomeTabAdapter;
 
 /**

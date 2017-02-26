@@ -1,4 +1,4 @@
-package tech.libin.rahul.ideaproject.components;
+package tech.libin.rahul.ideaproject.views.basecomponents;
 
 import android.os.Bundle;
 import android.support.annotation.IdRes;

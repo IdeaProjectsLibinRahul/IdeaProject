@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import tech.libin.rahul.ideaproject.R;
-import tech.libin.rahul.ideaproject.components.FOSBaseFragment;
+import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
 
 /**
  * Created by libin on 21/02/17.

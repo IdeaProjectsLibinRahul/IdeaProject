@@ -3,8 +3,8 @@ package tech.libin.rahul.ideaproject;
 import android.os.Bundle;
 import android.view.Menu;
 
-import tech.libin.rahul.ideaproject.components.FOSBaseActivity;
 import tech.libin.rahul.ideaproject.homescreen.fragments.FOSHomeFragment;
+import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseActivity;
 
 public class FOSHomeActivity extends FOSBaseActivity {
 
