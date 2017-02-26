@@ -11,7 +11,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import tech.libin.rahul.ideaproject.R;
+import tech.libin.rahul.ideaproject.events.base.BaseEvent;
 import tech.libin.rahul.ideaproject.views.utils.ApplicationContextHolder;
 
 /**
@@ -47,6 +52,19 @@ public abstract class FOSBaseActivity extends AppCompatActivity {
 
         ApplicationContextHolder contextHolder = ApplicationContextHolder.getInstance();
         contextHolder.setContext(this);
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(BaseEvent event) {
+
     }
 
     @Override
@@ -63,7 +81,7 @@ public abstract class FOSBaseActivity extends AppCompatActivity {
 
     private void setToolBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if(toolbar != null) {
+        if (toolbar != null) {
             if (hasToolBar) {
                 if (toolbar != null) {
                     toolbar.setTitle("");

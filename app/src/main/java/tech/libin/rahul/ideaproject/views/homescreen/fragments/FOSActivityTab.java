@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import tech.libin.rahul.ideaproject.R;
+import tech.libin.rahul.ideaproject.events.DetailsEvent;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
-import tech.libin.rahul.ideaproject.views.basecomponents.FOSDialog;
 import tech.libin.rahul.ideaproject.views.homescreen.adapters.ActivityTabAdapter;
 import tech.libin.rahul.ideaproject.views.homescreen.dummy.ActivityList;
 import tech.libin.rahul.ideaproject.views.homescreen.viewmodels.ActivityModel;
@@ -68,15 +70,10 @@ public class FOSActivityTab extends FOSBaseFragment {
         clickListener = new ActivityTabAdapter.ClickListener() {
             @Override
             public void onClick(ActivityModel model) {
-                final FOSDialog dialog = new FOSDialog();
-                dialog.setTitle(model.getName());
-                dialog.setButtonOKClick(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();
-                    }
-                });
-                dialog.show(getFragmentManager(), "TAG");
+                DetailsEvent event = new DetailsEvent();
+                event.setModel(model);
+
+                EventBus.getDefault().post(event);
             }
         };
     }

@@ -2,24 +2,21 @@ package tech.libin.rahul.ideaproject.views;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 
 import tech.libin.rahul.ideaproject.R;
 import tech.libin.rahul.ideaproject.configurations.Config;
 import tech.libin.rahul.ideaproject.facade.FOSFacade;
 import tech.libin.rahul.ideaproject.facade.FOSFacadeImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
-import tech.libin.rahul.ideaproject.service.models.UserModel;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseActivity;
 import tech.libin.rahul.ideaproject.views.models.Login;
 import tech.libin.rahul.ideaproject.views.models.User;
-import tech.libin.rahul.ideaproject.views.utils.ApplicationContextHolder;
 import tech.libin.rahul.ideaproject.views.utils.TelephonyInfo;
 import tech.libin.rahul.ideaproject.views.widgets.button.FOSButton;
 import tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText;
@@ -39,11 +36,11 @@ public class LoginActivity extends FOSBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        editTextUserName=(FOSIconEditText)findViewById(R.id.editTextUsernameLogin);
-        editTextPassword=(FOSIconEditText)findViewById(R.id.editTextPasswordLogin);
-        buttonSignIn =(FOSButton)findViewById(R.id.buttonSignInLogin);
-        buttonForgotPassword =(FOSButton)findViewById(R.id.buttonForgotPasswordLogin);
-        buttonSignUp =(FOSButton)findViewById(R.id.buttonSignUpLogin);
+        editTextUserName = (FOSIconEditText) findViewById(R.id.editTextUsernameLogin);
+        editTextPassword = (FOSIconEditText) findViewById(R.id.editTextPasswordLogin);
+        buttonSignIn = (FOSButton) findViewById(R.id.buttonSignInLogin);
+        buttonForgotPassword = (FOSButton) findViewById(R.id.buttonForgotPasswordLogin);
+        buttonSignUp = (FOSButton) findViewById(R.id.buttonSignUpLogin);
 
         //region buttonClicks
         buttonSignIn.setOnClickListener(new View.OnClickListener() {
@@ -80,8 +77,7 @@ public class LoginActivity extends FOSBaseActivity {
     }
     //endregion
 
-    private void doLogin()
-    {
+    private void doLogin() {
         try {
             if (isValid()) {
                 FOSFacade facade = new FOSFacadeImpl();
@@ -92,48 +88,53 @@ public class LoginActivity extends FOSBaseActivity {
                 TelephonyInfo telephonyInfo = TelephonyInfo.getInstance(this);
                 login.setUsername(editTextUserName.getText());
                 login.setPassword(editTextPassword.getText());
-                login.setImei1( telephonyInfo.getImsiSIM1());
+                login.setImei1(telephonyInfo.getImsiSIM1());
                 login.setImei2(telephonyInfo.getImsiSIM2());
-                final ProgressDialog dialog = ProgressDialog.show(this,null, getResources().getString(R.string.requesting), true, true);
+                final ProgressDialog dialog = ProgressDialog.show(this, null, getResources().getString(R.string.requesting), true, true);
 
                 facade.doLogin(login, new ServiceCallback<User>() {
                     @Override
                     public void onResponse(User response) {
                         Config.getInstance().setUser(response);
                         dialog.cancel();
-
+                        navigateToHome();
                     }
 
                     @Override
                     public void onRequestTimout() {
                         dialog.cancel();
+                        navigateToHome();
                     }
 
                     @Override
                     public void onRequestFail(FOSError error) {
                         dialog.cancel();
+                        navigateToHome();
 
                     }
                 });
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Log.e("Login", ex.toString());
         }
     }
 
-    private boolean isValid()
-    {
-        boolean status=true;
-        if(editTextPassword.getText().trim().isEmpty())
-        {editTextPassword.setError(getResources().getString(R.string.lbl_warn_password));
-            status=false;
+    private void navigateToHome() {
+        Intent intent = new Intent(LoginActivity.this, FOSHomeActivity.class);
+        startActivity(intent);
+    }
+
+    private boolean isValid() {
+        boolean status = true;
+        if (editTextPassword.getText().trim().isEmpty()) {
+            editTextPassword.setError(getResources().getString(R.string.lbl_warn_password));
+            status = false;
         }
-        if(editTextUserName.getText().trim().isEmpty())
-        {editTextUserName.setError(getResources().getString(R.string.lbl_warn_user_name));
-            status=false;
+        if (editTextUserName.getText().trim().isEmpty()) {
+            editTextUserName.setError(getResources().getString(R.string.lbl_warn_user_name));
+            status = false;
         }
-        return  status;
+        return status;
     }
 
 }
