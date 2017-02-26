@@ -3,4 +3,11 @@
     <color name="colorPrimary">#fef200</color>
     <color name="colorPrimaryDark">#cec400</color>
     <color name="colorAccent">#181818</color>
+
+
+    <color name="gray2X">#61615f</color>
+    <color name="baseGray">#949491</color>
+    <color name="lightYellow">#d8e7ff</color>
+    <color name="button_back">#303F9F</color>
+
 </resources>

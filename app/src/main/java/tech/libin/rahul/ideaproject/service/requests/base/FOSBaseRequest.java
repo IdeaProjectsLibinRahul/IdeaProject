@@ -5,4 +5,13 @@ package tech.libin.rahul.ideaproject.service.requests.base;
  */
 
 public abstract class FOSBaseRequest {
+    private String sessionKey;
+
+    public String getSessionKey() {
+        return sessionKey;
+    }
+
+    public void setSessionKey(String sessionKey) {
+        this.sessionKey = sessionKey;
+    }
 }

@@ -43,4 +43,12 @@
             <enum name="light" value="4" />
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="FOSIconEditText">
+        <attr name="drawableLeft" format="integer" />
+        <attr name="textString" format="string" />
+        <attr name="maxLength" format="integer" />
+        <attr name="hint" format="string" />
+    </declare-styleable>
+
 </resources>
