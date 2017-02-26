@@ -1,4 +1,4 @@
-package tech.libin.rahul.ideaproject.homescreen.adapters;
+package tech.libin.rahul.ideaproject.views.homescreen.adapters;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;

@@ -1,4 +1,4 @@
-package tech.libin.rahul.ideaproject.homescreen.fragments;
+package tech.libin.rahul.ideaproject.views.homescreen.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

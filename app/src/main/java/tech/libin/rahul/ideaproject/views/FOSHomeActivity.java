@@ -1,10 +1,11 @@
-package tech.libin.rahul.ideaproject;
+package tech.libin.rahul.ideaproject.views;
 
 import android.os.Bundle;
 import android.view.Menu;
 
-import tech.libin.rahul.ideaproject.homescreen.fragments.FOSHomeFragment;
+import tech.libin.rahul.ideaproject.R;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseActivity;
+import tech.libin.rahul.ideaproject.views.homescreen.fragments.FOSHomeFragment;
 
 public class FOSHomeActivity extends FOSBaseActivity {
 

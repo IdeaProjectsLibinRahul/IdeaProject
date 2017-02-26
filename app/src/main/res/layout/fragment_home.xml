@@ -16,16 +16,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button
-            style="@style/Widget.AppCompat.Button.Borderless"
+        <tech.libin.rahul.ideaproject.views.widgets.button.FOSButton
+            style="@style/BottomButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableLeft="@mipmap/ic_collection"
             android:text="@string/collection" />
 
-        <Button
-            style="@style/Widget.AppCompat.Button.Borderless"
+        <tech.libin.rahul.ideaproject.views.widgets.button.FOSButton
+            style="@style/BottomButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

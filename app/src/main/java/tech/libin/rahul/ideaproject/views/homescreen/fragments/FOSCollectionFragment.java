@@ -1,4 +1,4 @@
-package tech.libin.rahul.ideaproject.homescreen.fragments;
+package tech.libin.rahul.ideaproject.views.homescreen.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import tech.libin.rahul.ideaproject.R;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
-import tech.libin.rahul.ideaproject.homescreen.adapters.HomeTabAdapter;
+import tech.libin.rahul.ideaproject.views.homescreen.adapters.HomeTabAdapter;
 
 /**
  * Created by libin on 21/02/17.
