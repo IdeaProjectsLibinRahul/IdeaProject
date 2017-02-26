@@ -1,6 +1,7 @@
 package tech.libin.rahul.ideaproject.views.basecomponents;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -35,11 +36,22 @@ public abstract class FOSBaseActivity extends AppCompatActivity {
         setHasToolBar();
         setToolbarElevation();
         setToolBar();
+
+        ApplicationContextHolder contextHolder = ApplicationContextHolder.getInstance();
+        contextHolder.setContext(this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        ApplicationContextHolder contextHolder = ApplicationContextHolder.getInstance();
+        contextHolder.setContext(this);
+    }
+
+    @Override
+    public void onPostCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onPostCreate(savedInstanceState, persistentState);
 
         ApplicationContextHolder contextHolder = ApplicationContextHolder.getInstance();
         contextHolder.setContext(this);
@@ -51,14 +63,16 @@ public abstract class FOSBaseActivity extends AppCompatActivity {
 
     private void setToolBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (hasToolBar) {
-            if (toolbar != null) {
-                toolbar.setTitle("");
-                toolbar.setElevation(toolbarElevation);
-                setSupportActionBar(toolbar);
+        if(toolbar != null) {
+            if (hasToolBar) {
+                if (toolbar != null) {
+                    toolbar.setTitle("");
+                    toolbar.setElevation(toolbarElevation);
+                    setSupportActionBar(toolbar);
+                }
+            } else {
+                toolbar.setVisibility(View.GONE);
             }
-        } else {
-            toolbar.setVisibility(View.GONE);
         }
     }
 

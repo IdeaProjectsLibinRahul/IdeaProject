@@ -6,4 +6,14 @@
     <string name="new_activities">New Activities</string>
     <string name="reminders">Reminders</string>
     <string name="logout">Logout</string>
+
+    <string name="user_name">User Name</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="forgot_password">Forgot your password ?</string>
+    <string name="lbl_warn_password">Enter your password</string>
+    <string name="lbl_warn_user_name">Enter user name</string>
+    <string name="requesting">Requesting</string>
+    <string name="processing">please wait we are processing your request</string>
 </resources>

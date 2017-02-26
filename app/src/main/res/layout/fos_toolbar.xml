@@ -16,13 +16,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
+        <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
             style="@style/ToolBarTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Rahul Raj" />
 
-        <TextView
+        <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="9847788990" />
