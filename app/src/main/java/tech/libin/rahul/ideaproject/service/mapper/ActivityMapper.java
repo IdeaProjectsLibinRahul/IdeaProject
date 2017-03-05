@@ -9,6 +9,7 @@ import tech.libin.rahul.ideaproject.service.requests.ActivityRequest;
 import tech.libin.rahul.ideaproject.service.responses.ActivityResponse;
 import tech.libin.rahul.ideaproject.views.homescreen.viewmodels.ActivityModel;
 import tech.libin.rahul.ideaproject.views.models.ActivityRequestModel;
+import tech.libin.rahul.ideaproject.views.models.User;
 
 /**
  * Created by libin on 01/03/17.
@@ -19,7 +20,8 @@ public class ActivityMapper implements FOSBaseMapper<ActivityRequestModel, Activ
 
     @Override
     public ActivityRequest getRequest(ActivityRequestModel model) {
-        String sessionKey = Config.getInstance().getSessionKey();
+        User user = Config.getInstance().getUser();
+        String sessionKey = user.getSessionKey();
 
         ActivityRequest request = new ActivityRequest();
         request.setUserId(model.getUserId());

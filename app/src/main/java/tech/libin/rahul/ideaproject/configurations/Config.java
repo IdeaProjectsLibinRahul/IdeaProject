@@ -8,7 +8,6 @@ import tech.libin.rahul.ideaproject.views.models.User;
 public class Config {
     private static Config _config = new Config();
     private User user;
-    private String sessionKey;
 
     private Config() {
     }
@@ -25,11 +24,4 @@ public class Config {
         this.user = user;
     }
 
-    public String getSessionKey() {
-        return sessionKey;
-    }
-
-    public void setSessionKey(String sessionKey) {
-        this.sessionKey = sessionKey;
-    }
 }

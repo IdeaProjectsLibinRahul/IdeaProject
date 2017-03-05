@@ -8,8 +8,6 @@ public class ServiceURLs {
     public static final String REGISTER = "/user/register";
     public static final String LOGIN = "/Account/Login";
     public static final String ACTIVITY = "/AppData/Activity";
-    public static final String UPDATE_USER_PROFILE = "/user/updateprofile";
-    public static final String UPDATE_PROFILE_PIC = "/saveProfilePic";
 
     private static final String BASE_URL = "http://122.166.96.206/isft/api";
 
