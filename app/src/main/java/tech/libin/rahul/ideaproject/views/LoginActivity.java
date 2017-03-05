@@ -2,13 +2,11 @@ package tech.libin.rahul.ideaproject.views;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 
@@ -19,8 +17,6 @@ import tech.libin.rahul.ideaproject.facade.FOSFacadeImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseActivity;
-import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseDialogFragment;
-import tech.libin.rahul.ideaproject.views.basecomponents.FOSDialog;
 import tech.libin.rahul.ideaproject.views.models.Login;
 import tech.libin.rahul.ideaproject.views.models.User;
 import tech.libin.rahul.ideaproject.views.utils.TelephonyInfo;
@@ -29,13 +25,13 @@ import tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText;
 
 public class LoginActivity extends FOSBaseActivity {
 
+    private static final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 1;
     //region declaration
     private FOSIconEditText editTextUserName;
     private FOSIconEditText editTextPassword;
     private FOSButton buttonSignIn;
     private FOSButton buttonForgotPassword;
     private FOSButton buttonSignUp;
-    private static final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 1;
 
     //endregion
 

@@ -10,26 +10,4 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <LinearLayout
-        android:id="@+id/bottom_bar"
-        style="@style/BottomBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <tech.libin.rahul.ideaproject.views.widgets.button.FOSButton
-            style="@style/BottomButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableLeft="@mipmap/ic_collection"
-            android:text="@string/collection" />
-
-        <tech.libin.rahul.ideaproject.views.widgets.button.FOSButton
-            style="@style/BottomButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableLeft="@mipmap/ic_retention"
-            android:text="@string/retention" />
-    </LinearLayout>
 </LinearLayout>

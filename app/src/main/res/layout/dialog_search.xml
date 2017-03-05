@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <ImageView
+            android:id="@+id/imageViewBackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_left" />
+
+        <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/search"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="12dp"
+        android:background="@color/baseGray" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="40dp"
+        android:padding="12dp">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputSearchName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSEditText
+                android:id="@+id/editTextSearchName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/name" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputSearchMsisdn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textInputSearchName"
+            android:layout_marginTop="8dp">
+
+            <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSEditText
+                android:id="@+id/editTextSearchMsisdn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/msisdn" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputSearchZip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textInputSearchMsisdn"
+            android:layout_marginTop="8dp">
+
+            <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSEditText
+                android:id="@+id/editTextSearchZip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/zip" />
+        </android.support.design.widget.TextInputLayout>
+
+        <tech.libin.rahul.ideaproject.views.widgets.button.FOSButton
+            android:id="@+id/buttonSearch"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:text="@string/search"
+            android:textAllCaps="false" />
+
+    </RelativeLayout>
+
+</LinearLayout>

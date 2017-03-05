@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class Constants {
-    public enum Role{
+    public enum Role {
         @SerializedName("1")
         EXECUTIVE(1),
         @SerializedName("2")
@@ -17,12 +17,12 @@ public class Constants {
 
         private int value;
 
-        private Role(int value){
+        private Role(int value) {
             this.value = value;
         }
     }
 
-    public enum Type{
+    public enum Type {
         @SerializedName("1")
         RETENSION(1),
         @SerializedName("2")
@@ -32,12 +32,12 @@ public class Constants {
 
         private int value;
 
-        private Type(int value){
+        private Type(int value) {
             this.value = value;
         }
     }
 
-    public enum Status{
+    public enum Status {
         @SerializedName("0")
         ERROR(0),
         @SerializedName("1")
@@ -49,7 +49,35 @@ public class Constants {
 
         private int value;
 
-        private Status(int value){
+        private Status(int value) {
+            this.value = value;
+        }
+    }
+
+    public enum ActivityType {
+        @SerializedName("0")
+        ACTIVITY(0),
+        @SerializedName("1")
+        NEW_ACTIVITY(1),
+        @SerializedName("2")
+        REMINDER(2);
+
+        private int value;
+
+        private ActivityType(int value) {
+            this.value = value;
+        }
+    }
+
+    public enum EsclateStatus {
+        @SerializedName("0")
+        NOT_ESCLATED(0),
+        @SerializedName("1")
+        ESCLATED(1);
+
+        private int value;
+
+        private EsclateStatus(int value) {
             this.value = value;
         }
     }
