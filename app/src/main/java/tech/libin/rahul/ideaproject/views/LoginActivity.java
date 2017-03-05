@@ -1,9 +1,13 @@
 package tech.libin.rahul.ideaproject.views;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +19,8 @@ import tech.libin.rahul.ideaproject.facade.FOSFacadeImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseActivity;
+import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseDialogFragment;
+import tech.libin.rahul.ideaproject.views.basecomponents.FOSDialog;
 import tech.libin.rahul.ideaproject.views.models.Login;
 import tech.libin.rahul.ideaproject.views.models.User;
 import tech.libin.rahul.ideaproject.views.utils.TelephonyInfo;
@@ -24,11 +30,13 @@ import tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText;
 public class LoginActivity extends FOSBaseActivity {
 
     //region declaration
-    FOSIconEditText editTextUserName;
-    FOSIconEditText editTextPassword;
-    FOSButton buttonSignIn;
-    FOSButton buttonForgotPassword;
-    FOSButton buttonSignUp;
+    private FOSIconEditText editTextUserName;
+    private FOSIconEditText editTextPassword;
+    private FOSButton buttonSignIn;
+    private FOSButton buttonForgotPassword;
+    private FOSButton buttonSignUp;
+    private static final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 1;
+
     //endregion
 
     //region onCreate
@@ -46,7 +54,7 @@ public class LoginActivity extends FOSBaseActivity {
         buttonSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doLogin();
+                checkPhoneStatePermission();
             }
         });
 
@@ -81,18 +89,17 @@ public class LoginActivity extends FOSBaseActivity {
         try {
             if (isValid()) {
                 FOSFacade facade = new FOSFacadeImpl();
-                Login login = new Login();
-                TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-                telephonyManager.getSimOperatorName();
+                Login loginData = new Login();
 
                 TelephonyInfo telephonyInfo = TelephonyInfo.getInstance(this);
-                login.setUsername(editTextUserName.getText());
-                login.setPassword(editTextPassword.getText());
-                login.setImei1(telephonyInfo.getImsiSIM1());
-                login.setImei2(telephonyInfo.getImsiSIM2());
+                loginData.setUsername(editTextUserName.getText());
+                loginData.setPassword(editTextPassword.getText());
+                loginData.setImei1(telephonyInfo.getImsiSIM1());
+                loginData.setImei2(telephonyInfo.getImsiSIM2());
+
                 final ProgressDialog dialog = ProgressDialog.show(this, null, getResources().getString(R.string.requesting), true, true);
 
-                facade.doLogin(login, new ServiceCallback<User>() {
+                facade.doLogin(loginData, new ServiceCallback<User>() {
                     @Override
                     public void onResponse(User response) {
                         Config.getInstance().setUser(response);
@@ -103,14 +110,16 @@ public class LoginActivity extends FOSBaseActivity {
                     @Override
                     public void onRequestTimout() {
                         dialog.cancel();
-                        navigateToHome();
+
+                        //  navigateToHome();
                     }
 
                     @Override
                     public void onRequestFail(FOSError error) {
                         dialog.cancel();
-                        navigateToHome();
-
+                        // navigateToHome();
+                        //FOSDialog fosDialog = new FOSDialog();
+                        //fosDialog.setMessage(error.getErrorMessage());
                     }
                 });
             }
@@ -136,5 +145,69 @@ public class LoginActivity extends FOSBaseActivity {
         }
         return status;
     }
+
+    private void checkPhoneStatePermission() {
+        try {
+            // Here, thisActivity is the current activity
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.READ_PHONE_STATE)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                // Should we show an explanation?
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.READ_PHONE_STATE)) {
+
+                    // Show an explanation to the user *asynchronously* -- don't block
+                    // this thread waiting for the user's response! After the user
+                    // sees the explanation, try again to request the permission.
+
+                } else {
+
+                    // No explanation needed, we can request the permission.
+
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.READ_PHONE_STATE},
+                            MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);
+
+                    // MY_PERMISSIONS_REQUEST_READ_PHONE_STATE is an
+                    // app-defined int constant. The callback method gets the
+                    // result of the request.
+                }
+            } else {
+                doLogin();
+            }
+        } catch (Exception ex) {
+
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_PHONE_STATE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    doLogin();
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+
+            }
+
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
 
 }

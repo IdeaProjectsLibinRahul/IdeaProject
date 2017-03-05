@@ -26,7 +26,7 @@ public class Login {
 
     public void setPassword(String password) {
 
-        this.password = EncryptData.getInstance().convertToSha1(password);
+        this.password = password;
     }
 
     public String getImei1() {
