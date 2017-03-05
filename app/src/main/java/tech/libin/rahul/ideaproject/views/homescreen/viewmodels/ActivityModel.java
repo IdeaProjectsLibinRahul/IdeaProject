@@ -6,18 +6,18 @@ package tech.libin.rahul.ideaproject.views.homescreen.viewmodels;
 
 public class ActivityModel {
 
-    private int id;
+    private String id;
     private String name;
     private String phoneNo;
     private String topRight;
     private String bottomCenter;
     private String bottomRight;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
