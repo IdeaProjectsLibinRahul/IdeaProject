@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -94,6 +95,7 @@ public class FOSIconEditText extends LinearLayout {
         try {
             String hint = attributes.getString(R.styleable.FOSIconEditText_hint);
             String text = attributes.getString(R.styleable.FOSIconEditText_textString);
+            int inputType = attributes.getInt(R.styleable.FOSIconEditText_inputType, 0);
             int maxLength = attributes.getInt(R.styleable.FOSIconEditText_maxLength, 0);
             Drawable image = attributes.getDrawable(R.styleable.FOSIconEditText_drawableLeft);
 
@@ -112,6 +114,12 @@ public class FOSIconEditText extends LinearLayout {
                 InputFilter[] filterArray = new InputFilter[1];
                 filterArray[0] = new InputFilter.LengthFilter(maxLength);
                 editText.setFilters(filterArray);
+            }
+
+            if (inputType == 0) {
+                editText.setInputType(InputType.TYPE_CLASS_TEXT);
+            } else {
+                editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
             }
         } finally {
             attributes.recycle();

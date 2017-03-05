@@ -1,7 +1,5 @@
 package tech.libin.rahul.ideaproject.views.models;
 
-import tech.libin.rahul.ideaproject.views.utils.EncryptData;
-
 /**
  * Created by rahul on 2/26/2017.
  */

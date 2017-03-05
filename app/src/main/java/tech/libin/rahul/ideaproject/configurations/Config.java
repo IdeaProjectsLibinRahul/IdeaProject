@@ -9,18 +9,19 @@ public class Config {
     private static Config _config = new Config();
     private User user;
 
+    private Config() {
+    }
+
     public static Config getInstance() {
         return _config;
     }
 
-    private Config() {
+    public User getUser() {
+        return this.user;
     }
 
-    public void setUser(User user){
+    public void setUser(User user) {
         this.user = user;
     }
 
-    public User getUser(){
-        return this.user;
-    }
 }
