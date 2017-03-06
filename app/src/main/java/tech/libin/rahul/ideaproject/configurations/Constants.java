@@ -17,7 +17,7 @@ public class Constants {
 
         private int value;
 
-        private Role(int value) {
+        Role(int value) {
             this.value = value;
         }
     }
@@ -32,7 +32,7 @@ public class Constants {
 
         private int value;
 
-        private Type(int value) {
+        Type(int value) {
             this.value = value;
         }
     }
@@ -49,7 +49,7 @@ public class Constants {
 
         private int value;
 
-        private Status(int value) {
+        Status(int value) {
             this.value = value;
         }
     }
@@ -64,7 +64,7 @@ public class Constants {
 
         private int value;
 
-        private ActivityType(int value) {
+        ActivityType(int value) {
             this.value = value;
         }
     }
@@ -92,7 +92,24 @@ public class Constants {
 
         private int value;
 
-        private EsclateStatus(int value) {
+        EsclateStatus(int value) {
+            this.value = value;
+        }
+    }
+
+    public enum RecordType {
+        @SerializedName("0")
+        COLLECTION(0),
+        @SerializedName("1")
+        TD(1),
+        @SerializedName("2")
+        SME(2),
+        @SerializedName("3")
+        UPC(3);
+
+        private int value;
+
+        RecordType(int value) {
             this.value = value;
         }
     }

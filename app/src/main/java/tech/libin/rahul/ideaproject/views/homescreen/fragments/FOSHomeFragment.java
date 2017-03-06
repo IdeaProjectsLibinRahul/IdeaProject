@@ -12,6 +12,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import tech.libin.rahul.ideaproject.R;
 import tech.libin.rahul.ideaproject.events.DetailsEvent;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
+import tech.libin.rahul.ideaproject.views.detailsview.SMEDetailsFragment;
 import tech.libin.rahul.ideaproject.views.homescreen.viewmodels.ActivityModel;
 
 /**
@@ -50,7 +51,7 @@ public class FOSHomeFragment extends FOSBaseFragment {
     }
 
     private void showDetailsPage() {
-        FOSActivityDetailsFragment fragment = new FOSActivityDetailsFragment();
+        SMEDetailsFragment fragment = new SMEDetailsFragment();
         addFragmentWithBackStack(R.id.home_container, fragment);
     }
 }
