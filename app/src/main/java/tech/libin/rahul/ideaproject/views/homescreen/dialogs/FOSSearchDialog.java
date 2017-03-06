@@ -68,6 +68,8 @@ public class FOSSearchDialog extends FOSBaseDialog {
                 String msisdn = editTextMsisdn.getText().toString();
                 String zip = editTextZip.getText().toString();
 
+                isValid(name, msisdn, zip);
+
                 SearchEvent event = new SearchEvent();
                 event.setName(name);
                 event.setMsisdn(msisdn);
@@ -78,5 +80,12 @@ public class FOSSearchDialog extends FOSBaseDialog {
                 dismiss();
             }
         });
+    }
+
+    private boolean isValid(String name, String msisdn, String zip) {
+        if (name.equals("") && msisdn.equals("") && zip.equals("")) {
+            return false;
+        }
+        return true;
     }
 }

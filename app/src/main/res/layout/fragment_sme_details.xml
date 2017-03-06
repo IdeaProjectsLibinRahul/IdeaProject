@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            android:id="@+id/FOSTextView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mr. Kabeer A.V"
+            android:textSize="20sp" />
+
+        <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            android:id="@+id/FOSTextView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="+919567842009" />
+
+        <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            android:id="@+id/FOSTextView5"
+            style="@style/DetailsViewHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Biller" />
+
+        <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            style="@style/DetailsViewText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FB" />
+
+        <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            style="@style/DetailsViewHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Company Name" />
+
+        <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            style="@style/DetailsViewText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="LIVIDUS PHARMACEUTICAL PVT LTD" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                style="@style/DetailsViewHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Total Connections" />
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                style="@style/DetailsViewHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="FB Connections" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                style="@style/DetailsViewText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="122" />
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                style="@style/DetailsViewText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="122" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                style="@style/DetailsViewHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Mico" />
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                style="@style/DetailsViewHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Mico Code" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                style="@style/DetailsViewText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="-" />
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                style="@style/DetailsViewText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="KRTRI00028" />
+        </LinearLayout>
+
+        <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            style="@style/DetailsViewHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mico Name" />
+
+        <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Panayil Associates" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                style="@style/DetailsViewHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Zone" />
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                style="@style/DetailsViewHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Customer Type" />
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                style="@style/DetailsViewHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Segment" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                style="@style/DetailsViewText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="OUT" />
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                style="@style/DetailsViewText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Organization" />
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                style="@style/DetailsViewText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="SME-R" />
+        </LinearLayout>
+
+        <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            style="@style/DetailsViewHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Begining Date" />
+
+        <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            style="@style/DetailsViewText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="01/16/2017" />
+
+        <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            style="@style/DetailsViewHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Active Reason" />
+
+        <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            style="@style/DetailsViewText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Connection" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                style="@style/DetailsViewHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TM Code" />
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                style="@style/DetailsViewHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Rate Plan" />
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                style="@style/DetailsViewHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="CR Limit" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                style="@style/DetailsViewText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="9226" />
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                style="@style/DetailsViewText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Triumph 199" />
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                style="@style/DetailsViewText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="2000" />
+        </LinearLayout>
+
+        <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            style="@style/DetailsViewHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Address" />
+
+        <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            style="@style/DetailsViewText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dummy_address" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                style="@style/DetailsViewHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Landline" />
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                style="@style/DetailsViewHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Type" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                style="@style/DetailsViewText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="0484-2777777" />
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                style="@style/DetailsViewText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="COIP" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</ScrollView>
