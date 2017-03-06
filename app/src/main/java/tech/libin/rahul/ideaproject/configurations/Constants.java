@@ -68,7 +68,22 @@ public class Constants {
             this.value = value;
         }
     }
+    public enum RecordType {
+        @SerializedName("1")
+        SME(1),
+        @SerializedName("2")
+        UPC(2),
+        @SerializedName("3")
+        TD(3),
+        @SerializedName("4")
+        COLLECTION(4);
 
+        private int value;
+
+        private RecordType(int value) {
+            this.value = value;
+        }
+    }
     public enum EsclateStatus {
         @SerializedName("0")
         NOT_ESCLATED(0),
