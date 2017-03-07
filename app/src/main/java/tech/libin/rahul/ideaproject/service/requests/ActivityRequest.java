@@ -9,7 +9,7 @@ import tech.libin.rahul.ideaproject.service.requests.base.FOSBaseRequest;
 
 public class ActivityRequest extends FOSBaseRequest {
 
-    private int userId;
+    private Long userId;
 
     private int pageNo;
 
@@ -25,11 +25,11 @@ public class ActivityRequest extends FOSBaseRequest {
 
     private String name;
 
-    public int getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

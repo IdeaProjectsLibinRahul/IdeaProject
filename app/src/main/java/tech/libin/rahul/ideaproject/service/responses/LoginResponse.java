@@ -20,18 +20,18 @@ public class LoginResponse extends FOSBaseResponse {
     }
 
     public class Response {
-        private int userId;
+        private Long userId;
         private String sessionKey;
         private Constants.Role role;
         private Constants.Type type;
         private String name;
         private String phoneNo;
 
-        public int getUserId() {
+        public Long getUserId() {
             return userId;
         }
 
-        public void setUserId(int userId) {
+        public void setUserId(Long userId) {
             this.userId = userId;
         }
 

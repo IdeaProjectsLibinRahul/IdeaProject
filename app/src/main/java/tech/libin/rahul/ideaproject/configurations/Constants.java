@@ -68,6 +68,7 @@ public class Constants {
             this.value = value;
         }
     }
+
     public enum RecordType {
         @SerializedName("1")
         SME(1),
@@ -84,6 +85,7 @@ public class Constants {
             this.value = value;
         }
     }
+
     public enum EsclateStatus {
         @SerializedName("0")
         NOT_ESCLATED(0),
@@ -97,20 +99,4 @@ public class Constants {
         }
     }
 
-    public enum RecordType {
-        @SerializedName("0")
-        COLLECTION(0),
-        @SerializedName("1")
-        TD(1),
-        @SerializedName("2")
-        SME(2),
-        @SerializedName("3")
-        UPC(3);
-
-        private int value;
-
-        RecordType(int value) {
-            this.value = value;
-        }
-    }
 }

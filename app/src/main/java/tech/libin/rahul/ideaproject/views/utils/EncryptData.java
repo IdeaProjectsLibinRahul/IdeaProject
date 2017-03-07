@@ -1,8 +1,6 @@
 package tech.libin.rahul.ideaproject.views.utils;
 
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by Rahul Raj on 11/2/2016.

@@ -1,4 +1,4 @@
-package tech.libin.rahul.ideaproject.service.responses;
+package tech.libin.rahul.ideaproject.views.detailsview.viewmodels;
 
 import java.util.ArrayList;
 
@@ -7,25 +7,12 @@ import tech.libin.rahul.ideaproject.service.models.DetailFromUPCRoleModel;
 import tech.libin.rahul.ideaproject.service.models.DetailOtherData;
 import tech.libin.rahul.ideaproject.service.models.LocationModel;
 import tech.libin.rahul.ideaproject.service.models.SpinnerData;
-import tech.libin.rahul.ideaproject.service.responses.base.FOSBaseResponse;
 
 /**
  * Created by rahul on 3/5/2017.
  */
 
-public class TdDetailResponse extends FOSBaseResponse {
-
-    Response response;
-
-    public Response getResponse() {
-        return response;
-    }
-
-    public void setResponse(Response response) {
-        this.response = response;
-    }
-
-    public class Response {
+public class TdDetailModel  {
 
         private String custNum;
         private String mobile;
@@ -282,5 +269,4 @@ public class TdDetailResponse extends FOSBaseResponse {
         public void setFromExecutive(DetailFromUPCRoleModel fromExecutive) {
             this.fromExecutive = fromExecutive;
         }
-    }
 }

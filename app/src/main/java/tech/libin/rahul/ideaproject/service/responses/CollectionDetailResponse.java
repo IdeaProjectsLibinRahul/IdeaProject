@@ -51,12 +51,13 @@ public class CollectionDetailResponse  extends FOSBaseResponse {
         private String zip;
 
         private LocationModel location;
-        private DetailOtherData other;
+        private ArrayList<DetailOtherData> other;
         private Constants.EsclateStatus esclate;
+        private ArrayList<SpinnerData> visitStatus;
+
         private DetailFromUPCRoleModel fromZsm;
         private DetailFromUPCRoleModel fromMico;
         private DetailFromUPCRoleModel fromExecutive;
-        private ArrayList<SpinnerData> visitStatus;
 
         public String getCustNum() {
             return custNum;
@@ -234,11 +235,11 @@ public class CollectionDetailResponse  extends FOSBaseResponse {
             this.location = location;
         }
 
-        public DetailOtherData getOther() {
+        public ArrayList<DetailOtherData> getOther() {
             return other;
         }
 
-        public void setOther(DetailOtherData other) {
+        public void setOther(ArrayList<DetailOtherData> other) {
             this.other = other;
         }
 
@@ -248,6 +249,14 @@ public class CollectionDetailResponse  extends FOSBaseResponse {
 
         public void setEsclate(Constants.EsclateStatus esclate) {
             this.esclate = esclate;
+        }
+
+        public ArrayList<SpinnerData> getVisitStatus() {
+            return visitStatus;
+        }
+
+        public void setVisitStatus(ArrayList<SpinnerData> visitStatus) {
+            this.visitStatus = visitStatus;
         }
 
         public DetailFromUPCRoleModel getFromZsm() {
@@ -272,14 +281,6 @@ public class CollectionDetailResponse  extends FOSBaseResponse {
 
         public void setFromExecutive(DetailFromUPCRoleModel fromExecutive) {
             this.fromExecutive = fromExecutive;
-        }
-
-        public ArrayList<SpinnerData> getVisitStatus() {
-            return visitStatus;
-        }
-
-        public void setVisitStatus(ArrayList<SpinnerData> visitStatus) {
-            this.visitStatus = visitStatus;
         }
     }
 }

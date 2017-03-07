@@ -8,17 +8,8 @@ import tech.libin.rahul.ideaproject.configurations.Constants;
 
 public class ActivityDetailRequestModel {
 
-    private String userId;
     private String objectId;
     private Constants.RecordType recordType;
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public String getObjectId() {
         return objectId;

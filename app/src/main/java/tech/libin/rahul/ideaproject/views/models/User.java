@@ -8,7 +8,7 @@ import tech.libin.rahul.ideaproject.service.responses.LoginResponse;
  */
 
 public class User {
-    private int userId;
+    private Long userId;
     private String sessionKey;
     private Constants.Role role;
     private Constants.Type type;
@@ -27,11 +27,11 @@ public class User {
         phoneNo = response.getPhoneNo();
     }
 
-    public int getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

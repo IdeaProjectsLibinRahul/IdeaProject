@@ -1,4 +1,4 @@
-package tech.libin.rahul.ideaproject.views.detailsview;
+package tech.libin.rahul.ideaproject.views.detailsview.fragments;
 
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
 

@@ -17,7 +17,6 @@ import tech.libin.rahul.ideaproject.views.models.User;
 
 public class ActivityMapper implements FOSBaseMapper<ActivityRequestModel, ActivityRequest, ActivityResponse, List<ActivityModel>> {
 
-
     @Override
     public ActivityRequest getRequest(ActivityRequestModel model) {
         User user = Config.getInstance().getUser();
@@ -49,7 +48,6 @@ public class ActivityMapper implements FOSBaseMapper<ActivityRequestModel, Activ
             activityModel.setBottomCenter(response.getCenterBottom());
             activityModel.setBottomRight(response.getBottomRight());
             activityModel.setPhoneNo(response.getMobileNo());
-
             models.add(activityModel);
         }
         return models;

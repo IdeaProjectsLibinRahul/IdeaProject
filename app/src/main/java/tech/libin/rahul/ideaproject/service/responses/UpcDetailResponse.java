@@ -27,22 +27,25 @@ public class UpcDetailResponse extends FOSBaseResponse {
     public class Response {
         private String upc;
         private String msisdn;
+
         private String subscriberType;
         private String createdDateTime;
         private String segment;
         private String customerSubsType;
         private String csCreditCode;
+
         private String customerType;
         private String customerName;
         private String address1;
         private String address2;
         private String address3;
+
         private String zip;
         private String alternateNumber;
         private String servSeg;
-
         private LocationModel location;
-        private DetailOtherData other;
+        private ArrayList<DetailOtherData> other;
+
         private Constants.EsclateStatus esclate;
         private DetailFromUPCRoleModel fromZsm;
         private DetailFromUPCRoleModel fromMico;
@@ -177,11 +180,11 @@ public class UpcDetailResponse extends FOSBaseResponse {
             this.location = location;
         }
 
-        public DetailOtherData getOther() {
+        public ArrayList<DetailOtherData> getOther() {
             return other;
         }
 
-        public void setOther(DetailOtherData other) {
+        public void setOther(ArrayList<DetailOtherData> other) {
             this.other = other;
         }
 

@@ -9,15 +9,15 @@ import tech.libin.rahul.ideaproject.service.requests.base.FOSBaseRequest;
 
 public class ActivityDetailRequest extends FOSBaseRequest {
 
-    String userId;
+    Long userId;
     String objectId;
     Constants.RecordType recordType;
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
