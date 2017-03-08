@@ -30,17 +30,12 @@
         app:hint="@string/user_name"
         app:maxLength="150" />
 
-    <View
-        android:id="@+id/viewRowDividerRow1"
-        style="@style/LoginEditTextBottomBar"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/editTextUsernameLogin" />
 
     <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
         android:id="@+id/editTextPasswordLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/viewRowDividerRow1"
+        android:layout_below="@+id/editTextUsernameLogin"
         android:maxLength="15"
         app:drawableLeft="@mipmap/ic_user"
         app:hint="@string/password"
@@ -52,17 +47,12 @@
         android:layout_height="wrap_content"
         android:inputType="numberPassword" />
 
-    <View
-        android:id="@+id/viewRowDividerRow2"
-        style="@style/LoginEditTextBottomBar"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/editTextPasswordLogin" />
 
     <LinearLayout
         android:id="@+id/linearLayoutSubmit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/viewRowDividerRow2"
+        android:layout_below="@+id/editTextPasswordLogin"
         android:layout_marginTop="@dimen/button_vertical_margin"
         android:orientation="horizontal"
         android:weightSum="2">

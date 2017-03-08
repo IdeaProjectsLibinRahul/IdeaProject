@@ -3,6 +3,7 @@ package tech.libin.rahul.ideaproject.views.detailsview.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import tech.libin.rahul.ideaproject.service.requests.ActivityDetailRequest;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeDetailModel;
+import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.TdDetailModel;
+import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.UpcDetailModel;
 import tech.libin.rahul.ideaproject.views.models.ActivityDetailRequestModel;
 
 /**
@@ -75,6 +78,8 @@ public class SMEDetailsFragment extends FOSBaseFragment {
         textViewType = (TextView) view.findViewById(R.id.textViewType);
         recViewOther = (RecyclerView) view.findViewById(R.id.recViewOther);
         loadDetails();
+     //   loadTdDetails();
+//       loadUpcDetails();
         return view;
     }
 
@@ -97,7 +102,7 @@ public class SMEDetailsFragment extends FOSBaseFragment {
                 textViewMicoCode.setText(response.getMicoCode());
                 textViewMicoName.setText(response.getMiName());
                 textViewZone.setText(response.getZone());
-                // textViewCustomerType.setText(response.getCustType());
+                textViewCustomerType.setText(response.getCustType());
                 textViewSegment.setText(response.getSegment());
                 textViewBeginningDate.setText(response.getBegdate());
                 textViewActiveReason.setText(response.getActReason());
@@ -106,6 +111,56 @@ public class SMEDetailsFragment extends FOSBaseFragment {
                 textViewCRLimit.setText(response.getCr_limit());
                 textViewLandLine.setText(response.getLandLine2());
                 textViewType.setText(response.getType());
+            }
+
+            @Override
+            public void onRequestTimout() {
+
+            }
+
+            @Override
+            public void onRequestFail(FOSError error) {
+
+            }
+        });
+    }
+
+
+    private void loadUpcDetails() {
+        ActivityDetailRequestModel requestModel = new ActivityDetailRequestModel();
+        requestModel.setObjectId("169");
+        requestModel.setRecordType(Constants.RecordType.UPC);
+
+        FOSFacade fosFacade = new FOSFacadeImpl();
+        fosFacade.getUpcDetail(requestModel, new ServiceCallback<UpcDetailModel>() {
+            @Override
+            public void onResponse(UpcDetailModel response) {
+Log.e("UPCDETAILS",response.toString());
+            }
+
+            @Override
+            public void onRequestTimout() {
+
+            }
+
+            @Override
+            public void onRequestFail(FOSError error) {
+
+            }
+        });
+    }
+
+
+    private void loadTdDetails() {
+        ActivityDetailRequestModel requestModel = new ActivityDetailRequestModel();
+        requestModel.setObjectId("12");
+        requestModel.setRecordType(Constants.RecordType.TD);
+
+        FOSFacade fosFacade = new FOSFacadeImpl();
+        fosFacade.getTdDetail(requestModel, new ServiceCallback<TdDetailModel>() {
+            @Override
+            public void onResponse(TdDetailModel response) {
+                Log.e("TDDETAILS",response.toString());
             }
 
             @Override
