@@ -23,4 +23,5 @@
     <string name="msisdn">MSISDN</string>
     <string name="zip">Zip</string>
     <string name="dummy_address">LIVIDUS PHARMACEUTICAL PVT LTD \nAMAL A \n2ND FLOOR BHAVANI TRADE CENTRE \nHIGH SCHOOL JN, KARUNAGAPPALLY</string>
+    <string name="visit_status">Visit Status</string>
 </resources>
