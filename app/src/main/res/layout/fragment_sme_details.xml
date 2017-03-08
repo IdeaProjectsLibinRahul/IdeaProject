@@ -10,27 +10,27 @@
         android:padding="16dp">
 
         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-            android:id="@+id/FOSTextView3"
+            android:id="@+id/textViewName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Mr. Kabeer A.V"
             android:textSize="20sp" />
 
         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-            android:id="@+id/FOSTextView4"
+            android:id="@+id/textViewPhoneNum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:text="+919567842009" />
 
         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-            android:id="@+id/FOSTextView5"
             style="@style/DetailsViewHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Biller" />
 
         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            android:id="@+id/textViewBiller"
             style="@style/DetailsViewText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,6 +43,7 @@
             android:text="Company Name" />
 
         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            android:id="@+id/textViewCompanyName"
             style="@style/DetailsViewText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -74,6 +75,7 @@
             android:orientation="horizontal">
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                android:id="@+id/textViewTotalCollection"
                 style="@style/DetailsViewText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -81,6 +83,7 @@
                 android:text="122" />
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                android:id="@+id/textViewFbCollection"
                 style="@style/DetailsViewText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -114,6 +117,7 @@
             android:orientation="horizontal">
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                android:id="@+id/textViewMico"
                 style="@style/DetailsViewText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -121,6 +125,7 @@
                 android:text="-" />
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                android:id="@+id/textViewMicoCode"
                 style="@style/DetailsViewText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -135,6 +140,7 @@
             android:text="Mico Name" />
 
         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            android:id="@+id/textViewMicoName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Panayil Associates" />
@@ -172,6 +178,7 @@
             android:orientation="horizontal">
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                android:id="@+id/textViewZone"
                 style="@style/DetailsViewText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -179,6 +186,7 @@
                 android:text="OUT" />
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                android:id="@+id/textViewOrganization"
                 style="@style/DetailsViewText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -186,6 +194,7 @@
                 android:text="Organization" />
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                android:id="@+id/textViewSegment"
                 style="@style/DetailsViewText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -200,6 +209,7 @@
             android:text="Begining Date" />
 
         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            android:id="@+id/textViewBegeningDate"
             style="@style/DetailsViewText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -212,6 +222,7 @@
             android:text="Active Reason" />
 
         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            android:id="@+id/textViewActiveReason"
             style="@style/DetailsViewText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -250,6 +261,7 @@
             android:orientation="horizontal">
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                android:id="@+id/textViewTmCode"
                 style="@style/DetailsViewText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -257,6 +269,7 @@
                 android:text="9226" />
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                android:id="@+id/textViewRatePlan"
                 style="@style/DetailsViewText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -264,6 +277,7 @@
                 android:text="Triumph 199" />
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                android:id="@+id/textViewCrLimit"
                 style="@style/DetailsViewText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -278,6 +292,7 @@
             android:text="Address" />
 
         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            android:id="@+id/textViewAddress"
             style="@style/DetailsViewText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -309,6 +324,7 @@
             android:orientation="horizontal">
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                android:id="@+id/textViewLandLine"
                 style="@style/DetailsViewText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -316,6 +332,7 @@
                 android:text="0484-2777777" />
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                android:id="@+id/textViewType"
                 style="@style/DetailsViewText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -324,6 +341,7 @@
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/recViewOther"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

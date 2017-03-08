@@ -12,7 +12,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import tech.libin.rahul.ideaproject.R;
 import tech.libin.rahul.ideaproject.events.DetailsEvent;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
-import tech.libin.rahul.ideaproject.views.detailsview.SMEDetailsFragment;
+import tech.libin.rahul.ideaproject.views.detailsview.fragments.SMEDetailsFragment;
 import tech.libin.rahul.ideaproject.views.homescreen.viewmodels.ActivityModel;
 
 /**
@@ -34,7 +34,8 @@ public class FOSHomeFragment extends FOSBaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        showCollectionsHome();
+       showCollectionsHome();
+
     }
 
     private void showCollectionsHome() {

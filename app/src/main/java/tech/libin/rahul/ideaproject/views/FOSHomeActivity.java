@@ -2,7 +2,6 @@ package tech.libin.rahul.ideaproject.views;
 
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 
 import tech.libin.rahul.ideaproject.R;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseActivity;

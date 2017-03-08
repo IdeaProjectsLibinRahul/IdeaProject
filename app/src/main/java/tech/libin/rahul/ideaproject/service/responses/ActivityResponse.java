@@ -22,6 +22,7 @@ public class ActivityResponse extends FOSBaseResponse {
     }
 
     public class Response {
+
         private Constants.RecordType type;
 
         private String objectId;
