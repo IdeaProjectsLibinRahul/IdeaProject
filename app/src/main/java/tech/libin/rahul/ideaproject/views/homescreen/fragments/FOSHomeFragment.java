@@ -57,27 +57,26 @@ public class FOSHomeFragment extends FOSBaseFragment {
         bundle.putString(Constants.PARAMS.DETAILS_OBJECT_NAME, model.getName());
         bundle.putString(Constants.PARAMS.DETAILS_OBJECT_PHONE, model.getPhoneNo());
 
-        if (model != null) {
-            switch (model.getType()) {
-                case SME:
-                    detailsFragment = new SMEDetailsFragment();
-                    break;
-                case TD:
-                    detailsFragment = new TDDetailsFragment();
-                    break;
-                case UPC:
-                    detailsFragment = new UPCDetailsFragment();
-                    break;
-                case COLLECTION:
-                    detailsFragment = new Fragment();
-                    break;
-                default:
-                    detailsFragment = new Fragment();
-            }
-
-            detailsFragment.setArguments(bundle);
-            showDetailsPage(detailsFragment);
+        switch (model.getType()) {
+            case SME:
+                detailsFragment = new SMEDetailsFragment();
+                break;
+            case TD:
+                detailsFragment = new TDDetailsFragment();
+                break;
+            case UPC:
+                detailsFragment = new UPCDetailsFragment();
+                break;
+            case COLLECTION:
+                detailsFragment = new Fragment();
+                break;
+            default:
+                detailsFragment = new Fragment();
         }
+
+        detailsFragment = new SMEDetailsFragment();
+        detailsFragment.setArguments(bundle);
+        showDetailsPage(detailsFragment);
     }
 
     private void showDetailsPage(Fragment fragment) {

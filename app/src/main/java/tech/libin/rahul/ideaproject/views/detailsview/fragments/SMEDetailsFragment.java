@@ -1,8 +1,5 @@
 package tech.libin.rahul.ideaproject.views.detailsview.fragments;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -13,19 +10,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Spinner;
-import android.widget.EditText;
 import android.widget.Button;
-import java.util.*;
-
-import javax.security.auth.Subject;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+
+import java.util.List;
 
 import tech.libin.rahul.ideaproject.R;
 import tech.libin.rahul.ideaproject.configurations.Constants;
@@ -33,23 +28,28 @@ import tech.libin.rahul.ideaproject.facade.FOSFacade;
 import tech.libin.rahul.ideaproject.facade.FOSFacadeImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
 import tech.libin.rahul.ideaproject.service.models.SpinnerData;
-import tech.libin.rahul.ideaproject.service.requests.SmeFormSubmitRequest;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
+import tech.libin.rahul.ideaproject.views.detailsview.dialogs.FOSDateDialog;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeFormSubmitModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.TdDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.UpcDetailModel;
 import tech.libin.rahul.ideaproject.views.models.ActivityDetailRequestModel;
 import tech.libin.rahul.ideaproject.views.models.SpinnerModel;
+import tech.libin.rahul.ideaproject.views.utils.GPSTracker;
 
 /**
  * Created by libin on 05/03/17.
  */
 
 public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCallback {
+    public static final String DATE_DIALOG = "DATE_DIALOG";
+    Spinner spnStatus;
+    Spinner spnFeedback;
+    Spinner spnReason;
+    private EditText editTextReminder;
     private View view;
-
     private TextView textViewName;
     private TextView textViewMobileNum;
     private TextView textViewBiller;
@@ -70,20 +70,10 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private TextView textViewLandLine;
     private TextView textViewType;
     private EditText editTextRemarks;
-    private static EditText editTextReminder;
     private Button buttonSubmit;
-
     private LinearLayout linLayoutFeedback;
     private LinearLayout linLayoutReason;
     private LinearLayout linLayoutReminder;
-
-
-
-
-    Spinner spnStatus;
-    Spinner spnFeedback;
-    Spinner spnReason;
-
     private GoogleMap mMap;
     private RecyclerView recViewOther;
 
@@ -139,9 +129,6 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         linLayoutFeedback = (LinearLayout) view.findViewById(R.id.linLayoutFeedback);
         linLayoutReason = (LinearLayout) view.findViewById(R.id.linLayoutReason);
         linLayoutReminder = (LinearLayout) view.findViewById(R.id.linLayoutReminder);
-
-
-        loadDetails();
     }
 
     private void parseBundle() {
@@ -161,8 +148,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     }
 
     private void initMap() {
-        SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
 
@@ -172,77 +158,31 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             requestModel.setObjectId(objectId);
             requestModel.setRecordType(Constants.RecordType.SME);
 
-        FOSFacade fosFacade = new FOSFacadeImpl();
-        fosFacade.getSmeDetail(requestModel, new ServiceCallback<SmeDetailModel>() {
-            @Override
-            public void onResponse(SmeDetailModel response) {
-                textViewName.setText(response.getCcName());
-                textViewMobileNum.setVisibility(View.GONE);
-                textViewBiller.setText(response.getBiller());
-                textViewCompanyName.setText(response.getCcName());
-                textViewTotAlConnections.setText(response.getTotalConnection());
-                textViewFbConnections.setText(response.getFBConnection());
-                textViewMico.setText(response.getMico());
-                textViewMicoCode.setText(response.getMicoCode());
-                textViewMicoName.setText(response.getMiName());
-                textViewZone.setText(response.getZone());
-                textViewSegment.setText(response.getSegment());
-                textViewBeginningDate.setText(response.getBegdate());
-                textViewActiveReason.setText(response.getActReason()==null ? "Nill" : response.getActReason());
-                textViewTmCode.setText(response.getTmcode());
-                textViewRatePlan.setText(response.getRatePlan());
-                textViewCRLimit.setText(response.getCr_limit());
-                               textViewLandLine.setText(response.getLandLine2());
-                if (response.getLandLine2()==null)
-                    textViewLandLine.setVisibility(view.GONE);
-                textViewType.setText(response.getType());
+            FOSFacade fosFacade = new FOSFacadeImpl();
+            fosFacade.getSmeDetail(requestModel, new ServiceCallback<SmeDetailModel>() {
+                @Override
+                public void onResponse(SmeDetailModel response) {
 
-                textViewAddress.setText(response.getBill1() + "\n" + response.getBill2() + "\n" + response.getBill3() + "\n" + response.getBill4() + "\n" + response.getBill5() + "\n" + response.getZip());
+                    bindDetails(response);
+                    setFomListeners();
+                    setLinearLayoutGone();
+                }
 
+                @Override
+                public void onRequestTimout() {
+                    toastMessage("Request timeout");
+                }
 
+                @Override
+                public void onRequestFail(FOSError error) {
+                    toastMessage("Request failed - " + error.getErrorMessage());
+                }
+            });
+        }
+    }
 
-                setLinearLayoutVisible();
-                final List visitStatus= response.getVisitStatus();
-                final List visitFeedback= response.getFeedback();
-
-                ArrayAdapter<SpinnerModel> spinnerAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_dropdown_item_1line,
-                        (List) response.getVisitStatus()  );
-                spnStatus.setAdapter(spinnerAdapter);
-
-                spinnerAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_dropdown_item_1line,
-                        (List) response.getReason()  );
-                spnReason.setAdapter(spinnerAdapter);
-
-
-               spinnerAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_dropdown_item_1line,
-                        (List) response.getFeedback()  );
-                spnFeedback.setAdapter(spinnerAdapter);
-
-                spnStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        if(((SpinnerData)visitStatus.get(position)).getId()==2)
-                        {
-                            linLayoutReminder.setVisibility(View.VISIBLE);
-                            linLayoutFeedback.setVisibility(View.GONE);
-                            linLayoutReason.setVisibility(View.GONE);
-
-                        }
-                        else
-                        {
-                            linLayoutReminder.setVisibility(View.GONE);
-                            linLayoutFeedback.setVisibility(View.VISIBLE);
-                            linLayoutReason.setVisibility(View.VISIBLE);
-                        }
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
-                });
-
-//                spnFeedback.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    private void setFomListeners() {
+        //                spnFeedback.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //                    @Override
 //                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 //                        if(((SpinnerData)visitFeedback.get(position)).getId()!=5)
@@ -262,64 +202,71 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 //                });
 
 
-                editTextReminder.setOnTouchListener(new View.OnTouchListener() {
+        editTextReminder.setOnTouchListener(new View.OnTouchListener() {
 
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            //CREATE YOUR DATE PICKER DIALOG HERE.
-                            DialogFragment newFragment = new SelectDobFragment();
-                            newFragment.show(getActivity().getFragmentManager(), "DATE PICKER");
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    //CREATE YOUR DATE PICKER DIALOG HERE.
+                    FOSDateDialog dateDialog = new FOSDateDialog();
+                    dateDialog.setDateSetListener(new FOSDateDialog.DateSetListener() {
+                        @Override
+                        public void onDateSet(int year, int month, int day) {
+                            editTextReminder.setText(month + "/" + day + "/" + year);
+                            editTextReminder.clearFocus();
+                            editTextReminder.setError(null);
                         }
-                        return false;
-                    }
-                });
+                    });
+
+                    dateDialog.show(getChildFragmentManager(), DATE_DIALOG);
+                }
+                return false;
+            }
+        });
 
 
-                buttonSubmit.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+        buttonSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-                        SmeFormSubmitModel requestModel = new SmeFormSubmitModel();
-                        requestModel.setObjectId(17L);
-                        requestModel.setStatus(((SpinnerData)spnStatus.getSelectedItem()).getId());
-                        requestModel.setRemarks(editTextRemarks.getText().toString().trim());
-                        requestModel.setLongitude("12.12");
-                        requestModel.setLongitude("12.12");
-                        if(linLayoutFeedback.getVisibility()==View.VISIBLE) {
-                            requestModel.setFeedback(((SpinnerData) spnFeedback.getSelectedItem()).getId());
-                        }
-                        if(linLayoutReason.getVisibility()==View.VISIBLE) {
-                            requestModel.setReason(((SpinnerData) spnReason.getSelectedItem()).getId());
-                        }
-                        if(linLayoutReminder.getVisibility()==View.VISIBLE) {
-                            requestModel.setReminder(editTextReminder.getText().toString().trim());
-                        }
-                        requestModel.setRecordType(Constants.RecordType.SME);
+                submitFormData();
+            }
+        });
+    }
 
-                        FOSFacade fosFacade = new FOSFacadeImpl();
-                        fosFacade.doSubmitSmeVisitDetails(requestModel, new ServiceCallback<String>() {
-                            @Override
-                            public void onResponse(String response) {
+    private void submitFormData() {
+        SmeFormSubmitModel requestModel = new SmeFormSubmitModel();
+        requestModel.setObjectId(17L);
+        requestModel.setStatus(((SpinnerData) spnStatus.getSelectedItem()).getId());
+        requestModel.setRemarks(editTextRemarks.getText().toString().trim());
 
-                            }
+        GPSTracker gpsTracker = new GPSTracker(getActivity());
+        if (gpsTracker.getIsGPSTrackingEnabled()) {
+            requestModel.setLongitude(gpsTracker.getLatitude() + "");
+            requestModel.setLongitude(gpsTracker.getLongitude() + "");
+        } else {
+            gpsTracker.showSettingsAlert();
+            return;
+        }
 
-                            @Override
-                            public void onRequestTimout() {
+        requestModel.setLongitude("12.12");
+        requestModel.setLongitude("12.12");
+        if (linLayoutFeedback.getVisibility() == View.VISIBLE) {
+            requestModel.setFeedback(((SpinnerData) spnFeedback.getSelectedItem()).getId());
+        }
+        if (linLayoutReason.getVisibility() == View.VISIBLE) {
+            requestModel.setReason(((SpinnerData) spnReason.getSelectedItem()).getId());
+        }
+        if (linLayoutReminder.getVisibility() == View.VISIBLE) {
+            requestModel.setReminder(editTextReminder.getText().toString().trim());
+        }
+        requestModel.setRecordType(Constants.RecordType.SME);
 
-                            }
+        FOSFacade fosFacade = new FOSFacadeImpl();
+        fosFacade.doSubmitSmeVisitDetails(requestModel, new ServiceCallback<String>() {
+            @Override
+            public void onResponse(String response) {
 
-                            @Override
-                            public void onRequestFail(FOSError error) {
-
-                            }
-                        });
-                    }
-                });
-
-
-
-                setLinearLayoutGone();
             }
 
             @Override
@@ -334,25 +281,85 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         });
     }
 
-    private void setLinearLayoutVisible()
-    {
+    private void bindDetails(SmeDetailModel model) {
+        textViewName.setText(model.getCcName());
+        textViewMobileNum.setVisibility(View.GONE);
+        textViewBiller.setText(model.getBiller());
+        textViewCompanyName.setText(model.getCcName());
+        textViewTotAlConnections.setText(model.getTotalConnection());
+        textViewFbConnections.setText(model.getFBConnection());
+        textViewMico.setText(model.getMico());
+        textViewMicoCode.setText(model.getMicoCode());
+        textViewMicoName.setText(model.getMiName());
+        textViewZone.setText(model.getZone());
+        textViewSegment.setText(model.getSegment());
+        textViewBeginningDate.setText(model.getBegdate());
+        textViewActiveReason.setText(model.getActReason() == null ? "Nill" : model.getActReason());
+        textViewTmCode.setText(model.getTmcode());
+        textViewRatePlan.setText(model.getRatePlan());
+        textViewCRLimit.setText(model.getCr_limit());
+        textViewLandLine.setText(model.getLandLine2());
+        if (model.getLandLine2() == null)
+            textViewLandLine.setVisibility(view.GONE);
+        textViewType.setText(model.getType());
+
+        textViewAddress.setText(model.getBill1() + "\n" + model.getBill2() + "\n" + model.getBill3() + "\n" + model.getBill4() + "\n" + model.getBill5() + "\n" + model.getZip());
+
+
+        setLinearLayoutVisible();
+        final List visitStatus = model.getVisitStatus();
+        final List visitFeedback = model.getFeedback();
+
+        ArrayAdapter<SpinnerModel> spinnerAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_dropdown_item_1line,
+                (List) model.getVisitStatus());
+        spnStatus.setAdapter(spinnerAdapter);
+
+        spinnerAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_dropdown_item_1line,
+                (List) model.getReason());
+        spnReason.setAdapter(spinnerAdapter);
+
+
+        spinnerAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_dropdown_item_1line,
+                (List) model.getFeedback());
+        spnFeedback.setAdapter(spinnerAdapter);
+
+        spnStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (((SpinnerData) visitStatus.get(position)).getId() == 2) {
+                    linLayoutReminder.setVisibility(View.VISIBLE);
+                    linLayoutFeedback.setVisibility(View.GONE);
+                    linLayoutReason.setVisibility(View.GONE);
+
+                } else {
+                    linLayoutReminder.setVisibility(View.GONE);
+                    linLayoutFeedback.setVisibility(View.VISIBLE);
+                    linLayoutReason.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void setLinearLayoutVisible() {
         linLayoutFeedback.setVisibility(View.VISIBLE);
         linLayoutReason.setVisibility(View.VISIBLE);
         linLayoutReason.setVisibility(View.VISIBLE);
     }
 
-    private void setLinearLayoutGone()
-    {
+    private void setLinearLayoutGone() {
         linLayoutFeedback.setVisibility(View.GONE);
         linLayoutReason.setVisibility(View.GONE);
         linLayoutReason.setVisibility(View.GONE);
     }
 
-    private boolean isValid()
-    {
-        if(((SpinnerData)spnStatus.getSelectedItem()).getId()==0)
-        {
-            return  false;
+    private boolean isValid() {
+        if (((SpinnerData) spnStatus.getSelectedItem()).getId() == 0) {
+            return false;
         }
 
         return false;
@@ -368,7 +375,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         fosFacade.getUpcDetail(requestModel, new ServiceCallback<UpcDetailModel>() {
             @Override
             public void onResponse(UpcDetailModel response) {
-Log.e("UPCDETAILS",response.toString());
+                Log.e("UPCDETAILS", response.toString());
             }
 
             @Override
@@ -393,7 +400,7 @@ Log.e("UPCDETAILS",response.toString());
         fosFacade.getTdDetail(requestModel, new ServiceCallback<TdDetailModel>() {
             @Override
             public void onResponse(TdDetailModel response) {
-                Log.e("TDDETAILS",response.toString());
+                Log.e("TDDETAILS", response.toString());
             }
 
             @Override
@@ -408,40 +415,10 @@ Log.e("UPCDETAILS",response.toString());
         });
     }
 
-
-    // region Date Picker
-    public static class SelectDobFragment extends DialogFragment implements
-            DatePickerDialog.OnDateSetListener {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            final Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DAY_OF_YEAR, -1);
-            int yy = calendar.get(Calendar.YEAR);
-            int mm = calendar.get(Calendar.MONTH);
-            int dd = calendar.get(Calendar.DAY_OF_MONTH);
-
-            DatePickerDialog dfrom = new DatePickerDialog(getActivity(), this, yy, mm, dd);
-            dfrom.getDatePicker().setMaxDate(new Date().getTime());
-            //return new DatePickerDialog(getActivity(), this, yy, mm, dd);
-            return dfrom;
-        }
-
-        public void onDateSet(DatePicker view, int yy, int mm, int dd) {
-            populateSetDate(yy, mm + 1, dd);
-        }
-
-        public void populateSetDate(int year, int month, int day) {
-            editTextReminder.setText(month + "/" + day + "/" + year);
-            editTextReminder.clearFocus();
-            editTextReminder.setError(null);
-        }
-    }
-    //endregion
-}
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
     }
+    //endregion
+
 }

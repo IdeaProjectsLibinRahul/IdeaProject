@@ -15,7 +15,7 @@ import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseDialog;
  * Created by libin on 09/03/17.
  */
 
-public class SelectDobDialog extends FOSBaseDialog implements DatePickerDialog.OnDateSetListener {
+public class FOSDateDialog extends FOSBaseDialog implements DatePickerDialog.OnDateSetListener {
 
     private DateSetListener dateSetListener;
 
