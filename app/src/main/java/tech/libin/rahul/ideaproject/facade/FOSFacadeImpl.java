@@ -6,7 +6,9 @@ import tech.libin.rahul.ideaproject.service.FOSService;
 import tech.libin.rahul.ideaproject.service.FOSServiceImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.CollectionDetailModel;
+import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.OtherFormSubmitModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeDetailModel;
+import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeFormSubmitModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.TdDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.UpcDetailModel;
 import tech.libin.rahul.ideaproject.views.homescreen.viewmodels.ActivityModel;
@@ -38,12 +40,12 @@ public class FOSFacadeImpl implements FOSFacade {
 
     @Override
     public void getUpcDetail(ActivityDetailRequestModel model, ServiceCallback<UpcDetailModel> callback) {
-        fosService.getUpcDetail(model,callback);
+        fosService.getUpcDetail(model, callback);
     }
 
     @Override
     public void getSmeDetail(ActivityDetailRequestModel model, ServiceCallback<SmeDetailModel> callback) {
-        fosService.getSmeDetail(model,callback);
+        fosService.getSmeDetail(model, callback);
     }
 
     @Override
@@ -55,4 +57,16 @@ public class FOSFacadeImpl implements FOSFacade {
     public void getCollectionDetail(ActivityDetailRequestModel model, ServiceCallback<CollectionDetailModel> callback) {
         fosService.getCollectionDetail(model, callback);
     }
+
+    @Override
+    public void doSubmitSmeVisitDetails(SmeFormSubmitModel model, ServiceCallback<String> callback) {
+        fosService.doSubmitSmeVisitDetails(model, callback);
+
+    }
+
+    @Override
+    public void doSubmitOtherVisitDetails(OtherFormSubmitModel model, ServiceCallback<String> callback) {
+        fosService.doSubmitOtherVisitDetails(model, callback);
+    }
+
 }

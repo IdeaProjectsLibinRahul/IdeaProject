@@ -5,22 +5,22 @@ package tech.libin.rahul.ideaproject.service.models;
  */
 
 public class LocationModel {
-    Long latitude;
-    Long longitude;
+    String latitude;
+    String longitude;
 
-    public Long getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Long latitude) {
-        this.latitude = latitude;
-    }
-
-    public Long getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Long longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 }

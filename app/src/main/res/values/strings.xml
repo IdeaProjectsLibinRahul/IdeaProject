@@ -22,7 +22,7 @@
     <string name="name">Name</string>
     <string name="msisdn">MSISDN</string>
     <string name="zip">Zip</string>
-    <string name="dummy_address">LIVIDUS PHARMACEUTICAL PVT LTD \nAMAL A \n2ND FLOOR BHAVANI TRADE CENTRE \nHIGH SCHOOL JN, KARUNAGAPPALLY</string>
+    <string name="dummy_address"> Adress1 \nAddress2 A \nAddress 3\n Address4</string>
     <string name="visit_status">Visit Status</string>
     <string name="feedback">Feedback</string>
     <string name="reason">Reason</string>
@@ -37,4 +37,15 @@
         <item>item 5</item>
         <item>item 6</item>
     </string-array>
+    <string name="update_location">Update Location</string>
+    <string name="feedback">Feedback</string>
+    <string name="reason">Reason</string>
+    <string name="remarks">Remarks</string>
+    <string name="hint_remarks">Please write your comments.</string>
+    <string name="title_submit">UPDATE VISIT STATUS</string>
+    <string name="title_details">CUSTOMER DETAILS</string>
+    <string name="submit">Submit</string>
+    <string name="reminder_date">Reminder Date</string>
+
+
 </resources>

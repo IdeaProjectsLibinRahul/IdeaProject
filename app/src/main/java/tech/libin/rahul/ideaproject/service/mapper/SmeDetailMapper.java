@@ -50,6 +50,7 @@ public class SmeDetailMapper implements FOSBaseMapper<ActivityDetailRequestModel
         smeModel.setBill3(model.getResponse().getBill3());
         smeModel.setBill4(model.getResponse().getBill4());
         smeModel.setBill5(model.getResponse().getBill5());
+        smeModel.setZip(model.getResponse().getZip());
         smeModel.setLandLine2(model.getResponse().getLandLine2());
         smeModel.setType(model.getResponse().getType());
         smeModel.setVisitStatus(model.getResponse().getVisitStatus());
