@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/background_holo_light">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -345,23 +347,97 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <LinearLayout
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:layout_marginTop="12dp" />
+
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginTop="12dp"
+            android:elevation="@dimen/cardview_default_elevation"
+            app:cardCornerRadius="5dp">
 
-            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/visit_status" />
+                android:layout_margin="5dp"
+                android:orientation="vertical">
 
-            <Spinner
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:entries="@array/dummy_array" />
-        </LinearLayout>
+                <Switch
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/location" />
+
+                <LinearLayout
+                    style="@style/DetailsFormItems"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/visit_status" />
+
+                    <Spinner
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:entries="@array/dummy_array" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/DetailsFormItems"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/feedback" />
+
+                    <Spinner
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:entries="@array/dummy_array" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/DetailsFormItems"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/reason" />
+
+                    <Spinner
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:entries="@array/dummy_array" />
+                </LinearLayout>
+
+                <tech.libin.rahul.ideaproject.views.widgets.button.FOSButton
+                    style="@style/DetailsFormItems"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/submit" />
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
     </LinearLayout>
 
 </ScrollView>

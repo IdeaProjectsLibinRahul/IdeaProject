@@ -8,12 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+
 import tech.libin.rahul.ideaproject.R;
 import tech.libin.rahul.ideaproject.configurations.Constants;
 import tech.libin.rahul.ideaproject.facade.FOSFacade;
 import tech.libin.rahul.ideaproject.facade.FOSFacadeImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
-import tech.libin.rahul.ideaproject.service.requests.ActivityDetailRequest;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeDetailModel;
@@ -23,7 +26,7 @@ import tech.libin.rahul.ideaproject.views.models.ActivityDetailRequestModel;
  * Created by libin on 05/03/17.
  */
 
-public class SMEDetailsFragment extends FOSBaseFragment {
+public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCallback {
     private View view;
 
     private TextView textViewName;
@@ -47,6 +50,8 @@ public class SMEDetailsFragment extends FOSBaseFragment {
     private TextView textViewLandLine;
     private TextView textViewType;
 
+    private GoogleMap mMap;
+
     private RecyclerView recViewOther;
 
 
@@ -54,6 +59,14 @@ public class SMEDetailsFragment extends FOSBaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_sme_details, container, false);
+
+        initComponents();
+        loadDetails();
+
+        return view;
+    }
+
+    private void initComponents() {
         textViewName = (TextView) view.findViewById(R.id.textViewName);
         textViewMobileNum = (TextView) view.findViewById(R.id.textViewPhoneNum);
         textViewBiller = (TextView) view.findViewById(R.id.textViewBiller);
@@ -74,8 +87,12 @@ public class SMEDetailsFragment extends FOSBaseFragment {
         textViewLandLine = (TextView) view.findViewById(R.id.textViewLandLine);
         textViewType = (TextView) view.findViewById(R.id.textViewType);
         recViewOther = (RecyclerView) view.findViewById(R.id.recViewOther);
-        loadDetails();
-        return view;
+    }
+
+    private void initMap() {
+        SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
 
     private void loadDetails() {
@@ -118,5 +135,10 @@ public class SMEDetailsFragment extends FOSBaseFragment {
 
             }
         });
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
     }
 }

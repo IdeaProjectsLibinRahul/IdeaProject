@@ -96,4 +96,8 @@
         <item name="android:layout_marginTop">5dp</item>
     </style>
 
+    <style name="DetailsFormItems">
+        <item name="android:layout_marginTop">8dp</item>
+    </style>
+
 </resources>
