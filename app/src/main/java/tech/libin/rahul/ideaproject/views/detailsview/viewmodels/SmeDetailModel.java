@@ -37,6 +37,8 @@ public class SmeDetailModel {
     String bill3;
     String bill4;
     String bill5;
+    String zip;
+
     String landLine2;
 
     String type;
@@ -203,6 +205,14 @@ public class SmeDetailModel {
 
     public void setBill5(String bill5) {
         this.bill5 = bill5;
+    }
+
+    public String getZip() {
+        return zip;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
     }
 
     public String getLandLine2() {

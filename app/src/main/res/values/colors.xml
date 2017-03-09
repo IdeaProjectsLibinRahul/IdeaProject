@@ -9,5 +9,6 @@
     <color name="baseGray">#949491</color>
     <color name="lightYellow">#f5f7c0</color>
     <color name="button_back">#303F9F</color>
+    <color name="button_detail_back">#998835</color>
 
 </resources>

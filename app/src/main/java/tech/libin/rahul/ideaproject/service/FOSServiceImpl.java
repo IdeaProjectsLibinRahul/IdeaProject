@@ -12,21 +12,28 @@ import tech.libin.rahul.ideaproject.network.handlers.NetworkCallback;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
 import tech.libin.rahul.ideaproject.service.mapper.ActivityMapper;
 import tech.libin.rahul.ideaproject.service.mapper.CollectionDetailMapper;
+import tech.libin.rahul.ideaproject.service.mapper.OtherFormSubmitMapper;
 import tech.libin.rahul.ideaproject.service.mapper.SmeDetailMapper;
+import tech.libin.rahul.ideaproject.service.mapper.SmeFormSubmitMapper;
 import tech.libin.rahul.ideaproject.service.mapper.TdDetailMapper;
 import tech.libin.rahul.ideaproject.service.mapper.UpcDetailMapper;
 import tech.libin.rahul.ideaproject.service.requests.ActivityDetailRequest;
 import tech.libin.rahul.ideaproject.service.requests.ActivityRequest;
 import tech.libin.rahul.ideaproject.service.requests.LoginRequest;
+import tech.libin.rahul.ideaproject.service.requests.OtherFormSubmitRequest;
+import tech.libin.rahul.ideaproject.service.requests.SmeFormSubmitRequest;
 import tech.libin.rahul.ideaproject.service.responses.ActivityResponse;
 import tech.libin.rahul.ideaproject.service.responses.CollectionDetailResponse;
+import tech.libin.rahul.ideaproject.service.responses.FormSubmitResponse;
 import tech.libin.rahul.ideaproject.service.responses.LoginResponse;
 import tech.libin.rahul.ideaproject.service.responses.SmeDetailResponse;
 import tech.libin.rahul.ideaproject.service.responses.TdDetailResponse;
 import tech.libin.rahul.ideaproject.service.responses.UpcDetailResponse;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.CollectionDetailModel;
+import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.OtherFormSubmitModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeDetailModel;
+import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeFormSubmitModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.TdDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.UpcDetailModel;
 import tech.libin.rahul.ideaproject.views.homescreen.viewmodels.ActivityModel;
@@ -236,4 +243,70 @@ public class FOSServiceImpl implements FOSService {
             }
         });
     }
+
+
+    @Override
+    public void doSubmitSmeVisitDetails(SmeFormSubmitModel model,final ServiceCallback<String> callback) {
+        final SmeFormSubmitMapper mapper = new SmeFormSubmitMapper();
+        SmeFormSubmitRequest smeFormSubmitRequest = mapper.getRequest(model);
+
+
+        FOSNetworkRequest<FormSubmitResponse> request = new FOSNetworkRequestImpl<>(smeFormSubmitRequest, ServiceURLs.UPC_DETAIL, FormSubmitResponse.class);
+        request.request(Request.Method.POST, new NetworkCallback<FormSubmitResponse>() {
+            @Override
+            public void onSuccess(FormSubmitResponse response) {
+
+                if (response.getStatus() != Constants.Status.SUCCESS) {
+                    FOSError error = new FOSError();
+                    error.setErrorMessage(response.getMessage());
+                    callback.onRequestFail(error);
+                } else {
+                    callback.onResponse(response.getMessage());
+                }
+            }
+
+            @Override
+            public void onTimeout() {
+                callback.onRequestTimout();
+            }
+
+            @Override
+            public void onFail(FOSError error) {
+                callback.onRequestFail(error);
+            }
+        });
+
+    }
+
+    @Override
+    public void doSubmitOtherVisitDetails(OtherFormSubmitModel model,final ServiceCallback<String> callback) {
+        final OtherFormSubmitMapper mapper = new OtherFormSubmitMapper();
+        OtherFormSubmitRequest otherFormSubmitRequest = mapper.getRequest(model);
+
+        FOSNetworkRequest<FormSubmitResponse> request = new FOSNetworkRequestImpl<>(otherFormSubmitRequest, ServiceURLs.UPC_DETAIL, FormSubmitResponse.class);
+        request.request(Request.Method.POST, new NetworkCallback<FormSubmitResponse>() {
+            @Override
+            public void onSuccess(FormSubmitResponse response) {
+
+                if (response.getStatus() != Constants.Status.SUCCESS) {
+                    FOSError error = new FOSError();
+                    error.setErrorMessage(response.getMessage());
+                    callback.onRequestFail(error);
+                } else {
+                    callback.onResponse(response.getMessage());
+                }
+            }
+
+            @Override
+            public void onTimeout() {
+                callback.onRequestTimout();
+            }
+
+            @Override
+            public void onFail(FOSError error) {
+                callback.onRequestFail(error);
+            }
+        });
+    }
+
 }
