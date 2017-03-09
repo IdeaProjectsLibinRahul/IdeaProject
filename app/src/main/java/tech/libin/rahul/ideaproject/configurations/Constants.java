@@ -55,12 +55,13 @@ public class Constants {
     }
 
     public enum ActivityType {
-        @SerializedName("0")
-        ACTIVITY(0),
+
         @SerializedName("1")
         NEW_ACTIVITY(1),
         @SerializedName("2")
-        REMINDER(2);
+        ACTIVITY(2),
+        @SerializedName("3")
+        REMINDER(3);
 
         private int value;
 
@@ -103,6 +104,7 @@ public class Constants {
         public static final String DETAILS_OBJECT_ID = "detailsObjectId";
         public static final String DETAILS_OBJECT_NAME = "detailsObjectName";
         public static final String DETAILS_OBJECT_PHONE = "detailsObjectPhone";
+        public static final String DETAILS_OBJECT_TAB = "detailsObjectTab";
     }
 
 }

@@ -44,5 +44,27 @@
     <string name="submit">Submit</string>
     <string name="reminder_date">Reminder Date</string>
 
+    <string name="upc">UPC</string>
+    <string name="cust_sub_type">Customer sub type</string>
+    <string name="segment">Segment</string>
+    <string name="subscriber_type">Subscriber Type</string>
+    <string name="credit_code">Cs Credit Code</string>
+    <string name="alternate_num">Alternate Number</string>
+    <string name="serv_seg">servSeg</string>
+
+    <string name="biller">Biller</string>
+    <string name="ser">Ser</string>
+    <string name="Segment">Segment</string>
+    <string name="due_amount">Due Amount</string>
+    <string name="bucket">Bucket</string>
+    <string name="type">Type</string>
+    <string name="crm_status">crm Status</string>
+    <string name="my_idea_code">My Idea Code</string>
+    <string name="my_idea_location">My Idea Location</string>
+    <string name="land_line1">Land Line 1</string>
+    <string name="land_line2">Land Line 2</string>
+    <string name="activatiom_mi">Activation Mi</string>
+
+
 
 </resources>

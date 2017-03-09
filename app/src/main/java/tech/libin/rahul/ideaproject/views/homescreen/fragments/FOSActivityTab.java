@@ -54,9 +54,12 @@ public class FOSActivityTab extends FOSBaseFragment {
     private boolean isLastPage;
     private int pageNo = 1;
 
+    private Constants.ActivityType activityType;
+
     private String searchName = "";
     private String searchMsisdn = "";
     private String searchZip = "";
+
 
     @Nullable
     @Override
@@ -104,7 +107,7 @@ public class FOSActivityTab extends FOSBaseFragment {
 
         ActivityRequestModel requestModel = new ActivityRequestModel();
         requestModel.setName(searchName);
-        requestModel.setActivityType(Constants.ActivityType.NEW_ACTIVITY);
+        requestModel.setActivityType(activityType);
         requestModel.setMsisdn(searchMsisdn);
         requestModel.setPageNo(pageNo);
         requestModel.setPageSize(PAGE_SIZE);
@@ -158,6 +161,7 @@ public class FOSActivityTab extends FOSBaseFragment {
             public void onClick(ActivityModel model) {
                 DetailsEvent event = new DetailsEvent();
                 event.setModel(model);
+                event.setActivityType(activityType);
 
                 EventBus.getDefault().post(event);
             }
@@ -205,4 +209,7 @@ public class FOSActivityTab extends FOSBaseFragment {
         }
     }
 
+    public void setActivityType(Constants.ActivityType activityType) {
+        this.activityType = activityType;
+    }
 }

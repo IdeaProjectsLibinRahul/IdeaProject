@@ -21,7 +21,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="2dp"
             android:background="@drawable/detail_back"
             android:orientation="vertical"
             android:padding="10dp">
@@ -349,6 +349,7 @@
                 android:orientation="horizontal">
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                    android:id="@+id/textViewLandLine1"
                     style="@style/DetailsViewHeader"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -356,6 +357,7 @@
                     android:text="Landline" />
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                    android:id="@+id/textViewTypeHead"
                     style="@style/DetailsViewHeader"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -398,18 +400,13 @@
             android:layout_marginTop="10dp"
             android:text="@string/title_submit" />
 
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="240dp"
-            android:layout_marginTop="12dp" />
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="1dp"
             android:elevation="@dimen/cardview_default_elevation"
+            app:cardBackgroundColor="@color/detail_body_color"
             app:cardCornerRadius="5dp">
 
             <LinearLayout
@@ -419,36 +416,21 @@
                 android:orientation="vertical">
 
                 <Switch
+                    android:id="@+id/switchLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/location" />
-
-                <LinearLayout
-                    style="@style/DetailsFormItems"
+                <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:text="@string/update_location" />
-
-                    <ToggleButton
-                        android:id="@+id/toggleButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="ToggleButton" />
-
-
-                </LinearLayout>
+                    android:layout_height="240dp"
+                    android:layout_marginTop="12dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="7dp"
                     android:orientation="horizontal">
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView

@@ -33,7 +33,7 @@ public class FOSDateDialog extends FOSBaseDialog implements DatePickerDialog.OnD
         int dd = calendar.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog dfrom = new DatePickerDialog(getActivity(), this, yy, mm, dd);
-        dfrom.getDatePicker().setMaxDate(new Date().getTime());
+        dfrom.getDatePicker().setMinDate(new Date().getTime());
         return dfrom;
     }
 

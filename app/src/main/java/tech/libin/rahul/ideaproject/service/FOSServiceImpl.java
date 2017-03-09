@@ -251,7 +251,7 @@ public class FOSServiceImpl implements FOSService {
         SmeFormSubmitRequest smeFormSubmitRequest = mapper.getRequest(model);
 
 
-        FOSNetworkRequest<FormSubmitResponse> request = new FOSNetworkRequestImpl<>(smeFormSubmitRequest, ServiceURLs.UPC_DETAIL, FormSubmitResponse.class);
+        FOSNetworkRequest<FormSubmitResponse> request = new FOSNetworkRequestImpl<>(smeFormSubmitRequest, ServiceURLs.FORM_SUBMIT, FormSubmitResponse.class);
         request.request(Request.Method.POST, new NetworkCallback<FormSubmitResponse>() {
             @Override
             public void onSuccess(FormSubmitResponse response) {
@@ -283,7 +283,7 @@ public class FOSServiceImpl implements FOSService {
         final OtherFormSubmitMapper mapper = new OtherFormSubmitMapper();
         OtherFormSubmitRequest otherFormSubmitRequest = mapper.getRequest(model);
 
-        FOSNetworkRequest<FormSubmitResponse> request = new FOSNetworkRequestImpl<>(otherFormSubmitRequest, ServiceURLs.UPC_DETAIL, FormSubmitResponse.class);
+        FOSNetworkRequest<FormSubmitResponse> request = new FOSNetworkRequestImpl<>(otherFormSubmitRequest, ServiceURLs.FORM_SUBMIT, FormSubmitResponse.class);
         request.request(Request.Method.POST, new NetworkCallback<FormSubmitResponse>() {
             @Override
             public void onSuccess(FormSubmitResponse response) {

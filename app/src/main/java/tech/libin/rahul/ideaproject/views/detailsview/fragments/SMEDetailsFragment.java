@@ -33,8 +33,6 @@ import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
 import tech.libin.rahul.ideaproject.views.detailsview.dialogs.FOSDateDialog;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeFormSubmitModel;
-import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.TdDetailModel;
-import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.UpcDetailModel;
 import tech.libin.rahul.ideaproject.views.models.ActivityDetailRequestModel;
 import tech.libin.rahul.ideaproject.views.models.SpinnerModel;
 import tech.libin.rahul.ideaproject.views.utils.GPSTracker;
@@ -68,7 +66,9 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private TextView textViewCRLimit;
     private TextView textViewAddress;
     private TextView textViewLandLine;
+    private TextView textViewLandLineHead;
     private TextView textViewType;
+    private TextView textViewTypeHead;
     private EditText editTextRemarks;
     private Button buttonSubmit;
     private LinearLayout linLayoutFeedback;
@@ -113,7 +113,9 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         textViewRatePlan = (TextView) view.findViewById(R.id.textViewRatePlan);
         textViewCRLimit = (TextView) view.findViewById(R.id.textViewCrLimit);
         textViewLandLine = (TextView) view.findViewById(R.id.textViewLandLine);
+        textViewLandLineHead = (TextView) view.findViewById(R.id.textViewLandLine1);
         textViewType = (TextView) view.findViewById(R.id.textViewType);
+        textViewTypeHead = (TextView) view.findViewById(R.id.textViewTypeHead);
         editTextRemarks = (EditText) view.findViewById(R.id.editTextRemarks);
         textViewAddress = (TextView) view.findViewById(R.id.textViewAddress);
         recViewOther = (RecyclerView) view.findViewById(R.id.recViewOther);
@@ -182,25 +184,6 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     }
 
     private void setFomListeners() {
-        //                spnFeedback.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                    @Override
-//                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                        if(((SpinnerData)visitFeedback.get(position)).getId()!=5)
-//                        {
-//                            linLayoutReason.setVisibility(View.VISIBLE);
-//                        }
-//                        else
-//                        {
-//                            linLayoutReason.setVisibility(View.GONE);
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onNothingSelected(AdapterView<?> parent) {
-//
-//                    }
-//                });
-
 
         editTextReminder.setOnTouchListener(new View.OnTouchListener() {
 
@@ -235,50 +218,54 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     }
 
     private void submitFormData() {
-        SmeFormSubmitModel requestModel = new SmeFormSubmitModel();
-        requestModel.setObjectId(17L);
-        requestModel.setStatus(((SpinnerData) spnStatus.getSelectedItem()).getId());
-        requestModel.setRemarks(editTextRemarks.getText().toString().trim());
+        if(objectId!=null) {
+            SmeFormSubmitModel requestModel = new SmeFormSubmitModel();
+            requestModel.setObjectId(Long.parseLong(objectId));
+            requestModel.setStatus(((SpinnerData) spnStatus.getSelectedItem()).getId());
+            requestModel.setRemarks(editTextRemarks.getText().toString().trim());
 
-        GPSTracker gpsTracker = new GPSTracker(getActivity());
-        if (gpsTracker.getIsGPSTrackingEnabled()) {
-            requestModel.setLongitude(gpsTracker.getLatitude() + "");
-            requestModel.setLongitude(gpsTracker.getLongitude() + "");
-        } else {
-            gpsTracker.showSettingsAlert();
-            return;
-        }
-
-        requestModel.setLongitude("12.12");
-        requestModel.setLongitude("12.12");
-        if (linLayoutFeedback.getVisibility() == View.VISIBLE) {
-            requestModel.setFeedback(((SpinnerData) spnFeedback.getSelectedItem()).getId());
-        }
-        if (linLayoutReason.getVisibility() == View.VISIBLE) {
-            requestModel.setReason(((SpinnerData) spnReason.getSelectedItem()).getId());
-        }
-        if (linLayoutReminder.getVisibility() == View.VISIBLE) {
-            requestModel.setReminder(editTextReminder.getText().toString().trim());
-        }
-        requestModel.setRecordType(Constants.RecordType.SME);
-
-        FOSFacade fosFacade = new FOSFacadeImpl();
-        fosFacade.doSubmitSmeVisitDetails(requestModel, new ServiceCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-
+            GPSTracker gpsTracker = new GPSTracker(getActivity());
+            if (gpsTracker.getIsGPSTrackingEnabled()) {
+                requestModel.setLongitude(gpsTracker.getLatitude() + "");
+                requestModel.setLongitude(gpsTracker.getLongitude() + "");
+            } else {
+                gpsTracker.showSettingsAlert();
+                return;
             }
 
-            @Override
-            public void onRequestTimout() {
-
+            requestModel.setLongitude("12.12");
+            requestModel.setLatitude("12.12");
+            if (linLayoutFeedback.getVisibility() == View.VISIBLE) {
+                requestModel.setFeedback(((SpinnerData) spnFeedback.getSelectedItem()).getId());
             }
-
-            @Override
-            public void onRequestFail(FOSError error) {
-
+            if (linLayoutReason.getVisibility() == View.VISIBLE) {
+                requestModel.setReason(((SpinnerData) spnReason.getSelectedItem()).getId());
             }
-        });
+            requestModel.setReminder("");
+            if (linLayoutReminder.getVisibility() == View.VISIBLE) {
+                requestModel.setReminder(editTextReminder.getText().toString().trim());
+            }
+            requestModel.setRecordType(Constants.RecordType.SME);
+
+            FOSFacade fosFacade = new FOSFacadeImpl();
+            fosFacade.doSubmitSmeVisitDetails(requestModel, new ServiceCallback<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.e("Submit", response);
+                }
+
+                @Override
+                public void onRequestTimout() {
+
+                }
+
+                @Override
+                public void onRequestFail(FOSError error) {
+                    Log.e("Submit Fail",error.getErrorMessage());
+
+                }
+            });
+        }
     }
 
     private void bindDetails(SmeDetailModel model) {
@@ -299,12 +286,15 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         textViewRatePlan.setText(model.getRatePlan());
         textViewCRLimit.setText(model.getCr_limit());
         textViewLandLine.setText(model.getLandLine2());
-        if (model.getLandLine2() == null)
+        if (model.getLandLine2() == null) {
             textViewLandLine.setVisibility(view.GONE);
-        textViewType.setText(model.getType());
-
-        textViewAddress.setText(model.getBill1() + "\n" + model.getBill2() + "\n" + model.getBill3() + "\n" + model.getBill4() + "\n" + model.getBill5() + "\n" + model.getZip());
-
+            textViewLandLineHead.setVisibility(view.GONE);
+        }
+        if (model.getType() == null ||model.getType().isEmpty()) {
+            textViewTypeHead.setVisibility(view.GONE);
+            textViewType.setVisibility(view.GONE);
+        }
+        textViewAddress.setText(model.getBill1() + "\n" + model.getBill2() + "\n" + model.getBill3() + "\n" + model.getBill4() + "\n" + model.getBill5() );
 
         setLinearLayoutVisible();
         final List visitStatus = model.getVisitStatus();
@@ -343,6 +333,25 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 
             }
         });
+
+        spnFeedback.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(((SpinnerData)visitFeedback.get(position)).getId()!=5)
+                {
+                    linLayoutReason.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    linLayoutReason.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void setLinearLayoutVisible() {
@@ -365,55 +374,6 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         return false;
     }
 
-
-    private void loadUpcDetails() {
-        ActivityDetailRequestModel requestModel = new ActivityDetailRequestModel();
-        requestModel.setObjectId("169");
-        requestModel.setRecordType(Constants.RecordType.UPC);
-
-        FOSFacade fosFacade = new FOSFacadeImpl();
-        fosFacade.getUpcDetail(requestModel, new ServiceCallback<UpcDetailModel>() {
-            @Override
-            public void onResponse(UpcDetailModel response) {
-                Log.e("UPCDETAILS", response.toString());
-            }
-
-            @Override
-            public void onRequestTimout() {
-
-            }
-
-            @Override
-            public void onRequestFail(FOSError error) {
-
-            }
-        });
-    }
-
-
-    private void loadTdDetails() {
-        ActivityDetailRequestModel requestModel = new ActivityDetailRequestModel();
-        requestModel.setObjectId("12");
-        requestModel.setRecordType(Constants.RecordType.TD);
-
-        FOSFacade fosFacade = new FOSFacadeImpl();
-        fosFacade.getTdDetail(requestModel, new ServiceCallback<TdDetailModel>() {
-            @Override
-            public void onResponse(TdDetailModel response) {
-                Log.e("TDDETAILS", response.toString());
-            }
-
-            @Override
-            public void onRequestTimout() {
-
-            }
-
-            @Override
-            public void onRequestFail(FOSError error) {
-
-            }
-        });
-    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

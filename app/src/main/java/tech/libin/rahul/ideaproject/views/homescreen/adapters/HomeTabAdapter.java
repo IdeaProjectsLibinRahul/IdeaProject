@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import tech.libin.rahul.ideaproject.R;
+import tech.libin.rahul.ideaproject.configurations.Constants;
 import tech.libin.rahul.ideaproject.views.homescreen.fragments.FOSActivityTab;
 
 /**
@@ -16,7 +17,11 @@ public class HomeTabAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 3;
     private String tabTitles[];
     private Context context;
-    private Fragment[] fragments = new Fragment[]{new FOSActivityTab(), new Fragment(), new Fragment()};
+    FOSActivityTab tab1 = new FOSActivityTab();
+    FOSActivityTab tab2 = new FOSActivityTab();
+    FOSActivityTab tab3 = new FOSActivityTab();
+
+    private Fragment[] fragments;
 
     public HomeTabAdapter(Context context, FragmentManager fm) {
         super(fm);
@@ -25,6 +30,12 @@ public class HomeTabAdapter extends FragmentPagerAdapter {
         String activity = context.getString(R.string.activities);
         String reminder = context.getString(R.string.reminders);
         tabTitles = new String[]{newActivity, activity, reminder};
+
+        tab1.setActivityType(Constants.ActivityType.NEW_ACTIVITY);
+        tab2.setActivityType(Constants.ActivityType.ACTIVITY);
+        tab3.setActivityType(Constants.ActivityType.REMINDER);
+
+        fragments = new Fragment[]{tab1, tab2, tab3};
     }
 
     @Override
