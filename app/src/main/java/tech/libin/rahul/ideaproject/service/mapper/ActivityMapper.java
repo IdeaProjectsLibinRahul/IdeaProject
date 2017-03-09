@@ -48,6 +48,7 @@ public class ActivityMapper implements FOSBaseMapper<ActivityRequestModel, Activ
             activityModel.setBottomCenter(response.getCenterBottom());
             activityModel.setBottomRight(response.getBottomRight());
             activityModel.setPhoneNo(response.getMobileNo());
+            activityModel.setType(response.getRecordType());
             models.add(activityModel);
         }
         return models;

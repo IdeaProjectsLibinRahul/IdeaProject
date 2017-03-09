@@ -1,5 +1,7 @@
 package tech.libin.rahul.ideaproject.views.homescreen.viewmodels;
 
+import tech.libin.rahul.ideaproject.configurations.Constants;
+
 /**
  * Created by libin on 26/02/17.
  */
@@ -12,6 +14,7 @@ public class ActivityModel {
     private String topRight;
     private String bottomCenter;
     private String bottomRight;
+    private Constants.RecordType type;
 
     public String getId() {
         return id;
@@ -59,5 +62,13 @@ public class ActivityModel {
 
     public void setBottomRight(String bottomRight) {
         this.bottomRight = bottomRight;
+    }
+
+    public Constants.RecordType getType() {
+        return type;
+    }
+
+    public void setType(Constants.RecordType type) {
+        this.type = type;
     }
 }

@@ -51,8 +51,11 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private TextView textViewType;
 
     private GoogleMap mMap;
-
     private RecyclerView recViewOther;
+
+    private String objectId;
+    private String userName;
+    private String userPhone;
 
 
     @Nullable
@@ -61,7 +64,9 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         view = inflater.inflate(R.layout.fragment_sme_details, container, false);
 
         initComponents();
+        parseBundle();
         loadDetails();
+        initMap();
 
         return view;
     }
@@ -89,6 +94,22 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         recViewOther = (RecyclerView) view.findViewById(R.id.recViewOther);
     }
 
+    private void parseBundle() {
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            objectId = bundle.getString(Constants.PARAMS.DETAILS_OBJECT_ID);
+            userName = bundle.getString(Constants.PARAMS.DETAILS_OBJECT_NAME);
+            userPhone = bundle.getString(Constants.PARAMS.DETAILS_OBJECT_PHONE);
+
+            setHeader();
+        }
+    }
+
+    private void setHeader() {
+        textViewName.setText(userName);
+        textViewMobileNum.setText(userPhone);
+    }
+
     private void initMap() {
         SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -96,45 +117,47 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     }
 
     private void loadDetails() {
-        ActivityDetailRequestModel requestModel = new ActivityDetailRequestModel();
-        requestModel.setObjectId("17");
-        requestModel.setRecordType(Constants.RecordType.SME);
+        if (objectId != null) {
+            ActivityDetailRequestModel requestModel = new ActivityDetailRequestModel();
+            requestModel.setObjectId(objectId);
+            requestModel.setRecordType(Constants.RecordType.SME);
 
-        FOSFacade fosFacade = new FOSFacadeImpl();
-        fosFacade.getSmeDetail(requestModel, new ServiceCallback<SmeDetailModel>() {
-            @Override
-            public void onResponse(SmeDetailModel response) {
-                textViewName.setText(response.getCcName());
+            FOSFacade fosFacade = new FOSFacadeImpl();
+            fosFacade.getSmeDetail(requestModel, new ServiceCallback<SmeDetailModel>() {
+                @Override
+                public void onResponse(SmeDetailModel response) {
+                    textViewName.setText(response.getCcName());
 //                 textViewMobileNum.setText(response.getM());
-                textViewBiller.setText(response.getBiller());
-                textViewCompanyName.setText(response.getCcName());
-                textViewTotAlConnections.setText(response.getTotalConnection());
-                textViewFbConnections.setText(response.getFBConnection());
-                textViewMico.setText(response.getMiName());
-                textViewMicoCode.setText(response.getMicoCode());
-                textViewMicoName.setText(response.getMiName());
-                textViewZone.setText(response.getZone());
-                // textViewCustomerType.setText(response.getCustType());
-                textViewSegment.setText(response.getSegment());
-                textViewBeginningDate.setText(response.getBegdate());
-                textViewActiveReason.setText(response.getActReason());
-                textViewTmCode.setText(response.getTmcode());
-                textViewRatePlan.setText(response.getRatePlan());
-                textViewCRLimit.setText(response.getCr_limit());
-                textViewLandLine.setText(response.getLandLine2());
-                textViewType.setText(response.getType());
-            }
+                    textViewBiller.setText(response.getBiller());
+                    textViewCompanyName.setText(response.getCcName());
+                    textViewTotAlConnections.setText(response.getTotalConnection());
+                    textViewFbConnections.setText(response.getFBConnection());
+                    textViewMico.setText(response.getMiName());
+                    textViewMicoCode.setText(response.getMicoCode());
+                    textViewMicoName.setText(response.getMiName());
+                    textViewZone.setText(response.getZone());
+                    // textViewCustomerType.setText(response.getCustType());
+                    textViewSegment.setText(response.getSegment());
+                    textViewBeginningDate.setText(response.getBegdate());
+                    textViewActiveReason.setText(response.getActReason());
+                    textViewTmCode.setText(response.getTmcode());
+                    textViewRatePlan.setText(response.getRatePlan());
+                    textViewCRLimit.setText(response.getCr_limit());
+                    textViewLandLine.setText(response.getLandLine2());
+                    textViewType.setText(response.getType());
+                }
 
-            @Override
-            public void onRequestTimout() {
+                @Override
+                public void onRequestTimout() {
 
-            }
+                }
 
-            @Override
-            public void onRequestFail(FOSError error) {
+                @Override
+                public void onRequestFail(FOSError error) {
 
-            }
-        });
+                }
+            });
+        }
     }
 
     @Override

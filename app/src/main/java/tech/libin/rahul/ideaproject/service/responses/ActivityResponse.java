@@ -23,7 +23,7 @@ public class ActivityResponse extends FOSBaseResponse {
 
     public class Response {
 
-        private Constants.RecordType type;
+        private Constants.RecordType recordType;
 
         private String objectId;
 
@@ -39,12 +39,12 @@ public class ActivityResponse extends FOSBaseResponse {
 
         private Constants.EsclateStatus esclateStatus;
 
-        public Constants.RecordType getType() {
-            return type;
+        public Constants.RecordType getRecordType() {
+            return recordType;
         }
 
-        public void setType(Constants.RecordType type) {
-            this.type = type;
+        public void setRecordType(Constants.RecordType recordType) {
+            this.recordType = recordType;
         }
 
         public String getObjectId() {
