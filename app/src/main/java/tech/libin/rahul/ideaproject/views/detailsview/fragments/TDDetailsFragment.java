@@ -9,7 +9,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -30,11 +29,11 @@ import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
 import tech.libin.rahul.ideaproject.service.models.SpinnerData;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
+import tech.libin.rahul.ideaproject.views.detailsview.adapters.FOSSpinnerAdapter;
 import tech.libin.rahul.ideaproject.views.detailsview.dialogs.FOSDateDialog;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeFormSubmitModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.TdDetailModel;
 import tech.libin.rahul.ideaproject.views.models.ActivityDetailRequestModel;
-import tech.libin.rahul.ideaproject.views.models.SpinnerModel;
 import tech.libin.rahul.ideaproject.views.utils.GPSTracker;
 
 import static tech.libin.rahul.ideaproject.views.detailsview.fragments.SMEDetailsFragment.DATE_DIALOG;
@@ -44,8 +43,6 @@ import static tech.libin.rahul.ideaproject.views.detailsview.fragments.SMEDetail
  */
 
 public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCallback {
-
-    private View view;
 
     TextView textViewCustNum;
     TextView textViewMobile;
@@ -62,13 +59,14 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
     TextView textViewActivationMi;
     TextView textViewLandline1;
     TextView textViewLandLine2;
+    Spinner spnStatus;
+    private View view;
     private EditText editTextRemarks;
     private TextView textViewAddress;
     private Button buttonSubmit;
     private LinearLayout linLayoutReminder;
     private GoogleMap mMap;
     private RecyclerView recViewOther;
-    Spinner spnStatus;
     private EditText editTextReminder;
 
     private String objectId;
@@ -94,19 +92,19 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
         textViewCustNum = (TextView) view.findViewById(R.id.textViewName);
         textViewMobile = (TextView) view.findViewById(R.id.textViewPhoneNum);
 
-        textViewBiller= (TextView) view.findViewById(R.id.textViewBiller);
-        textViewSer= (TextView) view.findViewById(R.id.textViewSer);
-        textViewCurBalance= (TextView) view.findViewById(R.id.textViewDueAmount);
-        textViewSegment= (TextView) view.findViewById(R.id.textViewSegment);
-        textViewBucket= (TextView) view.findViewById(R.id.textViewBucket);
-        textViewType= (TextView) view.findViewById(R.id.textViewType);
-        textViewCustomerType= (TextView) view.findViewById(R.id.textViewCustomerType);
-        textViewCrmStatus= (TextView) view.findViewById(R.id.textViewCrmStatus);
-        textViewMyIdeaCode= (TextView) view.findViewById(R.id.textViewMyIdeaCode);
-        textViewMyIdeaAllocation= (TextView) view.findViewById(R.id.textVieMyIdeaLocation);
-        textViewActivationMi= (TextView) view.findViewById(R.id.textViewActivationMi);
-        textViewLandline1= (TextView) view.findViewById(R.id.textViewLandLine1);
-        textViewLandLine2= (TextView) view.findViewById(R.id.textViewLandLine1);
+        textViewBiller = (TextView) view.findViewById(R.id.textViewBiller);
+//        textViewSer= (TextView) view.findViewById(R.id.textViewSer);
+//        textViewCurBalance= (TextView) view.findViewById(R.id.textViewDueAmount);
+        textViewSegment = (TextView) view.findViewById(R.id.textViewSegment);
+//        textViewBucket= (TextView) view.findViewById(R.id.textViewBucket);
+        textViewType = (TextView) view.findViewById(R.id.textViewType);
+        textViewCustomerType = (TextView) view.findViewById(R.id.textViewCustomerType);
+//        textViewCrmStatus= (TextView) view.findViewById(R.id.textViewCrmStatus);
+//        textViewMyIdeaCode= (TextView) view.findViewById(R.id.textViewMyIdeaCode);
+//        textViewMyIdeaAllocation= (TextView) view.findViewById(R.id.textVieMyIdeaLocation);
+//        textViewActivationMi= (TextView) view.findViewById(R.id.textViewActivationMi);
+        textViewLandline1 = (TextView) view.findViewById(R.id.textViewLandLine1);
+        textViewLandLine2 = (TextView) view.findViewById(R.id.textViewLandLine1);
 
         editTextRemarks = (EditText) view.findViewById(R.id.editTextRemarks);
         textViewAddress = (TextView) view.findViewById(R.id.textViewAddress);
@@ -182,9 +180,8 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
 
         final List visitStatus = model.getVisitStatus();
 
-        ArrayAdapter<SpinnerModel> spinnerAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_dropdown_item_1line,
-                (List) model.getVisitStatus());
-        spnStatus.setAdapter(spinnerAdapter);
+        FOSSpinnerAdapter statusAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getVisitStatus());
+        spnStatus.setAdapter(statusAdapter);
 
         spnStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

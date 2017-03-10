@@ -9,7 +9,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -30,11 +29,11 @@ import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
 import tech.libin.rahul.ideaproject.service.models.SpinnerData;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
+import tech.libin.rahul.ideaproject.views.detailsview.adapters.FOSSpinnerAdapter;
 import tech.libin.rahul.ideaproject.views.detailsview.dialogs.FOSDateDialog;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeFormSubmitModel;
 import tech.libin.rahul.ideaproject.views.models.ActivityDetailRequestModel;
-import tech.libin.rahul.ideaproject.views.models.SpinnerModel;
 import tech.libin.rahul.ideaproject.views.utils.GPSTracker;
 
 /**
@@ -218,7 +217,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     }
 
     private void submitFormData() {
-        if(objectId!=null) {
+        if (objectId != null) {
             SmeFormSubmitModel requestModel = new SmeFormSubmitModel();
             requestModel.setObjectId(Long.parseLong(objectId));
             requestModel.setStatus(((SpinnerData) spnStatus.getSelectedItem()).getId());
@@ -261,7 +260,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 
                 @Override
                 public void onRequestFail(FOSError error) {
-                    Log.e("Submit Fail",error.getErrorMessage());
+                    Log.e("Submit Fail", error.getErrorMessage());
 
                 }
             });
@@ -290,28 +289,25 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             textViewLandLine.setVisibility(view.GONE);
             textViewLandLineHead.setVisibility(view.GONE);
         }
-        if (model.getType() == null ||model.getType().isEmpty()) {
+        if (model.getType() == null || model.getType().isEmpty()) {
             textViewTypeHead.setVisibility(view.GONE);
             textViewType.setVisibility(view.GONE);
         }
-        textViewAddress.setText(model.getBill1() + "\n" + model.getBill2() + "\n" + model.getBill3() + "\n" + model.getBill4() + "\n" + model.getBill5() );
+        textViewAddress.setText(model.getBill1() + "\n" + model.getBill2() + "\n" + model.getBill3() + "\n" + model.getBill4() + "\n" + model.getBill5());
 
         setLinearLayoutVisible();
         final List visitStatus = model.getVisitStatus();
         final List visitFeedback = model.getFeedback();
 
-        ArrayAdapter<SpinnerModel> spinnerAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_dropdown_item_1line,
-                (List) model.getVisitStatus());
-        spnStatus.setAdapter(spinnerAdapter);
+        FOSSpinnerAdapter statusAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getVisitStatus());
+        spnStatus.setAdapter(statusAdapter);
 
-        spinnerAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_dropdown_item_1line,
-                (List) model.getReason());
-        spnReason.setAdapter(spinnerAdapter);
+        FOSSpinnerAdapter reasonAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getReason());
+        spnReason.setAdapter(reasonAdapter);
 
 
-        spinnerAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_dropdown_item_1line,
-                (List) model.getFeedback());
-        spnFeedback.setAdapter(spinnerAdapter);
+        FOSSpinnerAdapter feedbackAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getFeedback());
+        spnFeedback.setAdapter(feedbackAdapter);
 
         spnStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -337,12 +333,9 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         spnFeedback.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(((SpinnerData)visitFeedback.get(position)).getId()!=5)
-                {
+                if (((SpinnerData) visitFeedback.get(position)).getId() != 5) {
                     linLayoutReason.setVisibility(View.VISIBLE);
-                }
-                else
-                {
+                } else {
                     linLayoutReason.setVisibility(View.GONE);
                 }
             }

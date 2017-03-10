@@ -1,4 +1,4 @@
-package tech.libin.rahul.ideaproject.views.basecomponents;
+package tech.libin.rahul.ideaproject.views.widgets.dialogs;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,10 +16,23 @@ import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
  */
 
 public class FOSDialog extends DialogFragment {
+    public static final String TITLE = "title";
+    public static final String MESSAGE = "message";
     private View view;
     private FOSButton buttonOK;
     private FOSTextView textViewTitle;
     private FOSTextView textViewMessage;
+
+    public static FOSDialog newInstance(String title, String message) {
+        Bundle bundle = new Bundle();
+        bundle.putString(TITLE, title);
+        bundle.putString(MESSAGE, message);
+
+        FOSDialog fosDialog = new FOSDialog();
+        fosDialog.setArguments(bundle);
+
+        return fosDialog;
+    }
 
     @Nullable
     @Override
@@ -27,6 +40,8 @@ public class FOSDialog extends DialogFragment {
         view = inflater.inflate(R.layout.layout_dialog, container, false);
 
         initComponents();
+        parseBundle();
+
         return view;
     }
 
@@ -34,18 +49,24 @@ public class FOSDialog extends DialogFragment {
         buttonOK = (FOSButton) view.findViewById(R.id.button_dialog_ok);
         textViewTitle = (FOSTextView) view.findViewById(R.id.dialogTitle);
         textViewMessage = (FOSTextView) view.findViewById(R.id.dialogMessage);
+
+        buttonOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getDialog().dismiss();
+            }
+        });
     }
 
-    public void setTitle(String title) {
-        textViewTitle.setText(title);
-    }
+    private void parseBundle() {
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String title = bundle.getString(TITLE);
+            String message = bundle.getString(MESSAGE);
 
-    public void setMessage(String message) {
-        textViewMessage.setText(message);
-    }
-
-    public void setButtonOKClick(View.OnClickListener clickListener) {
-        buttonOK.setOnClickListener(clickListener);
+            textViewTitle.setText(title);
+            textViewMessage.setText(message);
+        }
     }
 
 }

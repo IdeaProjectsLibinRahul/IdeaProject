@@ -4,6 +4,7 @@ import com.android.volley.Request;
 
 import java.util.List;
 
+import tech.libin.rahul.ideaproject.configurations.Config;
 import tech.libin.rahul.ideaproject.configurations.Constants;
 import tech.libin.rahul.ideaproject.network.FOSNetworkRequest;
 import tech.libin.rahul.ideaproject.network.FOSNetworkRequestImpl;
@@ -20,12 +21,14 @@ import tech.libin.rahul.ideaproject.service.mapper.UpcDetailMapper;
 import tech.libin.rahul.ideaproject.service.requests.ActivityDetailRequest;
 import tech.libin.rahul.ideaproject.service.requests.ActivityRequest;
 import tech.libin.rahul.ideaproject.service.requests.LoginRequest;
+import tech.libin.rahul.ideaproject.service.requests.LogoutRequest;
 import tech.libin.rahul.ideaproject.service.requests.OtherFormSubmitRequest;
 import tech.libin.rahul.ideaproject.service.requests.SmeFormSubmitRequest;
 import tech.libin.rahul.ideaproject.service.responses.ActivityResponse;
 import tech.libin.rahul.ideaproject.service.responses.CollectionDetailResponse;
 import tech.libin.rahul.ideaproject.service.responses.FormSubmitResponse;
 import tech.libin.rahul.ideaproject.service.responses.LoginResponse;
+import tech.libin.rahul.ideaproject.service.responses.LogoutResponse;
 import tech.libin.rahul.ideaproject.service.responses.SmeDetailResponse;
 import tech.libin.rahul.ideaproject.service.responses.TdDetailResponse;
 import tech.libin.rahul.ideaproject.service.responses.UpcDetailResponse;
@@ -41,6 +44,7 @@ import tech.libin.rahul.ideaproject.views.models.ActivityDetailRequestModel;
 import tech.libin.rahul.ideaproject.views.models.ActivityRequestModel;
 import tech.libin.rahul.ideaproject.views.models.Login;
 import tech.libin.rahul.ideaproject.views.models.User;
+
 /**
  * Created by 10945 on 10/27/2016.
  */
@@ -246,7 +250,7 @@ public class FOSServiceImpl implements FOSService {
 
 
     @Override
-    public void doSubmitSmeVisitDetails(SmeFormSubmitModel model,final ServiceCallback<String> callback) {
+    public void doSubmitSmeVisitDetails(SmeFormSubmitModel model, final ServiceCallback<String> callback) {
         final SmeFormSubmitMapper mapper = new SmeFormSubmitMapper();
         SmeFormSubmitRequest smeFormSubmitRequest = mapper.getRequest(model);
 
@@ -279,7 +283,7 @@ public class FOSServiceImpl implements FOSService {
     }
 
     @Override
-    public void doSubmitOtherVisitDetails(OtherFormSubmitModel model,final ServiceCallback<String> callback) {
+    public void doSubmitOtherVisitDetails(OtherFormSubmitModel model, final ServiceCallback<String> callback) {
         final OtherFormSubmitMapper mapper = new OtherFormSubmitMapper();
         OtherFormSubmitRequest otherFormSubmitRequest = mapper.getRequest(model);
 
@@ -309,4 +313,35 @@ public class FOSServiceImpl implements FOSService {
         });
     }
 
+    @Override
+    public void doLogout(String userId, final ServiceCallback<String> callback) {
+        User user = Config.getInstance().getUser();
+        LogoutRequest logoutRequest = new LogoutRequest();
+        logoutRequest.setUserId(userId);
+        logoutRequest.setSessionKey(user.getSessionKey());
+        FOSNetworkRequest<LogoutResponse> request = new FOSNetworkRequestImpl<>(logoutRequest, ServiceURLs.FORM_SUBMIT, LogoutResponse.class);
+        request.request(Request.Method.POST, new NetworkCallback<LogoutResponse>() {
+            @Override
+            public void onSuccess(LogoutResponse response) {
+
+                if (response.getStatus() != Constants.Status.SUCCESS) {
+                    FOSError error = new FOSError();
+                    error.setErrorMessage(response.getMessage());
+                    callback.onRequestFail(error);
+                } else {
+                    callback.onResponse(response.getMessage());
+                }
+            }
+
+            @Override
+            public void onTimeout() {
+                callback.onRequestTimout();
+            }
+
+            @Override
+            public void onFail(FOSError error) {
+                callback.onRequestFail(error);
+            }
+        });
+    }
 }

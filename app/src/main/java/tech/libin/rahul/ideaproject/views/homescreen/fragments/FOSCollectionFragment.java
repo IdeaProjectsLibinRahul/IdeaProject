@@ -3,6 +3,7 @@ package tech.libin.rahul.ideaproject.views.homescreen.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,11 +12,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import tech.libin.rahul.ideaproject.R;
+import tech.libin.rahul.ideaproject.configurations.Config;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
 import tech.libin.rahul.ideaproject.views.homescreen.adapters.HomeTabAdapter;
 import tech.libin.rahul.ideaproject.views.homescreen.dialogs.FOSSearchDialog;
+import tech.libin.rahul.ideaproject.views.models.User;
 
 /**
  * Created by libin on 21/02/17.
@@ -26,6 +31,9 @@ public class FOSCollectionFragment extends FOSBaseFragment {
     private View mView;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
+    private LinearLayout bottomBar;
+    private RelativeLayout tabRetention;
+    private RelativeLayout tabCollection;
 
     @Nullable
     @Override
@@ -34,6 +42,7 @@ public class FOSCollectionFragment extends FOSBaseFragment {
         setHasOptionsMenu(true);
 
         initComponents();
+        setListeners();
         initTab();
 
         return mView;
@@ -42,6 +51,33 @@ public class FOSCollectionFragment extends FOSBaseFragment {
     private void initComponents() {
         mTabLayout = (TabLayout) mView.findViewById(R.id.tab_layout_collections);
         mViewPager = (ViewPager) mView.findViewById(R.id.view_pager_collections);
+
+        bottomBar = (LinearLayout) mView.findViewById(R.id.bottom_bar);
+        tabRetention = (RelativeLayout) mView.findViewById(R.id.tabRetention);
+        tabCollection = (RelativeLayout) mView.findViewById(R.id.tabCollection);
+
+        User user = Config.getInstance().getUser();
+//        if (user.getType() != Constants.Type.BOTH) {
+//        bottomBar.setVisibility(View.GONE);
+//        }
+    }
+
+    private void setListeners() {
+        tabRetention.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tabRetention.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
+                tabCollection.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+            }
+        });
+
+        tabCollection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tabCollection.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
+                tabRetention.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+            }
+        });
     }
 
     private void initTab() {
