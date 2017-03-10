@@ -319,7 +319,7 @@ public class FOSServiceImpl implements FOSService {
         LogoutRequest logoutRequest = new LogoutRequest();
         logoutRequest.setUserId(userId);
         logoutRequest.setSessionKey(user.getSessionKey());
-        FOSNetworkRequest<LogoutResponse> request = new FOSNetworkRequestImpl<>(logoutRequest, ServiceURLs.FORM_SUBMIT, LogoutResponse.class);
+        FOSNetworkRequest<LogoutResponse> request = new FOSNetworkRequestImpl<>(logoutRequest, ServiceURLs.LOGOUT, LogoutResponse.class);
         request.request(Request.Method.POST, new NetworkCallback<LogoutResponse>() {
             @Override
             public void onSuccess(LogoutResponse response) {

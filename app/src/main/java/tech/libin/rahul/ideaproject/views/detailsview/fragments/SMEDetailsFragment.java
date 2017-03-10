@@ -10,9 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -75,10 +77,13 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private LinearLayout linLayoutReminder;
     private GoogleMap mMap;
     private RecyclerView recViewOther;
+    private Switch switchLocation;
 
     private String objectId;
     private String userName;
     private String userPhone;
+    private Constants.ActivityType activityType;
+    private SupportMapFragment mapFragment;
 
 
     @Nullable
@@ -123,6 +128,8 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         spnReason = (Spinner) view.findViewById(R.id.spinnerReason);
         spnFeedback = (Spinner) view.findViewById(R.id.spinnerFeedBack);
 
+        switchLocation = (Switch) view.findViewById(R.id.switchLocation);
+
         editTextReminder = (EditText) view.findViewById(R.id.editTextReminderDate);
         editTextRemarks = (EditText) view.findViewById(R.id.editTextRemarks);
         buttonSubmit = (Button) view.findViewById(R.id.buttonSubmit);
@@ -138,6 +145,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             objectId = bundle.getString(Constants.PARAMS.DETAILS_OBJECT_ID);
             userName = bundle.getString(Constants.PARAMS.DETAILS_OBJECT_NAME);
             userPhone = bundle.getString(Constants.PARAMS.DETAILS_OBJECT_PHONE);
+            activityType = (Constants.ActivityType) bundle.getSerializable(Constants.PARAMS.DETAILS_OBJECT_TAB);
 
             setHeader();
         }
@@ -149,8 +157,16 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     }
 
     private void initMap() {
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        View mapView = mapFragment.getView();
+        if (mapView != null) {
+            if (!switchLocation.isChecked()) {
+                mapView.setVisibility(View.GONE);
+            } else {
+                mapView.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     private void loadDetails() {
@@ -183,6 +199,24 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     }
 
     private void setFomListeners() {
+
+        switchLocation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+
+                if (mapFragment != null) {
+                    View mapView = mapFragment.getView();
+                    if (mapView != null) {
+                        if (!switchLocation.isChecked()) {
+                            mapView.setVisibility(View.GONE);
+                        } else {
+                            mapView.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+
+            }
+        });
 
         editTextReminder.setOnTouchListener(new View.OnTouchListener() {
 
@@ -251,6 +285,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                 @Override
                 public void onResponse(String response) {
                     Log.e("Submit", response);
+                    getActivity().getSupportFragmentManager().popBackStack();
                 }
 
                 @Override

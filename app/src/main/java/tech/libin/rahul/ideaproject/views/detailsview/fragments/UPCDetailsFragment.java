@@ -43,7 +43,6 @@ import static tech.libin.rahul.ideaproject.views.detailsview.fragments.SMEDetail
  */
 
 public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCallback {
-    private View view;
     TextView textViewCustNum;
     TextView textViewMobile;
     TextView textViewUpc;
@@ -55,22 +54,20 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     TextView textViewCustomerType;
     TextView textViewAlternateNumber;
     TextView textViewServSeg;
-
+    Spinner spnStatus;
+    Constants.ActivityType tab;
+    private View view;
     private EditText editTextRemarks;
     private TextView textViewAddress;
     private Button buttonSubmit;
     private LinearLayout linLayoutReminder;
     private GoogleMap mMap;
     private RecyclerView recViewOther;
-    Spinner spnStatus;
     private EditText editTextReminder;
-
     private String objectId;
     private String userName;
     private String userPhone;
-    private  List visitStatus;
-    Constants.ActivityType tab;
-
+    private List visitStatus;
 
     @Nullable
     @Override
@@ -89,19 +86,19 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     //region initComponents
     private void initComponents() {
 
-        textViewCustNum= (TextView) view.findViewById(R.id.textViewName);
-        textViewMobile= (TextView) view.findViewById(R.id.textViewPhoneNum);
-        textViewUpc= (TextView) view.findViewById(R.id.textViewUpc);
+        textViewCustNum = (TextView) view.findViewById(R.id.textViewName);
+        textViewMobile = (TextView) view.findViewById(R.id.textViewPhoneNum);
+        textViewUpc = (TextView) view.findViewById(R.id.textViewUpc);
 
-        textViewSubscriberType= (TextView) view.findViewById(R.id.textViewSubType);
-        textViewCreatedDateTime= (TextView) view.findViewById(R.id.textViewBegeningDate);
-        textViewSegment= (TextView) view.findViewById(R.id.textViewSegment);
+        textViewSubscriberType = (TextView) view.findViewById(R.id.textViewSubType);
+        textViewCreatedDateTime = (TextView) view.findViewById(R.id.textViewBegeningDate);
+        textViewSegment = (TextView) view.findViewById(R.id.textViewSegment);
 
-        textViewCustomerSubsType= (TextView) view.findViewById(R.id.textViewCustSubType);
-        textViewCsCreditCode= (TextView) view.findViewById(R.id.textViewCsCreditCode);
-        textViewCustomerType= (TextView) view.findViewById(R.id.textViewCustomerType);
-        textViewAlternateNumber= (TextView) view.findViewById(R.id.textViewAlternateNum);
-        textViewServSeg= (TextView) view.findViewById(R.id.textViewServSeg);
+        textViewCustomerSubsType = (TextView) view.findViewById(R.id.textViewCustSubType);
+        textViewCsCreditCode = (TextView) view.findViewById(R.id.textViewCsCreditCode);
+        textViewCustomerType = (TextView) view.findViewById(R.id.textViewCustomerType);
+        textViewAlternateNumber = (TextView) view.findViewById(R.id.textViewAlternateNum);
+        textViewServSeg = (TextView) view.findViewById(R.id.textViewServSeg);
 
         editTextRemarks = (EditText) view.findViewById(R.id.editTextRemarks);
         textViewAddress = (TextView) view.findViewById(R.id.textViewAddress);
@@ -183,7 +180,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 
     }
 
-    private int findSpinnerElementPosition(int value,List<SpinnerData> spinnerData) {
+    private int findSpinnerElementPosition(int value, List<SpinnerData> spinnerData) {
         int position = 0;
         for (SpinnerData spnData : spinnerData
                 ) {
@@ -241,7 +238,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             @Override
             public void onClick(View v) {
 
-               submitFormData();
+                submitFormData();
             }
         });
     }
@@ -281,6 +278,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             @Override
             public void onResponse(String response) {
                 Log.e("Submit", response);
+                getActivity().getSupportFragmentManager().popBackStack();
             }
 
             @Override

@@ -172,13 +172,13 @@
                     android:text="@string/cust_sub_type" />
 
 
-
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                     android:id="@+id/textViewCustomerType"
                     style="@style/DetailsViewText"
@@ -186,6 +186,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Organization" />
+
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                     android:id="@+id/textViewCustSubType"
                     style="@style/DetailsViewText"
@@ -193,7 +194,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="OUT" />
-
 
 
             </LinearLayout>
@@ -300,16 +300,17 @@
                 android:layout_margin="5dp"
                 android:orientation="vertical">
 
-                <Switch
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/location" />
                 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/map"
                     android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
                     android:layout_height="240dp"
                     android:layout_marginTop="12dp" />
+
+                <Switch
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/location" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

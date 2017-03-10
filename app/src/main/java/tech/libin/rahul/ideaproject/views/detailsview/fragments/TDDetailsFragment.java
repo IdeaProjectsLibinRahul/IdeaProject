@@ -93,16 +93,16 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
         textViewMobile = (TextView) view.findViewById(R.id.textViewPhoneNum);
 
         textViewBiller = (TextView) view.findViewById(R.id.textViewBiller);
-//        textViewSer= (TextView) view.findViewById(R.id.textViewSer);
-//        textViewCurBalance= (TextView) view.findViewById(R.id.textViewDueAmount);
+        textViewSer= (TextView) view.findViewById(R.id.textViewSer);
+        textViewCurBalance= (TextView) view.findViewById(R.id.textViewDueAmount);
         textViewSegment = (TextView) view.findViewById(R.id.textViewSegment);
-//        textViewBucket= (TextView) view.findViewById(R.id.textViewBucket);
+        textViewBucket= (TextView) view.findViewById(R.id.textViewBucket);
         textViewType = (TextView) view.findViewById(R.id.textViewType);
         textViewCustomerType = (TextView) view.findViewById(R.id.textViewCustomerType);
-//        textViewCrmStatus= (TextView) view.findViewById(R.id.textViewCrmStatus);
-//        textViewMyIdeaCode= (TextView) view.findViewById(R.id.textViewMyIdeaCode);
-//        textViewMyIdeaAllocation= (TextView) view.findViewById(R.id.textVieMyIdeaLocation);
-//        textViewActivationMi= (TextView) view.findViewById(R.id.textViewActivationMi);
+        textViewCrmStatus = (TextView) view.findViewById(R.id.textViewCrmStatus);
+        textViewMyIdeaCode = (TextView) view.findViewById(R.id.textViewMyIdeaCode);
+        textViewMyIdeaAllocation = (TextView) view.findViewById(R.id.textVieMyIdeaLocation);
+        textViewActivationMi= (TextView) view.findViewById(R.id.textViewActivationMi);
         textViewLandline1 = (TextView) view.findViewById(R.id.textViewLandLine1);
         textViewLandLine2 = (TextView) view.findViewById(R.id.textViewLandLine1);
 
@@ -268,6 +268,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                 @Override
                 public void onResponse(String response) {
                     Log.e("Submit", response);
+                    getActivity().getSupportFragmentManager().popBackStack();
                 }
 
                 @Override
