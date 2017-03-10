@@ -72,6 +72,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
     private String objectId;
     private String userName;
     private String userPhone;
+    private Constants.ActivityType activityType;
 
     @Nullable
     @Override
@@ -93,16 +94,16 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
         textViewMobile = (TextView) view.findViewById(R.id.textViewPhoneNum);
 
         textViewBiller = (TextView) view.findViewById(R.id.textViewBiller);
-        textViewSer= (TextView) view.findViewById(R.id.textViewSer);
-        textViewCurBalance= (TextView) view.findViewById(R.id.textViewDueAmount);
+        textViewSer = (TextView) view.findViewById(R.id.textViewSer);
+        textViewCurBalance = (TextView) view.findViewById(R.id.textViewDueAmount);
         textViewSegment = (TextView) view.findViewById(R.id.textViewSegment);
-        textViewBucket= (TextView) view.findViewById(R.id.textViewBucket);
+        textViewBucket = (TextView) view.findViewById(R.id.textViewBucket);
         textViewType = (TextView) view.findViewById(R.id.textViewType);
         textViewCustomerType = (TextView) view.findViewById(R.id.textViewCustomerType);
         textViewCrmStatus = (TextView) view.findViewById(R.id.textViewCrmStatus);
         textViewMyIdeaCode = (TextView) view.findViewById(R.id.textViewMyIdeaCode);
         textViewMyIdeaAllocation = (TextView) view.findViewById(R.id.textVieMyIdeaLocation);
-        textViewActivationMi= (TextView) view.findViewById(R.id.textViewActivationMi);
+        textViewActivationMi = (TextView) view.findViewById(R.id.textViewActivationMi);
         textViewLandline1 = (TextView) view.findViewById(R.id.textViewLandLine1);
         textViewLandLine2 = (TextView) view.findViewById(R.id.textViewLandLine1);
 
@@ -125,7 +126,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
             userName = bundle.getString(Constants.PARAMS.DETAILS_OBJECT_NAME);
             userPhone = bundle.getString(Constants.PARAMS.DETAILS_OBJECT_PHONE);
             userPhone = bundle.getParcelable(Constants.PARAMS.DETAILS_OBJECT_TAB);
-
+            activityType = (Constants.ActivityType) bundle.getSerializable(Constants.PARAMS.DETAILS_OBJECT_TAB);
             //setHeader();
         }
     }

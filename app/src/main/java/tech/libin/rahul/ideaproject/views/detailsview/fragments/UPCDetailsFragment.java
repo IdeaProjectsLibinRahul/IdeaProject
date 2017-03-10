@@ -68,6 +68,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private String userName;
     private String userPhone;
     private List visitStatus;
+    private Constants.ActivityType activityType;
 
     @Nullable
     @Override
@@ -119,7 +120,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             userName = bundle.getString(Constants.PARAMS.DETAILS_OBJECT_NAME);
             userPhone = bundle.getString(Constants.PARAMS.DETAILS_OBJECT_PHONE);
             userPhone = bundle.getString(Constants.PARAMS.DETAILS_OBJECT_PHONE);
-            //tab = bundle.getSerializable(Constants.PARAMS.DETAILS_OBJECT_TAB);
+            activityType = (Constants.ActivityType) bundle.getSerializable(Constants.PARAMS.DETAILS_OBJECT_TAB);
         }
     }
 
