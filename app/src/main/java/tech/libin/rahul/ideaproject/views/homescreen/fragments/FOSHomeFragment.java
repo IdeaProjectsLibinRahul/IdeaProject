@@ -56,7 +56,7 @@ public class FOSHomeFragment extends FOSBaseFragment {
         bundle.putString(Constants.PARAMS.DETAILS_OBJECT_ID, model.getId());
         bundle.putString(Constants.PARAMS.DETAILS_OBJECT_NAME, model.getName());
         bundle.putString(Constants.PARAMS.DETAILS_OBJECT_PHONE, model.getPhoneNo());
-        bundle.putSerializable(Constants.PARAMS.DETAILS_OBJECT_TAB,event.getActivityType());
+        bundle.putSerializable(Constants.PARAMS.DETAILS_OBJECT_TAB, event.getActivityType());
 
         switch (model.getType()) {
             case SME:

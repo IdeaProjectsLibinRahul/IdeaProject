@@ -69,4 +69,8 @@ public class FOSFacadeImpl implements FOSFacade {
         fosService.doSubmitOtherVisitDetails(model, callback);
     }
 
+    @Override
+    public void doLogout(String userId, ServiceCallback<String> callback) {
+        fosService.doLogout(userId, callback);
+    }
 }

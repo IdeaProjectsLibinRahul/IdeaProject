@@ -17,6 +17,7 @@ import tech.libin.rahul.ideaproject.facade.FOSFacadeImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseActivity;
+import tech.libin.rahul.ideaproject.views.widgets.dialogs.FOSDialog;
 import tech.libin.rahul.ideaproject.views.models.Login;
 import tech.libin.rahul.ideaproject.views.models.User;
 import tech.libin.rahul.ideaproject.views.utils.TelephonyInfo;
@@ -34,6 +35,7 @@ public class LoginActivity extends FOSBaseActivity {
     private FOSButton buttonSignUp;
 
     //endregion
+    private FOSDialog fosDialog;
 
     //region onCreate
     @Override
@@ -74,12 +76,12 @@ public class LoginActivity extends FOSBaseActivity {
     protected void setToolbarElevation() {
         setToolbarElevation(0);
     }
+    //endregion
 
     @Override
     protected void setHasToolBar() {
         setHasToolBar(false);
     }
-    //endregion
 
     private void doLogin() {
         try {
@@ -113,19 +115,14 @@ public class LoginActivity extends FOSBaseActivity {
                     @Override
                     public void onRequestFail(FOSError error) {
                         dialog.cancel();
-//                        final FOSDialog fosDialog = FOSDialog().getDialog();
-//
-//                        fosDialog.setTitle("Authentication Fail");
-//                        fosDialog.setMessage("Invalid user name or password,Please check your inputs.");
-//                        fosDialog.setButtonOKClick(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                fosDialog.dismiss();
-//                            }
-//                        });
-//                        fosDialog.show(getSupportFragmentManager(),"tag");
-                        // navigateToHome();
-                        //fosDialog.setMessage(error.getErrorMessage());
+                        String message = "Invalid user name or password,Please check your inputs.";
+                        String title = "Authentication Fail";
+                        fosDialog = FOSDialog.newInstance(title, message);
+
+
+                        fosDialog.show(getSupportFragmentManager(), "tag");
+//                        navigateToHome();
+//                        fosDialog.setMessage(error.getErrorMessage());
                     }
                 });
             }

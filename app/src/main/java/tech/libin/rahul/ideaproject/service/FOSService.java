@@ -35,4 +35,6 @@ public interface FOSService {
     void doSubmitSmeVisitDetails(SmeFormSubmitModel model, ServiceCallback<String> callback);
 
     void doSubmitOtherVisitDetails(OtherFormSubmitModel model, ServiceCallback<String> callback);
+
+    void doLogout(String userId, ServiceCallback<String> callback);
 }
