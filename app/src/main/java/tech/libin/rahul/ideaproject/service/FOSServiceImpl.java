@@ -36,7 +36,7 @@ import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.CollectionDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.OtherFormSubmitModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeDetailModel;
-import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeFormSubmitModel;
+import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.FormSubmitModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.TdDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.UpcDetailModel;
 import tech.libin.rahul.ideaproject.views.homescreen.viewmodels.ActivityModel;
@@ -250,7 +250,7 @@ public class FOSServiceImpl implements FOSService {
 
 
     @Override
-    public void doSubmitSmeVisitDetails(SmeFormSubmitModel model, final ServiceCallback<String> callback) {
+    public void doSubmitVisitDetails(FormSubmitModel model, final ServiceCallback<String> callback) {
         final SmeFormSubmitMapper mapper = new SmeFormSubmitMapper();
         SmeFormSubmitRequest smeFormSubmitRequest = mapper.getRequest(model);
 
@@ -280,37 +280,6 @@ public class FOSServiceImpl implements FOSService {
             }
         });
 
-    }
-
-    @Override
-    public void doSubmitOtherVisitDetails(OtherFormSubmitModel model, final ServiceCallback<String> callback) {
-        final OtherFormSubmitMapper mapper = new OtherFormSubmitMapper();
-        OtherFormSubmitRequest otherFormSubmitRequest = mapper.getRequest(model);
-
-        FOSNetworkRequest<FormSubmitResponse> request = new FOSNetworkRequestImpl<>(otherFormSubmitRequest, ServiceURLs.FORM_SUBMIT, FormSubmitResponse.class);
-        request.request(Request.Method.POST, new NetworkCallback<FormSubmitResponse>() {
-            @Override
-            public void onSuccess(FormSubmitResponse response) {
-
-                if (response.getStatus() != Constants.Status.SUCCESS) {
-                    FOSError error = new FOSError();
-                    error.setErrorMessage(response.getMessage());
-                    callback.onRequestFail(error);
-                } else {
-                    callback.onResponse(response.getMessage());
-                }
-            }
-
-            @Override
-            public void onTimeout() {
-                callback.onRequestTimout();
-            }
-
-            @Override
-            public void onFail(FOSError error) {
-                callback.onRequestFail(error);
-            }
-        });
     }
 
     @Override

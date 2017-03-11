@@ -99,7 +99,7 @@
     </style>
 
     <style name="DetailsTitleViewText">
-        <item name="android:textColor">@android:color/background_dark</item>
+        <item name="android:textColor">@android:color/white</item>
         <item name="android:background">@drawable/detail_title_back</item>
 
         <item name="android:padding">10dp</item>
@@ -108,12 +108,24 @@
     </style>
 
     <style name="DetailsButton" parent="Widget.AppCompat.Button.Borderless">
-        <item name="android:background">@color/colorPrimaryDark</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@drawable/button_common_background</item>
+        <item name="android:textColor">@android:color/black</item>
     </style>
 
     <style name="DetailsFormItems">
         <item name="android:layout_marginTop">8dp</item>
+    </style>
+
+    <style name="spinner_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/gradient_spinner</item>
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:popupBackground">#DFFFFFFF</item>
     </style>
 
 </resources>

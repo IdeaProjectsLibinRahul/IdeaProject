@@ -3,9 +3,7 @@ package tech.libin.rahul.ideaproject.service.mapper;
 import tech.libin.rahul.ideaproject.configurations.Config;
 import tech.libin.rahul.ideaproject.service.mapper.base.FOSBaseMapper;
 import tech.libin.rahul.ideaproject.service.requests.OtherFormSubmitRequest;
-import tech.libin.rahul.ideaproject.service.requests.SmeFormSubmitRequest;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.OtherFormSubmitModel;
-import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeFormSubmitModel;
 import tech.libin.rahul.ideaproject.views.models.User;
 
 /**

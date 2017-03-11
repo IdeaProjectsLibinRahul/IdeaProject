@@ -114,4 +114,12 @@ public class FOSTextView extends TextView {
                 break;
         }
     }
+
+    @Override
+    public void setText(CharSequence text, BufferType type) {
+        if (text == null || text.toString().trim().isEmpty()) {
+            text = "Nill";
+        }
+        super.setText(text, type);
+    }
 }

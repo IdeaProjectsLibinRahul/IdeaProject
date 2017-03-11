@@ -2,22 +2,18 @@ package tech.libin.rahul.ideaproject.service.mapper;
 
 import tech.libin.rahul.ideaproject.configurations.Config;
 import tech.libin.rahul.ideaproject.service.mapper.base.FOSBaseMapper;
-import tech.libin.rahul.ideaproject.service.requests.ActivityDetailRequest;
 import tech.libin.rahul.ideaproject.service.requests.SmeFormSubmitRequest;
-import tech.libin.rahul.ideaproject.service.responses.SmeDetailResponse;
-import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeDetailModel;
-import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeFormSubmitModel;
-import tech.libin.rahul.ideaproject.views.models.ActivityDetailRequestModel;
+import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.FormSubmitModel;
 import tech.libin.rahul.ideaproject.views.models.User;
 
 /**
  * Created by libin on 01/03/17.
  */
 
-public class SmeFormSubmitMapper implements FOSBaseMapper<SmeFormSubmitModel, SmeFormSubmitRequest, String, String> {
+public class SmeFormSubmitMapper implements FOSBaseMapper<FormSubmitModel, SmeFormSubmitRequest, String, String> {
 
     @Override
-    public SmeFormSubmitRequest getRequest(SmeFormSubmitModel model) {
+    public SmeFormSubmitRequest getRequest(FormSubmitModel model) {
         User user = Config.getInstance().getUser();
         String sessionKey = user.getSessionKey();
 

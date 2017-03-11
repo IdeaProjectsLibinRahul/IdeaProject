@@ -39,6 +39,7 @@ public class UpcDetailResponse extends FOSBaseResponse {
         private String address1;
         private String address2;
         private String address3;
+        private String reminderDate;
 
         private String zip;
         private String alternateNumber;
@@ -51,6 +52,14 @@ public class UpcDetailResponse extends FOSBaseResponse {
         private DetailFromUPCRoleModel fromMico;
         private DetailFromUPCRoleModel fromExecutive;
         private ArrayList<SpinnerData> visitStatus;
+
+        public String getReminderDate() {
+            return reminderDate;
+        }
+
+        public void setReminderDate(String reminderDate) {
+            this.reminderDate = reminderDate;
+        }
 
         public String getUpc() {
             return upc;

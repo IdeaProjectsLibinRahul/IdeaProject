@@ -20,7 +20,7 @@
             style="@style/ToolBarTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rahul Raj" />
+            android:text="User" />
 
         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
             android:layout_width="wrap_content"

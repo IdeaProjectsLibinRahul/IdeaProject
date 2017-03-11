@@ -6,7 +6,7 @@ import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.CollectionDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.OtherFormSubmitModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeDetailModel;
-import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeFormSubmitModel;
+import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.FormSubmitModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.TdDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.UpcDetailModel;
 import tech.libin.rahul.ideaproject.views.homescreen.viewmodels.ActivityModel;
@@ -32,9 +32,7 @@ public interface FOSService {
 
     void getCollectionDetail(ActivityDetailRequestModel model, ServiceCallback<CollectionDetailModel> callback);
 
-    void doSubmitSmeVisitDetails(SmeFormSubmitModel model, ServiceCallback<String> callback);
-
-    void doSubmitOtherVisitDetails(OtherFormSubmitModel model, ServiceCallback<String> callback);
+    void doSubmitVisitDetails(FormSubmitModel model, ServiceCallback<String> callback);
 
     void doLogout(String userId, ServiceCallback<String> callback);
 }

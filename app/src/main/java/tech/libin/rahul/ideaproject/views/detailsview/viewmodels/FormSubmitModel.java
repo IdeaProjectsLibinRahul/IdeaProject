@@ -6,7 +6,7 @@ import tech.libin.rahul.ideaproject.configurations.Constants;
  * Created by rahul on 3/9/2017.
  */
 
-public class SmeFormSubmitModel {
+public class FormSubmitModel {
 
     Long userId;
     Long objectId;

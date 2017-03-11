@@ -44,6 +44,7 @@ public class UpcDetailMapper implements FOSBaseMapper<ActivityDetailRequestModel
         models.setCustomerName(model.getResponse().getCustomerName());
         models.setCustomerSubsType(model.getResponse().getCustomerSubsType());
         models.setCustomerType(model.getResponse().getCustomerType());
+        models.setReminderDate(model.getResponse().getReminderDate());
         models.setEsclate(model.getResponse().getEsclate());
         models.setFromExecutive(model.getResponse().getFromExecutive());
         models.setFromMico(model.getResponse().getFromMico());

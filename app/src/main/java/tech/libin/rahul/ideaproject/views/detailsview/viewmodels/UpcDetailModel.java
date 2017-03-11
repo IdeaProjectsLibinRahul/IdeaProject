@@ -24,6 +24,7 @@ public class UpcDetailModel {
     private String customerName;
     private String address1;
     private String address2;
+    private String reminderDate;
     private String address3;
     private String zip;
     private String alternateNumber;
@@ -36,6 +37,14 @@ public class UpcDetailModel {
     private DetailFromUPCRoleModel fromMico;
     private DetailFromUPCRoleModel fromExecutive;
     private ArrayList<SpinnerData> visitStatus;
+
+    public String getReminderDate() {
+        return reminderDate;
+    }
+
+    public void setReminderDate(String reminderDate) {
+        this.reminderDate = reminderDate;
+    }
 
     public String getUpc() {
         return upc;

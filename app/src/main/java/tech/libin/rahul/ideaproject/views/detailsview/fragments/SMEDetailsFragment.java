@@ -15,11 +15,14 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
@@ -28,64 +31,79 @@ import tech.libin.rahul.ideaproject.configurations.Constants;
 import tech.libin.rahul.ideaproject.facade.FOSFacade;
 import tech.libin.rahul.ideaproject.facade.FOSFacadeImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
+import tech.libin.rahul.ideaproject.service.models.DetailFromSMERoleModel;
 import tech.libin.rahul.ideaproject.service.models.SpinnerData;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
 import tech.libin.rahul.ideaproject.views.detailsview.adapters.FOSSpinnerAdapter;
 import tech.libin.rahul.ideaproject.views.detailsview.dialogs.FOSDateDialog;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeDetailModel;
-import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeFormSubmitModel;
+import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.FormSubmitModel;
 import tech.libin.rahul.ideaproject.views.models.ActivityDetailRequestModel;
-import tech.libin.rahul.ideaproject.views.utils.GPSTracker;
+import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
 
 /**
  * Created by libin on 05/03/17.
  */
 
 public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCallback {
+
+    //region declaration
     public static final String DATE_DIALOG = "DATE_DIALOG";
-    Spinner spnStatus;
-    Spinner spnFeedback;
-    Spinner spnReason;
-    private EditText editTextReminder;
-    private View view;
-    private TextView textViewName;
-    private TextView textViewMobileNum;
-    private TextView textViewBiller;
-    private TextView textViewCompanyName;
-    private TextView textViewTotAlConnections;
-    private TextView textViewFbConnections;
-    private TextView textViewMico;
-    private TextView textViewMicoCode;
-    private TextView textViewMicoName;
-    private TextView textViewZone;
-    private TextView textViewSegment;
-    private TextView textViewBeginningDate;
-    private TextView textViewActiveReason;
-    private TextView textViewTmCode;
-    private TextView textViewRatePlan;
-    private TextView textViewCRLimit;
-    private TextView textViewAddress;
-    private TextView textViewLandLine;
-    private TextView textViewLandLineHead;
-    private TextView textViewType;
-    private TextView textViewTypeHead;
-    private EditText editTextRemarks;
-    private Button buttonSubmit;
+    private Spinner spnStatus;
+    private Spinner spnFeedback;
+    private Spinner spnReason;
+
     private LinearLayout linLayoutFeedback;
     private LinearLayout linLayoutReason;
     private LinearLayout linLayoutReminder;
-    private GoogleMap mMap;
-    private RecyclerView recViewOther;
+
+    private View view;
+
+    private EditText editTextReminder;
+    private EditText editTextRemarks;
+
+    private FOSTextView textViewName;
+    private FOSTextView textViewMobileNum;
+    private FOSTextView textViewBiller;
+    private FOSTextView textViewCompanyName;
+    private FOSTextView textViewTotAlConnections;
+    private FOSTextView textViewFbConnections;
+    private FOSTextView textViewMico;
+    private FOSTextView textViewMicoCode;
+    private FOSTextView textViewMicoName;
+    private FOSTextView textViewZone;
+    private FOSTextView textViewSegment;
+    private FOSTextView textViewBeginningDate;
+    private FOSTextView textViewActiveReason;
+    private FOSTextView textViewTmCode;
+    private FOSTextView textViewRatePlan;
+    private FOSTextView textViewCRLimit;
+    private FOSTextView textViewAddress;
+    private FOSTextView textViewLandLine;
+    private FOSTextView textViewLandLineHead;
+    private FOSTextView textViewType;
+    private FOSTextView textViewTypeHead;
+
+    private Button buttonSubmit;
+
     private Switch switchLocation;
+    private Switch switchUpdateLocation;
+
+    private GoogleMap mMap;
+
+    private RecyclerView recViewOther;
 
     private String objectId;
     private String userName;
     private String userPhone;
     private Constants.ActivityType activityType;
     private SupportMapFragment mapFragment;
+    private Marker mMarker;
 
+    //endregion
 
+    //region onCreateView
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -98,30 +116,32 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 
         return view;
     }
+    //endregion
 
+    //region initComponents
     private void initComponents() {
-        textViewName = (TextView) view.findViewById(R.id.textViewName);
-        textViewMobileNum = (TextView) view.findViewById(R.id.textViewPhoneNum);
-        textViewBiller = (TextView) view.findViewById(R.id.textViewBiller);
-        textViewCompanyName = (TextView) view.findViewById(R.id.textViewCompanyName);
-        textViewTotAlConnections = (TextView) view.findViewById(R.id.textViewTotalCollection);
-        textViewFbConnections = (TextView) view.findViewById(R.id.textViewFbCollection);
-        textViewMico = (TextView) view.findViewById(R.id.textViewMico);
-        textViewMicoCode = (TextView) view.findViewById(R.id.textViewMicoCode);
-        textViewMicoName = (TextView) view.findViewById(R.id.textViewMicoName);
-        textViewZone = (TextView) view.findViewById(R.id.textViewZone);
-        textViewSegment = (TextView) view.findViewById(R.id.textViewSegment);
-        textViewBeginningDate = (TextView) view.findViewById(R.id.textViewBegeningDate);
-        textViewActiveReason = (TextView) view.findViewById(R.id.textViewActiveReason);
-        textViewTmCode = (TextView) view.findViewById(R.id.textViewTmCode);
-        textViewRatePlan = (TextView) view.findViewById(R.id.textViewRatePlan);
-        textViewCRLimit = (TextView) view.findViewById(R.id.textViewCrLimit);
-        textViewLandLine = (TextView) view.findViewById(R.id.textViewLandLine);
-        textViewLandLineHead = (TextView) view.findViewById(R.id.textViewLandLine1);
-        textViewType = (TextView) view.findViewById(R.id.textViewType);
-        textViewTypeHead = (TextView) view.findViewById(R.id.textViewTypeHead);
+        textViewName = (FOSTextView) view.findViewById(R.id.textViewName);
+        textViewMobileNum = (FOSTextView) view.findViewById(R.id.textViewPhoneNum);
+        textViewBiller = (FOSTextView) view.findViewById(R.id.textViewBiller);
+        textViewCompanyName = (FOSTextView) view.findViewById(R.id.textViewCompanyName);
+        textViewTotAlConnections = (FOSTextView) view.findViewById(R.id.textViewTotalCollection);
+        textViewFbConnections = (FOSTextView) view.findViewById(R.id.textViewFbCollection);
+        textViewMico = (FOSTextView) view.findViewById(R.id.textViewMico);
+        textViewMicoCode = (FOSTextView) view.findViewById(R.id.textViewMicoCode);
+        textViewMicoName = (FOSTextView) view.findViewById(R.id.textViewMicoName);
+        textViewZone = (FOSTextView) view.findViewById(R.id.textViewZone);
+        textViewSegment = (FOSTextView) view.findViewById(R.id.textViewSegment);
+        textViewBeginningDate = (FOSTextView) view.findViewById(R.id.textViewBegeningDate);
+        textViewActiveReason = (FOSTextView) view.findViewById(R.id.textViewActiveReason);
+        textViewTmCode = (FOSTextView) view.findViewById(R.id.textViewTmCode);
+        textViewRatePlan = (FOSTextView) view.findViewById(R.id.textViewRatePlan);
+        textViewCRLimit = (FOSTextView) view.findViewById(R.id.textViewCrLimit);
+        textViewLandLine = (FOSTextView) view.findViewById(R.id.textViewLandLine);
+        textViewLandLineHead = (FOSTextView) view.findViewById(R.id.textViewLandLine1);
+        textViewType = (FOSTextView) view.findViewById(R.id.textViewType);
+        textViewTypeHead = (FOSTextView) view.findViewById(R.id.textViewTypeHead);
         editTextRemarks = (EditText) view.findViewById(R.id.editTextRemarks);
-        textViewAddress = (TextView) view.findViewById(R.id.textViewAddress);
+        textViewAddress = (FOSTextView) view.findViewById(R.id.textViewAddress);
         recViewOther = (RecyclerView) view.findViewById(R.id.recViewOther);
 
         spnStatus = (Spinner) view.findViewById(R.id.spinnerStatus);
@@ -129,6 +149,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         spnFeedback = (Spinner) view.findViewById(R.id.spinnerFeedBack);
 
         switchLocation = (Switch) view.findViewById(R.id.switchLocation);
+        switchUpdateLocation = (Switch) view.findViewById(R.id.switchUpdateLocation);
 
         editTextReminder = (EditText) view.findViewById(R.id.editTextReminderDate);
         editTextRemarks = (EditText) view.findViewById(R.id.editTextRemarks);
@@ -138,7 +159,9 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         linLayoutReason = (LinearLayout) view.findViewById(R.id.linLayoutReason);
         linLayoutReminder = (LinearLayout) view.findViewById(R.id.linLayoutReminder);
     }
+    //endregion
 
+    //region parseBundle
     private void parseBundle() {
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -150,25 +173,16 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             setHeader();
         }
     }
+    //endregion
 
+    //region setHeader
     private void setHeader() {
         textViewName.setText(userName);
         textViewMobileNum.setText(userPhone);
     }
+    //endregion
 
-    private void initMap() {
-        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-        View mapView = mapFragment.getView();
-        if (mapView != null) {
-            if (!switchLocation.isChecked()) {
-                mapView.setVisibility(View.GONE);
-            } else {
-                mapView.setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
+    //region loadDetails
     private void loadDetails() {
         if (objectId != null) {
             ActivityDetailRequestModel requestModel = new ActivityDetailRequestModel();
@@ -197,7 +211,9 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             });
         }
     }
+    //endregion
 
+    //region setFomListeners
     private void setFomListeners() {
 
         switchLocation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -249,25 +265,29 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             }
         });
     }
+    //endregion
 
+    //region submitFormData
     private void submitFormData() {
         if (objectId != null) {
-            SmeFormSubmitModel requestModel = new SmeFormSubmitModel();
+            FormSubmitModel requestModel = new FormSubmitModel();
             requestModel.setObjectId(Long.parseLong(objectId));
             requestModel.setStatus(((SpinnerData) spnStatus.getSelectedItem()).getId());
             requestModel.setRemarks(editTextRemarks.getText().toString().trim());
 
-            GPSTracker gpsTracker = new GPSTracker(getActivity());
-            if (gpsTracker.getIsGPSTrackingEnabled()) {
-                requestModel.setLongitude(gpsTracker.getLatitude() + "");
-                requestModel.setLongitude(gpsTracker.getLongitude() + "");
-            } else {
-                gpsTracker.showSettingsAlert();
-                return;
-            }
+//            GPSTracker gpsTracker = new GPSTracker(getActivity());
+//
+//            if (gpsTracker.getIsGPSTrackingEnabled()) {
+//                requestModel.setLatitude(gpsTracker.getLatitude() + "");
+//                requestModel.setLongitude(gpsTracker.getLongitude() + "");
+//            } else {
+//                gpsTracker.showSettingsAlert();
+//                return;
+//            }
 
-            requestModel.setLongitude("12.12");
-            requestModel.setLatitude("12.12");
+            requestModel.setLongitude("9.977052");
+            requestModel.setLatitude("76.317974");
+
             if (linLayoutFeedback.getVisibility() == View.VISIBLE) {
                 requestModel.setFeedback(((SpinnerData) spnFeedback.getSelectedItem()).getId());
             }
@@ -281,7 +301,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             requestModel.setRecordType(Constants.RecordType.SME);
 
             FOSFacade fosFacade = new FOSFacadeImpl();
-            fosFacade.doSubmitSmeVisitDetails(requestModel, new ServiceCallback<String>() {
+            fosFacade.doSubmitVisitDetails(requestModel, new ServiceCallback<String>() {
                 @Override
                 public void onResponse(String response) {
                     Log.e("Submit", response);
@@ -296,12 +316,15 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                 @Override
                 public void onRequestFail(FOSError error) {
                     Log.e("Submit Fail", error.getErrorMessage());
+                    getActivity().getSupportFragmentManager().popBackStack();
 
                 }
             });
         }
     }
+    //endregion
 
+    //region bindDetails
     private void bindDetails(SmeDetailModel model) {
         textViewName.setText(model.getCcName());
         textViewMobileNum.setVisibility(View.GONE);
@@ -315,7 +338,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         textViewZone.setText(model.getZone());
         textViewSegment.setText(model.getSegment());
         textViewBeginningDate.setText(model.getBegdate());
-        textViewActiveReason.setText(model.getActReason() == null ? "Nill" : model.getActReason());
+        textViewActiveReason.setText(model.getActReason());
         textViewTmCode.setText(model.getTmcode());
         textViewRatePlan.setText(model.getRatePlan());
         textViewCRLimit.setText(model.getCr_limit());
@@ -340,9 +363,30 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         FOSSpinnerAdapter reasonAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getReason());
         spnReason.setAdapter(reasonAdapter);
 
-
         FOSSpinnerAdapter feedbackAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getFeedback());
         spnFeedback.setAdapter(feedbackAdapter);
+
+
+        if(activityType!=Constants.ActivityType.NEW_ACTIVITY) {
+            DetailFromSMERoleModel fromExecutive = model.getFromExecutive();
+//bind data to submit from
+            if (fromExecutive != null) {
+                if (fromExecutive.getVisitStatus() != 0)
+                    spnStatus.setSelection(findSpinnerElementPosition(fromExecutive.getVisitStatus(), visitStatus));
+
+                if (fromExecutive.getFeedback() != 0) {
+                    linLayoutFeedback.setVisibility(View.VISIBLE);
+                    spnFeedback.setSelection(findSpinnerElementPosition(fromExecutive.getFeedback(), visitFeedback));
+                }
+
+                if (fromExecutive.getReason() != 0) {
+                    linLayoutReason.setVisibility(View.VISIBLE);
+                    spnFeedback.setSelection(findSpinnerElementPosition(fromExecutive.getReason(), model.getReason()));
+                }
+
+                editTextRemarks.setText(fromExecutive.getRemarks());
+            }
+        }
 
         spnStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -381,19 +425,38 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             }
         });
     }
+    //endregion
 
+    //region findSpinnerElementPosition
+    private int findSpinnerElementPosition(int value, List<SpinnerData> spinnerData) {
+        int position = 0;
+        for (SpinnerData spnData : spinnerData
+                ) {
+            if (spnData.getId() == value)
+                return position;
+            position++;
+        }
+        return 0;
+    }
+    //endregion
+
+    //region setLinearLayoutVisible
     private void setLinearLayoutVisible() {
         linLayoutFeedback.setVisibility(View.VISIBLE);
         linLayoutReason.setVisibility(View.VISIBLE);
         linLayoutReason.setVisibility(View.VISIBLE);
     }
+    //endregion
 
+    //region setLinearLayoutGone
     private void setLinearLayoutGone() {
         linLayoutFeedback.setVisibility(View.GONE);
         linLayoutReason.setVisibility(View.GONE);
         linLayoutReason.setVisibility(View.GONE);
     }
+    //endregion
 
+    //region isValid
     private boolean isValid() {
         if (((SpinnerData) spnStatus.getSelectedItem()).getId() == 0) {
             return false;
@@ -401,11 +464,33 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 
         return false;
     }
+    //endregion
 
-
+    //region onMapReady
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        LatLng sydney = new LatLng(9.977052, 76.317974);
+        googleMap.addMarker(new MarkerOptions().position(sydney)
+                .title("My Idea"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
+    //endregion
+
+
+    //region initMap
+    private void initMap() {
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+        View mapView = mapFragment.getView();
+        if (mapView != null) {
+            if (!switchLocation.isChecked()) {
+                mapView.setVisibility(View.GONE);
+            } else {
+                mapView.setVisibility(View.VISIBLE);
+            }
+        }
     }
     //endregion
 

@@ -9,29 +9,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="4dp">
 
         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
             style="@style/DetailsTitleViewText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:text="@string/title_details" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
             android:background="@drawable/detail_back"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="10dp"
+            >
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                 android:id="@+id/textViewName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Mr. Kabeer A.V"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:layout_marginTop="1dp"
+                app:fos_textview_font="sansation_bold"/>
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                 android:id="@+id/textViewPhoneNum"
@@ -57,21 +58,23 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/biller"
-                    android:textStyle="bold" />
+                    app:fos_textview_font="sansation_bold"/>
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                     style="@style/DetailsViewHeader"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/ser" />
+                    android:text="@string/ser"
+                    app:fos_textview_font="sansation_bold"/>
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                     style="@style/DetailsViewHeader"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/due_amount" />
+                    android:text="@string/due_amount"
+                    app:fos_textview_font="sansation_bold"/>
             </LinearLayout>
 
             <LinearLayout
@@ -117,21 +120,24 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/segment" />
+                    android:text="@string/segment"
+                    app:fos_textview_font="sansation_bold"/>
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                     style="@style/DetailsViewHeader"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/bucket" />
+                    android:text="@string/bucket"
+                    app:fos_textview_font="sansation_bold"/>
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                     style="@style/DetailsViewHeader"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/type" />
+                    android:text="@string/type"
+                    app:fos_textview_font="sansation_bold"/>
             </LinearLayout>
 
             <LinearLayout
@@ -177,14 +183,16 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Customer Type" />
+                    android:text="Customer Type"
+                    app:fos_textview_font="sansation_bold"/>
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                     style="@style/DetailsViewHeader"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/crm_status" />
+                    android:text="@string/crm_status"
+                    app:fos_textview_font="sansation_bold"/>
 
 
             </LinearLayout>
@@ -224,14 +232,16 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/my_idea_code" />
+                    android:text="@string/my_idea_code"
+                    app:fos_textview_font="sansation_bold"/>
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                     style="@style/DetailsViewHeader"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/activatiom_mi" />
+                    android:text="@string/activatiom_mi"
+                    app:fos_textview_font="sansation_bold"/>
 
 
             </LinearLayout>
@@ -264,7 +274,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/my_idea_location" />
+                android:text="@string/my_idea_location"
+                app:fos_textview_font="sansation_bold"/>
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                 android:id="@+id/textVieMyIdeaLocation"
@@ -284,14 +295,16 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/land_line1" />
+                    android:text="@string/land_line1"
+                    app:fos_textview_font="sansation_bold"/>
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                     style="@style/DetailsViewHeader"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/land_line2" />
+                    android:text="@string/land_line2"
+                    app:fos_textview_font="sansation_bold"/>
 
 
             </LinearLayout>
@@ -325,7 +338,8 @@
                 style="@style/DetailsViewHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Address" />
+                android:text="Address"
+                app:fos_textview_font="sansation_bold"/>
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                 android:id="@+id/textViewAddress"
@@ -376,17 +390,27 @@
                 android:layout_margin="5dp"
                 android:orientation="vertical">
 
-                <Switch
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/location" />
-
                 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/map"
                     android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
                     android:layout_height="240dp"
-                    android:layout_marginTop="12dp" />
+                    android:layout_marginTop="3dp" />
+
+                <Switch
+                    android:id="@+id/switchLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/view_location"
+                    android:layout_marginTop="7dp"/>
+
+                <Switch
+                    android:id="@+id/switchUpdateLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/update_location"
+                    android:layout_marginTop="7dp"/>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"

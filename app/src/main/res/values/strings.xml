@@ -24,7 +24,8 @@
     <string name="zip">Zip</string>
     <string name="dummy_address"> Adress1 \nAddress2 A \nAddress 3\n Address4</string>
     <string name="visit_status">Visit Status</string>
-    <string name="location">Location</string>
+    <string name="view_location">View Location</string>
+    <string name="update_location">Update Location</string>
 
     <string-array name="dummy_array">
         <item>item 1</item>
@@ -34,7 +35,6 @@
         <item>item 5</item>
         <item>item 6</item>
     </string-array>
-    <string name="update_location">Update Location</string>
     <string name="feedback">Feedback</string>
     <string name="reason">Reason</string>
     <string name="remarks">Remarks</string>
