@@ -5,7 +5,8 @@
             <enum name="geosans" value="0" />
             <enum name="metanoia" value="1" />
             <enum name="sansation" value="2" />
-            <enum name="normal" value="3" />
+            <enum name="sansation_bold" value="3" />
+            <enum name="normal" value="9" />
         </attr>
         <attr name="fos_textview_fontstyle" format="enum">
             <enum name="normal" value="0" />

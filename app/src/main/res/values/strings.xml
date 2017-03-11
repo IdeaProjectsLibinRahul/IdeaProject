@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">IdeaProject</string>
+    <string name="app_name">My Visit</string>
     <string name="collection">Collection</string>
     <string name="retention">Retention</string>
     <string name="activities">Activities</string>
@@ -64,7 +64,6 @@
     <string name="land_line1">Land Line 1</string>
     <string name="land_line2">Land Line 2</string>
     <string name="activatiom_mi">Activation Mi</string>
-
 
 
 </resources>

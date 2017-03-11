@@ -66,6 +66,8 @@ public class FOSHomeActivity extends FOSBaseActivity {
 
                 }
             });
+
+            finish();
         }
         return true;
     }
