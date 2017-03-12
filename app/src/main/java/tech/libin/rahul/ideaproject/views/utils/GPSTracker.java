@@ -17,6 +17,7 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,6 +29,7 @@ import java.util.Locale;
 
 public class GPSTracker extends Service implements LocationListener {
 
+    public static final String LOCATION_PERMISSION = "Location permission not allowed";
     // The minimum distance to change updates in meters
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
     // The minimum time between updates in milliseconds
@@ -100,14 +102,10 @@ public class GPSTracker extends Service implements LocationListener {
 
             // Application can use GPS or Network Provider
             if (!provider_info.isEmpty()) {
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
+                boolean fineLocation = ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
+                boolean courseLocation = ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED;
+                if (fineLocation && courseLocation) {
+                    Toast.makeText(mContext, LOCATION_PERMISSION, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 locationManager.requestLocationUpdates(

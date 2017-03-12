@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 
 import tech.libin.rahul.ideaproject.R;
 import tech.libin.rahul.ideaproject.configurations.Config;
+import tech.libin.rahul.ideaproject.configurations.Constants;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
 import tech.libin.rahul.ideaproject.views.homescreen.adapters.HomeTabAdapter;
 import tech.libin.rahul.ideaproject.views.homescreen.dialogs.FOSSearchDialog;
@@ -34,6 +35,9 @@ public class FOSCollectionFragment extends FOSBaseFragment {
     private LinearLayout bottomBar;
     private RelativeLayout tabRetention;
     private RelativeLayout tabCollection;
+    private HomeTabAdapter tabAdapter;
+    private User user;
+    private Constants.Type userSelectionType;
 
     @Nullable
     @Override
@@ -56,32 +60,42 @@ public class FOSCollectionFragment extends FOSBaseFragment {
         tabRetention = (RelativeLayout) mView.findViewById(R.id.tabRetention);
         tabCollection = (RelativeLayout) mView.findViewById(R.id.tabCollection);
 
-        User user = Config.getInstance().getUser();
-//        if (user.getType() != Constants.Type.BOTH) {
-//        bottomBar.setVisibility(View.GONE);
-//        }
+        user = Config.getInstance().getUser();
+        if (user.getType() != Constants.Type.BOTH) {
+//            bottomBar.setVisibility(View.GONE);
+            userSelectionType = Constants.Type.RETENSION;
+        } else {
+            userSelectionType = Constants.Type.COLLECTION;
+        }
     }
 
     private void setListeners() {
+        final int selectedColor = ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark);
+        final int normalColor = ContextCompat.getColor(getActivity(), R.color.colorPrimary);
+
         tabRetention.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tabRetention.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
-                tabCollection.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+                tabRetention.setBackgroundColor(selectedColor);
+                tabCollection.setBackgroundColor(normalColor);
+                userSelectionType = Constants.Type.RETENSION;
+                initTab();
             }
         });
 
         tabCollection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tabCollection.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
-                tabRetention.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+                tabCollection.setBackgroundColor(selectedColor);
+                tabRetention.setBackgroundColor(normalColor);
+                userSelectionType = Constants.Type.COLLECTION;
+                initTab();
             }
         });
     }
 
     private void initTab() {
-        HomeTabAdapter tabAdapter = new HomeTabAdapter(getActivity(), getChildFragmentManager());
+        tabAdapter = new HomeTabAdapter(getActivity(), getChildFragmentManager(), userSelectionType);
         mViewPager.setAdapter(tabAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
 

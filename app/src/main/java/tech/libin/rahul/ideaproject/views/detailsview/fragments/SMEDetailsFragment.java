@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -37,9 +38,11 @@ import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
 import tech.libin.rahul.ideaproject.views.detailsview.adapters.FOSSpinnerAdapter;
 import tech.libin.rahul.ideaproject.views.detailsview.dialogs.FOSDateDialog;
-import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeDetailModel;
+import tech.libin.rahul.ideaproject.views.detailsview.dialogs.InfoDialog;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.FormSubmitModel;
+import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeDetailModel;
 import tech.libin.rahul.ideaproject.views.models.ActivityDetailRequestModel;
+import tech.libin.rahul.ideaproject.views.utils.GPSTracker;
 import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
 
 /**
@@ -50,19 +53,17 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 
     //region declaration
     public static final String DATE_DIALOG = "DATE_DIALOG";
+    public static final String SUCCESS_DIALOG = "SUCCESS_DIALOG";
+    private static final String TAG = SMEDetailsFragment.class.getName();
     private Spinner spnStatus;
     private Spinner spnFeedback;
     private Spinner spnReason;
-
     private LinearLayout linLayoutFeedback;
     private LinearLayout linLayoutReason;
     private LinearLayout linLayoutReminder;
-
     private View view;
-
     private EditText editTextReminder;
     private EditText editTextRemarks;
-
     private FOSTextView textViewName;
     private FOSTextView textViewMobileNum;
     private FOSTextView textViewBiller;
@@ -84,22 +85,18 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewLandLineHead;
     private FOSTextView textViewType;
     private FOSTextView textViewTypeHead;
-
     private Button buttonSubmit;
-
     private Switch switchLocation;
     private Switch switchUpdateLocation;
-
     private GoogleMap mMap;
-
     private RecyclerView recViewOther;
-
     private String objectId;
     private String userName;
     private String userPhone;
     private Constants.ActivityType activityType;
     private SupportMapFragment mapFragment;
     private Marker mMarker;
+    private GPSTracker gpsTracker;
 
     //endregion
 
@@ -120,6 +117,8 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 
     //region initComponents
     private void initComponents() {
+        gpsTracker = new GPSTracker(getActivity());
+
         textViewName = (FOSTextView) view.findViewById(R.id.textViewName);
         textViewMobileNum = (FOSTextView) view.findViewById(R.id.textViewPhoneNum);
         textViewBiller = (FOSTextView) view.findViewById(R.id.textViewBiller);
@@ -227,6 +226,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                             mapView.setVisibility(View.GONE);
                         } else {
                             mapView.setVisibility(View.VISIBLE);
+                            mapFragment.getMapAsync(SMEDetailsFragment.this);
                         }
                     }
                 }
@@ -275,18 +275,14 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             requestModel.setStatus(((SpinnerData) spnStatus.getSelectedItem()).getId());
             requestModel.setRemarks(editTextRemarks.getText().toString().trim());
 
-//            GPSTracker gpsTracker = new GPSTracker(getActivity());
-//
-//            if (gpsTracker.getIsGPSTrackingEnabled()) {
-//                requestModel.setLatitude(gpsTracker.getLatitude() + "");
-//                requestModel.setLongitude(gpsTracker.getLongitude() + "");
-//            } else {
-//                gpsTracker.showSettingsAlert();
-//                return;
-//            }
 
-            requestModel.setLongitude("9.977052");
-            requestModel.setLatitude("76.317974");
+            if (gpsTracker.getIsGPSTrackingEnabled()) {
+                requestModel.setLatitude(gpsTracker.getLatitude() + "");
+                requestModel.setLongitude(gpsTracker.getLongitude() + "");
+            } else {
+                gpsTracker.showSettingsAlert();
+                return;
+            }
 
             if (linLayoutFeedback.getVisibility() == View.VISIBLE) {
                 requestModel.setFeedback(((SpinnerData) spnFeedback.getSelectedItem()).getId());
@@ -305,7 +301,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                 @Override
                 public void onResponse(String response) {
                     Log.e("Submit", response);
-                    getActivity().getSupportFragmentManager().popBackStack();
+                    showSuccessInfo();
                 }
 
                 @Override
@@ -316,13 +312,21 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                 @Override
                 public void onRequestFail(FOSError error) {
                     Log.e("Submit Fail", error.getErrorMessage());
-                    getActivity().getSupportFragmentManager().popBackStack();
+                    showSuccessInfo();
 
                 }
             });
         }
     }
     //endregion
+
+    private void showSuccessInfo() {
+        String message = "Form submitted successfully";
+        String title = "Info";
+
+        InfoDialog infoDialog = InfoDialog.newInstance(title, message);
+        infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
+    }
 
     //region bindDetails
     private void bindDetails(SmeDetailModel model) {
@@ -367,21 +371,34 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         spnFeedback.setAdapter(feedbackAdapter);
 
 
-        if(activityType!=Constants.ActivityType.NEW_ACTIVITY) {
+        if (activityType != Constants.ActivityType.NEW_ACTIVITY) {
             DetailFromSMERoleModel fromExecutive = model.getFromExecutive();
 //bind data to submit from
             if (fromExecutive != null) {
-                if (fromExecutive.getVisitStatus() != 0)
-                    spnStatus.setSelection(findSpinnerElementPosition(fromExecutive.getVisitStatus(), visitStatus));
+                if (fromExecutive.getVisitStatus() != 0) {
+                    SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getVisitStatus(), visitStatus);
+                    if (spinnerElement != null) {
+                        int position = statusAdapter.getPosition(spinnerElement);
+                        spnStatus.setSelection(position);
+                    }
+                }
 
                 if (fromExecutive.getFeedback() != 0) {
                     linLayoutFeedback.setVisibility(View.VISIBLE);
-                    spnFeedback.setSelection(findSpinnerElementPosition(fromExecutive.getFeedback(), visitFeedback));
+                    SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getFeedback(), visitFeedback);
+                    if (spinnerElement != null) {
+                        int position = statusAdapter.getPosition(spinnerElement);
+                        spnFeedback.setSelection(position);
+                    }
                 }
 
                 if (fromExecutive.getReason() != 0) {
                     linLayoutReason.setVisibility(View.VISIBLE);
-                    spnFeedback.setSelection(findSpinnerElementPosition(fromExecutive.getReason(), model.getReason()));
+                    SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getReason(), model.getReason());
+                    if (spinnerElement != null) {
+                        int position = statusAdapter.getPosition(spinnerElement);
+                        spnFeedback.setSelection(position);
+                    }
                 }
 
                 editTextRemarks.setText(fromExecutive.getRemarks());
@@ -428,15 +445,13 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     //endregion
 
     //region findSpinnerElementPosition
-    private int findSpinnerElementPosition(int value, List<SpinnerData> spinnerData) {
-        int position = 0;
-        for (SpinnerData spnData : spinnerData
-                ) {
-            if (spnData.getId() == value)
-                return position;
-            position++;
+    private SpinnerData findSpinnerElementPosition(int value, List<SpinnerData> spinnerData) {
+        for (SpinnerData spnData : spinnerData) {
+            if (spnData.getId() == value) {
+                return spnData;
+            }
         }
-        return 0;
+        return null;
     }
     //endregion
 
@@ -471,10 +486,20 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        LatLng sydney = new LatLng(9.977052, 76.317974);
-        googleMap.addMarker(new MarkerOptions().position(sydney)
+        LatLng latLng;
+        if (gpsTracker != null) {
+            double latitude = gpsTracker.getLatitude();
+            double longitude = gpsTracker.getLongitude();
+            latLng = new LatLng(latitude, longitude);
+            Log.d(TAG, "onMapReady: (lat, long) - (" + latitude + ", " + longitude + ")");
+        } else {
+            latLng = new LatLng(9.977052, 76.317974);
+        }
+
+        googleMap.addMarker(new MarkerOptions().position(latLng)
                 .title("My Idea"));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        CameraUpdate location = CameraUpdateFactory.newLatLngZoom(latLng, 12);
+        mMap.animateCamera(location);
     }
     //endregion
 
@@ -482,13 +507,13 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     //region initMap
     private void initMap() {
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
         View mapView = mapFragment.getView();
         if (mapView != null) {
             if (!switchLocation.isChecked()) {
                 mapView.setVisibility(View.GONE);
             } else {
                 mapView.setVisibility(View.VISIBLE);
+                mapFragment.getMapAsync(this);
             }
         }
     }

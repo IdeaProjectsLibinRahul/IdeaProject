@@ -33,6 +33,7 @@ import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
 import tech.libin.rahul.ideaproject.views.detailsview.adapters.FOSSpinnerAdapter;
 import tech.libin.rahul.ideaproject.views.detailsview.dialogs.FOSDateDialog;
+import tech.libin.rahul.ideaproject.views.detailsview.dialogs.InfoDialog;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.FormSubmitModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.TdDetailModel;
 import tech.libin.rahul.ideaproject.views.models.ActivityDetailRequestModel;
@@ -47,11 +48,12 @@ import static tech.libin.rahul.ideaproject.views.detailsview.fragments.SMEDetail
 
 public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCallback {
 
+    public static final String SUCCESS_DIALOG = "SUCCESS_DIALOG";
+    private static final String TAG = TDDetailsFragment.class.getName();
     //region declarations
     Spinner spnStatus;
     private EditText editTextRemarks;
     private EditText editTextReminder;
-
     private FOSTextView textViewCustNum;
     private FOSTextView textViewMobile;
     private FOSTextView textViewBiller;
@@ -68,23 +70,18 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
     private FOSTextView textViewLandline1;
     private FOSTextView textViewLandLine2;
     private FOSTextView textViewAddress;
-
     private View view;
-
     private Button buttonSubmit;
-
     private Switch switchLocation;
     private Switch switchUpdateLocation;
-
     private LinearLayout linLayoutReminder;
-
     private RecyclerView recViewOther;
-
     private String objectId;
     private String userName;
     private String userPhone;
     private Constants.ActivityType activityType;
     private SupportMapFragment mapFragment;
+    private GPSTracker gpsTracker;
 
     //endregion
 
@@ -106,6 +103,8 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
 
     //region initComponents
     private void initComponents() {
+        gpsTracker = new GPSTracker(getActivity());
+
         textViewCustNum = (FOSTextView) view.findViewById(R.id.textViewName);
         textViewMobile = (FOSTextView) view.findViewById(R.id.textViewPhoneNum);
 
@@ -205,22 +204,26 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
 
         textViewAddress.setText(model.getBill1() + "\n" + model.getBill2() + "\n" + model.getBill3() + "\n" + model.getBill4() + "\n" + model.getBill5() + "\n" + model.getZip());
 
-        final List visitStatus = model.getVisitStatus();
+        final List<SpinnerData> visitStatus = model.getVisitStatus();
 
+        FOSSpinnerAdapter statusAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getVisitStatus());
+        spnStatus.setAdapter(statusAdapter);
 
         if (activityType != Constants.ActivityType.NEW_ACTIVITY) {
             DetailFromUPCRoleModel fromExecutive = model.getFromExecutive();
             if (fromExecutive != null) {
-                if (fromExecutive.getStatus() != 0)
-                    spnStatus.setSelection(findSpinnerElementPosition(fromExecutive.getStatus(), visitStatus));
+                if (fromExecutive.getStatus() != 0) {
+                    SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getStatus(), visitStatus);
+                    if (spinnerElement != null) {
+                        int position = statusAdapter.getPosition(spinnerElement);
+                        spnStatus.setSelection(position);
+                    }
+                }
 
                 editTextRemarks.setText(fromExecutive.getRemarks());
             }
         }
 
-
-        FOSSpinnerAdapter statusAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getVisitStatus());
-        spnStatus.setAdapter(statusAdapter);
 
         spnStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -242,15 +245,13 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
     //endregion
 
     //region findSpinnerElementPosition
-    private int findSpinnerElementPosition(int value, List<SpinnerData> spinnerData) {
-        int position = 0;
-        for (SpinnerData spnData : spinnerData
-                ) {
-            if (spnData.getId() == value)
-                return position;
-            position++;
+    private SpinnerData findSpinnerElementPosition(int value, List<SpinnerData> spinnerData) {
+        for (SpinnerData spnData : spinnerData) {
+            if (spnData.getId() == value) {
+                return spnData;
+            }
         }
-        return 0;
+        return null;
     }
     //endregion
 
@@ -296,6 +297,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                             mapView.setVisibility(View.GONE);
                         } else {
                             mapView.setVisibility(View.VISIBLE);
+                            mapFragment.getMapAsync(TDDetailsFragment.this);
                         }
                     }
                 }
@@ -323,9 +325,6 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                 return;
             }
 
-            requestModel.setLongitude("9.977052");
-            requestModel.setLatitude("76.317974");
-
             requestModel.setReminder("");
             requestModel.setReason(0);
             requestModel.setFeedback(0);
@@ -340,7 +339,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                 @Override
                 public void onResponse(String response) {
                     Log.e("Submit", response);
-                    getActivity().getSupportFragmentManager().popBackStack();
+                    showSuccessInfo();
                 }
 
                 @Override
@@ -351,7 +350,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                 @Override
                 public void onRequestFail(FOSError error) {
                     Log.e("Submit Fail", error.getErrorMessage());
-                    getActivity().getSupportFragmentManager().popBackStack();
+                    showSuccessInfo();
 
                 }
             });
@@ -359,16 +358,24 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
     }
     //endregion
 
+    private void showSuccessInfo() {
+        String message = "Form submitted successfully";
+        String title = "Info";
+
+        InfoDialog infoDialog = InfoDialog.newInstance(title, message);
+        infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
+    }
+
     //region initMap
     private void initMap() {
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
         View mapView = mapFragment.getView();
         if (mapView != null) {
             if (!switchLocation.isChecked()) {
                 mapView.setVisibility(View.GONE);
             } else {
                 mapView.setVisibility(View.VISIBLE);
+                mapFragment.getMapAsync(this);
             }
         }
     }

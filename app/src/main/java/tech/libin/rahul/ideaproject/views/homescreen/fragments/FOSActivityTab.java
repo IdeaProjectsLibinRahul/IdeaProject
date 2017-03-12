@@ -55,6 +55,7 @@ public class FOSActivityTab extends FOSBaseFragment {
     private int pageNo = 1;
 
     private Constants.ActivityType activityType;
+    private Constants.Type userSelectionType;
 
     private String searchName = "";
     private String searchMsisdn = "";
@@ -69,8 +70,13 @@ public class FOSActivityTab extends FOSBaseFragment {
         setClickListener();
         setScrollListener();
         initRecyclerView();
-        sendRequest();
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        sendRequest();
     }
 
     private void initComponents() {
@@ -111,7 +117,7 @@ public class FOSActivityTab extends FOSBaseFragment {
         requestModel.setMsisdn(searchMsisdn);
         requestModel.setPageNo(pageNo);
         requestModel.setPageSize(PAGE_SIZE);
-        requestModel.setType(Constants.Type.RETENSION);
+        requestModel.setType(userSelectionType);
         requestModel.setUserId(user.getUserId());
         requestModel.setZip(searchZip);
 
@@ -211,5 +217,9 @@ public class FOSActivityTab extends FOSBaseFragment {
 
     public void setActivityType(Constants.ActivityType activityType) {
         this.activityType = activityType;
+    }
+
+    public void setUserSelectionType(Constants.Type userSelectionType) {
+        this.userSelectionType = userSelectionType;
     }
 }

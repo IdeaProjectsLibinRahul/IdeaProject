@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_bar"
+    style="@style/BottomBar"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    tools:showIn="@layout/fragment_collection">
+
+    <RelativeLayout
+        android:id="@+id/tabRetention"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/colorPrimaryDark"
+        android:gravity="center_horizontal|center_vertical">
+
+        <ImageView
+            android:id="@+id/imageViewRetention"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_retention" />
+
+        <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/imageViewRetention"
+            android:layout_alignTop="@id/imageViewRetention"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:layout_toRightOf="@id/imageViewRetention"
+            android:gravity="center_vertical"
+            android:text="@string/retention" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/tabCollection"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_horizontal|center_vertical">
+
+        <ImageView
+            android:id="@+id/imageViewCollection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_collection" />
+
+        <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/imageViewCollection"
+            android:layout_alignTop="@id/imageViewCollection"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:layout_toRightOf="@id/imageViewCollection"
+            android:gravity="center_vertical"
+            android:text="@string/collection" />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -17,13 +17,14 @@ public class HomeTabAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 3;
     private String tabTitles[];
     private Context context;
-    FOSActivityTab tab1 = new FOSActivityTab();
-    FOSActivityTab tab2 = new FOSActivityTab();
-    FOSActivityTab tab3 = new FOSActivityTab();
+
+    private FOSActivityTab tab1 = new FOSActivityTab();
+    private FOSActivityTab tab2 = new FOSActivityTab();
+    private FOSActivityTab tab3 = new FOSActivityTab();
 
     private Fragment[] fragments;
 
-    public HomeTabAdapter(Context context, FragmentManager fm) {
+    public HomeTabAdapter(Context context, FragmentManager fm, Constants.Type userSelectionType) {
         super(fm);
         this.context = context;
         String newActivity = context.getString(R.string.new_activities);
@@ -34,6 +35,10 @@ public class HomeTabAdapter extends FragmentPagerAdapter {
         tab1.setActivityType(Constants.ActivityType.NEW_ACTIVITY);
         tab2.setActivityType(Constants.ActivityType.ACTIVITY);
         tab3.setActivityType(Constants.ActivityType.REMINDER);
+
+        tab1.setUserSelectionType(userSelectionType);
+        tab2.setUserSelectionType(userSelectionType);
+        tab3.setUserSelectionType(userSelectionType);
 
         fragments = new Fragment[]{tab1, tab2, tab3};
     }
