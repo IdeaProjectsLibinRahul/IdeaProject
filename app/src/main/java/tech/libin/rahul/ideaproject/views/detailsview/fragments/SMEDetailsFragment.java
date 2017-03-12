@@ -300,8 +300,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             fosFacade.doSubmitVisitDetails(requestModel, new ServiceCallback<String>() {
                 @Override
                 public void onResponse(String response) {
-                    Log.e("Submit", response);
-                    showSuccessInfo();
+                    showSuccessInfo(response);
                 }
 
                 @Override
@@ -311,8 +310,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 
                 @Override
                 public void onRequestFail(FOSError error) {
-                    Log.e("Submit Fail", error.getErrorMessage());
-                    showSuccessInfo();
+                    showSuccessInfo(error.getErrorMessage());
 
                 }
             });
@@ -320,10 +318,8 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     }
     //endregion
 
-    private void showSuccessInfo() {
-        String message = "Form submitted successfully";
+    private void showSuccessInfo(String message) {
         String title = "Info";
-
         InfoDialog infoDialog = InfoDialog.newInstance(title, message);
         infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
     }
@@ -502,7 +498,6 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         mMap.animateCamera(location);
     }
     //endregion
-
 
     //region initMap
     private void initMap() {

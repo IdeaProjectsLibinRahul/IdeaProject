@@ -14,16 +14,24 @@ import tech.libin.rahul.ideaproject.service.models.SpinnerData;
 
 public class CollectionDetailModel {
 
+
     private String custNum;
     private String mobile;
     private String biller;
     private String ser;
     private String customerType;
-    private String segment;
-    private String myIdeaCode;
+    private String category;
+    private String defaultHabit;
     private String curBalance;
+    private String bal;
+    private String bal30;
+    private String balOther;
     private String bucket;
     private String myIdeaAllocation;
+    private String ratePlan;
+    private String customerStatus;
+    private String reminderDate;
+
     private String bill1;
     private String bill2;
     private String bill3;
@@ -33,8 +41,6 @@ public class CollectionDetailModel {
     private String landLine1;
     private String landLine2;
     private String crmStatus;
-    private String type;
-    private String activatiomMi;
     private String zip;
 
     private LocationModel location;
@@ -86,20 +92,20 @@ public class CollectionDetailModel {
         this.customerType = customerType;
     }
 
-    public String getSegment() {
-        return segment;
+    public String getCategory() {
+        return category;
     }
 
-    public void setSegment(String segment) {
-        this.segment = segment;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public String getMyIdeaCode() {
-        return myIdeaCode;
+    public String getDefaultHabit() {
+        return defaultHabit;
     }
 
-    public void setMyIdeaCode(String myIdeaCode) {
-        this.myIdeaCode = myIdeaCode;
+    public void setDefaultHabit(String defaultHabit) {
+        this.defaultHabit = defaultHabit;
     }
 
     public String getCurBalance() {
@@ -108,6 +114,30 @@ public class CollectionDetailModel {
 
     public void setCurBalance(String curBalance) {
         this.curBalance = curBalance;
+    }
+
+    public String getBal() {
+        return bal;
+    }
+
+    public void setBal(String bal) {
+        this.bal = bal;
+    }
+
+    public String getBal30() {
+        return bal30;
+    }
+
+    public void setBal30(String bal30) {
+        this.bal30 = bal30;
+    }
+
+    public String getBalOther() {
+        return balOther;
+    }
+
+    public void setBalOther(String balOther) {
+        this.balOther = balOther;
     }
 
     public String getBucket() {
@@ -124,6 +154,30 @@ public class CollectionDetailModel {
 
     public void setMyIdeaAllocation(String myIdeaAllocation) {
         this.myIdeaAllocation = myIdeaAllocation;
+    }
+
+    public String getRatePlan() {
+        return ratePlan;
+    }
+
+    public void setRatePlan(String ratePlan) {
+        this.ratePlan = ratePlan;
+    }
+
+    public String getCustomerStatus() {
+        return customerStatus;
+    }
+
+    public void setCustomerStatus(String customerStatus) {
+        this.customerStatus = customerStatus;
+    }
+
+    public String getReminderDate() {
+        return reminderDate;
+    }
+
+    public void setReminderDate(String reminderDate) {
+        this.reminderDate = reminderDate;
     }
 
     public String getBill1() {
@@ -188,22 +242,6 @@ public class CollectionDetailModel {
 
     public void setCrmStatus(String crmStatus) {
         this.crmStatus = crmStatus;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getActivatiomMi() {
-        return activatiomMi;
-    }
-
-    public void setActivatiomMi(String activatiomMi) {
-        this.activatiomMi = activatiomMi;
     }
 
     public String getZip() {

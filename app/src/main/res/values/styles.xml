@@ -128,4 +128,14 @@
         <item name="android:popupBackground">#DFFFFFFF</item>
     </style>
 
+
+    <style name="DetailsToolbar">
+        <item name="android:titleTextColor">@android:color/white</item>
+        <item name="android:textColor">@android:color/white</item>
+
+        <item name="android:background">@color/detail_head_back</item>
+
+
+    </style>
+
 </resources>

@@ -4,6 +4,7 @@
     <string name="retention">Retention</string>
     <string name="activities">Activities</string>
     <string name="new_activities">New Activities</string>
+    <string name="customer_type">Customer type</string>
     <string name="reminders">Reminders</string>
     <string name="logout">Logout</string>
 
@@ -24,6 +25,7 @@
     <string name="zip">Zip</string>
     <string name="dummy_address"> Adress1 \nAddress2 A \nAddress 3\n Address4</string>
     <string name="visit_status">Visit Status</string>
+    <string name="visited_date">Visited Date</string>
     <string name="view_location">View Location</string>
     <string name="update_location">Update Location</string>
 
@@ -40,6 +42,8 @@
     <string name="remarks">Remarks</string>
     <string name="hint_remarks">Please write your comments.</string>
     <string name="title_submit">UPDATE VISIT STATUS</string>
+    <string name="title_from_executive">EXECUTIVE VISIT</string>
+    <string name="title_from_mico">MICO VISIT</string>
     <string name="title_details">CUSTOMER DETAILS</string>
     <string name="submit">Submit</string>
     <string name="reminder_date">Reminder Date</string>
@@ -64,6 +68,20 @@
     <string name="land_line1">Land Line 1</string>
     <string name="land_line2">Land Line 2</string>
     <string name="activatiom_mi">Activation Mi</string>
+    <string name="my_idea">My Idea</string>
+
+    <string name="bal_00">Bal_00</string>
+    <string name="bal_30">Bal_30</string>
+    <string name="bal_other">> Bal_30</string>
+    <string name="category">Category</string>
+    <string name="rate_plan">Rate Plan</string>
+    <string name="default_Habit">Default Habit</string>
+    <string name="current_status">Current Status</string>
+    <string name="cust_num">Customer Number</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

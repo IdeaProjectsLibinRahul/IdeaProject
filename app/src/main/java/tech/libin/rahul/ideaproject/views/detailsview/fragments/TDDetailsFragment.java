@@ -50,6 +50,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
 
     public static final String SUCCESS_DIALOG = "SUCCESS_DIALOG";
     private static final String TAG = TDDetailsFragment.class.getName();
+
     //region declarations
     Spinner spnStatus;
     private EditText editTextRemarks;
@@ -95,7 +96,6 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
         parseBundle();
         loadTdDetails();
         initMap();
-        loadTdDetails();
 
         return view;
     }

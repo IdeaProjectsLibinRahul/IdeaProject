@@ -55,6 +55,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     public static final String SUCCESS_DIALOG = "SUCCESS_DIALOG";
     private static final String TAG = UPCDetailsFragment.class.getName();
     Spinner spnStatus;
+
     private FOSTextView textViewCustNum;
     private FOSTextView textViewMobile;
     private FOSTextView textViewUpc;
@@ -67,6 +68,24 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewAlternateNumber;
     private FOSTextView textViewServSeg;
     private FOSTextView textViewAddress;
+
+    private FOSTextView textViewMicoName;
+    private FOSTextView textViewMicoMobileNum;
+    private FOSTextView textViewMicoMyIdea;
+    private FOSTextView textViewMicoMyIdeaCode;
+    private FOSTextView textViewMicoVisitStatus;
+    private FOSTextView textViewMicoVisitedDate;
+    private FOSTextView textViewMicoRemarks;
+
+    private FOSTextView textViewExeName;
+    private FOSTextView textViewExeMobileNum;
+    private FOSTextView textViewExeMyIdea;
+    private FOSTextView textViewExeMyIdeaCode;
+    private FOSTextView textViewExeVisitStatus;
+    private FOSTextView textViewExeVisitedDate;
+    private FOSTextView textViewExeRemarks;
+
+
     private EditText editTextReminder;
     private EditText editTextRemarks;
     private View view;
@@ -97,7 +116,6 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_upc_details, container, false);
-
         initComponents();
         parseBundle();
         loadUpcDetails();
@@ -124,6 +142,22 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         textViewCustomerType = (FOSTextView) view.findViewById(R.id.textViewCustomerType);
         textViewAlternateNumber = (FOSTextView) view.findViewById(R.id.textViewAlternateNum);
         textViewServSeg = (FOSTextView) view.findViewById(R.id.textViewServSeg);
+
+        textViewMicoName = (FOSTextView) view.findViewById(R.id.textViewFromMicoName);
+        textViewMicoMobileNum = (FOSTextView) view.findViewById(R.id.textViewFromMicoMobileNum);
+        textViewMicoMyIdea = (FOSTextView) view.findViewById(R.id.textViewFromMicoMyIdea);
+        textViewMicoMyIdeaCode = (FOSTextView) view.findViewById(R.id.textViewFromMicoMyIdeaCode);
+        textViewMicoVisitStatus = (FOSTextView) view.findViewById(R.id.textViewFromMicoVisitStatus);
+        textViewMicoVisitedDate = (FOSTextView) view.findViewById(R.id.textViewFromMicoVisitedDate);
+        textViewMicoRemarks = (FOSTextView) view.findViewById(R.id.textViewFromMicoRemarks);
+
+        textViewExeName = (FOSTextView) view.findViewById(R.id.textViewFromExeName);
+        textViewExeMobileNum = (FOSTextView) view.findViewById(R.id.textViewFromExeMobileNum);
+        textViewExeMyIdea = (FOSTextView) view.findViewById(R.id.textViewFromExeMyIdea);
+        textViewExeMyIdeaCode = (FOSTextView) view.findViewById(R.id.textViewFromExeMyIdeaCode);
+        textViewExeVisitStatus = (FOSTextView) view.findViewById(R.id.textViewFromExeVisitStatus);
+        textViewExeVisitedDate = (FOSTextView) view.findViewById(R.id.textViewFromExeVisitedDate);
+        textViewExeRemarks = (FOSTextView) view.findViewById(R.id.textViewFromExeRemarks);
 
         editTextRemarks = (EditText) view.findViewById(R.id.editTextRemarks);
         textViewAddress = (FOSTextView) view.findViewById(R.id.textViewAddress);
@@ -202,12 +236,12 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             if (activityType != Constants.ActivityType.NEW_ACTIVITY) {
                 DetailFromUPCRoleModel fromExecutive = response.getFromExecutive();
                 if (fromExecutive != null) {
-                    if (fromExecutive.getStatus() == 2) {
-                        spnStatus.setSelection(1);
-                        linLayoutReminder.setVisibility(View.VISIBLE);
-                        editTextReminder.setText(response.getReminderDate());
-                    } else
-                        spnStatus.setSelection(0);
+//                    if (fromExecutive.getStatus() == 2) {
+//                        spnStatus.setSelection(1);
+//                        linLayoutReminder.setVisibility(View.VISIBLE);
+//                        editTextReminder.setText(response.getReminderDate());
+//                    } else
+//                        spnStatus.setSelection(0);
                     if (fromExecutive.getStatus() != 0) {
                         SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getStatus(), visitStatus);
                         if (spinnerElement != null) {

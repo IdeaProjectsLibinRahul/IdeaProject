@@ -37,12 +37,18 @@ public class CollectionDetailMapper implements FOSBaseMapper<ActivityDetailReque
         models.setBiller(model.getResponse().getBiller());
         models.setSer(model.getResponse().getSer());
         models.setCustomerType(model.getResponse().getCustomerType());
-        models.setSegment(model.getResponse().getSegment());
-
-        models.setMyIdeaCode(model.getResponse().getMyIdeaCode());
+        models.setCategory(model.getResponse().getCategory());
+        models.setDefaultHabit(model.getResponse().getDefaultHabit());
         models.setCurBalance(model.getResponse().getCurBalance());
+        models.setBal(model.getResponse().getBal());
+        models.setBal30(model.getResponse().getBal30());
+        models.setBalOther(model.getResponse().getBalOther());
+
         models.setBucket(model.getResponse().getBucket());
         models.setMyIdeaAllocation(model.getResponse().getMyIdeaAllocation());
+        models.setRatePlan(model.getResponse().getRatePlan());
+        models.setCustomerStatus(model.getResponse().getCustomerStatus());
+        models.setReminderDate(model.getResponse().getReminderDate());
 
         models.setBill1(model.getResponse().getBill1());
         models.setBill2(model.getResponse().getBill2());
@@ -53,8 +59,6 @@ public class CollectionDetailMapper implements FOSBaseMapper<ActivityDetailReque
         models.setLandLine1(model.getResponse().getLandLine1());
         models.setLandLine2(model.getResponse().getLandLine2());
         models.setCrmStatus(model.getResponse().getCrmStatus());
-        models.setType(model.getResponse().getType());
-        models.setActivatiomMi(model.getResponse().getActivatiomMi());
         models.setZip(model.getResponse().getZip());
 
         models.setLocation(model.getResponse().getLocation());
