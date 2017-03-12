@@ -49,6 +49,7 @@ public class TdDetailResponse extends FOSBaseResponse {
         private String type;
         private String activatiomMi;
         private String zip;
+        private String reminderDate;
 
         private LocationModel location;
         private ArrayList<DetailOtherData> other;
@@ -225,6 +226,14 @@ public class TdDetailResponse extends FOSBaseResponse {
 
         public void setZip(String zip) {
             this.zip = zip;
+        }
+
+        public String getReminderDate() {
+            return reminderDate;
+        }
+
+        public void setReminderDate(String reminderDate) {
+            this.reminderDate = reminderDate;
         }
 
         public LocationModel getLocation() {

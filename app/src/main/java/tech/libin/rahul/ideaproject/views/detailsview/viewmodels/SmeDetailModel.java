@@ -43,6 +43,8 @@ public class SmeDetailModel {
 
     String type;
 
+    private String reminderDate;
+
     private LocationModel location;
     private ArrayList<DetailOtherData> other;
     private Constants.EsclateStatus esclate;
@@ -229,6 +231,14 @@ public class SmeDetailModel {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getReminderDate() {
+        return reminderDate;
+    }
+
+    public void setReminderDate(String reminderDate) {
+        this.reminderDate = reminderDate;
     }
 
     public LocationModel getLocation() {

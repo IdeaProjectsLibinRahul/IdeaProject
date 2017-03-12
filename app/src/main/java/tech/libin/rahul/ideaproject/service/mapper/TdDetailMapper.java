@@ -56,6 +56,7 @@ public class TdDetailMapper implements FOSBaseMapper<ActivityDetailRequestModel,
         models.setType(model.getResponse().getType());
         models.setActivatiomMi(model.getResponse().getActivatiomMi());
         models.setZip(model.getResponse().getZip());
+        models.setReminderDate(model.getResponse().getReminderDate());
 
         models.setLocation(model.getResponse().getLocation());
         models.setOther(model.getResponse().getOther());

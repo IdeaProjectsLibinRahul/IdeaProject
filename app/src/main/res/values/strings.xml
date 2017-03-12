@@ -40,7 +40,7 @@
     <string name="feedback">Feedback</string>
     <string name="reason">Reason</string>
     <string name="remarks">Remarks</string>
-    <string name="hint_remarks">Please write your comments.</string>
+    <string name="hint_remarks">Please write your comments here...</string>
     <string name="title_submit">UPDATE VISIT STATUS</string>
     <string name="title_from_executive">EXECUTIVE VISIT</string>
     <string name="title_from_mico">MICO VISIT</string>
@@ -78,6 +78,8 @@
     <string name="default_Habit">Default Habit</string>
     <string name="current_status">Current Status</string>
     <string name="cust_num">Customer Number</string>
+
+    <string name="warn_request_timed_out">Your request timed out, please retry.</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

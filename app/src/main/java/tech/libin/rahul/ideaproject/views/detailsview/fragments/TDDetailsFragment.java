@@ -1,5 +1,6 @@
 package tech.libin.rahul.ideaproject.views.detailsview.fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -16,9 +17,13 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
@@ -83,6 +88,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
     private Constants.ActivityType activityType;
     private SupportMapFragment mapFragment;
     private GPSTracker gpsTracker;
+    private GoogleMap mMap;
 
     //endregion
 
@@ -143,7 +149,6 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
             objectId = bundle.getString(Constants.PARAMS.DETAILS_OBJECT_ID);
             userName = bundle.getString(Constants.PARAMS.DETAILS_OBJECT_NAME);
             userPhone = bundle.getString(Constants.PARAMS.DETAILS_OBJECT_PHONE);
-            userPhone = bundle.getParcelable(Constants.PARAMS.DETAILS_OBJECT_TAB);
             activityType = (Constants.ActivityType) bundle.getSerializable(Constants.PARAMS.DETAILS_OBJECT_TAB);
             //setHeader();
         }
@@ -157,23 +162,32 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
             requestModel.setObjectId(objectId);
             requestModel.setRecordType(Constants.RecordType.TD);
 
+            final ProgressDialog dialog = ProgressDialog.show(getActivity(), null, getResources().getString(R.string.requesting), true, true);
             FOSFacade fosFacade = new FOSFacadeImpl();
             fosFacade.getTdDetail(requestModel, new ServiceCallback<TdDetailModel>() {
                 @Override
                 public void onResponse(TdDetailModel response) {
-                    Log.e("TDDETAILS", response.toString());
+                    if (dialog != null) {
+                        dialog.cancel();
+                    }
                     bindDetails(response);
                     setFomListeners();
                 }
 
                 @Override
                 public void onRequestTimout() {
-
+                    if (dialog != null) {
+                        dialog.cancel();
+                    }
+                    showSuccessInfo(getResources().getString(R.string.warn_request_timed_out));
                 }
 
                 @Override
                 public void onRequestFail(FOSError error) {
-
+                    if (dialog != null) {
+                        dialog.cancel();
+                    }
+                   showSuccessInfo(error.getErrorMessage());
                 }
             });
         }
@@ -314,7 +328,6 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
             requestModel.setObjectId(Long.parseLong(objectId));
             requestModel.setStatus(((SpinnerData) spnStatus.getSelectedItem()).getId());
             requestModel.setRemarks(editTextRemarks.getText().toString().trim());
-
             GPSTracker gpsTracker = new GPSTracker(getActivity());
 
             if (gpsTracker.getIsGPSTrackingEnabled()) {
@@ -334,37 +347,36 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
             }
             requestModel.setRecordType(Constants.RecordType.TD);
 
+            final ProgressDialog dialog = ProgressDialog.show(getActivity(), null, getResources().getString(R.string.requesting), true, true);
             FOSFacade fosFacade = new FOSFacadeImpl();
             fosFacade.doSubmitVisitDetails(requestModel, new ServiceCallback<String>() {
                 @Override
                 public void onResponse(String response) {
-                    Log.e("Submit", response);
-                    showSuccessInfo();
+                    if (dialog != null) {
+                        dialog.cancel();
+                    }
+                    showSuccessInfo(response);
                 }
 
                 @Override
                 public void onRequestTimout() {
-
+                    if (dialog != null) {
+                        dialog.cancel();
+                    }
+                    showSuccessInfo(getResources().getString(R.string.warn_request_timed_out));
                 }
 
                 @Override
                 public void onRequestFail(FOSError error) {
-                    Log.e("Submit Fail", error.getErrorMessage());
-                    showSuccessInfo();
-
+                    if (dialog != null) {
+                        dialog.cancel();
+                    }
+                    showSuccessInfo(error.getErrorMessage());
                 }
             });
         }
     }
     //endregion
-
-    private void showSuccessInfo() {
-        String message = "Form submitted successfully";
-        String title = "Info";
-
-        InfoDialog infoDialog = InfoDialog.newInstance(title, message);
-        infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
-    }
 
     //region initMap
     private void initMap() {
@@ -384,20 +396,30 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
     //region onMapReady
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        try {
-            mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-            mapFragment.getMapAsync(this);
-            View mapView = mapFragment.getView();
-            if (mapView != null) {
-                if (!switchLocation.isChecked()) {
-                    mapView.setVisibility(View.GONE);
-                } else {
-                    mapView.setVisibility(View.VISIBLE);
-                }
-            }
-        } catch (Exception ex) {
-            Log.e("Error", ex.toString());
+        mMap = googleMap;
+
+        LatLng latLng;
+        if (gpsTracker != null) {
+            double latitude = gpsTracker.getLatitude();
+            double longitude = gpsTracker.getLongitude();
+            latLng = new LatLng(latitude, longitude);
+            Log.d(TAG, "onMapReady: (lat, long) - (" + latitude + ", " + longitude + ")");
+        } else {
+            latLng = new LatLng(9.977052, 76.317974);
         }
+
+        googleMap.addMarker(new MarkerOptions().position(latLng)
+                .title("My Idea"));
+        CameraUpdate location = CameraUpdateFactory.newLatLngZoom(latLng, 12);
+        mMap.animateCamera(location);
+    }
+    //endregion
+
+    //region showSuccessInfo
+    private void showSuccessInfo(String message) {
+        String title = "Info";
+        InfoDialog infoDialog = InfoDialog.newInstance(title, message);
+        infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
     }
     //endregion
 

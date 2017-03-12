@@ -839,7 +839,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_remarks"
                     android:maxLength="250"
-                    android:minHeight="150dp" />
+                    android:minHeight="100dp"
+                    android:gravity="top|left"/>
 
                 <tech.libin.rahul.ideaproject.views.widgets.button.FOSButton
                     android:id="@+id/buttonSubmit"

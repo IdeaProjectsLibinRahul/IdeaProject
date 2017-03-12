@@ -1,5 +1,6 @@
 package tech.libin.rahul.ideaproject.views.detailsview.fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -187,12 +188,15 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             ActivityDetailRequestModel requestModel = new ActivityDetailRequestModel();
             requestModel.setObjectId(objectId);
             requestModel.setRecordType(Constants.RecordType.SME);
+            final ProgressDialog dialog = ProgressDialog.show(getActivity(), null, getResources().getString(R.string.requesting), true, true);
 
             FOSFacade fosFacade = new FOSFacadeImpl();
             fosFacade.getSmeDetail(requestModel, new ServiceCallback<SmeDetailModel>() {
                 @Override
                 public void onResponse(SmeDetailModel response) {
-
+                    if (dialog != null) {
+                        dialog.cancel();
+                    }
                     bindDetails(response);
                     setFomListeners();
                     setLinearLayoutGone();
@@ -200,12 +204,18 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 
                 @Override
                 public void onRequestTimout() {
-                    toastMessage("Request timeout");
+                    if (dialog != null) {
+                        dialog.cancel();
+                    }
+                    showSuccessInfo(getResources().getString(R.string.warn_request_timed_out));
                 }
 
                 @Override
                 public void onRequestFail(FOSError error) {
-                    toastMessage("Request failed - " + error.getErrorMessage());
+                    if (dialog != null) {
+                        dialog.cancel();
+                    }
+                    showSuccessInfo(error.getErrorMessage());
                 }
             });
         }
@@ -296,33 +306,43 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             }
             requestModel.setRecordType(Constants.RecordType.SME);
 
+            final ProgressDialog dialog = ProgressDialog.show(getActivity(), null, getResources().getString(R.string.requesting), true, true);
             FOSFacade fosFacade = new FOSFacadeImpl();
             fosFacade.doSubmitVisitDetails(requestModel, new ServiceCallback<String>() {
                 @Override
                 public void onResponse(String response) {
+                    if (dialog != null) {
+                        dialog.cancel();
+                    }
                     showSuccessInfo(response);
                 }
 
                 @Override
                 public void onRequestTimout() {
-
+                    if (dialog != null) {
+                        dialog.cancel();
+                    }
                 }
 
                 @Override
                 public void onRequestFail(FOSError error) {
+                    if (dialog != null) {
+                        dialog.cancel();
+                    }
                     showSuccessInfo(error.getErrorMessage());
-
                 }
             });
         }
     }
     //endregion
 
+    //region showSuccessInfo
     private void showSuccessInfo(String message) {
         String title = "Info";
         InfoDialog infoDialog = InfoDialog.newInstance(title, message);
         infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
     }
+    //endregion
 
     //region bindDetails
     private void bindDetails(SmeDetailModel model) {
@@ -366,10 +386,9 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         FOSSpinnerAdapter feedbackAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getFeedback());
         spnFeedback.setAdapter(feedbackAdapter);
 
-
         if (activityType != Constants.ActivityType.NEW_ACTIVITY) {
             DetailFromSMERoleModel fromExecutive = model.getFromExecutive();
-//bind data to submit from
+            //bind data to submit from
             if (fromExecutive != null) {
                 if (fromExecutive.getVisitStatus() != 0) {
                     SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getVisitStatus(), visitStatus);
@@ -388,7 +407,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     }
                 }
 
-                if (fromExecutive.getReason() != 0) {
+                if (fromExecutive.getReason() != 0 && fromExecutive.getFeedback()!=5) {
                     linLayoutReason.setVisibility(View.VISIBLE);
                     SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getReason(), model.getReason());
                     if (spinnerElement != null) {
@@ -398,6 +417,10 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                 }
 
                 editTextRemarks.setText(fromExecutive.getRemarks());
+                if(model.getReminderDate()!=null && !model.getReminderDate().isEmpty()) {
+                    linLayoutReminder.setVisibility(View.VISIBLE);
+                    editTextReminder.setText(model.getReminderDate());
+                }
             }
         }
 

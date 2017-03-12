@@ -36,6 +36,7 @@ public class TdDetailModel  {
         private String type;
         private String activatiomMi;
         private String zip;
+        private String reminderDate;
 
         private LocationModel location;
         private ArrayList<DetailOtherData> other;
@@ -214,7 +215,15 @@ public class TdDetailModel  {
             this.zip = zip;
         }
 
-        public LocationModel getLocation() {
+    public String getReminderDate() {
+        return reminderDate;
+    }
+
+    public void setReminderDate(String reminderDate) {
+        this.reminderDate = reminderDate;
+    }
+
+    public LocationModel getLocation() {
             return location;
         }
 

@@ -284,7 +284,9 @@
             android:layout_marginTop="10dp"
             android:elevation="@dimen/cardview_default_elevation"
             app:cardBackgroundColor="@color/detail_body_color"
-            app:cardCornerRadius="5dp">
+            app:cardCornerRadius="5dp"
+            android:visibility="gone"
+            >
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                 style="@style/DetailsTitleViewText"
@@ -428,6 +430,7 @@
             android:layout_marginTop="10dp"
             android:elevation="@dimen/cardview_default_elevation"
             app:cardBackgroundColor="@color/detail_body_color"
+            android:visibility="gone"
             app:cardCornerRadius="5dp">
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -615,7 +618,6 @@
                     android:orientation="horizontal">
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                        style="@style/DetailsViewHeader"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -654,7 +656,6 @@
                 </LinearLayout>
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    style="@style/DetailsViewHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/remarks"
@@ -666,7 +667,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_remarks"
                     android:maxLength="250"
-                    android:minHeight="150dp" />
+                    android:minHeight="100dp"
+                   android:gravity="top|left"/>
 
                 <tech.libin.rahul.ideaproject.views.widgets.button.FOSButton
                     android:id="@+id/buttonSubmit"

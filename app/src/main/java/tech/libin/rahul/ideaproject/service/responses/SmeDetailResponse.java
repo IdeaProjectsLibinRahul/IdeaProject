@@ -48,6 +48,7 @@ public class SmeDetailResponse extends FOSBaseResponse {
         String zip;
         String landLine2;
         String type;
+        private String reminderDate;
 
         private LocationModel location;
         private ArrayList<DetailOtherData> other;
@@ -220,6 +221,14 @@ public class SmeDetailResponse extends FOSBaseResponse {
 
         public void setZip(String zip) {
             this.zip = zip;
+        }
+
+        public String getReminderDate() {
+            return reminderDate;
+        }
+
+        public void setReminderDate(String reminderDate) {
+            this.reminderDate = reminderDate;
         }
 
         public String getLandLine2() {

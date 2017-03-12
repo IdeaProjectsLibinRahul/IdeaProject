@@ -1,5 +1,6 @@
 package tech.libin.rahul.ideaproject.views.detailsview.fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -25,6 +28,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.List;
 
 import tech.libin.rahul.ideaproject.R;
+import tech.libin.rahul.ideaproject.configurations.Config;
 import tech.libin.rahul.ideaproject.configurations.Constants;
 import tech.libin.rahul.ideaproject.facade.FOSFacade;
 import tech.libin.rahul.ideaproject.facade.FOSFacadeImpl;
@@ -85,7 +89,6 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewExeVisitedDate;
     private FOSTextView textViewExeRemarks;
 
-
     private EditText editTextReminder;
     private EditText editTextRemarks;
     private View view;
@@ -109,6 +112,8 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private SupportMapFragment mapFragment;
 
     private GPSTracker gpsTracker;
+
+    FOSSpinnerAdapter statusAdapter;
     //endregion
 
     //region onCreateView
@@ -179,7 +184,6 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             objectId = bundle.getString(Constants.PARAMS.DETAILS_OBJECT_ID);
             userName = bundle.getString(Constants.PARAMS.DETAILS_OBJECT_NAME);
             userPhone = bundle.getString(Constants.PARAMS.DETAILS_OBJECT_PHONE);
-            userPhone = bundle.getString(Constants.PARAMS.DETAILS_OBJECT_PHONE);
             activityType = (Constants.ActivityType) bundle.getSerializable(Constants.PARAMS.DETAILS_OBJECT_TAB);
         }
     }
@@ -192,22 +196,32 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             requestModel.setObjectId(objectId);
             requestModel.setRecordType(Constants.RecordType.UPC);
 
+            final ProgressDialog dialog = ProgressDialog.show(getActivity(), null, getResources().getString(R.string.requesting), true, true);
             FOSFacade fosFacade = new FOSFacadeImpl();
             fosFacade.getUpcDetail(requestModel, new ServiceCallback<UpcDetailModel>() {
                 @Override
                 public void onResponse(UpcDetailModel response) {
+                    if (dialog != null) {
+                        dialog.cancel();
+                    }
                     bindData(response);
                     setFomListeners();
                 }
 
                 @Override
                 public void onRequestTimout() {
-
+                    if (dialog != null) {
+                        dialog.cancel();
+                    }
+                    showSuccessInfo(getResources().getString(R.string.warn_request_timed_out));
                 }
 
                 @Override
                 public void onRequestFail(FOSError error) {
-
+                    if (dialog != null) {
+                        dialog.cancel();
+                    }
+                    showSuccessInfo(error.getErrorMessage());
                 }
             });
         }
@@ -229,19 +243,23 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         textViewServSeg.setText(response.getServSeg());
         textViewAddress.setText(response.getAddress1() + "\n" + response.getAddress2() + "\n" + response.getAddress3() + "\n" + response.getZip());
         visitStatus = response.getVisitStatus();
-        FOSSpinnerAdapter statusAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, response.getVisitStatus());
+        statusAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, response.getVisitStatus());
         spnStatus.setAdapter(statusAdapter);
 
         try {
+
+            if (Config.getInstance().getUser().getRole() == Constants.Role.EXECUTIVE) {
+                loadExecutiveOwnData(response.getFromExecutive(), response.getReminderDate());
+            }
+        } catch (Exception ex) {
+            Log.e("Testing", ex.toString());
+        }
+    }
+
+    private void loadExecutiveOwnData(DetailFromUPCRoleModel fromExecutive, String reminder) {
+        try {
             if (activityType != Constants.ActivityType.NEW_ACTIVITY) {
-                DetailFromUPCRoleModel fromExecutive = response.getFromExecutive();
                 if (fromExecutive != null) {
-//                    if (fromExecutive.getStatus() == 2) {
-//                        spnStatus.setSelection(1);
-//                        linLayoutReminder.setVisibility(View.VISIBLE);
-//                        editTextReminder.setText(response.getReminderDate());
-//                    } else
-//                        spnStatus.setSelection(0);
                     if (fromExecutive.getStatus() != 0) {
                         SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getStatus(), visitStatus);
                         if (spinnerElement != null) {
@@ -249,12 +267,21 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                             spnStatus.setSelection(position);
                         }
                     }
-
                     editTextRemarks.setText(fromExecutive.getRemarks());
+                    if (reminder != null || !reminder.isEmpty()) {
+                        linLayoutReminder.setVisibility(View.VISIBLE);
+                        editTextReminder.setText(reminder);
+                    }
+                    //                    if (fromExecutive.getStatus() == 2) {
+//                        spnStatus.setSelection(1);
+//                        linLayoutReminder.setVisibility(View.VISIBLE);
+//                        editTextReminder.setText(response.getReminderDate());
+//                    } else
+//                        spnStatus.setSelection(0);
                 }
             }
         } catch (Exception ex) {
-            Log.e("Testing", ex.toString());
+
         }
     }
 
@@ -347,6 +374,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         requestModel.setObjectId(Long.parseLong(objectId));
         requestModel.setStatus(((SpinnerData) spnStatus.getSelectedItem()).getId());
         requestModel.setRemarks(editTextRemarks.getText().toString().trim());
+        requestModel.setRecordType(Constants.RecordType.UPC);
 
         GPSTracker gpsTracker = new GPSTracker(getActivity());
 
@@ -357,9 +385,17 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             gpsTracker.showSettingsAlert();
             return;
         }
+        requestModel.setLongitude("0.0");
+        requestModel.setLatitude("0.0");
+        if (switchUpdateLocation.isChecked()) {
+            if (gpsTracker != null) {
+                double latitude = gpsTracker.getLatitude();
+                double longitude = gpsTracker.getLongitude();
+                requestModel.setLatitude(latitude + "");
+                requestModel.setLongitude(longitude + "");
+            }
+        }
 
-        requestModel.setLongitude("9.977052");
-        requestModel.setLatitude("76.317974");
         requestModel.setReminder("");
         requestModel.setFeedback(0);
         requestModel.setReason(0);
@@ -367,25 +403,33 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         if (linLayoutReminder.getVisibility() == View.VISIBLE) {
             requestModel.setReminder(editTextReminder.getText().toString().trim());
         }
-        requestModel.setRecordType(Constants.RecordType.UPC);
+
+        final ProgressDialog dialog = ProgressDialog.show(getActivity(), null, getResources().getString(R.string.requesting), true, true);
 
         FOSFacade fosFacade = new FOSFacadeImpl();
         fosFacade.doSubmitVisitDetails(requestModel, new ServiceCallback<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("Submit", response);
+                if (dialog != null) {
+                    dialog.cancel();
+                }
                 showSuccessInfo();
             }
 
             @Override
             public void onRequestTimout() {
-
+                if (dialog != null) {
+                    dialog.cancel();
+                }
             }
 
             @Override
             public void onRequestFail(FOSError error) {
                 Log.e("Submit Fail", error.getErrorMessage());
                 showSuccessInfo();
+                if (dialog != null) {
+                    dialog.cancel();
+                }
             }
         });
     }
@@ -404,25 +448,26 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        LatLng sydney = new LatLng(9.977052, 76.317974);
-        googleMap.addMarker(new MarkerOptions().position(sydney)
-                .title("Marker in Sydney"));
-        //googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng latLng;
+        if (gpsTracker != null) {
+            double latitude = gpsTracker.getLatitude();
+            double longitude = gpsTracker.getLongitude();
+            latLng = new LatLng(latitude, longitude);
+            Log.d(TAG, "onMapReady: (lat, long) - (" + latitude + ", " + longitude + ")");
+        } else {
+            latLng = new LatLng(9.977052, 76.317974);
+        }
 
-
-//        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-//        builder.include(sydney);
-//        LatLngBounds bounds = builder.build();
-//
-//        googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
-
+        googleMap.addMarker(new MarkerOptions().position(latLng)
+                .title("My Idea"));
+        CameraUpdate location = CameraUpdateFactory.newLatLngZoom(latLng, 12);
+        mMap.animateCamera(location);
     }
     //endregion
 
     //region initMap
     private void initMap() {
         try {
-
 
             mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
             View mapView = mapFragment.getView();
@@ -437,6 +482,14 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         } catch (Exception ex) {
             Log.e("Error", ex.toString());
         }
+    }
+    //endregion
+
+    //region showSuccessInfo
+    private void showSuccessInfo(String message) {
+        String title = "Info";
+        InfoDialog infoDialog = InfoDialog.newInstance(title, message);
+        infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
     }
     //endregion
 
