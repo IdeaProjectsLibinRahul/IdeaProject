@@ -32,6 +32,7 @@ import tech.libin.rahul.ideaproject.views.homescreen.dummy.ActivityList;
 import tech.libin.rahul.ideaproject.views.homescreen.viewmodels.ActivityModel;
 import tech.libin.rahul.ideaproject.views.models.ActivityRequestModel;
 import tech.libin.rahul.ideaproject.views.models.User;
+import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
 
 /**
  * Created by libin on 26/02/17.
@@ -46,6 +47,7 @@ public class FOSActivityTab extends FOSBaseFragment {
     private LinearLayoutManager layoutManager;
     private View view;
     private RecyclerView recyclerView;
+    private FOSTextView textViewError;
     private ProgressBar progressBarLoading;
     private ActivityTabAdapter adapter;
     private FOSFacade fosFacade;
@@ -87,6 +89,7 @@ public class FOSActivityTab extends FOSBaseFragment {
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewActivity);
         progressBarLoading = (ProgressBar) view.findViewById(R.id.progressBarLoading);
+        textViewError = (FOSTextView) view.findViewById(R.id.textViewError);
     }
 
     private void initRecyclerView() {
@@ -117,7 +120,7 @@ public class FOSActivityTab extends FOSBaseFragment {
         requestModel.setMsisdn(searchMsisdn);
         requestModel.setPageNo(pageNo);
         requestModel.setPageSize(PAGE_SIZE);
-        requestModel.setType(userSelectionType);
+        requestModel.setType(Config.getInstance().getTabSelected());
         requestModel.setUserId(user.getUserId());
         requestModel.setZip(searchZip);
 
@@ -129,14 +132,17 @@ public class FOSActivityTab extends FOSBaseFragment {
             @Override
             public void onResponse(List<ActivityModel> response) {
                 if (response.isEmpty()) {
+                    if (pageNo == 1) {
+                        textViewError.setVisibility(View.VISIBLE);
+                    }
                     maxPages = pageNo;
                 } else {
                     changeAdapter(response);
                     isLoading = false;
                     recyclerView.setVisibility(View.VISIBLE);
-                    progressBarLoading.setVisibility(View.GONE);
                     pageNo++;
                 }
+                progressBarLoading.setVisibility(View.GONE);
             }
 
             @Override
@@ -148,6 +154,9 @@ public class FOSActivityTab extends FOSBaseFragment {
 
             @Override
             public void onRequestFail(FOSError error) {
+                if (pageNo == 1) {
+                    textViewError.setVisibility(View.VISIBLE);
+                }
                 Toast.makeText(getActivity(), "Request Failed", Toast.LENGTH_SHORT).show();
                 isLoading = false;
                 progressBarLoading.setVisibility(View.GONE);

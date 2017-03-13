@@ -19,6 +19,7 @@ import tech.libin.rahul.ideaproject.R;
 import tech.libin.rahul.ideaproject.configurations.Constants;
 import tech.libin.rahul.ideaproject.events.DetailsEvent;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
+import tech.libin.rahul.ideaproject.views.detailsview.fragments.CollectionDetailFragment;
 import tech.libin.rahul.ideaproject.views.detailsview.fragments.SMEDetailsFragment;
 import tech.libin.rahul.ideaproject.views.detailsview.fragments.TDDetailsFragment;
 import tech.libin.rahul.ideaproject.views.detailsview.fragments.UPCDetailsFragment;
@@ -84,7 +85,7 @@ public class FOSHomeFragment extends FOSBaseFragment {
                 detailsFragment = new UPCDetailsFragment();
                 break;
             case COLLECTION:
-                detailsFragment = new Fragment();
+                detailsFragment = new CollectionDetailFragment();
                 break;
             default:
                 detailsFragment = new SMEDetailsFragment();

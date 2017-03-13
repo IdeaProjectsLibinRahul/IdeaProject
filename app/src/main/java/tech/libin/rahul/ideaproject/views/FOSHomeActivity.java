@@ -25,6 +25,21 @@ public class FOSHomeActivity extends FOSBaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        configToolbar();
+    }
+
+    private void configToolbar() {
+        User user = Config.getInstance().getUser();
+        if (user != null) {
+            setToolbarUsername(user.getName());
+            setToolbarPhoneNo(user.getPhoneNo());
+        }
+    }
+
+    @Override
     protected void setToolbarElevation() {
         setToolbarElevation(0);
     }

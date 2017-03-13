@@ -64,8 +64,10 @@ public class FOSCollectionFragment extends FOSBaseFragment {
         if (user.getType() != Constants.Type.BOTH) {
 //            bottomBar.setVisibility(View.GONE);
             userSelectionType = Constants.Type.RETENSION;
+            Config.getInstance().setTabSelected(Constants.Type.RETENSION);
         } else {
             userSelectionType = Constants.Type.COLLECTION;
+            Config.getInstance().setTabSelected(Constants.Type.COLLECTION);
         }
     }
 
@@ -79,6 +81,7 @@ public class FOSCollectionFragment extends FOSBaseFragment {
                 tabRetention.setBackgroundColor(selectedColor);
                 tabCollection.setBackgroundColor(normalColor);
                 userSelectionType = Constants.Type.RETENSION;
+                Config.getInstance().setTabSelected(Constants.Type.RETENSION);
                 initTab();
             }
         });
@@ -89,6 +92,7 @@ public class FOSCollectionFragment extends FOSBaseFragment {
                 tabCollection.setBackgroundColor(selectedColor);
                 tabRetention.setBackgroundColor(normalColor);
                 userSelectionType = Constants.Type.COLLECTION;
+                Config.getInstance().setTabSelected(Constants.Type.COLLECTION);
                 initTab();
             }
         });

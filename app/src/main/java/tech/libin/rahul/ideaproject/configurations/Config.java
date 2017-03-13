@@ -8,6 +8,7 @@ import tech.libin.rahul.ideaproject.views.models.User;
 public class Config {
     private static Config _config = new Config();
     private User user;
+    private Constants.Type tabSelected;
 
     private Config() {
     }
@@ -24,4 +25,11 @@ public class Config {
         this.user = user;
     }
 
+    public Constants.Type getTabSelected() {
+        return tabSelected;
+    }
+
+    public void setTabSelected(Constants.Type tabSelected) {
+        this.tabSelected = tabSelected;
+    }
 }
