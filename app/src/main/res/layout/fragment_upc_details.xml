@@ -284,8 +284,8 @@
             android:layout_marginTop="10dp"
             android:elevation="@dimen/cardview_default_elevation"
             app:cardBackgroundColor="@color/detail_body_color"
-            app:cardCornerRadius="5dp"
             android:visibility="gone"
+            app:cardCornerRadius="5dp"
             >
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -299,6 +299,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
                 android:orientation="vertical"
+                android:visibility="gone"
                 android:padding="10dp">
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -429,8 +430,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:elevation="@dimen/cardview_default_elevation"
-            app:cardBackgroundColor="@color/detail_body_color"
             android:visibility="gone"
+            app:cardBackgroundColor="@color/detail_body_color"
             app:cardCornerRadius="5dp">
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView

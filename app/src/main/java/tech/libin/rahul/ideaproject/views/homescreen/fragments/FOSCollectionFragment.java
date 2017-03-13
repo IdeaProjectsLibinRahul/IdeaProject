@@ -61,11 +61,17 @@ public class FOSCollectionFragment extends FOSBaseFragment {
         tabCollection = (RelativeLayout) mView.findViewById(R.id.tabCollection);
 
         user = Config.getInstance().getUser();
-        if (user.getType() != Constants.Type.BOTH) {
-//            bottomBar.setVisibility(View.GONE);
+        if (user.getType() == Constants.Type.RETENSION) {
+            bottomBar.setVisibility(View.GONE);
             userSelectionType = Constants.Type.RETENSION;
             Config.getInstance().setTabSelected(Constants.Type.RETENSION);
-        } else {
+        }
+        else if(user.getType() == Constants.Type.COLLECTION) {
+            bottomBar.setVisibility(View.GONE);
+            userSelectionType = Constants.Type.COLLECTION;
+            Config.getInstance().setTabSelected(Constants.Type.COLLECTION);
+        }
+        else {
             userSelectionType = Constants.Type.COLLECTION;
             Config.getInstance().setTabSelected(Constants.Type.COLLECTION);
         }

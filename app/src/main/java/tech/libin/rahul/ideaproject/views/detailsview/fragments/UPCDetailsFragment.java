@@ -260,7 +260,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         try {
             if (activityType != Constants.ActivityType.NEW_ACTIVITY) {
                 if (fromExecutive != null) {
-                    if (fromExecutive.getStatus() != 0) {
+                    if (fromExecutive.getStatus() != 0 && spnStatus != null) {
                         SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getStatus(), visitStatus);
                         if (spinnerElement != null) {
                             int position = statusAdapter.getPosition(spinnerElement);
@@ -377,16 +377,6 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         requestModel.setRecordType(Constants.RecordType.UPC);
 
         GPSTracker gpsTracker = new GPSTracker(getActivity());
-
-        if (gpsTracker.getIsGPSTrackingEnabled()) {
-            requestModel.setLatitude(gpsTracker.getLatitude() + "");
-            requestModel.setLongitude(gpsTracker.getLongitude() + "");
-        } else {
-            gpsTracker.showSettingsAlert();
-            return;
-        }
-        requestModel.setLongitude("0.0");
-        requestModel.setLatitude("0.0");
         if (switchUpdateLocation.isChecked()) {
             if (gpsTracker != null) {
                 double latitude = gpsTracker.getLatitude();
@@ -397,15 +387,11 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         }
 
         requestModel.setReminder("");
-        requestModel.setFeedback(0);
-        requestModel.setReason(0);
-
         if (linLayoutReminder.getVisibility() == View.VISIBLE) {
             requestModel.setReminder(editTextReminder.getText().toString().trim());
         }
 
         final ProgressDialog dialog = ProgressDialog.show(getActivity(), null, getResources().getString(R.string.requesting), true, true);
-
         FOSFacade fosFacade = new FOSFacadeImpl();
         fosFacade.doSubmitVisitDetails(requestModel, new ServiceCallback<String>() {
             @Override

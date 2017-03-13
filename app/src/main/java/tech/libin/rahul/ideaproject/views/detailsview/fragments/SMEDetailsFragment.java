@@ -285,13 +285,15 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             requestModel.setStatus(((SpinnerData) spnStatus.getSelectedItem()).getId());
             requestModel.setRemarks(editTextRemarks.getText().toString().trim());
 
-
-            if (gpsTracker.getIsGPSTrackingEnabled()) {
-                requestModel.setLatitude(gpsTracker.getLatitude() + "");
-                requestModel.setLongitude(gpsTracker.getLongitude() + "");
-            } else {
-                gpsTracker.showSettingsAlert();
-                return;
+            GPSTracker gpsTracker = new GPSTracker(getActivity());
+            if (switchUpdateLocation.isChecked()) {
+                if (gpsTracker.getIsGPSTrackingEnabled()) {
+                    requestModel.setLatitude(gpsTracker.getLatitude() + "");
+                    requestModel.setLongitude(gpsTracker.getLongitude() + "");
+                } else {
+                    gpsTracker.showSettingsAlert();
+                    return;
+                }
             }
 
             if (linLayoutFeedback.getVisibility() == View.VISIBLE) {
@@ -398,11 +400,11 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     }
                 }
 
-                if (fromExecutive.getFeedback() != 0) {
+                if (fromExecutive.getFeedback() != 0 &&((SpinnerData) spnStatus.getSelectedItem()).getId()==1 ) {
                     linLayoutFeedback.setVisibility(View.VISIBLE);
                     SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getFeedback(), visitFeedback);
                     if (spinnerElement != null) {
-                        int position = statusAdapter.getPosition(spinnerElement);
+                        int position = feedbackAdapter.getPosition(spinnerElement);
                         spnFeedback.setSelection(position);
                     }
                 }
@@ -411,7 +413,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     linLayoutReason.setVisibility(View.VISIBLE);
                     SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getReason(), model.getReason());
                     if (spinnerElement != null) {
-                        int position = statusAdapter.getPosition(spinnerElement);
+                        int position = reasonAdapter.getPosition(spinnerElement);
                         spnFeedback.setSelection(position);
                     }
                 }
