@@ -1,15 +1,16 @@
 package tech.libin.rahul.ideaproject.views.detailsview.dialogs;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import tech.libin.rahul.ideaproject.R;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseDialog;
 import tech.libin.rahul.ideaproject.views.widgets.button.FOSButton;
-import tech.libin.rahul.ideaproject.views.widgets.dialogs.FOSDialog;
 import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
 
 /**
@@ -44,6 +45,17 @@ public class InfoDialog extends FOSBaseDialog {
         parseBundle();
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Rect displayRectangle = new Rect();
+        Window window = getDialog().getWindow();
+        assert window != null;
+        window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
+        int width = (int) (0.9f * displayRectangle.width());
+        getDialog().getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     private void initComponents() {

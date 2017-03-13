@@ -65,15 +65,13 @@ public class FOSCollectionFragment extends FOSBaseFragment {
             bottomBar.setVisibility(View.GONE);
             userSelectionType = Constants.Type.RETENSION;
             Config.getInstance().setTabSelected(Constants.Type.RETENSION);
-        }
-        else if(user.getType() == Constants.Type.COLLECTION) {
+        } else if (user.getType() == Constants.Type.COLLECTION) {
             bottomBar.setVisibility(View.GONE);
             userSelectionType = Constants.Type.COLLECTION;
             Config.getInstance().setTabSelected(Constants.Type.COLLECTION);
-        }
-        else {
-            userSelectionType = Constants.Type.COLLECTION;
-            Config.getInstance().setTabSelected(Constants.Type.COLLECTION);
+        } else {
+            userSelectionType = Constants.Type.RETENSION;
+            Config.getInstance().setTabSelected(Constants.Type.RETENSION);
         }
     }
 

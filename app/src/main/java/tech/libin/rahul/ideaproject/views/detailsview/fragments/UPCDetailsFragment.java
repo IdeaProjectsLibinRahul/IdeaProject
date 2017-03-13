@@ -59,7 +59,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     public static final String SUCCESS_DIALOG = "SUCCESS_DIALOG";
     private static final String TAG = UPCDetailsFragment.class.getName();
     Spinner spnStatus;
-
+    FOSSpinnerAdapter statusAdapter;
     private FOSTextView textViewCustNum;
     private FOSTextView textViewMobile;
     private FOSTextView textViewUpc;
@@ -72,7 +72,6 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewAlternateNumber;
     private FOSTextView textViewServSeg;
     private FOSTextView textViewAddress;
-
     private FOSTextView textViewMicoName;
     private FOSTextView textViewMicoMobileNum;
     private FOSTextView textViewMicoMyIdea;
@@ -80,7 +79,6 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewMicoVisitStatus;
     private FOSTextView textViewMicoVisitedDate;
     private FOSTextView textViewMicoRemarks;
-
     private FOSTextView textViewExeName;
     private FOSTextView textViewExeMobileNum;
     private FOSTextView textViewExeMyIdea;
@@ -88,32 +86,23 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewExeVisitStatus;
     private FOSTextView textViewExeVisitedDate;
     private FOSTextView textViewExeRemarks;
-
     private EditText editTextReminder;
     private EditText editTextRemarks;
     private View view;
-
     private Button buttonSubmit;
-
     private LinearLayout linLayoutReminder;
-
     private GoogleMap mMap;
-
     private RecyclerView recViewOther;
-
     private Switch switchLocation;
     private Switch switchUpdateLocation;
-
     private String objectId;
     private String userName;
     private String userPhone;
     private List visitStatus;
     private Constants.ActivityType activityType;
     private SupportMapFragment mapFragment;
-
+    private UpcDetailModel detailModel;
     private GPSTracker gpsTracker;
-
-    FOSSpinnerAdapter statusAdapter;
     //endregion
 
     //region onCreateView
@@ -206,6 +195,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     }
                     bindData(response);
                     setFomListeners();
+                    detailModel = response;
                 }
 
                 @Override
@@ -435,7 +425,11 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         mMap = googleMap;
 
         LatLng latLng;
-        if (gpsTracker != null) {
+        if (detailModel != null && !detailModel.getLocation().getLatitude().isEmpty() && !detailModel.getLocation().getLongitude().isEmpty()) {
+            double latitude = Double.parseDouble(detailModel.getLocation().getLatitude());
+            double longitude = Double.parseDouble(detailModel.getLocation().getLongitude());
+            latLng = new LatLng(latitude, longitude);
+        } else if (gpsTracker != null) {
             double latitude = gpsTracker.getLatitude();
             double longitude = gpsTracker.getLongitude();
             latLng = new LatLng(latitude, longitude);
