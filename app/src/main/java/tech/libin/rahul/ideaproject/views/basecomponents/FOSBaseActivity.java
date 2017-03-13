@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -27,6 +28,8 @@ public abstract class FOSBaseActivity extends AppCompatActivity {
     protected boolean hasToolBar = false;
     protected Toolbar toolbar;
     protected float toolbarElevation = 0;
+    private TextView textViewName;
+    private TextView textViewPhone;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,7 +94,18 @@ public abstract class FOSBaseActivity extends AppCompatActivity {
             } else {
                 toolbar.setVisibility(View.GONE);
             }
+
+            textViewName = (TextView) toolbar.findViewById(R.id.textViewUserName);
+            textViewPhone = (TextView) toolbar.findViewById(R.id.textViewUserPhone);
         }
+    }
+
+    protected void setToolbarUsername(String username){
+        textViewName.setText(username);
+    }
+
+    protected void setToolbarPhoneNo(String phoneNo){
+        textViewPhone.setText(phoneNo);
     }
 
     protected void setMainView(Fragment fragment) {

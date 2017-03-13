@@ -32,6 +32,7 @@ import tech.libin.rahul.ideaproject.views.homescreen.dummy.ActivityList;
 import tech.libin.rahul.ideaproject.views.homescreen.viewmodels.ActivityModel;
 import tech.libin.rahul.ideaproject.views.models.ActivityRequestModel;
 import tech.libin.rahul.ideaproject.views.models.User;
+import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
 
 /**
  * Created by libin on 26/02/17.
@@ -46,6 +47,7 @@ public class FOSActivityTab extends FOSBaseFragment {
     private LinearLayoutManager layoutManager;
     private View view;
     private RecyclerView recyclerView;
+    private FOSTextView textViewError;
     private ProgressBar progressBarLoading;
     private ActivityTabAdapter adapter;
     private FOSFacade fosFacade;
@@ -54,9 +56,13 @@ public class FOSActivityTab extends FOSBaseFragment {
     private boolean isLastPage;
     private int pageNo = 1;
 
+    private Constants.ActivityType activityType;
+    private Constants.Type userSelectionType;
+
     private String searchName = "";
     private String searchMsisdn = "";
     private String searchZip = "";
+
 
     @Nullable
     @Override
@@ -66,8 +72,13 @@ public class FOSActivityTab extends FOSBaseFragment {
         setClickListener();
         setScrollListener();
         initRecyclerView();
-        sendRequest();
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        sendRequest();
     }
 
     private void initComponents() {
@@ -78,6 +89,7 @@ public class FOSActivityTab extends FOSBaseFragment {
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewActivity);
         progressBarLoading = (ProgressBar) view.findViewById(R.id.progressBarLoading);
+        textViewError = (FOSTextView) view.findViewById(R.id.textViewError);
     }
 
     private void initRecyclerView() {
@@ -104,11 +116,11 @@ public class FOSActivityTab extends FOSBaseFragment {
 
         ActivityRequestModel requestModel = new ActivityRequestModel();
         requestModel.setName(searchName);
-        requestModel.setActivityType(Constants.ActivityType.NEW_ACTIVITY);
+        requestModel.setActivityType(activityType);
         requestModel.setMsisdn(searchMsisdn);
         requestModel.setPageNo(pageNo);
         requestModel.setPageSize(PAGE_SIZE);
-        requestModel.setType(Constants.Type.RETENSION);
+        requestModel.setType(Config.getInstance().getTabSelected());
         requestModel.setUserId(user.getUserId());
         requestModel.setZip(searchZip);
 
@@ -120,14 +132,17 @@ public class FOSActivityTab extends FOSBaseFragment {
             @Override
             public void onResponse(List<ActivityModel> response) {
                 if (response.isEmpty()) {
+                    if (pageNo == 1) {
+                        textViewError.setVisibility(View.VISIBLE);
+                    }
                     maxPages = pageNo;
                 } else {
                     changeAdapter(response);
                     isLoading = false;
                     recyclerView.setVisibility(View.VISIBLE);
-                    progressBarLoading.setVisibility(View.GONE);
                     pageNo++;
                 }
+                progressBarLoading.setVisibility(View.GONE);
             }
 
             @Override
@@ -139,6 +154,9 @@ public class FOSActivityTab extends FOSBaseFragment {
 
             @Override
             public void onRequestFail(FOSError error) {
+                if (pageNo == 1) {
+                    textViewError.setVisibility(View.VISIBLE);
+                }
                 Toast.makeText(getActivity(), "Request Failed", Toast.LENGTH_SHORT).show();
                 isLoading = false;
                 progressBarLoading.setVisibility(View.GONE);
@@ -158,6 +176,7 @@ public class FOSActivityTab extends FOSBaseFragment {
             public void onClick(ActivityModel model) {
                 DetailsEvent event = new DetailsEvent();
                 event.setModel(model);
+                event.setActivityType(activityType);
 
                 EventBus.getDefault().post(event);
             }
@@ -205,4 +224,11 @@ public class FOSActivityTab extends FOSBaseFragment {
         }
     }
 
+    public void setActivityType(Constants.ActivityType activityType) {
+        this.activityType = activityType;
+    }
+
+    public void setUserSelectionType(Constants.Type userSelectionType) {
+        this.userSelectionType = userSelectionType;
+    }
 }

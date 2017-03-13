@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -7,14 +7,25 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewActivity"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:visibility="gone"/>
+        android:layout_height="match_parent"
+        android:layout_gravity="fill"
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/progressBarLoading"
         style="?android:attr/progressBarStyleSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:visibility="gone" />
-</LinearLayout>
+
+    <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+        android:id="@+id/textViewError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:text="@string/no_data"
+        android:textColor="@android:color/holo_red_light"
+        android:visibility="gone" />
+</FrameLayout>

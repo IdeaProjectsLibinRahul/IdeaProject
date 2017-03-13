@@ -60,8 +60,9 @@ public class FOSIconEditText extends LinearLayout {
             this.setGravity(Gravity.CENTER_VERTICAL);
             imageViewLeft = new ImageView(context);
             editText = new EditText(context);
-            editText.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-            editText.setTextSize(20);
+//            editText.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+           // editText.setBackgroundResource(R.drawable.edit_text_bottom_border);
+
             editText.setTextColor(getResources().getColor(R.color.gray2X));
             editText.setHintTextColor(getResources().getColor(R.color.baseGray));
             editText.setSingleLine(true);
@@ -78,7 +79,7 @@ public class FOSIconEditText extends LinearLayout {
             this.setOrientation(HORIZONTAL);
             this.addView(imageViewLeft);
             this.addView(editText);
-            // this.setBackgroundColor(getResources().getColor(R.color.lightYellow));
+            this.setBackgroundColor(getResources().getColor(R.color.lightYellow));
             this.setBackgroundColor(getResources().getColor(android.R.color.transparent));
             this.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 50));
             this.setPadding(25, 10, 25, 1);

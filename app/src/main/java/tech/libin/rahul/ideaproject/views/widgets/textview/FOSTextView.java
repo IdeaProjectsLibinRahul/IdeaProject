@@ -62,6 +62,10 @@ public class FOSTextView extends TextView {
                         setFont(fontStyle, context, Fonts.SANSATION_REGULAR);
                         break;
 
+                    case 3:
+                        setFont(fontStyle, context, Fonts.SANSATION_BOLD);
+                        break;
+
                     case 9:
                         setFont(fontStyle, context, Fonts.DEFAULT_FONT);
                         break;
@@ -109,5 +113,13 @@ public class FOSTextView extends TextView {
                 this.setTypeface(type);
                 break;
         }
+    }
+
+    @Override
+    public void setText(CharSequence text, BufferType type) {
+        if (text == null || text.toString().trim().isEmpty()) {
+            text = "Nill";
+        }
+        super.setText(text, type);
     }
 }
