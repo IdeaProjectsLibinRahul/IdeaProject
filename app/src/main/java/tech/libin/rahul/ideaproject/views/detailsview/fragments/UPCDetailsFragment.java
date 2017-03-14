@@ -251,23 +251,17 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             if (activityType != Constants.ActivityType.NEW_ACTIVITY) {
                 if (fromExecutive != null) {
                     if (fromExecutive.getStatus() != 0 && spnStatus != null) {
-                        SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getStatus(), visitStatus);
-                        if (spinnerElement != null) {
-                            int position = statusAdapter.getPosition(spinnerElement);
-                            spnStatus.setSelection(position);
-                        }
+                            SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getStatus(), visitStatus);
+                            if (spinnerElement != null) {
+                                int position = statusAdapter.getPosition(spinnerElement);
+                                spnStatus.setSelection(position);
+                            }
                     }
                     editTextRemarks.setText(fromExecutive.getRemarks());
                     if (reminder != null || !reminder.isEmpty()) {
                         linLayoutReminder.setVisibility(View.VISIBLE);
                         editTextReminder.setText(reminder);
                     }
-                    //                    if (fromExecutive.getStatus() == 2) {
-//                        spnStatus.setSelection(1);
-//                        linLayoutReminder.setVisibility(View.VISIBLE);
-//                        editTextReminder.setText(response.getReminderDate());
-//                    } else
-//                        spnStatus.setSelection(0);
                 }
             }
         } catch (Exception ex) {

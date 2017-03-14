@@ -259,13 +259,18 @@ public class FOSServiceImpl implements FOSService {
         request.request(Request.Method.POST, new NetworkCallback<FormSubmitResponse>() {
             @Override
             public void onSuccess(FormSubmitResponse response) {
-
-                if (response.getStatus() != Constants.Status.SUCCESS) {
+                try {
+                    if (response.getStatus() != Constants.Status.SUCCESS) {
+                        FOSError error = new FOSError();
+                        error.setErrorMessage(response.getMessage());
+                        callback.onRequestFail(error);
+                    } else {
+                        callback.onResponse(response.getMessage());
+                    }
+                } catch (Exception ex) {
                     FOSError error = new FOSError();
-                    error.setErrorMessage(response.getMessage());
+                    error.setErrorMessage("Something not fine please try again later");
                     callback.onRequestFail(error);
-                } else {
-                    callback.onResponse(response.getMessage());
                 }
             }
 

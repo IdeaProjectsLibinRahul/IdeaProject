@@ -89,6 +89,8 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
     private SupportMapFragment mapFragment;
     private GPSTracker gpsTracker;
     private GoogleMap mMap;
+    TdDetailModel detailModel;
+    FOSSpinnerAdapter statusAdapter;
 
     //endregion
 
@@ -170,6 +172,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                     if (dialog != null) {
                         dialog.cancel();
                     }
+                    detailModel=response;
                     bindDetails(response);
                     setFomListeners();
                 }
@@ -179,7 +182,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                     if (dialog != null) {
                         dialog.cancel();
                     }
-                    showSuccessInfo(getResources().getString(R.string.warn_request_timed_out));
+//                    showSuccessInfo(getResources().getString(R.string.warn_request_timed_out));
                 }
 
                 @Override
@@ -209,18 +212,14 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
         textViewMyIdeaCode.setText(model.getMyIdeaCode());
         textViewMyIdeaAllocation.setText(model.getMyIdeaAllocation());
         textViewActivationMi.setText(model.getActivatiomMi());
-        textViewActivationMi.setText("Nill");
         textViewLandline1.setText(model.getLandLine1());
-        if (textViewLandline1.getText().toString().trim().isEmpty())
-            textViewLandline1.setText("Nilll");
-//        textViewLandLine2.setText(model.getLandLine2());
-        textViewLandLine2.setText("Nilll");
+        textViewLandLine2.setText(model.getLandLine2());
 
         textViewAddress.setText(model.getBill1() + "\n" + model.getBill2() + "\n" + model.getBill3() + "\n" + model.getBill4() + "\n" + model.getBill5() + "\n" + model.getZip());
 
         final List<SpinnerData> visitStatus = model.getVisitStatus();
 
-        FOSSpinnerAdapter statusAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getVisitStatus());
+        statusAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getVisitStatus());
         spnStatus.setAdapter(statusAdapter);
 
         if (activityType != Constants.ActivityType.NEW_ACTIVITY) {
@@ -255,6 +254,32 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
 
             }
         });
+
+        loadExecutiveOwnData(model.getFromExecutive(),model.getReminderDate());
+    }
+    //endregion
+    //region
+    private void loadExecutiveOwnData(DetailFromUPCRoleModel fromExecutive, String reminder) {
+        try {
+            if (activityType != Constants.ActivityType.NEW_ACTIVITY) {
+                if (fromExecutive != null) {
+                    if (fromExecutive.getStatus() != 0 && spnStatus != null) {
+                        SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getStatus(), detailModel.getVisitStatus());
+                        if (spinnerElement != null) {
+                            int position = statusAdapter.getPosition(spinnerElement);
+                            spnStatus.setSelection(position);
+                        }
+                    }
+                    editTextRemarks.setText(fromExecutive.getRemarks());
+                    if (reminder != null || !reminder.isEmpty()) {
+                        linLayoutReminder.setVisibility(View.VISIBLE);
+                        editTextReminder.setText(reminder);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+
+        }
     }
     //endregion
 
@@ -328,20 +353,18 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
             requestModel.setObjectId(Long.parseLong(objectId));
             requestModel.setStatus(((SpinnerData) spnStatus.getSelectedItem()).getId());
             requestModel.setRemarks(editTextRemarks.getText().toString().trim());
-            GPSTracker gpsTracker = new GPSTracker(getActivity());
-
-            if (gpsTracker.getIsGPSTrackingEnabled()) {
-                requestModel.setLatitude(gpsTracker.getLatitude() + "");
-                requestModel.setLongitude(gpsTracker.getLongitude() + "");
-            } else {
-                gpsTracker.showSettingsAlert();
-                return;
+            if (switchUpdateLocation.isChecked()) {
+                GPSTracker gpsTracker = new GPSTracker(getActivity());
+                if (gpsTracker.getIsGPSTrackingEnabled()) {
+                    requestModel.setLatitude(gpsTracker.getLatitude() + "");
+                    requestModel.setLongitude(gpsTracker.getLongitude() + "");
+                } else {
+                    gpsTracker.showSettingsAlert();
+                    return;
+                }
             }
 
             requestModel.setReminder("");
-            requestModel.setReason(0);
-            requestModel.setFeedback(0);
-
             if (linLayoutReminder.getVisibility() == View.VISIBLE) {
                 requestModel.setReminder(editTextReminder.getText().toString().trim());
             }
@@ -399,13 +422,17 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
         mMap = googleMap;
 
         LatLng latLng;
-        if (gpsTracker != null) {
+        if (detailModel != null && !detailModel.getLocation().getLatitude().isEmpty() && !detailModel.getLocation().getLongitude().isEmpty()) {
+            double latitude = Double.parseDouble(detailModel.getLocation().getLatitude());
+            double longitude = Double.parseDouble(detailModel.getLocation().getLongitude());
+            latLng = new LatLng(latitude, longitude);
+        } else if (gpsTracker != null) {
             double latitude = gpsTracker.getLatitude();
             double longitude = gpsTracker.getLongitude();
             latLng = new LatLng(latitude, longitude);
             Log.d(TAG, "onMapReady: (lat, long) - (" + latitude + ", " + longitude + ")");
         } else {
-            latLng = new LatLng(9.977052, 76.317974);
+            latLng = new LatLng(0, 0);
         }
 
         googleMap.addMarker(new MarkerOptions().position(latLng)

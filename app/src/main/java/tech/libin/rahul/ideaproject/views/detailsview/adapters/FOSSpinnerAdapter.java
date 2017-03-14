@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -39,11 +40,21 @@ public class FOSSpinnerAdapter extends ArrayAdapter<SpinnerData> {
     }
 
     private View getCustomView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        SpinnerData model = spinnerModels.get(position);
-        FOSTextView textView = new FOSTextView(parent.getContext());
-        textView.setPadding(16, 16, 16, 16);
-        textView.setText(model.getValue());
-        return textView;
+        try
+        {
+            SpinnerData model = spinnerModels.get(position);
+            FOSTextView textView = new FOSTextView(parent.getContext());
+            textView.setPadding(16, 16, 16, 16);
+            textView.setText(model.getValue());
+            return textView;
+
+        }
+        catch (Exception ex)
+        {
+            Log.e("Exception",ex.toString());
+        }
+        return convertView;
+
     }
 
     @NonNull

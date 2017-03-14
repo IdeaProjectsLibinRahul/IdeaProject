@@ -98,6 +98,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private SupportMapFragment mapFragment;
     private Marker mMarker;
     private GPSTracker gpsTracker;
+    SmeDetailModel detailModel;
 
     //endregion
 
@@ -197,6 +198,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     if (dialog != null) {
                         dialog.cancel();
                     }
+                    detailModel=response;
                     bindDetails(response);
                     setFomListeners();
                     setLinearLayoutGone();
@@ -414,7 +416,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getReason(), model.getReason());
                     if (spinnerElement != null) {
                         int position = reasonAdapter.getPosition(spinnerElement);
-                        spnFeedback.setSelection(position);
+                        spnReason.setSelection(position);
                     }
                 }
 
@@ -508,13 +510,17 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         mMap = googleMap;
 
         LatLng latLng;
-        if (gpsTracker != null) {
+        if (detailModel != null && !detailModel.getLocation().getLatitude().isEmpty() && !detailModel.getLocation().getLongitude().isEmpty()) {
+            double latitude = Double.parseDouble(detailModel.getLocation().getLatitude());
+            double longitude = Double.parseDouble(detailModel.getLocation().getLongitude());
+            latLng = new LatLng(latitude, longitude);
+        } else if (gpsTracker != null) {
             double latitude = gpsTracker.getLatitude();
             double longitude = gpsTracker.getLongitude();
             latLng = new LatLng(latitude, longitude);
             Log.d(TAG, "onMapReady: (lat, long) - (" + latitude + ", " + longitude + ")");
         } else {
-            latLng = new LatLng(9.977052, 76.317974);
+            latLng = new LatLng(0.0, 0.0);
         }
 
         googleMap.addMarker(new MarkerOptions().position(latLng)

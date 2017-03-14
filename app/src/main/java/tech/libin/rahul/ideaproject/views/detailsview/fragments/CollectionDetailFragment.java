@@ -18,9 +18,13 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
@@ -103,11 +107,13 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
     private String objectId;
     private String userName;
     private String userPhone;
+    private GoogleMap mMap;
     private Constants.ActivityType activityType;
     private SupportMapFragment mapFragment;
     private GPSTracker gpsTracker;
     FOSSpinnerAdapter statusAdapter;
     private List visitStatus;
+    CollectionDetailModel detailModel;
 
     //region CollectionDetailFragment
     public CollectionDetailFragment() {
@@ -126,6 +132,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
         parseBundle();
         loadCollectionDetails();
         initMap();
+
         return view;
     }
     //endregion
@@ -191,22 +198,31 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
             requestModel.setObjectId(objectId);
             requestModel.setRecordType(Constants.RecordType.COLLECTION);
 
+            final ProgressDialog dialog = ProgressDialog.show(getActivity(), null, getResources().getString(R.string.requesting), true, true);
             FOSFacade fosFacade = new FOSFacadeImpl();
             fosFacade.getCollectionDetail(requestModel, new ServiceCallback<CollectionDetailModel>() {
                 @Override
                 public void onResponse(CollectionDetailModel response) {
-                    Log.e("TDDETAILS", response.toString());
+                    if (dialog != null) {
+                        dialog.cancel();
+                    }
+                    detailModel= response;
                     bindDetails(response);
                     setFomListeners();
                 }
 
                 @Override
                 public void onRequestTimout() {
-
+                    if (dialog != null) {
+                        dialog.cancel();
+                    }
                 }
 
                 @Override
                 public void onRequestFail(FOSError error) {
+                    if (dialog != null) {
+                        dialog.cancel();
+                    }
 
                 }
             });
@@ -262,7 +278,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
         spnStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (((SpinnerData) visitStatus.get(position)).getId() == 2) {
+                if (((SpinnerData) visitStatus.get(position)).getId() != 1) {
                     linLayoutReminder.setVisibility(View.VISIBLE);
                 } else {
                     linLayoutReminder.setVisibility(View.GONE);
@@ -295,17 +311,6 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
         requestModel.setRecordType(Constants.RecordType.COLLECTION);
 
         GPSTracker gpsTracker = new GPSTracker(getActivity());
-
-        requestModel.setLongitude("0.0");
-        requestModel.setLatitude("0.0");
-        if (gpsTracker.getIsGPSTrackingEnabled()) {
-            requestModel.setLatitude(gpsTracker.getLatitude() + "");
-            requestModel.setLongitude(gpsTracker.getLongitude() + "");
-        } else {
-            gpsTracker.showSettingsAlert();
-            return;
-        }
-
         if (switchUpdateLocation.isChecked()) {
             if (gpsTracker != null) {
                 double latitude = gpsTracker.getLatitude();
@@ -314,11 +319,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                 requestModel.setLongitude(longitude + "");
             }
         }
-
         requestModel.setReminder("");
-        requestModel.setFeedback(0);
-        requestModel.setReason(0);
-
         if (linLayoutReminder.getVisibility() == View.VISIBLE) {
             requestModel.setReminder(editTextReminder.getText().toString().trim());
         }
@@ -412,7 +413,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                         }
                     }
                     editTextRemarks.setText(fromExecutive.getRemarks());
-                    if (reminder != null || !reminder.isEmpty()) {
+                    if ((reminder != null || !reminder.isEmpty() )&& fromExecutive.getStatus() != 2) {
                         linLayoutReminder.setVisibility(View.VISIBLE);
                         editTextReminder.setText(reminder);
                     }
@@ -454,16 +455,26 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
     @Override
     public void onMapReady(GoogleMap googleMap) {
         try {
-            mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-            mapFragment.getMapAsync(this);
-            View mapView = mapFragment.getView();
-            if (mapView != null) {
-                if (!switchLocation.isChecked()) {
-                    mapView.setVisibility(View.GONE);
-                } else {
-                    mapView.setVisibility(View.VISIBLE);
-                }
+            mMap = googleMap;
+
+            LatLng latLng;
+            if (detailModel != null && !detailModel.getLocation().getLatitude().isEmpty() && !detailModel.getLocation().getLongitude().isEmpty()) {
+                double latitude = Double.parseDouble(detailModel.getLocation().getLatitude());
+                double longitude = Double.parseDouble(detailModel.getLocation().getLongitude());
+                latLng = new LatLng(latitude, longitude);
+            } else if (gpsTracker != null) {
+                double latitude = gpsTracker.getLatitude();
+                double longitude = gpsTracker.getLongitude();
+                latLng = new LatLng(latitude, longitude);
+                Log.d(TAG, "onMapReady: (lat, long) - (" + latitude + ", " + longitude + ")");
+            } else {
+                latLng = new LatLng(0.0, 0.0);
             }
+
+            googleMap.addMarker(new MarkerOptions().position(latLng)
+                    .title("My Idea"));
+            CameraUpdate location = CameraUpdateFactory.newLatLngZoom(latLng, 12);
+            mMap.animateCamera(location);
         } catch (Exception ex) {
             Log.e("Error", ex.toString());
         }
