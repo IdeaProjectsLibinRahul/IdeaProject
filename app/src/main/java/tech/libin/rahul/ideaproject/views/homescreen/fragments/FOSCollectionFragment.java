@@ -1,5 +1,6 @@
 package tech.libin.rahul.ideaproject.views.homescreen.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -12,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -22,6 +24,7 @@ import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
 import tech.libin.rahul.ideaproject.views.homescreen.adapters.HomeTabAdapter;
 import tech.libin.rahul.ideaproject.views.homescreen.dialogs.FOSSearchDialog;
 import tech.libin.rahul.ideaproject.views.models.User;
+import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
 
 /**
  * Created by libin on 21/02/17.
@@ -38,6 +41,10 @@ public class FOSCollectionFragment extends FOSBaseFragment {
     private HomeTabAdapter tabAdapter;
     private User user;
     private Constants.Type userSelectionType;
+    private ImageView imageViewRetention;
+    private ImageView imageViewCollection;
+    private FOSTextView textViewRetention;
+    private FOSTextView textViewCollection;
 
     @Nullable
     @Override
@@ -60,6 +67,11 @@ public class FOSCollectionFragment extends FOSBaseFragment {
         tabRetention = (RelativeLayout) mView.findViewById(R.id.tabRetention);
         tabCollection = (RelativeLayout) mView.findViewById(R.id.tabCollection);
 
+        imageViewRetention = (ImageView) mView.findViewById(R.id.imageViewRetention);
+        imageViewCollection = (ImageView) mView.findViewById(R.id.imageViewCollection);
+        textViewRetention = (FOSTextView) mView.findViewById(R.id.textViewRetention);
+        textViewCollection = (FOSTextView) mView.findViewById(R.id.textViewCollection);
+
         user = Config.getInstance().getUser();
         if (user.getType() == Constants.Type.RETENSION) {
             bottomBar.setVisibility(View.GONE);
@@ -70,13 +82,36 @@ public class FOSCollectionFragment extends FOSBaseFragment {
             userSelectionType = Constants.Type.COLLECTION;
             Config.getInstance().setTabSelected(Constants.Type.COLLECTION);
         } else {
+            setRetentionTabSelected();
             userSelectionType = Constants.Type.RETENSION;
             Config.getInstance().setTabSelected(Constants.Type.RETENSION);
         }
     }
 
+    private void setRetentionTabSelected() {
+        int colorWhite = Color.parseColor("#FFFFFFFF");
+        int colorBlack = Color.parseColor("#FF000000");
+
+        imageViewRetention.setColorFilter(colorWhite);
+        textViewRetention.setTextColor(colorWhite);
+
+        imageViewCollection.setColorFilter(colorBlack);
+        textViewCollection.setTextColor(colorBlack);
+    }
+
+    private void setCollectionTabSelected() {
+        int colorWhite = Color.parseColor("#FFFFFFFF");
+        int colorBlack = Color.parseColor("#FF000000");
+
+        imageViewRetention.setColorFilter(colorBlack);
+        textViewRetention.setTextColor(colorBlack);
+
+        imageViewCollection.setColorFilter(colorWhite);
+        textViewCollection.setTextColor(colorWhite);
+    }
+
     private void setListeners() {
-        final int selectedColor = ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark);
+        final int selectedColor = ContextCompat.getColor(getActivity(), R.color.colorBottomTabSelected);
         final int normalColor = ContextCompat.getColor(getActivity(), R.color.colorPrimary);
 
         tabRetention.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +120,7 @@ public class FOSCollectionFragment extends FOSBaseFragment {
                 tabRetention.setBackgroundColor(selectedColor);
                 tabCollection.setBackgroundColor(normalColor);
                 userSelectionType = Constants.Type.RETENSION;
+                setRetentionTabSelected();
                 Config.getInstance().setTabSelected(Constants.Type.RETENSION);
                 initTab();
             }
@@ -96,6 +132,7 @@ public class FOSCollectionFragment extends FOSBaseFragment {
                 tabCollection.setBackgroundColor(selectedColor);
                 tabRetention.setBackgroundColor(normalColor);
                 userSelectionType = Constants.Type.COLLECTION;
+                setCollectionTabSelected();
                 Config.getInstance().setTabSelected(Constants.Type.COLLECTION);
                 initTab();
             }

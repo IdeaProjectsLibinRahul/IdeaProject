@@ -58,6 +58,8 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
 
     //region declarations
     Spinner spnStatus;
+    TdDetailModel detailModel;
+    FOSSpinnerAdapter statusAdapter;
     private EditText editTextRemarks;
     private EditText editTextReminder;
     private FOSTextView textViewCustNum;
@@ -89,8 +91,6 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
     private SupportMapFragment mapFragment;
     private GPSTracker gpsTracker;
     private GoogleMap mMap;
-    TdDetailModel detailModel;
-    FOSSpinnerAdapter statusAdapter;
 
     //endregion
 
@@ -98,7 +98,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_activity_details, container, false);
+        view = inflater.inflate(R.layout.fragment_td_details, container, false);
 
         initComponents();
         parseBundle();
@@ -172,7 +172,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                     if (dialog != null) {
                         dialog.cancel();
                     }
-                    detailModel=response;
+                    detailModel = response;
                     bindDetails(response);
                     setFomListeners();
                 }
@@ -190,7 +190,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                     if (dialog != null) {
                         dialog.cancel();
                     }
-                   showSuccessInfo(error.getErrorMessage());
+                    showSuccessInfo(error.getErrorMessage());
                 }
             });
         }
@@ -255,8 +255,9 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
             }
         });
 
-        loadExecutiveOwnData(model.getFromExecutive(),model.getReminderDate());
+        loadExecutiveOwnData(model.getFromExecutive(), model.getReminderDate());
     }
+
     //endregion
     //region
     private void loadExecutiveOwnData(DetailFromUPCRoleModel fromExecutive, String reminder) {

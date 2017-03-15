@@ -20,7 +20,7 @@ public class FOSActivityDetailsFragment extends FOSBaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_activity_details, container, false);
+        view = inflater.inflate(R.layout.fragment_td_details, container, false);
         return view;
     }
 }

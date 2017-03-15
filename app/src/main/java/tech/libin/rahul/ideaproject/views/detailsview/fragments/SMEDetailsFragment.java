@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 
@@ -26,6 +27,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import tech.libin.rahul.ideaproject.R;
@@ -98,7 +100,9 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private SupportMapFragment mapFragment;
     private Marker mMarker;
     private GPSTracker gpsTracker;
-    SmeDetailModel detailModel;
+    private SmeDetailModel detailModel;
+    private RatingBar ratingBar;
+    private FOSTextView textViewRatingInfo;
 
     //endregion
 
@@ -159,6 +163,9 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         linLayoutFeedback = (LinearLayout) view.findViewById(R.id.linLayoutFeedback);
         linLayoutReason = (LinearLayout) view.findViewById(R.id.linLayoutReason);
         linLayoutReminder = (LinearLayout) view.findViewById(R.id.linLayoutReminder);
+
+        ratingBar = (RatingBar) view.findViewById(R.id.ratingBar);
+        textViewRatingInfo = (FOSTextView) view.findViewById(R.id.ratingInfo);
     }
     //endregion
 
@@ -198,7 +205,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     if (dialog != null) {
                         dialog.cancel();
                     }
-                    detailModel=response;
+                    detailModel = response;
                     bindDetails(response);
                     setFomListeners();
                     setLinearLayoutGone();
@@ -299,7 +306,11 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             }
 
             if (linLayoutFeedback.getVisibility() == View.VISIBLE) {
-                requestModel.setFeedback(((SpinnerData) spnFeedback.getSelectedItem()).getId());
+                int feedback = (int) ratingBar.getRating();
+                if (feedback > 0) {
+                    SpinnerData data = detailModel.getFeedback().get(feedback - 1);
+                    requestModel.setFeedback(data.getId());
+                }
             }
             if (linLayoutReason.getVisibility() == View.VISIBLE) {
                 requestModel.setReason(((SpinnerData) spnReason.getSelectedItem()).getId());
@@ -349,7 +360,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     //endregion
 
     //region bindDetails
-    private void bindDetails(SmeDetailModel model) {
+    private void bindDetails(final SmeDetailModel model) {
         textViewName.setText(model.getCcName());
         textViewMobileNum.setVisibility(View.GONE);
         textViewBiller.setText(model.getBiller());
@@ -387,6 +398,20 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         FOSSpinnerAdapter reasonAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getReason());
         spnReason.setAdapter(reasonAdapter);
 
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float value, boolean b) {
+                ArrayList<SpinnerData> feedback = model.getFeedback();
+                for (SpinnerData data : feedback) {
+                    if (data.getId() == (int) value) {
+                        String text = data.getValue();
+                        textViewRatingInfo.setText(text);
+                        textViewRatingInfo.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        });
+
         FOSSpinnerAdapter feedbackAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getFeedback());
         spnFeedback.setAdapter(feedbackAdapter);
 
@@ -402,7 +427,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     }
                 }
 
-                if (fromExecutive.getFeedback() != 0 &&((SpinnerData) spnStatus.getSelectedItem()).getId()==1 ) {
+                if (fromExecutive.getFeedback() != 0 && ((SpinnerData) spnStatus.getSelectedItem()).getId() == 1) {
                     linLayoutFeedback.setVisibility(View.VISIBLE);
                     SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getFeedback(), visitFeedback);
                     if (spinnerElement != null) {
@@ -411,7 +436,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     }
                 }
 
-                if (fromExecutive.getReason() != 0 && fromExecutive.getFeedback()!=5) {
+                if (fromExecutive.getReason() != 0 && fromExecutive.getFeedback() != 5) {
                     linLayoutReason.setVisibility(View.VISIBLE);
                     SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getReason(), model.getReason());
                     if (spinnerElement != null) {
@@ -421,7 +446,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                 }
 
                 editTextRemarks.setText(fromExecutive.getRemarks());
-                if(model.getReminderDate()!=null && !model.getReminderDate().isEmpty()) {
+                if (model.getReminderDate() != null && !model.getReminderDate().isEmpty()) {
                     linLayoutReminder.setVisibility(View.VISIBLE);
                     editTextReminder.setText(model.getReminderDate());
                 }

@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorBottomTabSelected"
         android:gravity="center_horizontal|center_vertical">
 
         <ImageView
@@ -22,6 +22,7 @@
             android:src="@mipmap/ic_retention" />
 
         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            android:id="@+id/textViewRetention"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/imageViewRetention"
@@ -47,6 +48,7 @@
             android:src="@mipmap/ic_collection" />
 
         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+            android:id="@+id/textViewCollection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/imageViewCollection"

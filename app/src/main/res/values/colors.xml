@@ -16,5 +16,6 @@
 
     <color name="detail_body_color">#b0f7ff86</color>
     <color name="button_border">#f312110f</color>
+    <color name="colorBottomTabSelected">#968f00</color>
 
 </resources>
