@@ -389,6 +389,12 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
         visitStatus = model.getVisitStatus();
         statusAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getVisitStatus());
         spnStatus.setAdapter(statusAdapter);
+
+        if(model.getLocation()!=null && model.getLocation().getLatitude()!=null && !model.getLocation().getLatitude().isEmpty())
+        {
+            switchLocation.setVisibility(View.VISIBLE);
+        }
+
         try {
             if (Config.getInstance().getUser().getRole() == Constants.Role.EXECUTIVE) {
                 loadExecutiveOwnData(model.getFromExecutive(), model.getReminderDate());
@@ -440,7 +446,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
     private void initMap() {
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         View mapView = mapFragment.getView();
-        if (mapView != null) {
+        if (mapView != null && switchLocation.getVisibility()==View.VISIBLE) {
             if (!switchLocation.isChecked()) {
                 mapView.setVisibility(View.GONE);
             } else {
@@ -448,6 +454,8 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                 mapFragment.getMapAsync(this);
             }
         }
+        else
+            mapView.setVisibility(View.GONE);
     }
     //endregion
 

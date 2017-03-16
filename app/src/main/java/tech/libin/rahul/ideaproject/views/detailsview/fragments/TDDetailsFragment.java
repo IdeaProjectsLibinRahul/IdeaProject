@@ -222,6 +222,10 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
         statusAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getVisitStatus());
         spnStatus.setAdapter(statusAdapter);
 
+        if(model.getLocation()!=null && model.getLocation().getLatitude()!=null && !model.getLocation().getLatitude().isEmpty())
+        {
+            switchLocation.setVisibility(View.VISIBLE);
+        }
         if (activityType != Constants.ActivityType.NEW_ACTIVITY) {
             DetailFromUPCRoleModel fromExecutive = model.getFromExecutive();
             if (fromExecutive != null) {
@@ -406,7 +410,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
     private void initMap() {
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         View mapView = mapFragment.getView();
-        if (mapView != null) {
+        if (mapView != null && switchLocation.getVisibility()==View.VISIBLE) {
             if (!switchLocation.isChecked()) {
                 mapView.setVisibility(View.GONE);
             } else {
@@ -414,6 +418,9 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                 mapFragment.getMapAsync(this);
             }
         }
+        else
+            mapView.setVisibility(View.GONE);
+
     }
     //endregion
 

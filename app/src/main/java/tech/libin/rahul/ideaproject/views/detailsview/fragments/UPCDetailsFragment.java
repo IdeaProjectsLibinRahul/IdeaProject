@@ -63,11 +63,8 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewCustNum;
     private FOSTextView textViewMobile;
     private FOSTextView textViewUpc;
-    private FOSTextView textViewSubscriberType;
-    private FOSTextView textViewCreatedDateTime;
+    private FOSTextView textViewUPCDate;
     private FOSTextView textViewSegment;
-    private FOSTextView textViewCustomerSubsType;
-    private FOSTextView textViewCsCreditCode;
     private FOSTextView textViewCustomerType;
     private FOSTextView textViewAlternateNumber;
     private FOSTextView textViewServSeg;
@@ -127,12 +124,9 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         textViewMobile = (FOSTextView) view.findViewById(R.id.textViewPhoneNum);
         textViewUpc = (FOSTextView) view.findViewById(R.id.textViewUpc);
 
-        textViewSubscriberType = (FOSTextView) view.findViewById(R.id.textViewSubType);
-        textViewCreatedDateTime = (FOSTextView) view.findViewById(R.id.textViewBegeningDate);
+        textViewUPCDate = (FOSTextView) view.findViewById(R.id.textViewBegeningDate);
         textViewSegment = (FOSTextView) view.findViewById(R.id.textViewSegment);
 
-        textViewCustomerSubsType = (FOSTextView) view.findViewById(R.id.textViewCustSubType);
-        textViewCsCreditCode = (FOSTextView) view.findViewById(R.id.textViewCsCreditCode);
         textViewCustomerType = (FOSTextView) view.findViewById(R.id.textViewCustomerType);
         textViewAlternateNumber = (FOSTextView) view.findViewById(R.id.textViewAlternateNum);
         textViewServSeg = (FOSTextView) view.findViewById(R.id.textViewServSeg);
@@ -223,11 +217,8 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         textViewCustNum.setText(response.getCustomerName());
         textViewMobile.setText(response.getMsisdn());
         textViewUpc.setText(response.getUpc());
-        textViewSubscriberType.setText(response.getSubscriberType());
-        textViewCreatedDateTime.setText(response.getCreatedDateTime());
+        textViewUPCDate.setText(response.getCreatedDateTime());
         textViewSegment.setText(response.getSegment());
-        textViewCustomerSubsType.setText(response.getCustomerSubsType());
-        textViewCsCreditCode.setText(response.getCsCreditCode());
         textViewCustomerType.setText(response.getCustomerType());
         textViewAlternateNumber.setText(response.getAlternateNumber());
         textViewServSeg.setText(response.getServSeg());
@@ -235,7 +226,10 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         visitStatus = response.getVisitStatus();
         statusAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, response.getVisitStatus());
         spnStatus.setAdapter(statusAdapter);
-
+        if(response.getLocation()!=null && response.getLocation().getLatitude()!=null && !response.getLocation().getLatitude().isEmpty())
+        {
+            switchLocation.setVisibility(View.VISIBLE);
+        }
         try {
 
             if (Config.getInstance().getUser().getRole() == Constants.Role.EXECUTIVE) {
@@ -445,13 +439,17 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 
             mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
             View mapView = mapFragment.getView();
-            if (mapView != null) {
+            if (mapView != null && switchLocation.getVisibility()==View.VISIBLE) {
                 if (!switchLocation.isChecked()) {
                     mapView.setVisibility(View.GONE);
                 } else {
                     mapView.setVisibility(View.VISIBLE);
                     mapFragment.getMapAsync(this);
                 }
+            }
+            else
+            {
+                mapView.setVisibility(View.GONE);
             }
         } catch (Exception ex) {
             Log.e("Error", ex.toString());

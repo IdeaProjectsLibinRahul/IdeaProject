@@ -644,7 +644,7 @@
         </android.support.v7.widget.CardView>
 
         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-            style="@style/DetailsTitleViewText"
+            style="@style/DetailsSubmitTitleViewText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -656,7 +656,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:elevation="@dimen/cardview_default_elevation"
-            app:cardBackgroundColor="@color/detail_body_color"
+            app:cardBackgroundColor="@color/detail_submit_color"
             app:cardCornerRadius="5dp">
 
             <LinearLayout
@@ -676,21 +676,22 @@
                     android:id="@+id/switchLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="7dp"
+                    android:layout_marginTop="9dp"
+                    android:visibility="gone"
                     android:text="@string/view_location" />
 
                 <Switch
                     android:id="@+id/switchUpdateLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="7dp"
+                    android:layout_marginTop="9dp"
                     android:text="@string/update_location" />
 
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="7dp"
+                    android:layout_marginTop="9dp"
                     android:orientation="horizontal">
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -728,7 +729,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:maxLength="12" />
+                        android:maxLength="12"
+                        android:background="@drawable/spinner_border"
+                        android:minHeight="45dp"/>
                 </LinearLayout>
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -742,7 +745,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="left|top"
+                    android:background="@drawable/spinner_border"
                     android:hint="@string/hint_remarks"
+                    android:padding="4dp"
                     android:maxLength="250"
                     android:minHeight="100dp" />
 
@@ -751,6 +756,7 @@
                     style="@style/DetailsButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:text="@string/submit" />
 
             </LinearLayout>

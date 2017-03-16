@@ -4,7 +4,7 @@
     <string name="retention">Retention</string>
     <string name="activities">Activities</string>
     <string name="new_activities">New Activities</string>
-    <string name="customer_type">Customer type</string>
+    <string name="customer_type">Customer Type</string>
     <string name="reminders">Reminders</string>
     <string name="logout">Logout</string>
 
@@ -40,6 +40,7 @@
     <string name="feedback">Feedback</string>
     <string name="reason">Reason</string>
     <string name="remarks">Remarks</string>
+    <string name="rating">Rate it</string>
     <string name="hint_remarks">Please write your comments here...</string>
     <string name="title_submit">UPDATE VISIT STATUS</string>
     <string name="title_from_executive">EXECUTIVE VISIT</string>
@@ -54,7 +55,7 @@
     <string name="subscriber_type">Subscriber Type</string>
     <string name="credit_code">Cs Credit Code</string>
     <string name="alternate_num">Alternate Number</string>
-    <string name="serv_seg">servSeg</string>
+    <string name="serv_seg">Serv Seg</string>
 
     <string name="biller">Biller</string>
     <string name="ser">Ser</string>
@@ -62,11 +63,11 @@
     <string name="due_amount">Due Amount</string>
     <string name="bucket">Bucket</string>
     <string name="type">Type</string>
-    <string name="crm_status">crm Status</string>
+    <string name="crm_status">Crm Status</string>
     <string name="my_idea_code">My Idea Code</string>
     <string name="my_idea_location">My Idea Location</string>
-    <string name="land_line1">Land Line 1</string>
-    <string name="land_line2">Land Line 2</string>
+    <string name="land_line1">Alternate Number 1</string>
+    <string name="land_line2">Alternate Number 2</string>
     <string name="activatiom_mi">Activation Mi</string>
     <string name="my_idea">My Idea</string>
 
