@@ -13,6 +13,7 @@ public class SmeFormSubmitRequest extends FOSBaseRequest {
     Long objectId;
     String latitude;
     String longitude;
+    String amountPaid;
     int status;
     int feedback;
     int reason;
@@ -98,5 +99,13 @@ public class SmeFormSubmitRequest extends FOSBaseRequest {
 
     public void setRecordType(Constants.RecordType recordType) {
         this.recordType = recordType;
+    }
+
+    public String getAmountPaid() {
+        return amountPaid;
+    }
+
+    public void setAmountPaid(String amountPaid) {
+        this.amountPaid = amountPaid;
     }
 }

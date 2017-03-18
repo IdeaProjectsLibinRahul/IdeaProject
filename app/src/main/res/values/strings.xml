@@ -28,6 +28,8 @@
     <string name="visited_date">Visited Date</string>
     <string name="view_location">View Location</string>
     <string name="update_location">Update Location</string>
+    <string name="reminder_hint">mm/dd/yyyy</string>
+
 
     <string-array name="dummy_array">
         <item>item 1</item>
@@ -40,14 +42,15 @@
     <string name="feedback">Feedback</string>
     <string name="reason">Reason</string>
     <string name="remarks">Remarks</string>
-    <string name="rating">Rate it</string>
+    <string name="rating">Rate It</string>
     <string name="hint_remarks">Please write your comments here...</string>
     <string name="title_submit">UPDATE VISIT STATUS</string>
     <string name="title_from_executive">EXECUTIVE VISIT</string>
     <string name="title_from_mico">MICO VISIT</string>
     <string name="title_details">CUSTOMER DETAILS</string>
     <string name="submit">Submit</string>
-    <string name="reminder_date">Reminder Date</string>
+    <string name="reminder_date">Revisit Date</string>
+    <string name="amount_collected">Amount Collected</string>
 
     <string name="upc">UPC</string>
     <string name="cust_sub_type">Customer sub type</string>
@@ -79,6 +82,7 @@
     <string name="default_Habit">Default Habit</string>
     <string name="current_status">Current Status</string>
     <string name="cust_num">Customer Number</string>
+    <string name="pay_on">Pay On</string>
 
     <string name="warn_request_timed_out">Your request timed out, please retry.</string>
 

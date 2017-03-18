@@ -5,7 +5,9 @@
     <color name="colorAccent">#181818</color>
 
 
-    <color name="gray2X">#61615f</color>
+    <!--<color name="gray2X">#060606</color>-->
+    <!--<color name="baseGray">#060606</color>-->
+    <color name="gray2X">#363535</color>
     <color name="baseGray">#949491</color>
     <color name="lightYellow">#ebfcf1</color>
     <color name="button_back">#303F9F</color>

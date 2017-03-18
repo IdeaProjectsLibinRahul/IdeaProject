@@ -12,6 +12,7 @@ public class FormSubmitModel {
     Long objectId;
     String latitude;
     String longitude;
+    String amountPaid;
     int status;
     int feedback;
     int reason;
@@ -97,5 +98,13 @@ public class FormSubmitModel {
 
     public void setRecordType(Constants.RecordType recordType) {
         this.recordType = recordType;
+    }
+
+    public String getAmountPaid() {
+        return amountPaid;
+    }
+
+    public void setAmountPaid(String amountPaid) {
+        this.amountPaid = amountPaid;
     }
 }

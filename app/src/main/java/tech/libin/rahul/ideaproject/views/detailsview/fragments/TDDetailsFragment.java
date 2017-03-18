@@ -58,10 +58,13 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
 
     //region declarations
     Spinner spnStatus;
+    Spinner spnFeedback;
     TdDetailModel detailModel;
     FOSSpinnerAdapter statusAdapter;
+    FOSSpinnerAdapter feedbackAdapter;
     private EditText editTextRemarks;
     private EditText editTextReminder;
+    private EditText editTextAmountCollected;
     private FOSTextView textViewCustNum;
     private FOSTextView textViewMobile;
     private FOSTextView textViewBiller;
@@ -72,17 +75,17 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
     private FOSTextView textViewType;
     private FOSTextView textViewCustomerType;
     private FOSTextView textViewCrmStatus;
-    private FOSTextView textViewMyIdeaCode;
-    private FOSTextView textViewMyIdeaAllocation;
-    private FOSTextView textViewActivationMi;
     private FOSTextView textViewLandline1;
     private FOSTextView textViewLandLine2;
     private FOSTextView textViewAddress;
+    private FOSTextView textViewReminderDate;
     private View view;
     private Button buttonSubmit;
     private Switch switchLocation;
     private Switch switchUpdateLocation;
     private LinearLayout linLayoutReminder;
+    private LinearLayout linLayoutPaidAmount;
+    private LinearLayout linLayoutFeedback;
     private RecyclerView recViewOther;
     private String objectId;
     private String userName;
@@ -91,6 +94,8 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
     private SupportMapFragment mapFragment;
     private GPSTracker gpsTracker;
     private GoogleMap mMap;
+    List<SpinnerData> visitStatus;
+    List<SpinnerData> feedback;
 
     //endregion
 
@@ -124,23 +129,25 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
         textViewType = (FOSTextView) view.findViewById(R.id.textViewType);
         textViewCustomerType = (FOSTextView) view.findViewById(R.id.textViewCustomerType);
         textViewCrmStatus = (FOSTextView) view.findViewById(R.id.textViewCrmStatus);
-        textViewMyIdeaCode = (FOSTextView) view.findViewById(R.id.textViewMyIdeaCode);
-        textViewMyIdeaAllocation = (FOSTextView) view.findViewById(R.id.textVieMyIdeaLocation);
-        textViewActivationMi = (FOSTextView) view.findViewById(R.id.textViewActivationMi);
         textViewLandline1 = (FOSTextView) view.findViewById(R.id.textViewLandLine1);
         textViewLandLine2 = (FOSTextView) view.findViewById(R.id.textViewLandLine2);
+        textViewReminderDate = (FOSTextView) view.findViewById(R.id.textViewReminderDate);
 
         editTextRemarks = (EditText) view.findViewById(R.id.editTextRemarks);
+        editTextAmountCollected = (EditText) view.findViewById(R.id.editTextPaidAmount);
         textViewAddress = (FOSTextView) view.findViewById(R.id.textViewAddress);
         recViewOther = (RecyclerView) view.findViewById(R.id.recViewOther);
 
         spnStatus = (Spinner) view.findViewById(R.id.spinnerStatus);
+        spnFeedback = (Spinner) view.findViewById(R.id.spinnerFeedback);
         editTextReminder = (EditText) view.findViewById(R.id.editTextReminderDate);
         switchLocation = (Switch) view.findViewById(R.id.switchLocation);
         switchUpdateLocation = (Switch) view.findViewById(R.id.switchUpdateLocation);
         editTextRemarks = (EditText) view.findViewById(R.id.editTextRemarks);
         buttonSubmit = (Button) view.findViewById(R.id.buttonSubmit);
         linLayoutReminder = (LinearLayout) view.findViewById(R.id.linLayoutReminder);
+        linLayoutFeedback = (LinearLayout) view.findViewById(R.id.linLayoutFeedback);
+        linLayoutPaidAmount = (LinearLayout) view.findViewById(R.id.linLayoutPaidAmount);
     }
     //endregion initComponents
 
@@ -209,18 +216,22 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
         textViewType.setText(model.getType());
         textViewCustomerType.setText(model.getCustomerType());
         textViewCrmStatus.setText(model.getCrmStatus());
-        textViewMyIdeaCode.setText(model.getMyIdeaCode());
-        textViewMyIdeaAllocation.setText(model.getMyIdeaAllocation());
-        textViewActivationMi.setText(model.getActivatiomMi());
         textViewLandline1.setText(model.getLandLine1());
         textViewLandLine2.setText(model.getLandLine2());
 
         textViewAddress.setText(model.getBill1() + "\n" + model.getBill2() + "\n" + model.getBill3() + "\n" + model.getBill4() + "\n" + model.getBill5() + "\n" + model.getZip());
 
-        final List<SpinnerData> visitStatus = model.getVisitStatus();
+        //final List<SpinnerData>
+         visitStatus = model.getVisitStatus();
 
         statusAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getVisitStatus());
         spnStatus.setAdapter(statusAdapter);
+
+        feedback = model.getFeedback();
+        feedbackAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getFeedback());
+        spnFeedback.setAdapter(feedbackAdapter);
+
+
 
         if(model.getLocation()!=null && model.getLocation().getLatitude()!=null && !model.getLocation().getLatitude().isEmpty())
         {
@@ -247,9 +258,38 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (((SpinnerData) visitStatus.get(position)).getId() == 2) {
                     linLayoutReminder.setVisibility(View.VISIBLE);
+                    linLayoutFeedback.setVisibility(View.GONE);
+                    linLayoutPaidAmount.setVisibility(View.GONE);
 
                 } else {
                     linLayoutReminder.setVisibility(View.GONE);
+                    linLayoutFeedback.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+        spnFeedback.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                int selectedValue=((SpinnerData) detailModel.getFeedback().get(position)).getId();
+                if (selectedValue == 2 ||selectedValue == 3 ||selectedValue == 7 ) {
+                    linLayoutReminder.setVisibility(View.VISIBLE);
+                    linLayoutPaidAmount.setVisibility(View.GONE);
+
+                } else if(selectedValue == 1) {
+                    linLayoutReminder.setVisibility(View.GONE);
+                    linLayoutPaidAmount.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    linLayoutReminder.setVisibility(View.GONE);
+                    linLayoutPaidAmount.setVisibility(View.GONE);
                 }
             }
 
@@ -260,12 +300,40 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
         });
 
         loadExecutiveOwnData(model.getFromExecutive(), model.getReminderDate());
+
+
+        //if not visited
+        if (((SpinnerData) spnStatus.getSelectedItem()).getId() == 2) {
+            linLayoutFeedback.setVisibility(View.GONE);
+            linLayoutPaidAmount.setVisibility(View.GONE);
+            linLayoutReminder.setVisibility(View.VISIBLE);
+            textViewReminderDate.setText(getResources().getString(R.string.reminder_date));
+        } else {
+            linLayoutFeedback.setVisibility(View.VISIBLE);
+            linLayoutReminder.setVisibility(View.GONE);
+        }
+
+        if(linLayoutFeedback.getVisibility()==View.VISIBLE) {
+            //if amount paid
+            if (((SpinnerData) spnFeedback.getSelectedItem()).getId() == 1) {
+                linLayoutPaidAmount.setVisibility(View.VISIBLE);
+                linLayoutReminder.setVisibility(View.GONE);
+
+            } else if (((SpinnerData) spnFeedback.getSelectedItem()).getId() == 2) {
+                linLayoutPaidAmount.setVisibility(View.GONE);
+                linLayoutReminder.setVisibility(View.VISIBLE);
+                // textViewReminderDate.setText(getResources().getString(R.string.pay_on));
+            }
+        }
+
     }
 
     //endregion
-    //region
+
+    //region loadExecutiveOwnData
     private void loadExecutiveOwnData(DetailFromUPCRoleModel fromExecutive, String reminder) {
         try {
+
             if (activityType != Constants.ActivityType.NEW_ACTIVITY) {
                 if (fromExecutive != null) {
                     if (fromExecutive.getStatus() != 0 && spnStatus != null) {
@@ -275,11 +343,35 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                             spnStatus.setSelection(position);
                         }
                     }
-                    editTextRemarks.setText(fromExecutive.getRemarks());
-                    if (reminder != null || !reminder.isEmpty()) {
+                    linLayoutPaidAmount.setVisibility(View.GONE);
+                    linLayoutReminder.setVisibility(View.GONE);
+                    if (fromExecutive.getFeedback() != 0 && spnFeedback != null) {
+                        linLayoutFeedback.setVisibility(View.VISIBLE);
+                        SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getFeedback(), detailModel.getFeedback());
+                        if (spinnerElement != null) {
+                            int position = feedbackAdapter.getPosition(spinnerElement);
+                            spnFeedback.setSelection(position);
+                        }
+                        int selectedFeedback=((SpinnerData) spnFeedback.getSelectedItem()).getId();
+                        //if amount paid
+                        if ( selectedFeedback== 1) {
+                            linLayoutPaidAmount.setVisibility(View.VISIBLE);
+                            linLayoutReminder.setVisibility(View.GONE);
+                            editTextAmountCollected.setText(fromExecutive.getAmountPaid());
+
+                        } else if (selectedFeedback == 2 || selectedFeedback == 3 || selectedFeedback == 7 ) {
+                            linLayoutPaidAmount.setVisibility(View.GONE);
+                            linLayoutReminder.setVisibility(View.VISIBLE);
+                            //textViewReminderDate.setText(getResources().getString(R.string.pay_on));
+                            editTextReminder.setText(reminder);
+                        }
+                    }
+                    if ((reminder != null || !reminder.isEmpty()) && fromExecutive.getStatus() == 2) {
                         linLayoutReminder.setVisibility(View.VISIBLE);
+                        textViewReminderDate.setText(getResources().getString(R.string.reminder_date));
                         editTextReminder.setText(reminder);
                     }
+                    editTextRemarks.setText(fromExecutive.getRemarks());
                 }
             }
         } catch (Exception ex) {
@@ -372,6 +464,13 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
             requestModel.setReminder("");
             if (linLayoutReminder.getVisibility() == View.VISIBLE) {
                 requestModel.setReminder(editTextReminder.getText().toString().trim());
+            }
+            if (linLayoutFeedback.getVisibility() == View.VISIBLE) {
+                requestModel.setFeedback(((SpinnerData) spnFeedback.getSelectedItem()).getId());
+            }
+            requestModel.setAmountPaid("0");
+            if (linLayoutPaidAmount.getVisibility() == View.VISIBLE) {
+                requestModel.setAmountPaid(editTextAmountCollected.getText().toString().trim());
             }
             requestModel.setRecordType(Constants.RecordType.TD);
 

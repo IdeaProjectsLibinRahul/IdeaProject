@@ -25,6 +25,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import tech.libin.rahul.ideaproject.R;
@@ -59,7 +60,11 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     public static final String SUCCESS_DIALOG = "SUCCESS_DIALOG";
     private static final String TAG = UPCDetailsFragment.class.getName();
     Spinner spnStatus;
+    Spinner spnFeedback;
+    private List feedbackList;
+
     FOSSpinnerAdapter statusAdapter;
+    FOSSpinnerAdapter feedbackAdapter;
     private FOSTextView textViewCustNum;
     private FOSTextView textViewMobile;
     private FOSTextView textViewUpc;
@@ -152,6 +157,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         recViewOther = (RecyclerView) view.findViewById(R.id.recViewOther);
 
         spnStatus = (Spinner) view.findViewById(R.id.spinnerStatus);
+        spnFeedback = (Spinner) view.findViewById(R.id.spinnerFeedback);
         editTextReminder = (EditText) view.findViewById(R.id.editTextReminderDate);
         switchLocation = (Switch) view.findViewById(R.id.switchLocation);
         switchUpdateLocation = (Switch) view.findViewById(R.id.switchUpdateLocation);
@@ -187,9 +193,9 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     if (dialog != null) {
                         dialog.cancel();
                     }
+                    detailModel = response;
                     bindData(response);
                     setFomListeners();
-                    detailModel = response;
                 }
 
                 @Override
@@ -226,8 +232,14 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         visitStatus = response.getVisitStatus();
         statusAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, response.getVisitStatus());
         spnStatus.setAdapter(statusAdapter);
-        if(response.getLocation()!=null && response.getLocation().getLatitude()!=null && !response.getLocation().getLatitude().isEmpty())
-        {
+
+        if (((SpinnerData) spnStatus.getSelectedItem()).getId() == 1)
+            loadFeedback(response.getFeedbackRetained());
+        else
+            loadFeedback(response.getFeedbackNotRetained());
+
+
+        if (response.getLocation() != null && response.getLocation().getLatitude() != null && !response.getLocation().getLatitude().isEmpty()) {
             switchLocation.setVisibility(View.VISIBLE);
         }
         try {
@@ -240,26 +252,47 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         }
     }
 
+    private void loadFeedback(ArrayList<SpinnerData> feedback) {
+        feedbackAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, feedback);
+        spnFeedback.setAdapter(feedbackAdapter);
+        feedbackList=feedback;
+    }
     private void loadExecutiveOwnData(DetailFromUPCRoleModel fromExecutive, String reminder) {
         try {
             if (activityType != Constants.ActivityType.NEW_ACTIVITY) {
                 if (fromExecutive != null) {
                     if (fromExecutive.getStatus() != 0 && spnStatus != null) {
-                            SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getStatus(), visitStatus);
-                            if (spinnerElement != null) {
-                                int position = statusAdapter.getPosition(spinnerElement);
-                                spnStatus.setSelection(position);
-                            }
+                        SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getStatus(), visitStatus);
+                        if (spinnerElement != null) {
+                            int position = statusAdapter.getPosition(spinnerElement);
+                            spnStatus.setSelection(position);
+                        }
                     }
-                    editTextRemarks.setText(fromExecutive.getRemarks());
+
+                    int visitStatus=((SpinnerData)spnStatus.getSelectedItem()).getId();
+                    if(fromExecutive.getFeedback()!=0) {
+                        if (visitStatus == 1) {
+                            loadFeedback(detailModel.getFeedbackRetained());
+
+                        } else {
+                            loadFeedback(detailModel.getFeedbackNotRetained());
+                        }
+
+                        SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getFeedback(), feedbackList);
+                        if (spinnerElement != null) {
+                            int position = feedbackAdapter.getPosition(spinnerElement);
+                            spnFeedback.setSelection(position);
+                        }
+                    }
                     if (reminder != null || !reminder.isEmpty()) {
                         linLayoutReminder.setVisibility(View.VISIBLE);
                         editTextReminder.setText(reminder);
                     }
+                    editTextRemarks.setText(fromExecutive.getRemarks());
                 }
             }
         } catch (Exception ex) {
-
+            Log.e("Exception", ex.toString());
         }
     }
 
@@ -323,8 +356,10 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (((SpinnerData) visitStatus.get(position)).getId() == 2) {
+                    loadFeedback(detailModel.getFeedbackNotRetained());
                     linLayoutReminder.setVisibility(View.VISIBLE);
                 } else {
+                    loadFeedback(detailModel.getFeedbackRetained());
                     linLayoutReminder.setVisibility(View.GONE);
                 }
             }
@@ -351,6 +386,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         FormSubmitModel requestModel = new FormSubmitModel();
         requestModel.setObjectId(Long.parseLong(objectId));
         requestModel.setStatus(((SpinnerData) spnStatus.getSelectedItem()).getId());
+        requestModel.setFeedback(((SpinnerData) spnFeedback.getSelectedItem()).getId());
         requestModel.setRemarks(editTextRemarks.getText().toString().trim());
         requestModel.setRecordType(Constants.RecordType.UPC);
 
@@ -368,6 +404,8 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         if (linLayoutReminder.getVisibility() == View.VISIBLE) {
             requestModel.setReminder(editTextReminder.getText().toString().trim());
         }
+
+        requestModel.setAmountPaid("0");
 
         final ProgressDialog dialog = ProgressDialog.show(getActivity(), null, getResources().getString(R.string.requesting), true, true);
         FOSFacade fosFacade = new FOSFacadeImpl();

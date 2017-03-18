@@ -44,7 +44,7 @@ public class FOSSpinnerAdapter extends ArrayAdapter<SpinnerData> {
         try {
             SpinnerData model = spinnerModels.get(position);
             FOSTextView textView = new FOSTextView(parent.getContext());
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             textView.setPadding(24, 24, 24, 24);
             textView.setText(model.getValue());
             return textView;

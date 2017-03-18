@@ -56,6 +56,8 @@ public class UpcDetailMapper implements FOSBaseMapper<ActivityDetailRequestModel
         models.setZip(model.getResponse().getZip());
         models.setZip(model.getResponse().getZip());
         models.setVisitStatus(model.getResponse().getVisitStatus());
+        models.setFeedbackNotRetained(model.getResponse().getFeedbackNotRetained());
+        models.setFeedbackRetained(model.getResponse().getFeedbackRetained());
 
         return models;
     }
