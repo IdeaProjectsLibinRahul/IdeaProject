@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tech.libin.rahul.ideaproject.R;
+import tech.libin.rahul.ideaproject.configurations.Config;
 import tech.libin.rahul.ideaproject.configurations.Constants;
 import tech.libin.rahul.ideaproject.facade.FOSFacade;
 import tech.libin.rahul.ideaproject.facade.FOSFacadeImpl;
@@ -96,6 +98,8 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private SmeDetailModel detailModel;
     private RatingBar ratingBar;
     private FOSTextView textViewRatingInfo;
+    private FOSSpinnerAdapter statusAdapter;
+    private FOSSpinnerAdapter reasonAdapter;
 
     //endregion
 
@@ -194,7 +198,6 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     detailModel = response;
                     bindDetails(response);
                     setFomListeners();
-                    setLinearLayoutGone();
                 }
 
                 @Override
@@ -239,6 +242,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             }
         });
 
+        editTextReminder.setInputType(InputType.TYPE_NULL);
         editTextReminder.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
@@ -258,6 +262,28 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     dateDialog.show(getChildFragmentManager(), DATE_DIALOG);
                 }
                 return false;
+            }
+        });
+
+
+        spnStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if ((detailModel.getVisitStatus().get(position)).getId() == 2) {
+                    linLayoutReminder.setVisibility(View.VISIBLE);
+                    linLayoutFeedback.setVisibility(View.GONE);
+                    linLayoutReason.setVisibility(View.GONE);
+
+                } else {
+                    linLayoutReminder.setVisibility(View.GONE);
+                    linLayoutFeedback.setVisibility(View.VISIBLE);
+                    linLayoutReason.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
@@ -290,7 +316,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     return;
                 }
             }
-
+            requestModel.setAmountPaid("0");
             if (linLayoutFeedback.getVisibility() == View.VISIBLE) {
                 int feedback = (int) ratingBar.getRating();
                 if (feedback > 0) {
@@ -368,13 +394,10 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         textViewAddress.setText(model.getBill1() + "\n" + model.getBill2() + "\n" + model.getBill3() + "\n" + model.getBill4() + "\n" + model.getBill5());
 
         setLinearLayoutVisible();
-        final List visitStatus = model.getVisitStatus();
-//        final List visitFeedback = model.getFeedback();
-
-        FOSSpinnerAdapter statusAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getVisitStatus());
+        statusAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getVisitStatus());
         spnStatus.setAdapter(statusAdapter);
 
-        FOSSpinnerAdapter reasonAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getReason());
+        reasonAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getReason());
         spnReason.setAdapter(reasonAdapter);
 
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -396,84 +419,48 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             }
         });
 
-        if(model.getLocation()!=null && model.getLocation().getLatitude()!=null && !model.getLocation().getLatitude().isEmpty())
-        {
+        if (model.getLocation() != null && model.getLocation().getLatitude() != null && !model.getLocation().getLatitude().isEmpty()) {
             switchLocation.setVisibility(View.VISIBLE);
         }
+        ratingBar.setRating(1);
 
-//        FOSSpinnerAdapter feedbackAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getFeedback());
-//       // spnFeedback.setAdapter(feedbackAdapter);
-
-        if (activityType != Constants.ActivityType.NEW_ACTIVITY) {
-            DetailFromSMERoleModel fromExecutive = model.getFromExecutive();
-            //bind data to submit from
-            if (fromExecutive != null) {
-                if (fromExecutive.getVisitStatus() != 0) {
-                    SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getVisitStatus(), visitStatus);
-                    if (spinnerElement != null) {
-                        int position = statusAdapter.getPosition(spinnerElement);
-                        spnStatus.setSelection(position);
-                    }
-                }
-
-                if (fromExecutive.getFeedback() != 0 && ((SpinnerData) spnStatus.getSelectedItem()).getId() == 1) {
-                    linLayoutFeedback.setVisibility(View.VISIBLE);
-                    ratingBar.setRating(fromExecutive.getFeedback());
-                }
-
-                if (fromExecutive.getReason() != 0 && fromExecutive.getFeedback() != 5) {
-                    linLayoutReason.setVisibility(View.VISIBLE);
-                    SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getReason(), model.getReason());
-                    if (spinnerElement != null) {
-                        int position = reasonAdapter.getPosition(spinnerElement);
-                        spnReason.setSelection(position);
-                    }
-                }
-
-                editTextRemarks.setText(fromExecutive.getRemarks());
-                if (model.getReminderDate() != null && !model.getReminderDate().isEmpty()) {
-                    linLayoutReminder.setVisibility(View.VISIBLE);
-                    editTextReminder.setText(model.getReminderDate());
-                }
-            }
+        //load executive details if user is executive
+        //need not to be load from executive if the record is new activity
+        if ((Config.getInstance().getUser().getRole() == Constants.Role.EXECUTIVE) && (activityType != Constants.ActivityType.NEW_ACTIVITY)) {
+            loadExecutiveOwnData();
         }
 
-        spnStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (((SpinnerData) visitStatus.get(position)).getId() == 2) {
-                    linLayoutReminder.setVisibility(View.VISIBLE);
-                    linLayoutFeedback.setVisibility(View.GONE);
-                    linLayoutReason.setVisibility(View.GONE);
+    }
+    //endregion
 
-                } else {
-                    linLayoutReminder.setVisibility(View.GONE);
-                    linLayoutFeedback.setVisibility(View.VISIBLE);
-                    linLayoutReason.setVisibility(View.VISIBLE);
-                }
+    //region loadExecutiveOwnData
+    private void loadExecutiveOwnData()
+    {
+        DetailFromSMERoleModel fromExecutive = detailModel.getFromExecutive();
+        //bind data to submit from
+        if (fromExecutive != null) {
+            if (fromExecutive.getVisitStatus() != 0) {
+                int position = statusAdapter.findElementPosition(fromExecutive.getVisitStatus());
+                spnStatus.setSelection(position);
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            if (fromExecutive.getFeedback() != 0 && ((SpinnerData) spnStatus.getSelectedItem()).getId() == 1) {
+                linLayoutFeedback.setVisibility(View.VISIBLE);
+                ratingBar.setRating(fromExecutive.getFeedback());
             }
-        });
 
-//        spnFeedback.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                if (((SpinnerData) visitFeedback.get(position)).getId() != 5) {
-//                    linLayoutReason.setVisibility(View.VISIBLE);
-//                } else {
-//                    linLayoutReason.setVisibility(View.GONE);
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
+            if (fromExecutive.getReason() != 0 && fromExecutive.getFeedback() != 5) {
+                linLayoutReason.setVisibility(View.VISIBLE);
+                int position = reasonAdapter.findElementPosition(fromExecutive.getReason());
+                spnReason.setSelection(position, false);
+            }
+
+            editTextRemarks.setText(fromExecutive.getRemarks());
+            if (detailModel.getReminderDate() != null && !detailModel.getReminderDate().isEmpty()) {
+                linLayoutReminder.setVisibility(View.VISIBLE);
+                editTextReminder.setText(detailModel.getReminderDate());
+            }
+        }
     }
     //endregion
 
@@ -493,14 +480,6 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         linLayoutFeedback.setVisibility(View.VISIBLE);
         linLayoutReason.setVisibility(View.VISIBLE);
         linLayoutReason.setVisibility(View.VISIBLE);
-    }
-    //endregion
-
-    //region setLinearLayoutGone
-    private void setLinearLayoutGone() {
-        linLayoutFeedback.setVisibility(View.GONE);
-        linLayoutReason.setVisibility(View.GONE);
-        linLayoutReason.setVisibility(View.GONE);
     }
     //endregion
 

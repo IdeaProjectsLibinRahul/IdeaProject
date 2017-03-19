@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -98,13 +99,12 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private Switch switchLocation;
     private Switch switchUpdateLocation;
     private String objectId;
-    private String userName;
-    private String userPhone;
-    private List visitStatus;
     private Constants.ActivityType activityType;
     private SupportMapFragment mapFragment;
     private UpcDetailModel detailModel;
     private GPSTracker gpsTracker;
+    String userName;
+    String userPhone;
     //endregion
 
     //region onCreateView
@@ -116,13 +116,17 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         parseBundle();
         loadUpcDetails();
         initMap();
-
         return view;
     }
     //endregion
 
     //region initComponents
+    /*
+    * Initialize components
+    * */
     private void initComponents() {
+
+        //to get current location from device
         gpsTracker = new GPSTracker(getActivity());
 
         textViewCustNum = (FOSTextView) view.findViewById(R.id.textViewName);
@@ -167,6 +171,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     //endregion
 
     //region parseBundle
+    //get information from previous layout click
     private void parseBundle() {
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -196,6 +201,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     detailModel = response;
                     bindData(response);
                     setFomListeners();
+
                 }
 
                 @Override
@@ -219,91 +225,86 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     //endregion
 
     //region bindData
-    private void bindData(UpcDetailModel response) {
-        textViewCustNum.setText(response.getCustomerName());
-        textViewMobile.setText(response.getMsisdn());
-        textViewUpc.setText(response.getUpc());
-        textViewUPCDate.setText(response.getCreatedDateTime());
-        textViewSegment.setText(response.getSegment());
-        textViewCustomerType.setText(response.getCustomerType());
-        textViewAlternateNumber.setText(response.getAlternateNumber());
-        textViewServSeg.setText(response.getServSeg());
-        textViewAddress.setText(response.getAddress1() + "\n" + response.getAddress2() + "\n" + response.getAddress3() + "\n" + response.getZip());
-        visitStatus = response.getVisitStatus();
-        statusAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, response.getVisitStatus());
+    private void bindData(UpcDetailModel model) {
+        textViewCustNum.setText(model.getCustomerName());
+        textViewMobile.setText(model.getMsisdn());
+        textViewUpc.setText(model.getUpc());
+        textViewUPCDate.setText(model.getCreatedDateTime());
+        textViewSegment.setText(model.getSegment());
+        textViewCustomerType.setText(model.getCustomerType());
+        textViewAlternateNumber.setText(model.getAlternateNumber());
+        textViewServSeg.setText(model.getServSeg());
+        textViewAddress.setText(model.getAddress1() + "\n" + model.getAddress2() + "\n" + model.getAddress3() + "\n" + model.getZip());
+
+        statusAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getVisitStatus());
         spnStatus.setAdapter(statusAdapter);
 
-        if (((SpinnerData) spnStatus.getSelectedItem()).getId() == 1)
-            loadFeedback(response.getFeedbackRetained());
+        //if not retained
+        if (((SpinnerData) spnStatus.getSelectedItem()).getId() == 2)
+            loadFeedback(model.getFeedbackNotRetained());
+            //if retained
         else
-            loadFeedback(response.getFeedbackNotRetained());
+            loadFeedback(model.getFeedbackRetained());
 
-
-        if (response.getLocation() != null && response.getLocation().getLatitude() != null && !response.getLocation().getLatitude().isEmpty()) {
+        //Show view location switch only if location already saved
+        if (model.getLocation() != null && model.getLocation().getLatitude() != null && !model.getLocation().getLatitude().isEmpty()) {
             switchLocation.setVisibility(View.VISIBLE);
         }
-        try {
 
-            if (Config.getInstance().getUser().getRole() == Constants.Role.EXECUTIVE) {
-                loadExecutiveOwnData(response.getFromExecutive(), response.getReminderDate());
-            }
-        } catch (Exception ex) {
-            Log.e("Testing", ex.toString());
+        //load executive details if user is executive
+        //need not to be load from executive if the record is new activity
+        if ((Config.getInstance().getUser().getRole() == Constants.Role.EXECUTIVE) && (activityType != Constants.ActivityType.NEW_ACTIVITY)) {
+            loadExecutiveOwnData();
         }
     }
 
+    //region loadExecutiveOwnData
+    private void loadExecutiveOwnData() {
+        try {
+            DetailFromUPCRoleModel fromExecutive = detailModel.getFromExecutive();
+            if (fromExecutive != null) {
+                //find out visit status and set spinner selection
+                if (fromExecutive.getStatus() != 0 && spnStatus != null) {
+                    int position = statusAdapter.findElementPosition(fromExecutive.getStatus());
+                    spnStatus.setSelection(position, false);
+                }
+
+                int visitStatus = ((SpinnerData) spnStatus.getSelectedItem()).getId();
+                if (fromExecutive.getFeedback() != 0) {
+                    //if not retained
+                    if (visitStatus == 2) {
+                        loadFeedback(detailModel.getFeedbackNotRetained());
+                    } else {
+                        loadFeedback(detailModel.getFeedbackRetained());
+                    }
+
+                    //find out feedback and set feedback spinner selection
+                    int position = feedbackAdapter.findElementPosition(fromExecutive.getFeedback());
+                    if (position != 0) {
+                        spnFeedback.setSelection(position,false);
+                    }
+                }
+                String reminder = detailModel.getReminderDate();
+                if (reminder != null && !reminder.isEmpty()) {
+                    linLayoutReminder.setVisibility(View.VISIBLE);
+                    editTextReminder.setText(reminder);
+                }
+                editTextRemarks.setText(fromExecutive.getRemarks());
+            }
+        } catch (Exception ex) {
+            Log.e(TAG, ex.toString());
+        }
+    }
+    //endregion
+
+    //region loadFeedback
+    //load feedback spinner
     private void loadFeedback(ArrayList<SpinnerData> feedback) {
         feedbackAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, feedback);
         spnFeedback.setAdapter(feedbackAdapter);
         feedbackList=feedback;
     }
-    private void loadExecutiveOwnData(DetailFromUPCRoleModel fromExecutive, String reminder) {
-        try {
-            if (activityType != Constants.ActivityType.NEW_ACTIVITY) {
-                if (fromExecutive != null) {
-                    if (fromExecutive.getStatus() != 0 && spnStatus != null) {
-                        SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getStatus(), visitStatus);
-                        if (spinnerElement != null) {
-                            int position = statusAdapter.getPosition(spinnerElement);
-                            spnStatus.setSelection(position);
-                        }
-                    }
-
-                    int visitStatus=((SpinnerData)spnStatus.getSelectedItem()).getId();
-                    if(fromExecutive.getFeedback()!=0) {
-                        if (visitStatus == 1) {
-                            loadFeedback(detailModel.getFeedbackRetained());
-
-                        } else {
-                            loadFeedback(detailModel.getFeedbackNotRetained());
-                        }
-
-                        SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getFeedback(), feedbackList);
-                        if (spinnerElement != null) {
-                            int position = feedbackAdapter.getPosition(spinnerElement);
-                            spnFeedback.setSelection(position);
-                        }
-                    }
-                    if (reminder != null || !reminder.isEmpty()) {
-                        linLayoutReminder.setVisibility(View.VISIBLE);
-                        editTextReminder.setText(reminder);
-                    }
-                    editTextRemarks.setText(fromExecutive.getRemarks());
-                }
-            }
-        } catch (Exception ex) {
-            Log.e("Exception", ex.toString());
-        }
-    }
-
-    private SpinnerData findSpinnerElementPosition(int value, List<SpinnerData> spinnerData) {
-        for (SpinnerData spnData : spinnerData) {
-            if (spnData.getId() == value) {
-                return spnData;
-            }
-        }
-        return null;
-    }
+    //endregion
 
     //endregion
 
@@ -328,7 +329,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             }
         });
 
-
+        editTextReminder.setInputType(InputType.TYPE_NULL);
         editTextReminder.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
@@ -355,7 +356,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         spnStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (((SpinnerData) visitStatus.get(position)).getId() == 2) {
+                if (detailModel.getVisitStatus().get(position).getId() == 2) {
                     loadFeedback(detailModel.getFeedbackNotRetained());
                     linLayoutReminder.setVisibility(View.VISIBLE);
                 } else {

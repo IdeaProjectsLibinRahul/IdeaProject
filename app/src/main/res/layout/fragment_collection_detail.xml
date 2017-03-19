@@ -552,7 +552,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/visited_date"
+                        android:text="@string/last_visited_date"
                         app:fos_textview_font="sansation_bold" />
 
                 </LinearLayout>
@@ -698,7 +698,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/visited_date"
+                        android:text="@string/last_visited_date"
                         app:fos_textview_font="sansation_bold" />
 
                 </LinearLayout>

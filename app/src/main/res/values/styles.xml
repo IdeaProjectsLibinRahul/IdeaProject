@@ -156,10 +156,12 @@
     <style name="DetailsToolbar">
         <item name="android:titleTextColor">@android:color/white</item>
         <item name="android:textColor">@android:color/white</item>
-
         <item name="android:background">@color/detail_head_back</item>
+    </style>
 
-
+    <style name="SubmitEditText">
+        <item name="android:padding">6dp</item>
+        <item name="android:background">@drawable/submit_edit_text_border</item>
     </style>
 
 </resources>

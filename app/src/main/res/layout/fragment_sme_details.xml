@@ -313,7 +313,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="11dp"
+                    android:layout_marginTop="@dimen/from_submit_content_vertical_spacing"
                     android:orientation="horizontal">
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -345,13 +345,13 @@
                     android:id="@+id/linLayoutFeedback"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="11dp"
+                    android:layout_marginTop="@dimen/from_submit_content_vertical_spacing"
                     android:orientation="vertical"
                     >
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                         style="@style/SwitchStyle"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:text="@string/rating"
@@ -359,9 +359,10 @@
 
                     <RatingBar
                         android:id="@+id/ratingBar"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:max="5"
+                        android:layout_gravity="center"
                         android:progressDrawable="@drawable/ratingbar_color"
                         android:stepSize="1" />
 
@@ -398,10 +399,10 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:hint="@string/reminder_hint"
-                        android:background="@drawable/spinner_border"
+                        style="@style/SubmitEditText"
                         android:maxLength="12"
                         android:minHeight="45dp"
-                        android:paddingLeft="6dp" />
+                       />
                 </LinearLayout>
 
 
@@ -425,7 +426,7 @@
                     <FrameLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:background="@drawable/spinner_border">
 
                         <Spinner
@@ -444,7 +445,7 @@
                     style="@style/SwitchStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="11dp"
+                    android:layout_marginTop="@dimen/from_submit_content_vertical_spacing"
                     android:text="@string/remarks"
                     app:fos_textview_font="sansation_bold" />
 
@@ -453,12 +454,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:background="@drawable/spinner_border"
+style="@style/SubmitEditText"
                     android:gravity="top|left"
                     android:hint="@string/hint_remarks"
                     android:maxLength="250"
                     android:minHeight="100dp"
-                    android:paddingLeft="4dp" />
+                    />
 
                 <tech.libin.rahul.ideaproject.views.widgets.button.FOSButton
                     android:id="@+id/buttonSubmit"

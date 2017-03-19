@@ -394,7 +394,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/visited_date"
+                        android:text="@string/last_visited_date"
                         app:fos_textview_font="sansation_bold" />
 
                 </LinearLayout>
@@ -540,7 +540,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/visited_date"
+                        android:text="@string/last_visited_date"
                         app:fos_textview_font="sansation_bold" />
 
                 </LinearLayout>
@@ -668,20 +668,18 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="9dp"
                     android:visibility="gone"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                         style="@style/SwitchStyle"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="@string/feedback"
                         app:fos_textview_font="sansation_bold"/>
 
                     <FrameLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:background="@drawable/spinner_border">
 
                         <Spinner
@@ -709,6 +707,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         style="@style/SwitchStyle"
+                        android:hint="@string/reminder_hint"
                         android:text="@string/reminder_date"
                         app:fos_textview_font="sansation_bold"/>
 
@@ -718,7 +717,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:maxLength="12"
-                        android:background="@drawable/spinner_border"
+                        style="@style/SubmitEditText"
                         android:minHeight="45dp"/>
                 </LinearLayout>
 
@@ -764,9 +763,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="left|top"
-                    android:background="@drawable/spinner_border"
                     android:hint="@string/hint_remarks"
-                    android:padding="4dp"
+                    style="@style/SubmitEditText"
                     android:maxLength="250"
                     android:minHeight="100dp" />
 

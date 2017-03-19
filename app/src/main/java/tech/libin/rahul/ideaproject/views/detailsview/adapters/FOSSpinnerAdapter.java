@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import tech.libin.rahul.ideaproject.service.models.SpinnerData;
 import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
@@ -28,6 +29,22 @@ public class FOSSpinnerAdapter extends ArrayAdapter<SpinnerData> {
         this.spinnerModels = objects;
     }
 
+    public void updateAdapter( @NonNull ArrayList<SpinnerData> objects)
+    {
+        this.notifyDataSetInvalidated();
+        this.spinnerModels = objects;
+        this.notifyDataSetChanged();
+    }
+
+
+    public int findElementPosition(int value) {
+        for (SpinnerData spnData : this.spinnerModels) {
+            if (spnData.getId() == value) {
+                return  getPosition(spnData);
+            }
+        }
+        return 0;
+    }
 
     @Override
     public int getCount() {
