@@ -155,7 +155,7 @@ public class FOSActivityTab extends FOSBaseFragment {
                 } else {
                     changeAdapter(response);
                     isLoading = false;
-                    recyclerView.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setVisibility(View.VISIBLE);
                     pageNo++;
                 }
                 progressBarLoading.setVisibility(View.GONE);

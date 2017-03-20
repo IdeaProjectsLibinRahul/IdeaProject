@@ -3,10 +3,12 @@ package tech.libin.rahul.ideaproject.network;
 import android.content.Context;
 import android.net.Uri;
 
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.JsonDeserializer;
@@ -58,9 +60,14 @@ public class FOSNetworkRequestImpl<T> implements FOSNetworkRequest<T> {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
-                FOSError FOSError = new FOSError();
-                FOSError.setErrorMessage(error.getMessage());
-                callback.onFail(FOSError);
+
+                if (error.getClass() == NoConnectionError.class || error.getClass() == TimeoutError.class) {
+                    callback.onTimeout();
+                } else {
+                    FOSError FOSError = new FOSError();
+                    FOSError.setErrorMessage(error.getMessage());
+                    callback.onFail(FOSError);
+                }
             }
         });
 

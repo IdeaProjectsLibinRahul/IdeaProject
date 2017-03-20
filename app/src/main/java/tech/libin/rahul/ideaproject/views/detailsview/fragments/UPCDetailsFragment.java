@@ -62,10 +62,11 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private static final String TAG = UPCDetailsFragment.class.getName();
     Spinner spnStatus;
     Spinner spnFeedback;
-    private List feedbackList;
-
     FOSSpinnerAdapter statusAdapter;
     FOSSpinnerAdapter feedbackAdapter;
+    String userName;
+    String userPhone;
+    private List feedbackList;
     private FOSTextView textViewCustNum;
     private FOSTextView textViewMobile;
     private FOSTextView textViewUpc;
@@ -103,8 +104,6 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private SupportMapFragment mapFragment;
     private UpcDetailModel detailModel;
     private GPSTracker gpsTracker;
-    String userName;
-    String userPhone;
     //endregion
 
     //region onCreateView
@@ -281,7 +280,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     //find out feedback and set feedback spinner selection
                     int position = feedbackAdapter.findElementPosition(fromExecutive.getFeedback());
                     if (position != 0) {
-                        spnFeedback.setSelection(position,false);
+                        spnFeedback.setSelection(position, false);
                     }
                 }
                 String reminder = detailModel.getReminderDate();
@@ -302,7 +301,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private void loadFeedback(ArrayList<SpinnerData> feedback) {
         feedbackAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, feedback);
         spnFeedback.setAdapter(feedbackAdapter);
-        feedbackList=feedback;
+        feedbackList = feedback;
     }
     //endregion
 
@@ -424,15 +423,19 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                 if (dialog != null) {
                     dialog.cancel();
                 }
+
+                showTimeOutInfo();
             }
 
             @Override
             public void onRequestFail(FOSError error) {
                 Log.e("Submit Fail", error.getErrorMessage());
-                showSuccessInfo();
+
                 if (dialog != null) {
                     dialog.cancel();
                 }
+
+                showErrorInfo();
             }
         });
     }
@@ -440,6 +443,22 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private void showSuccessInfo() {
         String message = "Form submitted successfully";
         String title = "Info";
+
+        InfoDialog infoDialog = InfoDialog.newInstance(title, message);
+        infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
+    }
+
+    private void showErrorInfo() {
+        String message = "Form submission error";
+        String title = "Error";
+
+        InfoDialog infoDialog = InfoDialog.newInstance(title, message);
+        infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
+    }
+
+    private void showTimeOutInfo() {
+        String message = "Form submission timeout";
+        String title = "TimeOut";
 
         InfoDialog infoDialog = InfoDialog.newInstance(title, message);
         infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
@@ -478,16 +497,14 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 
             mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
             View mapView = mapFragment.getView();
-            if (mapView != null && switchLocation.getVisibility()==View.VISIBLE) {
+            if (mapView != null && switchLocation.getVisibility() == View.VISIBLE) {
                 if (!switchLocation.isChecked()) {
                     mapView.setVisibility(View.GONE);
                 } else {
                     mapView.setVisibility(View.VISIBLE);
                     mapFragment.getMapAsync(this);
                 }
-            }
-            else
-            {
+            } else {
                 mapView.setVisibility(View.GONE);
             }
         } catch (Exception ex) {
