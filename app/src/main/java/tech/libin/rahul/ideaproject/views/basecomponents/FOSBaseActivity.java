@@ -1,7 +1,6 @@
 package tech.libin.rahul.ideaproject.views.basecomponents;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -71,9 +70,8 @@ public abstract class FOSBaseActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onPostCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onPostCreate(savedInstanceState, persistentState);
-
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
         ApplicationContextHolder contextHolder = ApplicationContextHolder.getInstance();
         contextHolder.setContext(this);
     }

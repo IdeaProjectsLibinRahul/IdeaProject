@@ -109,7 +109,9 @@ public class LoginActivity extends FOSBaseActivity {
                     @Override
                     public void onRequestTimout() {
                         dialog.cancel();
-
+                        String title = "Request Fail";
+                        fosDialog = FOSDialog.newInstance(title, getResources().getString(R.string.warn_request_timed_out));
+                        fosDialog.show(getSupportFragmentManager(), "tag");
                     }
 
                     @Override

@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -264,8 +265,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
 
             }
         });
-
-
+        editTextReminder.setInputType(InputType.TYPE_NULL);
         editTextReminder.setOnTouchListener(new View.OnTouchListener() {
 
             @Override

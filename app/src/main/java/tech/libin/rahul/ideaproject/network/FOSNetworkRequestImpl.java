@@ -20,6 +20,7 @@ import java.util.Map;
 
 import tech.libin.rahul.ideaproject.network.constants.ServiceURLs;
 import tech.libin.rahul.ideaproject.network.handlers.NetworkCallback;
+import tech.libin.rahul.ideaproject.network.utils.SSLConnection;
 import tech.libin.rahul.ideaproject.network.volley.GsonRequest;
 import tech.libin.rahul.ideaproject.network.volley.VolleyMultipartRequest;
 import tech.libin.rahul.ideaproject.service.requests.base.FOSBaseRequest;
@@ -50,6 +51,7 @@ public class FOSNetworkRequestImpl<T> implements FOSNetworkRequest<T> {
     public void request(int method, final NetworkCallback<T> callback) {
         Context context = ApplicationContextHolder.getApplicationContext();
         RequestQueue queue = Volley.newRequestQueue(context);
+        SSLConnection.allowAllSSL();
 
         GsonRequest<T> gsonRequest = new GsonRequest<T>(method, url, responseClass, null, request, new Response.Listener<T>() {
             @Override
@@ -95,6 +97,7 @@ public class FOSNetworkRequestImpl<T> implements FOSNetworkRequest<T> {
     public void request(int method, final NetworkCallback<T> callback, JsonDeserializer<T> jsonDeserializer) {
         Context context = ApplicationContextHolder.getApplicationContext();
         RequestQueue queue = Volley.newRequestQueue(context);
+        SSLConnection.allowAllSSL();
 
         GsonRequest<T> gsonRequest = new GsonRequest<T>(method, url, responseClass, null, request, new Response.Listener<T>() {
             @Override
@@ -139,6 +142,7 @@ public class FOSNetworkRequestImpl<T> implements FOSNetworkRequest<T> {
     public void uploadFile(int method, final NetworkCallback<T> callback, final Map<String, String> data, final Map<String, Uri> files) {
         final Context context = ApplicationContextHolder.getApplicationContext();
         RequestQueue queue = Volley.newRequestQueue(context);
+        SSLConnection.allowAllSSL();
 
         VolleyMultipartRequest<T> multipartRequest = new VolleyMultipartRequest<T>(Request.Method.POST, url, responseClass, new Response.Listener<T>() {
             @Override

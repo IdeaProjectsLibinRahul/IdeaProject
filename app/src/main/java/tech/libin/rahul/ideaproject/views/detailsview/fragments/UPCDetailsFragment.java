@@ -208,7 +208,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     if (dialog != null) {
                         dialog.cancel();
                     }
-                    showSuccessInfo(getResources().getString(R.string.warn_request_timed_out));
+                    showTimeOutInfo();
                 }
 
                 @Override
@@ -216,7 +216,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     if (dialog != null) {
                         dialog.cancel();
                     }
-                    showSuccessInfo(error.getErrorMessage());
+                    showErrorInfo();
                 }
             });
         }

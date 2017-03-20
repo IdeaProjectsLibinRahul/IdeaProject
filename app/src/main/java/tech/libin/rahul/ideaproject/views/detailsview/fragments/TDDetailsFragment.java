@@ -560,4 +560,13 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
     }
     //endregion
 
+
+    private void showTimeOutInfo() {
+        String message = "Form submission timeout";
+        String title = "TimeOut";
+
+        InfoDialog infoDialog = InfoDialog.newInstance(title, message);
+        infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
+    }
+
 }

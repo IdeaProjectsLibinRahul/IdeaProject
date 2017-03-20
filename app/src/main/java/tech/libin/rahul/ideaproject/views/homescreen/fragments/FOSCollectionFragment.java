@@ -62,7 +62,6 @@ public class FOSCollectionFragment extends FOSBaseFragment {
     private void initComponents() {
         mTabLayout = (TabLayout) mView.findViewById(R.id.tab_layout_collections);
         mViewPager = (ViewPager) mView.findViewById(R.id.view_pager_collections);
-
         bottomBar = (LinearLayout) mView.findViewById(R.id.bottom_bar);
         tabRetention = (RelativeLayout) mView.findViewById(R.id.tabRetention);
         tabCollection = (RelativeLayout) mView.findViewById(R.id.tabCollection);
@@ -73,19 +72,30 @@ public class FOSCollectionFragment extends FOSBaseFragment {
         textViewCollection = (FOSTextView) mView.findViewById(R.id.textViewCollection);
 
         user = Config.getInstance().getUser();
-        if (user.getType() == Constants.Type.RETENSION) {
-            bottomBar.setVisibility(View.GONE);
-            userSelectionType = Constants.Type.RETENSION;
-            Config.getInstance().setTabSelected(Constants.Type.RETENSION);
-        } else if (user.getType() == Constants.Type.COLLECTION) {
-            bottomBar.setVisibility(View.GONE);
-            userSelectionType = Constants.Type.COLLECTION;
-            Config.getInstance().setTabSelected(Constants.Type.COLLECTION);
+
+        if (userSelectionType == null) {
+            if (user.getType() == Constants.Type.RETENSION) {
+                bottomBar.setVisibility(View.GONE);
+                userSelectionType = Constants.Type.RETENSION;
+                Config.getInstance().setTabSelected(Constants.Type.RETENSION);
+            } else if (user.getType() == Constants.Type.COLLECTION) {
+                bottomBar.setVisibility(View.GONE);
+                userSelectionType = Constants.Type.COLLECTION;
+                Config.getInstance().setTabSelected(Constants.Type.COLLECTION);
+            } else {
+                setRetentionTabSelected();
+                userSelectionType = Constants.Type.RETENSION;
+                Config.getInstance().setTabSelected(Constants.Type.RETENSION);
+            }
         } else {
-            setRetentionTabSelected();
-            userSelectionType = Constants.Type.RETENSION;
-            Config.getInstance().setTabSelected(Constants.Type.RETENSION);
+            if (userSelectionType != Constants.Type.RETENSION)
+                setCollectionTabSelected();
+            else
+                setRetentionTabSelected();
         }
+
+        Config.getInstance().setTabSelected(userSelectionType);
+
     }
 
     private void setRetentionTabSelected() {
@@ -97,6 +107,9 @@ public class FOSCollectionFragment extends FOSBaseFragment {
 
         imageViewCollection.setColorFilter(colorBlack);
         textViewCollection.setTextColor(colorBlack);
+
+        tabRetention.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorBottomTabSelected));
+        tabCollection.setBackgroundColor( ContextCompat.getColor(getActivity(), R.color.colorPrimary));
     }
 
     private void setCollectionTabSelected() {
@@ -108,17 +121,16 @@ public class FOSCollectionFragment extends FOSBaseFragment {
 
         imageViewCollection.setColorFilter(colorWhite);
         textViewCollection.setTextColor(colorWhite);
+
+        tabCollection.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorBottomTabSelected));
+        tabRetention.setBackgroundColor( ContextCompat.getColor(getActivity(), R.color.colorPrimary));
     }
 
     private void setListeners() {
-        final int selectedColor = ContextCompat.getColor(getActivity(), R.color.colorBottomTabSelected);
-        final int normalColor = ContextCompat.getColor(getActivity(), R.color.colorPrimary);
 
         tabRetention.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tabRetention.setBackgroundColor(selectedColor);
-                tabCollection.setBackgroundColor(normalColor);
                 userSelectionType = Constants.Type.RETENSION;
                 setRetentionTabSelected();
                 Config.getInstance().setTabSelected(Constants.Type.RETENSION);
@@ -129,8 +141,6 @@ public class FOSCollectionFragment extends FOSBaseFragment {
         tabCollection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tabCollection.setBackgroundColor(selectedColor);
-                tabRetention.setBackgroundColor(normalColor);
                 userSelectionType = Constants.Type.COLLECTION;
                 setCollectionTabSelected();
                 Config.getInstance().setTabSelected(Constants.Type.COLLECTION);
