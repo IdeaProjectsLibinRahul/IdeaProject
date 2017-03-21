@@ -20,5 +20,6 @@
     <color name="detail_submit_color">#b3c7e5f9</color>
     <color name="button_border">#f312110f</color>
     <color name="colorBottomTabSelected">#968f00</color>
+    <color name="editTextBottom">#91b0bef7</color>
 
 </resources>

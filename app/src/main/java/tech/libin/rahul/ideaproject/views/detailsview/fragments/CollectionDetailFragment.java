@@ -79,7 +79,6 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
     private FOSTextView textViewCurrentStatus;
     private FOSTextView textViewSer;
     private FOSTextView textViewBucket;
-    private FOSTextView textViewMyIdeaAllocation;
     private FOSTextView textViewCustNum;
     private FOSTextView textViewLandline1;
     private FOSTextView textViewLandLine2;
@@ -167,7 +166,6 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
 
         textViewSer = (FOSTextView) view.findViewById(R.id.textViewSer);
         textViewBucket = (FOSTextView) view.findViewById(R.id.textViewBucket);
-        textViewMyIdeaAllocation = (FOSTextView) view.findViewById(R.id.textViewMyIdeaLocation);
         textViewCustNum = (FOSTextView) view.findViewById(R.id.textViewCustomerNumber);
         textViewLandline1 = (FOSTextView) view.findViewById(R.id.textViewLandLine1);
         textViewLandLine2 = (FOSTextView) view.findViewById(R.id.textViewLandLine2);
@@ -428,7 +426,6 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
         textViewCurrentStatus.setText(model.getCrmStatus());
         textViewSer.setText(model.getSer());
         textViewBucket.setText(model.getBucket());
-        textViewMyIdeaAllocation.setText(model.getMyIdeaAllocation());
         textViewCustNum.setText(model.getCustNum());
         textViewLandline1.setText(model.getLandLine1());
         textViewLandLine2.setText(model.getLandLine2());

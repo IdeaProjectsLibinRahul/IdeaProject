@@ -212,7 +212,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="3">
+                >
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                     style="@style/DetailsViewHeader"
@@ -230,13 +230,7 @@
                     android:text="@string/default_Habit"
                     app:fos_textview_font="sansation_bold" />
 
-                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    style="@style/DetailsViewHeader"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/current_status"
-                    app:fos_textview_font="sansation_bold" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -261,6 +255,39 @@
                     android:layout_weight="1"
                     />
 
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                    style="@style/DetailsViewHeader"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/current_status"
+                    app:fos_textview_font="sansation_bold" />
+
+                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                    style="@style/DetailsViewHeader"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/bucket"
+                    app:fos_textview_font="sansation_bold"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                     android:id="@+id/textViewCurrentStatus"
                     style="@style/DetailsViewText"
@@ -269,8 +296,15 @@
                     android:layout_weight="1"
                     />
 
-            </LinearLayout>
+                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                    android:id="@+id/textViewBucket"
+                    style="@style/DetailsViewText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                   />
 
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -290,7 +324,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/bucket"
+                    android:text="@string/cust_num"
                     app:fos_textview_font="sansation_bold"/>
 
 
@@ -308,55 +342,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     />
-
-                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    android:id="@+id/textViewBucket"
-                    style="@style/DetailsViewText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                   />
-
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    style="@style/DetailsViewHeader"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/my_idea_location"
-                    app:fos_textview_font="sansation_bold"/>
-
-                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    style="@style/DetailsViewHeader"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/cust_num"
-                    app:fos_textview_font="sansation_bold"/>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    android:id="@+id/textViewMyIdeaLocation"
-                    style="@style/DetailsViewText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                   />
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                     android:id="@+id/textViewCustomerNumber"
@@ -874,7 +859,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:maxLength="12"
-                        android:background="@drawable/spinner_border"
+                        style="@style/SubmitEditText"
                         android:numeric="decimal"
                         android:minHeight="45dp"/>
                 </LinearLayout>
