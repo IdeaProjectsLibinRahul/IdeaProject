@@ -13,5 +13,6 @@
     <dimen name="from_submit_content_padding">3dp</dimen>
     <dimen name="main_content_vertical_spacing">10dp</dimen>
     <dimen name="from_submit_content_vertical_spacing">12dp</dimen>
+    <dimen name="reg_profilepic_margin">8dp</dimen>
     <!--End Details View-->
 </resources>
