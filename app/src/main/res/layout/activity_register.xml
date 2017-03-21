@@ -31,6 +31,7 @@
                 android:layout_marginRight="@dimen/reg_profilepic_margin"
                 android:src="@mipmap/profile_image_placeholder" />
 
+
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/floatingActionButton"
                 android:layout_width="wrap_content"
@@ -38,15 +39,55 @@
                 android:layout_gravity="bottom|end"
                 android:src="@mipmap/ic_photo"
                 app:backgroundTint="@color/colorPrimary" />
+
         </FrameLayout>
+
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/radioGroupRegRole"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/profilePicContainer"
+android:gravity="center"
+            >
+
+            <RadioButton
+                android:id="@+id/radio_executive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/executive" />
+
+            <RadioButton
+                android:id="@+id/radio_mico"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mico" />
+
+            <RadioButton
+                android:id="@+id/radio_zsm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/zsm" />
+        </RadioGroup>
+
+        <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
+            android:id="@+id/editTextRegName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/radioGroupRegRole"
+            app:drawableLeft="@mipmap/ic_calendar"
+            app:hint="@string/name"
+            app:maxLength="150" />
 
         <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
             android:id="@+id/editTextRegDOB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/profilePicContainer"
+            android:layout_below="@id/editTextRegName"
             app:drawableLeft="@mipmap/ic_calendar"
             app:hint="@string/dob"
+            app:textString="03/22/1990"
             app:maxLength="150" />
 
         <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
@@ -57,44 +98,95 @@
             android:maxLength="15"
             app:drawableLeft="@mipmap/ic_calendar"
             app:hint="@string/doj"
+            app:textString="03/22/2017"
             app:maxLength="15" />
 
         <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
-            android:id="@+id/editTextRegAddress"
+            android:id="@+id/editTextRegAddress1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/editTextRegJoinDate"
             android:maxLength="15"
             app:drawableLeft="@mipmap/ic_address"
-            app:hint="@string/address"
+            app:hint="@string/address1"
             app:inputType="multiLine"
             app:maxLength="15" />
+
+
+        <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
+            android:id="@+id/editTextRegAddress2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editTextRegAddress1"
+            android:maxLength="15"
+            app:drawableLeft="@mipmap/ic_address"
+            app:hint="@string/address2"
+            app:inputType="multiLine"
+            app:maxLength="15" />
+
+        <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
+            android:id="@+id/editTextRegAddress3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editTextRegAddress2"
+            android:maxLength="15"
+            app:drawableLeft="@mipmap/ic_address"
+            app:hint="@string/address3"
+            app:inputType="multiLine"
+            app:maxLength="15" />
+
+        <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
+            android:id="@+id/editTextRegZip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editTextRegAddress3"
+            android:maxLength="15"
+            app:drawableLeft="@mipmap/ic_address"
+            app:hint="@string/zip"
+            app:inputType="multiLine"
+            app:maxLength="15" />
+
 
         <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
             android:id="@+id/editTextRegFatherName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/editTextRegAddress"
+            android:layout_below="@+id/editTextRegZip"
             app:drawableLeft="@mipmap/ic_user"
             app:hint="@string/father_name"
+            app:maxLength="150" />
+
+
+
+        <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
+            android:id="@+id/editTextRegMobileNo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editTextRegFatherName"
+            app:drawableLeft="@mipmap/ic_phone"
+            app:hint="@string/mobile_no"
+            app:maxLength="12"
+            />
+
+
+
+        <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
+            android:id="@+id/editTextRegPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editTextRegMobileNo"
+            app:drawableLeft="@mipmap/ic_phone"
+            app:hint="@string/password"
+            app:inputType="password"
             app:maxLength="150" />
 
         <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
             android:id="@+id/editTextRegMICode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/editTextRegFatherName"
+            android:layout_below="@+id/editTextRegPassword"
             app:drawableLeft="@mipmap/ic_phone"
             app:hint="@string/mi_code"
-            app:maxLength="150" />
-
-        <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
-            android:id="@+id/editTextRegMobileNo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/editTextRegMICode"
-            app:drawableLeft="@mipmap/ic_phone"
-            app:hint="@string/mobile_no"
             app:maxLength="150" />
 
         <tech.libin.rahul.ideaproject.views.widgets.button.FOSButton
@@ -102,11 +194,10 @@
             style="@style/LoginButton"
             android:layout_width="match_parent"
             android:layout_height="@dimen/btn_height"
-            android:layout_below="@+id/editTextRegMobileNo"
+            android:layout_below="@+id/editTextRegMICode"
             android:layout_marginLeft="2dp"
             android:layout_marginTop="@dimen/button_vertical_margin"
             android:text="@string/sign_up" />
-
 
     </RelativeLayout>
 </ScrollView>

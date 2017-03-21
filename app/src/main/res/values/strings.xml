@@ -91,12 +91,18 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="no_data">No Data</string>
-    <string name="dob">dob</string>
-    <string name="doj">Date of joining</string>
-    <string name="address">Address</string>
+    <string name="dob">Date Of Birth</string>
+    <string name="doj">Date Of Joining</string>
+    <string name="address1">Address Line 1</string>
+    <string name="address2">Address Line 2</string>
+    <string name="address3">Address Line 3</string>
     <string name="father_name">Father\'s Name</string>
     <string name="mi_code">Mi Code</string>
     <string name="mobile_no">Mobile No</string>
+
+    <string name="executive">Executive</string>
+    <string name="mico">Mico</string>
+    <string name="zsm">Zsm</string>
 
 
 </resources>

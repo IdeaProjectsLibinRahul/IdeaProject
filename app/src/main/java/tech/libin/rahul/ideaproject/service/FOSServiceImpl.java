@@ -1,8 +1,11 @@
 package tech.libin.rahul.ideaproject.service;
 
+import android.net.Uri;
+
 import com.android.volley.Request;
 
 import java.util.List;
+import java.util.Map;
 
 import tech.libin.rahul.ideaproject.configurations.Config;
 import tech.libin.rahul.ideaproject.configurations.Constants;
@@ -14,6 +17,7 @@ import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
 import tech.libin.rahul.ideaproject.service.mapper.ActivityMapper;
 import tech.libin.rahul.ideaproject.service.mapper.CollectionDetailMapper;
 import tech.libin.rahul.ideaproject.service.mapper.OtherFormSubmitMapper;
+import tech.libin.rahul.ideaproject.service.mapper.RegisterMapper;
 import tech.libin.rahul.ideaproject.service.mapper.SmeDetailMapper;
 import tech.libin.rahul.ideaproject.service.mapper.SmeFormSubmitMapper;
 import tech.libin.rahul.ideaproject.service.mapper.TdDetailMapper;
@@ -23,15 +27,18 @@ import tech.libin.rahul.ideaproject.service.requests.ActivityRequest;
 import tech.libin.rahul.ideaproject.service.requests.LoginRequest;
 import tech.libin.rahul.ideaproject.service.requests.LogoutRequest;
 import tech.libin.rahul.ideaproject.service.requests.OtherFormSubmitRequest;
+import tech.libin.rahul.ideaproject.service.requests.RegisterRequest;
 import tech.libin.rahul.ideaproject.service.requests.SmeFormSubmitRequest;
 import tech.libin.rahul.ideaproject.service.responses.ActivityResponse;
 import tech.libin.rahul.ideaproject.service.responses.CollectionDetailResponse;
 import tech.libin.rahul.ideaproject.service.responses.FormSubmitResponse;
 import tech.libin.rahul.ideaproject.service.responses.LoginResponse;
 import tech.libin.rahul.ideaproject.service.responses.LogoutResponse;
+import tech.libin.rahul.ideaproject.service.responses.RegisterResponse;
 import tech.libin.rahul.ideaproject.service.responses.SmeDetailResponse;
 import tech.libin.rahul.ideaproject.service.responses.TdDetailResponse;
 import tech.libin.rahul.ideaproject.service.responses.UpcDetailResponse;
+import tech.libin.rahul.ideaproject.service.responses.UserRegisterResponse;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.CollectionDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.OtherFormSubmitModel;
@@ -43,6 +50,7 @@ import tech.libin.rahul.ideaproject.views.homescreen.viewmodels.ActivityModel;
 import tech.libin.rahul.ideaproject.views.models.ActivityDetailRequestModel;
 import tech.libin.rahul.ideaproject.views.models.ActivityRequestModel;
 import tech.libin.rahul.ideaproject.views.models.Login;
+import tech.libin.rahul.ideaproject.views.models.RegisterModel;
 import tech.libin.rahul.ideaproject.views.models.User;
 
 /**
@@ -254,7 +262,6 @@ public class FOSServiceImpl implements FOSService {
         final SmeFormSubmitMapper mapper = new SmeFormSubmitMapper();
         SmeFormSubmitRequest smeFormSubmitRequest = mapper.getRequest(model);
 
-
         FOSNetworkRequest<FormSubmitResponse> request = new FOSNetworkRequestImpl<>(smeFormSubmitRequest, ServiceURLs.FORM_SUBMIT, FormSubmitResponse.class);
         request.request(Request.Method.POST, new NetworkCallback<FormSubmitResponse>() {
             @Override
@@ -286,6 +293,64 @@ public class FOSServiceImpl implements FOSService {
         });
 
     }
+
+    @Override
+    public void doRegistration(Map<String, String> data, Map<String, Uri> files,final ServiceCallback<String> callback) {
+        FOSNetworkRequest<UserRegisterResponse> upload = new FOSNetworkRequestImpl<>(ServiceURLs.REGISTER, UserRegisterResponse.class);
+        upload.uploadFile(Request.Method.POST, new NetworkCallback<UserRegisterResponse>() {
+            @Override
+            public void onSuccess(UserRegisterResponse response) {
+
+            }
+
+            @Override
+            public void onTimeout() {
+
+            }
+
+            @Override
+            public void onFail(FOSError error) {
+
+            }
+        },data,files);
+    }
+
+    @Override
+    public void doRegistrationDummy(RegisterModel model,final ServiceCallback<String> callback) {
+        final RegisterMapper mapper = new RegisterMapper();
+        RegisterRequest registerRequest = mapper.getRequest(model);
+
+        FOSNetworkRequest<RegisterResponse> request = new FOSNetworkRequestImpl<>(registerRequest, ServiceURLs.REGISTER, RegisterResponse.class);
+        request.request(Request.Method.POST, new NetworkCallback<RegisterResponse>() {
+            @Override
+            public void onSuccess(RegisterResponse response) {
+                try {
+                    if (response.getStatus() != Constants.Status.SUCCESS) {
+                        FOSError error = new FOSError();
+                        error.setErrorMessage(response.getMessage());
+                        callback.onRequestFail(error);
+                    } else {
+                        callback.onResponse(response.getMessage());
+                    }
+                } catch (Exception ex) {
+                    FOSError error = new FOSError();
+                    error.setErrorMessage("Something not fine please try again later");
+                    callback.onRequestFail(error);
+                }
+            }
+
+            @Override
+            public void onTimeout() {
+                callback.onRequestTimout();
+            }
+
+            @Override
+            public void onFail(FOSError error) {
+                callback.onRequestFail(error);
+            }
+        });
+    }
+
 
     @Override
     public void doLogout(String userId, final ServiceCallback<String> callback) {
