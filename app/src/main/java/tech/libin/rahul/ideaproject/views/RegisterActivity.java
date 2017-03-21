@@ -51,6 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
     private FOSIconEditText editTextRegMICode;
     private FOSIconEditText editTextRegMobileNo;
     private FOSIconEditText editTextRegPassword;
+    private FOSIconEditText editTextRegConfirmPassword;
     private RadioButton rdbMico;
     private RadioButton rdbZsm;
     private RadioButton rdbExecutive;
@@ -86,6 +87,7 @@ public class RegisterActivity extends AppCompatActivity {
         editTextRegMICode = (FOSIconEditText) findViewById(R.id.editTextRegMICode);
         editTextRegMobileNo = (FOSIconEditText) findViewById(R.id.editTextRegMobileNo);
         editTextRegPassword = (FOSIconEditText) findViewById(R.id.editTextRegPassword);
+        editTextRegConfirmPassword = (FOSIconEditText) findViewById(R.id.editTextRegConfirmPassword);
         imageViewRegProfilePic = (ImageView) findViewById(R.id.imageViewRegProfilePic);
         rdbMico = (RadioButton) findViewById(R.id.radio_mico);
         rdbZsm = (RadioButton) findViewById(R.id.radio_zsm);
@@ -121,81 +123,64 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
-//        rdgRole.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // Is the button now checked?
-//                boolean checked = ((RadioButton) view).isChecked();
-//
-//                // Check which radio button was clicked
-//                switch(view.getId()) {
-//                    case R.id.radio_executive:
-//                        editTextRegMICode.setVisibility(View.VISIBLE);
-//                        break;
-//                    default:
-//                        editTextRegMICode.setVisibility(View.GONE);
-//                        break;
-//                }
-//            }
-//        });
+
         buttonSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                FOSFacade facade = new FOSFacadeImpl();
-                RegisterModel registerModel=new RegisterModel();
-                registerModel.setName(editTextRegName.getText().toString());
-                registerModel.setAddress1(editTextRegAddress1.getText().toString());
-                registerModel.setAddress2(editTextRegAddress2.getText().toString());
-                registerModel.setAddress3(editTextRegAddress3.getText().toString());
-                registerModel.setZip(editTextRegZip.getText().toString());
-                registerModel.setFatherName(editTextRegFatherName.getText().toString());
-                registerModel.setMiCode(editTextRegMICode.getText().toString());
-                registerModel.setMobileNum(editTextRegMobileNo.getText().toString());
-                registerModel.setPassword(editTextRegPassword.getText().toString());
-                if(rdbMico.isChecked()) {
-                    registerModel.setRole(Constants.Role.MICO);
-                }
-                else if(rdbZsm.isChecked())
-                {
-                    registerModel.setRole(Constants.Role.ZSM);
+                if(isValid()) {
+                    FOSFacade facade = new FOSFacadeImpl();
+                    RegisterModel registerModel = new RegisterModel();
+                    registerModel.setName(editTextRegName.getText().toString());
+                    registerModel.setAddress1(editTextRegAddress1.getText().toString());
+                    registerModel.setAddress2(editTextRegAddress2.getText().toString());
+                    registerModel.setAddress3(editTextRegAddress3.getText().toString());
+                    registerModel.setZip(editTextRegZip.getText().toString());
+                    registerModel.setFatherName(editTextRegFatherName.getText().toString());
+                    registerModel.setMiCode(editTextRegMICode.getText().toString());
+                    registerModel.setMobileNum(editTextRegMobileNo.getText().toString());
+                    registerModel.setPassword(editTextRegPassword.getText().toString());
+                    if (rdbMico.isChecked()) {
+                        registerModel.setRole(Constants.Role.MICO);
+                    } else if (rdbZsm.isChecked()) {
+                        registerModel.setRole(Constants.Role.ZSM);
 
-                }
-                else if(rdbExecutive.isChecked()) {
-                    registerModel.setRole(Constants.Role.EXECUTIVE);
-                }
-
-                registerModel.setName(editTextRegName.getText().toString());
-                registerModel.setName(editTextRegName.getText().toString());
-                registerModel.setDob(editTextRegDOB.getText().toString());
-                registerModel.setDateOfJoining(editTextRegJoinDate.getText().toString());
-
-                facade.doRegistrationDummy(registerModel, new ServiceCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        String title = "Success";
-                        fosDialog = FOSDialog.newInstance(title, response);
-                        fosDialog.show(getSupportFragmentManager(), "tag");
-
+                    } else if (rdbExecutive.isChecked()) {
+                        registerModel.setRole(Constants.Role.EXECUTIVE);
                     }
 
-                    @Override
-                    public void onRequestTimout() {
-                        String title = "Info";
-                        fosDialog = FOSDialog.newInstance(title, getResources().getString(R.string.warn_request_timed_out));
-                        fosDialog.show(getSupportFragmentManager(), "tag");
+                    registerModel.setName(editTextRegName.getText().toString());
+                    registerModel.setName(editTextRegName.getText().toString());
+                    registerModel.setDob(editTextRegDOB.getText().toString());
+                    registerModel.setDateOfJoining(editTextRegJoinDate.getText().toString());
 
-                    }
+                    facade.doRegistrationDummy(registerModel, new ServiceCallback<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            String title = "Success";
+                            fosDialog = FOSDialog.newInstance(title, response);
+                            fosDialog.show(getSupportFragmentManager(), "tag");
 
-                    @Override
-                    public void onRequestFail(FOSError error) {
-                        String message = error.getErrorMessage();
-                        String title = "Info";
-                        fosDialog = FOSDialog.newInstance(title, message);
+                        }
 
-                        fosDialog.show(getSupportFragmentManager(), "tag");
-                    }
-                });
+                        @Override
+                        public void onRequestTimout() {
+                            String title = "Info";
+                            fosDialog = FOSDialog.newInstance(title, getResources().getString(R.string.warn_request_timed_out));
+                            fosDialog.show(getSupportFragmentManager(), "tag");
+
+                        }
+
+                        @Override
+                        public void onRequestFail(FOSError error) {
+                            String message = error.getErrorMessage();
+                            String title = "Info";
+                            fosDialog = FOSDialog.newInstance(title, message);
+
+                            fosDialog.show(getSupportFragmentManager(), "tag");
+                        }
+                    });
+                }
 
 //                Map<String, String> params = new HashMap<>();
 //
@@ -310,6 +295,54 @@ public class RegisterActivity extends AppCompatActivity {
                setPic();
            }
         }
+    }
+
+    private boolean isValid()
+    {
+        editTextRegName.setError(null);
+        editTextRegDOB.setError(null);
+        editTextRegAddress1.setError(null);
+        editTextRegZip.setError(null);
+        editTextRegMobileNo.setError(null);
+        editTextRegPassword.setError(null);
+        editTextRegConfirmPassword.setError(null);
+        editTextRegMICode.setError(null);
+
+        boolean status=true;
+        if(editTextRegName.getText().toString().trim().isEmpty()) {
+            status=false;
+            editTextRegName.setError(getResources().getString(R.string.warn_name));
+        }
+        if(editTextRegDOB.getText().toString().trim().isEmpty()) {
+            status=false;
+            editTextRegDOB.setError(getResources().getString(R.string.warn_dob));
+        }
+        if(editTextRegAddress1.getText().toString().trim().isEmpty()) {
+            status=false;
+            editTextRegAddress1.setError(getResources().getString(R.string.warn_address));
+        }
+        if(editTextRegZip.getText().toString().trim().isEmpty()) {
+            status=false;
+            editTextRegZip.setError(getResources().getString(R.string.warn_zip));
+        }
+        if(editTextRegMobileNo.getText().toString().trim().isEmpty()) {
+            status=false;
+            editTextRegMobileNo.setError(getResources().getString(R.string.warn_mobile));
+        }
+        if(editTextRegPassword.getText().toString().trim().isEmpty()) {
+            status=false;
+            editTextRegPassword.setError(getResources().getString(R.string.warn_password));
+        }
+        if((! editTextRegPassword.getText().toString().trim().isEmpty()) && ! editTextRegPassword.getText().toString().trim().equals(editTextRegConfirmPassword.getText().toString().trim())) {
+            status = false;
+            editTextRegConfirmPassword.setError(getResources().getString(R.string.warn_password_miss_match));
+        }
+        if(editTextRegMICode.getVisibility()==View.VISIBLE && editTextRegMICode.getText().toString().trim().isEmpty()) {
+            status=false;
+            editTextRegMICode.setError(getResources().getString(R.string.warn_mi_code));
+        }
+
+       return  status;
     }
     
 }

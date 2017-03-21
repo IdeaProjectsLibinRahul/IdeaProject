@@ -88,7 +88,7 @@ android:gravity="center"
             app:drawableLeft="@mipmap/ic_calendar"
             app:hint="@string/dob"
             app:textString="03/22/1990"
-            app:maxLength="150" />
+            app:maxLength="12" />
 
         <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
             android:id="@+id/editTextRegJoinDate"
@@ -99,7 +99,7 @@ android:gravity="center"
             app:drawableLeft="@mipmap/ic_calendar"
             app:hint="@string/doj"
             app:textString="03/22/2017"
-            app:maxLength="15" />
+            app:maxLength="12" />
 
         <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
             android:id="@+id/editTextRegAddress1"
@@ -110,7 +110,7 @@ android:gravity="center"
             app:drawableLeft="@mipmap/ic_address"
             app:hint="@string/address1"
             app:inputType="multiLine"
-            app:maxLength="15" />
+            app:maxLength="50" />
 
 
         <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
@@ -122,7 +122,7 @@ android:gravity="center"
             app:drawableLeft="@mipmap/ic_address"
             app:hint="@string/address2"
             app:inputType="multiLine"
-            app:maxLength="15" />
+            app:maxLength="50" />
 
         <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
             android:id="@+id/editTextRegAddress3"
@@ -133,7 +133,7 @@ android:gravity="center"
             app:drawableLeft="@mipmap/ic_address"
             app:hint="@string/address3"
             app:inputType="multiLine"
-            app:maxLength="15" />
+            app:maxLength="50" />
 
         <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
             android:id="@+id/editTextRegZip"
@@ -143,8 +143,8 @@ android:gravity="center"
             android:maxLength="15"
             app:drawableLeft="@mipmap/ic_address"
             app:hint="@string/zip"
-            app:inputType="multiLine"
-            app:maxLength="15" />
+            app:inputType="number"
+            app:maxLength="7" />
 
 
         <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
@@ -165,6 +165,7 @@ android:gravity="center"
             android:layout_below="@+id/editTextRegFatherName"
             app:drawableLeft="@mipmap/ic_phone"
             app:hint="@string/mobile_no"
+            app:inputType="number"
             app:maxLength="12"
             />
 
@@ -178,16 +179,26 @@ android:gravity="center"
             app:drawableLeft="@mipmap/ic_phone"
             app:hint="@string/password"
             app:inputType="password"
-            app:maxLength="150" />
+            app:maxLength="15" />
+
+        <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
+            android:id="@+id/editTextRegConfirmPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editTextRegPassword"
+            app:drawableLeft="@mipmap/ic_phone"
+            app:hint="@string/confirm_password"
+            app:inputType="password"
+            app:maxLength="15" />
 
         <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
             android:id="@+id/editTextRegMICode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/editTextRegPassword"
+            android:layout_below="@+id/editTextRegConfirmPassword"
             app:drawableLeft="@mipmap/ic_phone"
             app:hint="@string/mi_code"
-            app:maxLength="150" />
+            app:maxLength="15" />
 
         <tech.libin.rahul.ideaproject.views.widgets.button.FOSButton
             android:id="@+id/buttonRegSignUp"

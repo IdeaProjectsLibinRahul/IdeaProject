@@ -121,6 +121,9 @@ public class FOSIconEditText extends LinearLayout {
                 editText.setInputType(InputType.TYPE_CLASS_TEXT);
             } else if (inputType == 1) {
                 editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            }
+            else if (inputType == 3) {
+                editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_NUMBER);
             } else {
                 editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
             }

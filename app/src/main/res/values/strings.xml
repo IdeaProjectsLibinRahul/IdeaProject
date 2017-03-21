@@ -10,6 +10,7 @@
 
     <string name="user_name">User Name</string>
     <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
     <string name="forgot_password">Forgot your password ?</string>
@@ -103,6 +104,15 @@
     <string name="executive">Executive</string>
     <string name="mico">Mico</string>
     <string name="zsm">Zsm</string>
+
+    <string name="warn_name">Enter your Name</string>
+    <string name="warn_dob">Enter your DOB</string>
+    <string name="warn_address">Enter your Address</string>
+    <string name="warn_zip">Enter Zip</string>
+    <string name="warn_mobile">Enter Mobile Number</string>
+    <string name="warn_mi_code">Enter your MI Code</string>
+    <string name="warn_password">Enter a new password</string>
+    <string name="warn_password_miss_match">Password miss match</string>
 
 
 </resources>
