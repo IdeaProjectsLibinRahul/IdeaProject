@@ -27,8 +27,10 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         app:drawableLeft="@mipmap/ic_password"
-        app:hint="@string/user_name"
-        app:maxLength="150" />
+        app:hint="@string/mobile_no"
+        app:inputType="number"
+        app:maxLength="12" />
+
 
 
     <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText

@@ -52,7 +52,8 @@ public class LoginActivity extends FOSBaseActivity {
         buttonSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkPhoneStatePermission();
+              //  checkPhoneStatePermission();
+                doLogin();
             }
         });
 
@@ -90,11 +91,14 @@ public class LoginActivity extends FOSBaseActivity {
                 FOSFacade facade = new FOSFacadeImpl();
                 Login loginData = new Login();
 
-                TelephonyInfo telephonyInfo = TelephonyInfo.getInstance(this);
+//                TelephonyInfo telephonyInfo = TelephonyInfo.getInstance(this);
+//                loginData.setImei1(telephonyInfo.getImsiSIM1());
+//                loginData.setImei2(telephonyInfo.getImsiSIM2());
+
                 loginData.setUsername(editTextUserName.getText());
                 loginData.setPassword(editTextPassword.getText());
-                loginData.setImei1(telephonyInfo.getImsiSIM1());
-                loginData.setImei2(telephonyInfo.getImsiSIM2());
+                loginData.setImei1("00000");
+                loginData.setImei2("00000");
 
                 final ProgressDialog dialog = ProgressDialog.show(this, null, getResources().getString(R.string.requesting), true, true);
 
@@ -121,7 +125,6 @@ public class LoginActivity extends FOSBaseActivity {
                         String message = "Invalid user name or password,Please check your inputs.";
                         String title = "Authentication Fail";
                         fosDialog = FOSDialog.newInstance(title, message);
-
 
                         fosDialog.show(getSupportFragmentManager(), "tag");
 //                        navigateToHome();
