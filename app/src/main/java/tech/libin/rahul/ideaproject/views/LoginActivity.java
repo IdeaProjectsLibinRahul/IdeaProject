@@ -115,7 +115,7 @@ public class LoginActivity extends FOSBaseActivity {
                     public void onRequestTimout() {
                         dialog.cancel();
                         String title = "Request Fail";
-                        fosDialog = FOSDialog.newInstance(title, getResources().getString(R.string.warn_request_timed_out));
+                        fosDialog = FOSDialog.newInstance(LoginActivity.this, title, getResources().getString(R.string.warn_request_timed_out), false);
                         fosDialog.show(getSupportFragmentManager(), "tag");
                     }
 
@@ -124,7 +124,7 @@ public class LoginActivity extends FOSBaseActivity {
                         dialog.cancel();
                         String message = "Invalid user name or password,Please check your inputs.";
                         String title = "Authentication Fail";
-                        fosDialog = FOSDialog.newInstance(title, message);
+                        fosDialog = FOSDialog.newInstance(LoginActivity.this, title, message, false);
 
                         fosDialog.show(getSupportFragmentManager(), "tag");
 //                        navigateToHome();

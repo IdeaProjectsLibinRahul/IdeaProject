@@ -121,8 +121,7 @@ public class FOSIconEditText extends LinearLayout {
                 editText.setInputType(InputType.TYPE_CLASS_TEXT);
             } else if (inputType == 1) {
                 editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-            }
-            else if (inputType == 3) {
+            } else if (inputType == 3) {
                 editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_NUMBER);
             } else {
                 editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
@@ -134,6 +133,14 @@ public class FOSIconEditText extends LinearLayout {
 
     public String getText() {
         return this.editText.getText().toString();
+    }
+
+    public void setText(String text) {
+        this.editText.setText(text);
+    }
+
+    public EditText getEditText() {
+        return editText;
     }
 
     public void setError(String error) {
