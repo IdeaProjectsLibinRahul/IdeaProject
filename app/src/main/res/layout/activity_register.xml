@@ -116,7 +116,6 @@
                     android:layout_height="wrap_content"
                     app:drawableLeft="@mipmap/ic_calendar"
                     app:hint="@string/dob"
-                    app:maxLength="12"
                     app:textString="03/22/1990" />
 
                 <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
@@ -146,6 +145,16 @@
                     app:drawableLeft="@mipmap/ic_address"
                     app:hint="@string/address3"
                     app:maxLength="50" />
+
+                <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
+                    android:id="@+id/editTextRegZip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="15"
+                    app:drawableLeft="@mipmap/ic_address"
+                    app:hint="@string/zip"
+                    app:inputType="number"
+                    app:maxLength="7" />
             </LinearLayout>
 
             <LinearLayout
@@ -226,16 +235,6 @@
                     app:maxLength="12"
                     app:textString="03/22/2017" />
 
-
-                <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
-                    android:id="@+id/editTextRegZip"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLength="15"
-                    app:drawableLeft="@mipmap/ic_address"
-                    app:hint="@string/zip"
-                    app:inputType="number"
-                    app:maxLength="7" />
 
                 <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
                     android:id="@+id/editTextRegMICode"

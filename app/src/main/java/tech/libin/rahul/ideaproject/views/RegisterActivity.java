@@ -1,5 +1,6 @@
 package tech.libin.rahul.ideaproject.views;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,9 +14,12 @@ import android.support.annotation.IdRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -24,6 +28,7 @@ import android.widget.ViewFlipper;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import tech.libin.rahul.ideaproject.R;
@@ -72,6 +77,8 @@ public class RegisterActivity extends AppCompatActivity {
     private FOSTextView tabItemPersonal;
     private FOSTextView tabItemLogin;
     private FOSTextView tabItemOfficial;
+
+    private EditText selectedEditText;
 
     private float lastX;
     //endregion
@@ -177,7 +184,7 @@ public class RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(String response) {
                             String title = "Success";
-                            fosDialog = FOSDialog.newInstance(title, response);
+                            fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, response, true);
                             fosDialog.show(getSupportFragmentManager(), "tag");
 
                         }
@@ -185,7 +192,7 @@ public class RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onRequestTimout() {
                             String title = "Info";
-                            fosDialog = FOSDialog.newInstance(title, getResources().getString(R.string.warn_request_timed_out));
+                            fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, getResources().getString(R.string.warn_request_timed_out), false);
                             fosDialog.show(getSupportFragmentManager(), "tag");
 
                         }
@@ -194,7 +201,7 @@ public class RegisterActivity extends AppCompatActivity {
                         public void onRequestFail(FOSError error) {
                             String message = error.getErrorMessage();
                             String title = "Info";
-                            fosDialog = FOSDialog.newInstance(title, message);
+                            fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, message, false);
 
                             fosDialog.show(getSupportFragmentManager(), "tag");
                         }
@@ -241,15 +248,46 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         });
+
+        View.OnTouchListener touchListener = new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+
+                try {
+                    FOSIconEditText editText1 = (FOSIconEditText) view;
+                    selectedEditText = editText1.getEditText();
+                } catch (Exception e) {
+                    EditText editText1 = (EditText) view;
+                    selectedEditText = editText1;
+                }
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    final Calendar calendar = Calendar.getInstance();
+                    calendar.add(Calendar.DAY_OF_YEAR, -1);
+                    int yy = calendar.get(Calendar.YEAR);
+                    int mm = calendar.get(Calendar.MONTH);
+                    int dd = calendar.get(Calendar.DAY_OF_MONTH);
+
+                    DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker datePicker, int year, int month, int date) {
+                            selectedEditText.setText(String.format("%02d/%02d/%d", month + 1, date, year));
+                        }
+                    };
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(RegisterActivity.this, dateSetListener, yy, mm, dd);
+                    datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+                    datePickerDialog.show();
+                    return true;
+                }
+                return false;
+            }
+        };
+        editTextRegDOB.setOnTouchListener(touchListener);
+        editTextRegDOB.getEditText().setOnTouchListener(touchListener);
+        editTextRegJoinDate.setOnTouchListener(touchListener);
+        editTextRegJoinDate.getEditText().setOnTouchListener(touchListener);
     }
 
     private void initViewFlipper() {
-        final Animation inRight = AnimationUtils.loadAnimation(this, R.anim.slide_in_from_left);
-        final Animation outRight = AnimationUtils.loadAnimation(this, R.anim.slide_out_to_right);
-
-        final Animation inLeft = AnimationUtils.loadAnimation(this, R.anim.slide_in_from_right);
-        final Animation outLeft = AnimationUtils.loadAnimation(this, R.anim.slide_out_to_left);
-
         viewFlipper.setFlipInterval(FLIP_INTERVAL);
 
         View.OnClickListener tabClickListener = new View.OnClickListener() {
@@ -273,7 +311,6 @@ public class RegisterActivity extends AppCompatActivity {
                 textView.setBackgroundColor(Color.parseColor(COLOR_BACKGROUND));
                 textView.setTextColor(Color.WHITE);
 
-                int currentView = viewFlipper.getDisplayedChild();
                 int nextView;
 
                 if (view == tabItemPersonal) {
@@ -284,33 +321,45 @@ public class RegisterActivity extends AppCompatActivity {
                     nextView = 2;
                 }
 
-                if (nextView > currentView) {
-                    viewFlipper.setInAnimation(inLeft);
-                    viewFlipper.setOutAnimation(outLeft);
-
-                    if (nextView - currentView > 1) {
-                        viewFlipper.showNext();
-                        viewFlipper.showNext();
-                    } else {
-                        viewFlipper.showNext();
-                    }
-                } else {
-                    viewFlipper.setInAnimation(inRight);
-                    viewFlipper.setOutAnimation(outRight);
-
-                    if (nextView - currentView < -1) {
-                        viewFlipper.showPrevious();
-                        viewFlipper.showPrevious();
-                    } else {
-                        viewFlipper.showPrevious();
-                    }
-                }
+                slideTabView(nextView);
             }
         };
 
         tabItemPersonal.setOnClickListener(tabClickListener);
         tabItemLogin.setOnClickListener(tabClickListener);
         tabItemOfficial.setOnClickListener(tabClickListener);
+    }
+
+    private void slideTabView(int nextView) {
+        int currentView = viewFlipper.getDisplayedChild();
+
+        Animation inRight = AnimationUtils.loadAnimation(RegisterActivity.this, R.anim.slide_in_from_left);
+        Animation outRight = AnimationUtils.loadAnimation(RegisterActivity.this, R.anim.slide_out_to_right);
+
+        Animation inLeft = AnimationUtils.loadAnimation(RegisterActivity.this, R.anim.slide_in_from_right);
+        Animation outLeft = AnimationUtils.loadAnimation(RegisterActivity.this, R.anim.slide_out_to_left);
+
+        if (nextView > currentView) {
+            viewFlipper.setInAnimation(inLeft);
+            viewFlipper.setOutAnimation(outLeft);
+
+            if (nextView - currentView > 1) {
+                viewFlipper.showNext();
+                viewFlipper.showNext();
+            } else {
+                viewFlipper.showNext();
+            }
+        } else if (nextView < currentView) {
+            viewFlipper.setInAnimation(inRight);
+            viewFlipper.setOutAnimation(outRight);
+
+            if (nextView - currentView < -1) {
+                viewFlipper.showPrevious();
+                viewFlipper.showPrevious();
+            } else {
+                viewFlipper.showPrevious();
+            }
+        }
     }
 
     private File createImageFile() throws IOException {
@@ -396,34 +445,42 @@ public class RegisterActivity extends AppCompatActivity {
         if (editTextRegName.getText().toString().trim().isEmpty()) {
             status = false;
             editTextRegName.setError(getResources().getString(R.string.warn_name));
+            slideTabView(0);
         }
         if (editTextRegDOB.getText().toString().trim().isEmpty()) {
             status = false;
             editTextRegDOB.setError(getResources().getString(R.string.warn_dob));
+            slideTabView(0);
         }
         if (editTextRegAddress1.getText().toString().trim().isEmpty()) {
             status = false;
             editTextRegAddress1.setError(getResources().getString(R.string.warn_address));
+            slideTabView(0);
         }
         if (editTextRegZip.getText().toString().trim().isEmpty()) {
             status = false;
             editTextRegZip.setError(getResources().getString(R.string.warn_zip));
+            slideTabView(0);
         }
         if (editTextRegMobileNo.getText().toString().trim().isEmpty()) {
             status = false;
             editTextRegMobileNo.setError(getResources().getString(R.string.warn_mobile));
+            slideTabView(1);
         }
         if (editTextRegPassword.getText().toString().trim().isEmpty()) {
             status = false;
             editTextRegPassword.setError(getResources().getString(R.string.warn_password));
+            slideTabView(1);
         }
         if ((!editTextRegPassword.getText().toString().trim().isEmpty()) && !editTextRegPassword.getText().toString().trim().equals(editTextRegConfirmPassword.getText().toString().trim())) {
             status = false;
             editTextRegConfirmPassword.setError(getResources().getString(R.string.warn_password_miss_match));
+            slideTabView(1);
         }
         if (editTextRegMICode.getVisibility() == View.VISIBLE && editTextRegMICode.getText().toString().trim().isEmpty()) {
             status = false;
             editTextRegMICode.setError(getResources().getString(R.string.warn_mi_code));
+            slideTabView(2);
         }
 
         return status;
