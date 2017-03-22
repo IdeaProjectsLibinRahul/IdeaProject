@@ -3,6 +3,8 @@ package tech.libin.rahul.ideaproject.views;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,16 +14,17 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ViewFlipper;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import tech.libin.rahul.ideaproject.R;
 import tech.libin.rahul.ideaproject.configurations.Constants;
@@ -29,16 +32,20 @@ import tech.libin.rahul.ideaproject.facade.FOSFacade;
 import tech.libin.rahul.ideaproject.facade.FOSFacadeImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
-import tech.libin.rahul.ideaproject.views.models.Login;
 import tech.libin.rahul.ideaproject.views.models.RegisterModel;
 import tech.libin.rahul.ideaproject.views.widgets.button.FOSButton;
 import tech.libin.rahul.ideaproject.views.widgets.dialogs.FOSDialog;
 import tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText;
+import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    public static final int FLIP_INTERVAL = 2000;
+    public static final String COLOR_TRANSPARENT = "#00000000";
+    public static final String COLOR_BACKGROUND = "#55000000";
     //region declarations
     private static final int CAMERA_PIC_REQUEST = 1003;
+    String mCurrentPhotoPath;
     private FloatingActionButton floatingActionButton;
     private FOSIconEditText editTextRegName;
     private FOSIconEditText editTextRegDOB;
@@ -58,8 +65,15 @@ public class RegisterActivity extends AppCompatActivity {
     private ImageView imageViewRegProfilePic;
     private FOSButton buttonSubmit;
     private RadioGroup rdgRole;
-    Uri mPhotoURI;
+    private Uri mPhotoURI;
     private FOSDialog fosDialog;
+
+    private ViewFlipper viewFlipper;
+    private FOSTextView tabItemPersonal;
+    private FOSTextView tabItemLogin;
+    private FOSTextView tabItemOfficial;
+
+    private float lastX;
     //endregion
 
     //region onCreate
@@ -70,6 +84,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         initComponents();
         setListeners();
+        initViewFlipper();
     }
     //endregion
 
@@ -94,6 +109,10 @@ public class RegisterActivity extends AppCompatActivity {
         rdbExecutive = (RadioButton) findViewById(R.id.radio_executive);
         rdgRole = (RadioGroup) findViewById(R.id.radioGroupRegRole);
         buttonSubmit = (FOSButton) findViewById(R.id.buttonRegSignUp);
+        viewFlipper = (ViewFlipper) findViewById(R.id.viewFlipper);
+        tabItemPersonal = (FOSTextView) findViewById(R.id.tabItemPersonal);
+        tabItemLogin = (FOSTextView) findViewById(R.id.tabItemLogin);
+        tabItemOfficial = (FOSTextView) findViewById(R.id.tabItemOfficial);
     }
     //endregion
 
@@ -105,7 +124,7 @@ public class RegisterActivity extends AppCompatActivity {
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(takePictureIntent, CAMERA_PIC_REQUEST);
 
-               // dispatchTakePictureIntent();
+                // dispatchTakePictureIntent();
             }
         });
 
@@ -113,7 +132,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 // Check which radio button was clicked
-                switch(checkedId) {
+                switch (checkedId) {
                     case R.id.radio_executive:
                         editTextRegMICode.setVisibility(View.VISIBLE);
                         break;
@@ -128,7 +147,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(isValid()) {
+                if (isValid()) {
                     FOSFacade facade = new FOSFacadeImpl();
                     RegisterModel registerModel = new RegisterModel();
                     registerModel.setName(editTextRegName.getText().toString());
@@ -223,9 +242,76 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
-    //endregion
 
-    String mCurrentPhotoPath;
+    private void initViewFlipper() {
+        final Animation inRight = AnimationUtils.loadAnimation(this, R.anim.slide_in_from_left);
+        final Animation outRight = AnimationUtils.loadAnimation(this, R.anim.slide_out_to_right);
+
+        final Animation inLeft = AnimationUtils.loadAnimation(this, R.anim.slide_in_from_right);
+        final Animation outLeft = AnimationUtils.loadAnimation(this, R.anim.slide_out_to_left);
+
+        viewFlipper.setFlipInterval(FLIP_INTERVAL);
+
+        View.OnClickListener tabClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                tabItemPersonal.setTypeface(tabItemPersonal.getTypeface(), Typeface.NORMAL);
+                tabItemPersonal.setTextColor(Color.BLACK);
+                tabItemPersonal.setBackgroundColor(Color.parseColor(COLOR_TRANSPARENT));
+
+                tabItemLogin.setTypeface(tabItemLogin.getTypeface(), Typeface.NORMAL);
+                tabItemLogin.setBackgroundColor(Color.parseColor(COLOR_TRANSPARENT));
+                tabItemLogin.setTextColor(Color.BLACK);
+
+                tabItemOfficial.setTypeface(tabItemOfficial.getTypeface(), Typeface.NORMAL);
+                tabItemOfficial.setBackgroundColor(Color.parseColor(COLOR_TRANSPARENT));
+                tabItemOfficial.setTextColor(Color.BLACK);
+
+                FOSTextView textView = (FOSTextView) view;
+                textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
+                textView.setBackgroundColor(Color.parseColor(COLOR_BACKGROUND));
+                textView.setTextColor(Color.WHITE);
+
+                int currentView = viewFlipper.getDisplayedChild();
+                int nextView;
+
+                if (view == tabItemPersonal) {
+                    nextView = 0;
+                } else if (view == tabItemLogin) {
+                    nextView = 1;
+                } else {
+                    nextView = 2;
+                }
+
+                if (nextView > currentView) {
+                    viewFlipper.setInAnimation(inLeft);
+                    viewFlipper.setOutAnimation(outLeft);
+
+                    if (nextView - currentView > 1) {
+                        viewFlipper.showNext();
+                        viewFlipper.showNext();
+                    } else {
+                        viewFlipper.showNext();
+                    }
+                } else {
+                    viewFlipper.setInAnimation(inRight);
+                    viewFlipper.setOutAnimation(outRight);
+
+                    if (nextView - currentView < -1) {
+                        viewFlipper.showPrevious();
+                        viewFlipper.showPrevious();
+                    } else {
+                        viewFlipper.showPrevious();
+                    }
+                }
+            }
+        };
+
+        tabItemPersonal.setOnClickListener(tabClickListener);
+        tabItemLogin.setOnClickListener(tabClickListener);
+        tabItemOfficial.setOnClickListener(tabClickListener);
+    }
 
     private File createImageFile() throws IOException {
 // Create an image file name
@@ -275,7 +361,7 @@ public class RegisterActivity extends AppCompatActivity {
         int photoH = bmOptions.outHeight;
 
         // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
 
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
@@ -290,15 +376,13 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_PIC_REQUEST && resultCode == RESULT_OK) {
-           if(mPhotoURI!=null)
-           {
-               setPic();
-           }
+            if (mPhotoURI != null) {
+                setPic();
+            }
         }
     }
 
-    private boolean isValid()
-    {
+    private boolean isValid() {
         editTextRegName.setError(null);
         editTextRegDOB.setError(null);
         editTextRegAddress1.setError(null);
@@ -308,41 +392,41 @@ public class RegisterActivity extends AppCompatActivity {
         editTextRegConfirmPassword.setError(null);
         editTextRegMICode.setError(null);
 
-        boolean status=true;
-        if(editTextRegName.getText().toString().trim().isEmpty()) {
-            status=false;
+        boolean status = true;
+        if (editTextRegName.getText().toString().trim().isEmpty()) {
+            status = false;
             editTextRegName.setError(getResources().getString(R.string.warn_name));
         }
-        if(editTextRegDOB.getText().toString().trim().isEmpty()) {
-            status=false;
+        if (editTextRegDOB.getText().toString().trim().isEmpty()) {
+            status = false;
             editTextRegDOB.setError(getResources().getString(R.string.warn_dob));
         }
-        if(editTextRegAddress1.getText().toString().trim().isEmpty()) {
-            status=false;
+        if (editTextRegAddress1.getText().toString().trim().isEmpty()) {
+            status = false;
             editTextRegAddress1.setError(getResources().getString(R.string.warn_address));
         }
-        if(editTextRegZip.getText().toString().trim().isEmpty()) {
-            status=false;
+        if (editTextRegZip.getText().toString().trim().isEmpty()) {
+            status = false;
             editTextRegZip.setError(getResources().getString(R.string.warn_zip));
         }
-        if(editTextRegMobileNo.getText().toString().trim().isEmpty()) {
-            status=false;
+        if (editTextRegMobileNo.getText().toString().trim().isEmpty()) {
+            status = false;
             editTextRegMobileNo.setError(getResources().getString(R.string.warn_mobile));
         }
-        if(editTextRegPassword.getText().toString().trim().isEmpty()) {
-            status=false;
+        if (editTextRegPassword.getText().toString().trim().isEmpty()) {
+            status = false;
             editTextRegPassword.setError(getResources().getString(R.string.warn_password));
         }
-        if((! editTextRegPassword.getText().toString().trim().isEmpty()) && ! editTextRegPassword.getText().toString().trim().equals(editTextRegConfirmPassword.getText().toString().trim())) {
+        if ((!editTextRegPassword.getText().toString().trim().isEmpty()) && !editTextRegPassword.getText().toString().trim().equals(editTextRegConfirmPassword.getText().toString().trim())) {
             status = false;
             editTextRegConfirmPassword.setError(getResources().getString(R.string.warn_password_miss_match));
         }
-        if(editTextRegMICode.getVisibility()==View.VISIBLE && editTextRegMICode.getText().toString().trim().isEmpty()) {
-            status=false;
+        if (editTextRegMICode.getVisibility() == View.VISIBLE && editTextRegMICode.getText().toString().trim().isEmpty()) {
+            status = false;
             editTextRegMICode.setError(getResources().getString(R.string.warn_mi_code));
         }
 
-       return  status;
+        return status;
     }
-    
+
 }

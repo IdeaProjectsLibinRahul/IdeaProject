@@ -113,6 +113,9 @@
     <string name="warn_mi_code">Enter your MI Code</string>
     <string name="warn_password">Enter a new password</string>
     <string name="warn_password_miss_match">Password miss match</string>
+    <string name="personal">Personal</string>
+    <string name="login">Login</string>
+    <string name="official">Official</string>
 
 
 </resources>
