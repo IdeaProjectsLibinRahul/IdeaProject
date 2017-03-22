@@ -1,5 +1,6 @@
 package tech.libin.rahul.ideaproject.views.homescreen.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -12,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -22,6 +24,7 @@ import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
 import tech.libin.rahul.ideaproject.views.homescreen.adapters.HomeTabAdapter;
 import tech.libin.rahul.ideaproject.views.homescreen.dialogs.FOSSearchDialog;
 import tech.libin.rahul.ideaproject.views.models.User;
+import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
 
 /**
  * Created by libin on 21/02/17.
@@ -38,6 +41,10 @@ public class FOSCollectionFragment extends FOSBaseFragment {
     private HomeTabAdapter tabAdapter;
     private User user;
     private Constants.Type userSelectionType;
+    private ImageView imageViewRetention;
+    private ImageView imageViewCollection;
+    private FOSTextView textViewRetention;
+    private FOSTextView textViewCollection;
 
     @Nullable
     @Override
@@ -55,32 +62,77 @@ public class FOSCollectionFragment extends FOSBaseFragment {
     private void initComponents() {
         mTabLayout = (TabLayout) mView.findViewById(R.id.tab_layout_collections);
         mViewPager = (ViewPager) mView.findViewById(R.id.view_pager_collections);
-
         bottomBar = (LinearLayout) mView.findViewById(R.id.bottom_bar);
         tabRetention = (RelativeLayout) mView.findViewById(R.id.tabRetention);
         tabCollection = (RelativeLayout) mView.findViewById(R.id.tabCollection);
 
+        imageViewRetention = (ImageView) mView.findViewById(R.id.imageViewRetention);
+        imageViewCollection = (ImageView) mView.findViewById(R.id.imageViewCollection);
+        textViewRetention = (FOSTextView) mView.findViewById(R.id.textViewRetention);
+        textViewCollection = (FOSTextView) mView.findViewById(R.id.textViewCollection);
+
         user = Config.getInstance().getUser();
-        if (user.getType() != Constants.Type.BOTH) {
-//            bottomBar.setVisibility(View.GONE);
-            userSelectionType = Constants.Type.RETENSION;
-            Config.getInstance().setTabSelected(Constants.Type.RETENSION);
+
+        if (userSelectionType == null) {
+            if (user.getType() == Constants.Type.RETENSION) {
+                bottomBar.setVisibility(View.GONE);
+                userSelectionType = Constants.Type.RETENSION;
+                Config.getInstance().setTabSelected(Constants.Type.RETENSION);
+            } else if (user.getType() == Constants.Type.COLLECTION) {
+                bottomBar.setVisibility(View.GONE);
+                userSelectionType = Constants.Type.COLLECTION;
+                Config.getInstance().setTabSelected(Constants.Type.COLLECTION);
+            } else {
+                setRetentionTabSelected();
+                userSelectionType = Constants.Type.RETENSION;
+                Config.getInstance().setTabSelected(Constants.Type.RETENSION);
+            }
         } else {
-            userSelectionType = Constants.Type.COLLECTION;
-            Config.getInstance().setTabSelected(Constants.Type.COLLECTION);
+            if (userSelectionType != Constants.Type.RETENSION)
+                setCollectionTabSelected();
+            else
+                setRetentionTabSelected();
         }
+
+        Config.getInstance().setTabSelected(userSelectionType);
+
+    }
+
+    private void setRetentionTabSelected() {
+        int colorWhite = Color.parseColor("#FFFFFFFF");
+        int colorBlack = Color.parseColor("#FF000000");
+
+        imageViewRetention.setColorFilter(colorWhite);
+        textViewRetention.setTextColor(colorWhite);
+
+        imageViewCollection.setColorFilter(colorBlack);
+        textViewCollection.setTextColor(colorBlack);
+
+        tabRetention.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorBottomTabSelected));
+        tabCollection.setBackgroundColor( ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+    }
+
+    private void setCollectionTabSelected() {
+        int colorWhite = Color.parseColor("#FFFFFFFF");
+        int colorBlack = Color.parseColor("#FF000000");
+
+        imageViewRetention.setColorFilter(colorBlack);
+        textViewRetention.setTextColor(colorBlack);
+
+        imageViewCollection.setColorFilter(colorWhite);
+        textViewCollection.setTextColor(colorWhite);
+
+        tabCollection.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorBottomTabSelected));
+        tabRetention.setBackgroundColor( ContextCompat.getColor(getActivity(), R.color.colorPrimary));
     }
 
     private void setListeners() {
-        final int selectedColor = ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark);
-        final int normalColor = ContextCompat.getColor(getActivity(), R.color.colorPrimary);
 
         tabRetention.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tabRetention.setBackgroundColor(selectedColor);
-                tabCollection.setBackgroundColor(normalColor);
                 userSelectionType = Constants.Type.RETENSION;
+                setRetentionTabSelected();
                 Config.getInstance().setTabSelected(Constants.Type.RETENSION);
                 initTab();
             }
@@ -89,9 +141,8 @@ public class FOSCollectionFragment extends FOSBaseFragment {
         tabCollection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tabCollection.setBackgroundColor(selectedColor);
-                tabRetention.setBackgroundColor(normalColor);
                 userSelectionType = Constants.Type.COLLECTION;
+                setCollectionTabSelected();
                 Config.getInstance().setTabSelected(Constants.Type.COLLECTION);
                 initTab();
             }

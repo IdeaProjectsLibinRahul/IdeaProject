@@ -34,6 +34,8 @@ public class FOSDateDialog extends FOSBaseDialog implements DatePickerDialog.OnD
 
         DatePickerDialog dfrom = new DatePickerDialog(getActivity(), this, yy, mm, dd);
         dfrom.getDatePicker().setMinDate(new Date().getTime());
+        dfrom.getDatePicker().setDescendantFocusability(DatePicker.FOCUS_BLOCK_DESCENDANTS);
+
         return dfrom;
     }
 

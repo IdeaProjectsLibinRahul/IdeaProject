@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/detail_back_shape">
     <solid android:color="#dda98b06"/>
     <stroke android:width="3dp"
         android:color="#c19512" />

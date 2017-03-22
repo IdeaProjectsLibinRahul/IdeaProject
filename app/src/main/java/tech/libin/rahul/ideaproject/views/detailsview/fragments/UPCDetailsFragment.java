@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -25,6 +26,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import tech.libin.rahul.ideaproject.R;
@@ -59,20 +61,21 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     public static final String SUCCESS_DIALOG = "SUCCESS_DIALOG";
     private static final String TAG = UPCDetailsFragment.class.getName();
     Spinner spnStatus;
-
+    Spinner spnFeedback;
+    FOSSpinnerAdapter statusAdapter;
+    FOSSpinnerAdapter feedbackAdapter;
+    String userName;
+    String userPhone;
+    private List feedbackList;
     private FOSTextView textViewCustNum;
     private FOSTextView textViewMobile;
     private FOSTextView textViewUpc;
-    private FOSTextView textViewSubscriberType;
-    private FOSTextView textViewCreatedDateTime;
+    private FOSTextView textViewUPCDate;
     private FOSTextView textViewSegment;
-    private FOSTextView textViewCustomerSubsType;
-    private FOSTextView textViewCsCreditCode;
     private FOSTextView textViewCustomerType;
     private FOSTextView textViewAlternateNumber;
     private FOSTextView textViewServSeg;
     private FOSTextView textViewAddress;
-
     private FOSTextView textViewMicoName;
     private FOSTextView textViewMicoMobileNum;
     private FOSTextView textViewMicoMyIdea;
@@ -80,7 +83,6 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewMicoVisitStatus;
     private FOSTextView textViewMicoVisitedDate;
     private FOSTextView textViewMicoRemarks;
-
     private FOSTextView textViewExeName;
     private FOSTextView textViewExeMobileNum;
     private FOSTextView textViewExeMyIdea;
@@ -88,32 +90,20 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewExeVisitStatus;
     private FOSTextView textViewExeVisitedDate;
     private FOSTextView textViewExeRemarks;
-
     private EditText editTextReminder;
     private EditText editTextRemarks;
     private View view;
-
     private Button buttonSubmit;
-
     private LinearLayout linLayoutReminder;
-
     private GoogleMap mMap;
-
     private RecyclerView recViewOther;
-
     private Switch switchLocation;
     private Switch switchUpdateLocation;
-
     private String objectId;
-    private String userName;
-    private String userPhone;
-    private List visitStatus;
     private Constants.ActivityType activityType;
     private SupportMapFragment mapFragment;
-
+    private UpcDetailModel detailModel;
     private GPSTracker gpsTracker;
-
-    FOSSpinnerAdapter statusAdapter;
     //endregion
 
     //region onCreateView
@@ -125,25 +115,26 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         parseBundle();
         loadUpcDetails();
         initMap();
-
         return view;
     }
     //endregion
 
     //region initComponents
+    /*
+    * Initialize components
+    * */
     private void initComponents() {
+
+        //to get current location from device
         gpsTracker = new GPSTracker(getActivity());
 
         textViewCustNum = (FOSTextView) view.findViewById(R.id.textViewName);
         textViewMobile = (FOSTextView) view.findViewById(R.id.textViewPhoneNum);
         textViewUpc = (FOSTextView) view.findViewById(R.id.textViewUpc);
 
-        textViewSubscriberType = (FOSTextView) view.findViewById(R.id.textViewSubType);
-        textViewCreatedDateTime = (FOSTextView) view.findViewById(R.id.textViewBegeningDate);
+        textViewUPCDate = (FOSTextView) view.findViewById(R.id.textViewBegeningDate);
         textViewSegment = (FOSTextView) view.findViewById(R.id.textViewSegment);
 
-        textViewCustomerSubsType = (FOSTextView) view.findViewById(R.id.textViewCustSubType);
-        textViewCsCreditCode = (FOSTextView) view.findViewById(R.id.textViewCsCreditCode);
         textViewCustomerType = (FOSTextView) view.findViewById(R.id.textViewCustomerType);
         textViewAlternateNumber = (FOSTextView) view.findViewById(R.id.textViewAlternateNum);
         textViewServSeg = (FOSTextView) view.findViewById(R.id.textViewServSeg);
@@ -169,6 +160,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         recViewOther = (RecyclerView) view.findViewById(R.id.recViewOther);
 
         spnStatus = (Spinner) view.findViewById(R.id.spinnerStatus);
+        spnFeedback = (Spinner) view.findViewById(R.id.spinnerFeedback);
         editTextReminder = (EditText) view.findViewById(R.id.editTextReminderDate);
         switchLocation = (Switch) view.findViewById(R.id.switchLocation);
         switchUpdateLocation = (Switch) view.findViewById(R.id.switchUpdateLocation);
@@ -178,6 +170,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     //endregion
 
     //region parseBundle
+    //get information from previous layout click
     private void parseBundle() {
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -204,8 +197,10 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     if (dialog != null) {
                         dialog.cancel();
                     }
+                    detailModel = response;
                     bindData(response);
                     setFomListeners();
+
                 }
 
                 @Override
@@ -213,7 +208,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     if (dialog != null) {
                         dialog.cancel();
                     }
-                    showSuccessInfo(getResources().getString(R.string.warn_request_timed_out));
+                    showTimeOutInfo();
                 }
 
                 @Override
@@ -221,7 +216,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     if (dialog != null) {
                         dialog.cancel();
                     }
-                    showSuccessInfo(error.getErrorMessage());
+                    showErrorInfo();
                 }
             });
         }
@@ -229,70 +224,86 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     //endregion
 
     //region bindData
-    private void bindData(UpcDetailModel response) {
-        textViewCustNum.setText(response.getCustomerName());
-        textViewMobile.setText(response.getMsisdn());
-        textViewUpc.setText(response.getUpc());
-        textViewSubscriberType.setText(response.getSubscriberType());
-        textViewCreatedDateTime.setText(response.getCreatedDateTime());
-        textViewSegment.setText(response.getSegment());
-        textViewCustomerSubsType.setText(response.getCustomerSubsType());
-        textViewCsCreditCode.setText(response.getCsCreditCode());
-        textViewCustomerType.setText(response.getCustomerType());
-        textViewAlternateNumber.setText(response.getAlternateNumber());
-        textViewServSeg.setText(response.getServSeg());
-        textViewAddress.setText(response.getAddress1() + "\n" + response.getAddress2() + "\n" + response.getAddress3() + "\n" + response.getZip());
-        visitStatus = response.getVisitStatus();
-        statusAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, response.getVisitStatus());
+    private void bindData(UpcDetailModel model) {
+        textViewCustNum.setText(model.getCustomerName());
+        textViewMobile.setText(model.getMsisdn());
+        textViewUpc.setText(model.getUpc());
+        textViewUPCDate.setText(model.getCreatedDateTime());
+        textViewSegment.setText(model.getSegment());
+        textViewCustomerType.setText(model.getCustomerType());
+        textViewAlternateNumber.setText(model.getAlternateNumber());
+        textViewServSeg.setText(model.getServSeg());
+        textViewAddress.setText(model.getAddress1() + "\n" + model.getAddress2() + "\n" + model.getAddress3() + "\n" + model.getZip());
+
+        statusAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getVisitStatus());
         spnStatus.setAdapter(statusAdapter);
 
-        try {
+        //if not retained
+        if (((SpinnerData) spnStatus.getSelectedItem()).getId() == 2)
+            loadFeedback(model.getFeedbackNotRetained());
+            //if retained
+        else
+            loadFeedback(model.getFeedbackRetained());
 
-            if (Config.getInstance().getUser().getRole() == Constants.Role.EXECUTIVE) {
-                loadExecutiveOwnData(response.getFromExecutive(), response.getReminderDate());
-            }
-        } catch (Exception ex) {
-            Log.e("Testing", ex.toString());
+        //Show view location switch only if location already saved
+        if (model.getLocation() != null && model.getLocation().getLatitude() != null && !model.getLocation().getLatitude().isEmpty()) {
+            switchLocation.setVisibility(View.VISIBLE);
+        }
+
+        //load executive details if user is executive
+        //need not to be load from executive if the record is new activity
+        if ((Config.getInstance().getUser().getRole() == Constants.Role.EXECUTIVE) && (activityType != Constants.ActivityType.NEW_ACTIVITY)) {
+            loadExecutiveOwnData();
         }
     }
 
-    private void loadExecutiveOwnData(DetailFromUPCRoleModel fromExecutive, String reminder) {
+    //region loadExecutiveOwnData
+    private void loadExecutiveOwnData() {
         try {
-            if (activityType != Constants.ActivityType.NEW_ACTIVITY) {
-                if (fromExecutive != null) {
-                    if (fromExecutive.getStatus() != 0) {
-                        SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getStatus(), visitStatus);
-                        if (spinnerElement != null) {
-                            int position = statusAdapter.getPosition(spinnerElement);
-                            spnStatus.setSelection(position);
-                        }
-                    }
-                    editTextRemarks.setText(fromExecutive.getRemarks());
-                    if (reminder != null || !reminder.isEmpty()) {
-                        linLayoutReminder.setVisibility(View.VISIBLE);
-                        editTextReminder.setText(reminder);
-                    }
-                    //                    if (fromExecutive.getStatus() == 2) {
-//                        spnStatus.setSelection(1);
-//                        linLayoutReminder.setVisibility(View.VISIBLE);
-//                        editTextReminder.setText(response.getReminderDate());
-//                    } else
-//                        spnStatus.setSelection(0);
+            DetailFromUPCRoleModel fromExecutive = detailModel.getFromExecutive();
+            if (fromExecutive != null) {
+                //find out visit status and set spinner selection
+                if (fromExecutive.getStatus() != 0 && spnStatus != null) {
+                    int position = statusAdapter.findElementPosition(fromExecutive.getStatus());
+                    spnStatus.setSelection(position, false);
                 }
+
+                int visitStatus = ((SpinnerData) spnStatus.getSelectedItem()).getId();
+                if (fromExecutive.getFeedback() != 0) {
+                    //if not retained
+                    if (visitStatus == 2) {
+                        loadFeedback(detailModel.getFeedbackNotRetained());
+                    } else {
+                        loadFeedback(detailModel.getFeedbackRetained());
+                    }
+
+                    //find out feedback and set feedback spinner selection
+                    int position = feedbackAdapter.findElementPosition(fromExecutive.getFeedback());
+                    if (position != 0) {
+                        spnFeedback.setSelection(position, false);
+                    }
+                }
+                String reminder = detailModel.getReminderDate();
+                if (reminder != null && !reminder.isEmpty()) {
+                    linLayoutReminder.setVisibility(View.VISIBLE);
+                    editTextReminder.setText(reminder);
+                }
+                editTextRemarks.setText(fromExecutive.getRemarks());
             }
         } catch (Exception ex) {
-
+            Log.e(TAG, ex.toString());
         }
     }
+    //endregion
 
-    private SpinnerData findSpinnerElementPosition(int value, List<SpinnerData> spinnerData) {
-        for (SpinnerData spnData : spinnerData) {
-            if (spnData.getId() == value) {
-                return spnData;
-            }
-        }
-        return null;
+    //region loadFeedback
+    //load feedback spinner
+    private void loadFeedback(ArrayList<SpinnerData> feedback) {
+        feedbackAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, feedback);
+        spnFeedback.setAdapter(feedbackAdapter);
+        feedbackList = feedback;
     }
+    //endregion
 
     //endregion
 
@@ -317,7 +328,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             }
         });
 
-
+        editTextReminder.setInputType(InputType.TYPE_NULL);
         editTextReminder.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
@@ -344,9 +355,11 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         spnStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (((SpinnerData) visitStatus.get(position)).getId() == 2) {
+                if (detailModel.getVisitStatus().get(position).getId() == 2) {
+                    loadFeedback(detailModel.getFeedbackNotRetained());
                     linLayoutReminder.setVisibility(View.VISIBLE);
                 } else {
+                    loadFeedback(detailModel.getFeedbackRetained());
                     linLayoutReminder.setVisibility(View.GONE);
                 }
             }
@@ -373,20 +386,11 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         FormSubmitModel requestModel = new FormSubmitModel();
         requestModel.setObjectId(Long.parseLong(objectId));
         requestModel.setStatus(((SpinnerData) spnStatus.getSelectedItem()).getId());
+        requestModel.setFeedback(((SpinnerData) spnFeedback.getSelectedItem()).getId());
         requestModel.setRemarks(editTextRemarks.getText().toString().trim());
         requestModel.setRecordType(Constants.RecordType.UPC);
 
         GPSTracker gpsTracker = new GPSTracker(getActivity());
-
-        if (gpsTracker.getIsGPSTrackingEnabled()) {
-            requestModel.setLatitude(gpsTracker.getLatitude() + "");
-            requestModel.setLongitude(gpsTracker.getLongitude() + "");
-        } else {
-            gpsTracker.showSettingsAlert();
-            return;
-        }
-        requestModel.setLongitude("0.0");
-        requestModel.setLatitude("0.0");
         if (switchUpdateLocation.isChecked()) {
             if (gpsTracker != null) {
                 double latitude = gpsTracker.getLatitude();
@@ -397,15 +401,13 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         }
 
         requestModel.setReminder("");
-        requestModel.setFeedback(0);
-        requestModel.setReason(0);
-
         if (linLayoutReminder.getVisibility() == View.VISIBLE) {
             requestModel.setReminder(editTextReminder.getText().toString().trim());
         }
 
-        final ProgressDialog dialog = ProgressDialog.show(getActivity(), null, getResources().getString(R.string.requesting), true, true);
+        requestModel.setAmountPaid("0");
 
+        final ProgressDialog dialog = ProgressDialog.show(getActivity(), null, getResources().getString(R.string.requesting), true, true);
         FOSFacade fosFacade = new FOSFacadeImpl();
         fosFacade.doSubmitVisitDetails(requestModel, new ServiceCallback<String>() {
             @Override
@@ -421,15 +423,19 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                 if (dialog != null) {
                     dialog.cancel();
                 }
+
+                showTimeOutInfo();
             }
 
             @Override
             public void onRequestFail(FOSError error) {
                 Log.e("Submit Fail", error.getErrorMessage());
-                showSuccessInfo();
+
                 if (dialog != null) {
                     dialog.cancel();
                 }
+
+                showErrorInfo();
             }
         });
     }
@@ -437,6 +443,22 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private void showSuccessInfo() {
         String message = "Form submitted successfully";
         String title = "Info";
+
+        InfoDialog infoDialog = InfoDialog.newInstance(title, message);
+        infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
+    }
+
+    private void showErrorInfo() {
+        String message = "Form submission error";
+        String title = "Error";
+
+        InfoDialog infoDialog = InfoDialog.newInstance(title, message);
+        infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
+    }
+
+    private void showTimeOutInfo() {
+        String message = "Form submission timeout";
+        String title = "TimeOut";
 
         InfoDialog infoDialog = InfoDialog.newInstance(title, message);
         infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
@@ -449,7 +471,11 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         mMap = googleMap;
 
         LatLng latLng;
-        if (gpsTracker != null) {
+        if (detailModel != null && !detailModel.getLocation().getLatitude().isEmpty() && !detailModel.getLocation().getLongitude().isEmpty()) {
+            double latitude = Double.parseDouble(detailModel.getLocation().getLatitude());
+            double longitude = Double.parseDouble(detailModel.getLocation().getLongitude());
+            latLng = new LatLng(latitude, longitude);
+        } else if (gpsTracker != null) {
             double latitude = gpsTracker.getLatitude();
             double longitude = gpsTracker.getLongitude();
             latLng = new LatLng(latitude, longitude);
@@ -471,13 +497,15 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 
             mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
             View mapView = mapFragment.getView();
-            if (mapView != null) {
+            if (mapView != null && switchLocation.getVisibility() == View.VISIBLE) {
                 if (!switchLocation.isChecked()) {
                     mapView.setVisibility(View.GONE);
                 } else {
                     mapView.setVisibility(View.VISIBLE);
                     mapFragment.getMapAsync(this);
                 }
+            } else {
+                mapView.setVisibility(View.GONE);
             }
         } catch (Exception ex) {
             Log.e("Error", ex.toString());

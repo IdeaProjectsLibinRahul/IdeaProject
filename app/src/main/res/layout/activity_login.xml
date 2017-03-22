@@ -13,13 +13,13 @@
     tools:context="tech.libin.rahul.ideaproject.views.LoginActivity">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageViewRegProfilePic"
         android:layout_width="@dimen/image_size"
         android:layout_height="@dimen/image_size"
         android:layout_above="@+id/editTextUsernameLogin"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/image_vertical_space"
-        android:src="@mipmap/icon_500" />
+        android:src="@mipmap/logo_500" />
 
     <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
         android:id="@+id/editTextUsernameLogin"

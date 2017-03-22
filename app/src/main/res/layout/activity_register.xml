@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/login_background"
+    tools:context="tech.libin.rahul.ideaproject.views.RegisterActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
+        <FrameLayout
+            android:id="@+id/profilePicContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="30dp">
+
+            <ImageView
+                android:id="@+id/imageViewRegProfilePic"
+                android:layout_width="@dimen/image_size"
+                android:layout_height="@dimen/image_size"
+                android:layout_marginBottom="@dimen/reg_profilepic_margin"
+                android:layout_marginRight="@dimen/reg_profilepic_margin"
+                android:src="@mipmap/profile_image_placeholder" />
+
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/floatingActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:src="@mipmap/ic_photo"
+                app:backgroundTint="@color/colorPrimary" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/tabItems"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/profilePicContainer"
+            android:orientation="horizontal">
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                android:id="@+id/tabItemPersonal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#55000000"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/personal"
+                android:textColor="@android:color/white" />
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                android:id="@+id/tabItemLogin"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/login" />
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                android:id="@+id/tabItemOfficial"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/official" />
+        </LinearLayout>
+
+        <ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/viewFlipper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tabItems"
+            android:layout_marginTop="12dp"
+            tools:showIn="@layout/activity_register">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
+                    android:id="@+id/editTextRegName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:drawableLeft="@mipmap/ic_calendar"
+                    app:hint="@string/name"
+                    app:maxLength="150" />
+
+                <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
+                    android:id="@+id/editTextRegFatherName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:drawableLeft="@mipmap/ic_user"
+                    app:hint="@string/father_name"
+                    app:maxLength="150" />
+
+                <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
+                    android:id="@+id/editTextRegDOB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:drawableLeft="@mipmap/ic_calendar"
+                    app:hint="@string/dob"
+                    app:textString="03/22/1990" />
+
+                <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
+                    android:id="@+id/editTextRegAddress1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="15"
+                    app:drawableLeft="@mipmap/ic_address"
+                    app:hint="@string/address1"
+                    app:maxLength="50" />
+
+
+                <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
+                    android:id="@+id/editTextRegAddress2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="15"
+                    app:drawableLeft="@mipmap/ic_address"
+                    app:hint="@string/address2"
+                    app:maxLength="50" />
+
+                <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
+                    android:id="@+id/editTextRegAddress3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="15"
+                    app:drawableLeft="@mipmap/ic_address"
+                    app:hint="@string/address3"
+                    app:maxLength="50" />
+
+                <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
+                    android:id="@+id/editTextRegZip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="15"
+                    app:drawableLeft="@mipmap/ic_address"
+                    app:hint="@string/zip"
+                    app:inputType="number"
+                    app:maxLength="7" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
+                    android:id="@+id/editTextRegMobileNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:drawableLeft="@mipmap/ic_phone"
+                    app:hint="@string/mobile_no"
+                    app:inputType="number"
+                    app:maxLength="12" />
+
+
+                <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
+                    android:id="@+id/editTextRegPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:drawableLeft="@mipmap/ic_phone"
+                    app:hint="@string/password"
+                    app:inputType="password"
+                    app:maxLength="15" />
+
+                <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
+                    android:id="@+id/editTextRegConfirmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:drawableLeft="@mipmap/ic_phone"
+                    app:hint="@string/confirm_password"
+                    app:inputType="password"
+                    app:maxLength="15" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/radioGroupRegRole"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/profilePicContainer"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radio_executive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="@string/executive" />
+
+                    <RadioButton
+                        android:id="@+id/radio_mico"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mico" />
+
+                    <RadioButton
+                        android:id="@+id/radio_zsm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/zsm" />
+                </RadioGroup>
+
+
+                <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
+                    android:id="@+id/editTextRegJoinDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="15"
+                    app:drawableLeft="@mipmap/ic_calendar"
+                    app:hint="@string/doj"
+                    app:maxLength="12"
+                    app:textString="03/22/2017" />
+
+
+                <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
+                    android:id="@+id/editTextRegMICode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:drawableLeft="@mipmap/ic_phone"
+                    app:hint="@string/mi_code"
+                    app:maxLength="15" />
+            </LinearLayout>
+        </ViewFlipper>
+
+
+        <tech.libin.rahul.ideaproject.views.widgets.button.FOSButton
+            android:id="@+id/buttonRegSignUp"
+            style="@style/LoginButton"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/btn_height"
+            android:layout_below="@id/viewFlipper"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="@dimen/button_vertical_margin"
+            android:text="@string/sign_up" />
+
+    </RelativeLayout>
+</ScrollView>

@@ -7,7 +7,9 @@ package tech.libin.rahul.ideaproject.service.models;
 public class DetailFromUPCRoleModel {
    String myIdea;
    String myIdeaCode;
+   String amountPaid;
    int status;
+   int feedback;
    String remarks;
    String visitedDate;
 
@@ -49,5 +51,21 @@ public class DetailFromUPCRoleModel {
 
     public void setVisitedDate(String visitedDate) {
         this.visitedDate = visitedDate;
+    }
+
+    public String getAmountPaid() {
+        return amountPaid;
+    }
+
+    public void setAmountPaid(String amountPaid) {
+        this.amountPaid = amountPaid;
+    }
+
+    public int getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(int feedback) {
+        this.feedback = feedback;
     }
 }

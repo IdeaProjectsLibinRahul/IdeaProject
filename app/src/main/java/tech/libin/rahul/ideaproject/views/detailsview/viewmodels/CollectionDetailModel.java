@@ -47,6 +47,7 @@ public class CollectionDetailModel {
     private ArrayList<DetailOtherData> other;
     private Constants.EsclateStatus esclate;
     private ArrayList<SpinnerData> visitStatus;
+    private ArrayList<SpinnerData> feedback;
 
     private DetailFromUPCRoleModel fromZsm;
     private DetailFromUPCRoleModel fromMico;
@@ -282,6 +283,14 @@ public class CollectionDetailModel {
 
     public void setVisitStatus(ArrayList<SpinnerData> visitStatus) {
         this.visitStatus = visitStatus;
+    }
+
+    public ArrayList<SpinnerData> getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(ArrayList<SpinnerData> feedback) {
+        this.feedback = feedback;
     }
 
     public DetailFromUPCRoleModel getFromZsm() {

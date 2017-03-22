@@ -4,11 +4,14 @@ import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import tech.libin.rahul.ideaproject.service.models.SpinnerData;
 import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
@@ -26,6 +29,22 @@ public class FOSSpinnerAdapter extends ArrayAdapter<SpinnerData> {
         this.spinnerModels = objects;
     }
 
+    public void updateAdapter( @NonNull ArrayList<SpinnerData> objects)
+    {
+        this.notifyDataSetInvalidated();
+        this.spinnerModels = objects;
+        this.notifyDataSetChanged();
+    }
+
+
+    public int findElementPosition(int value) {
+        for (SpinnerData spnData : this.spinnerModels) {
+            if (spnData.getId() == value) {
+                return  getPosition(spnData);
+            }
+        }
+        return 0;
+    }
 
     @Override
     public int getCount() {
@@ -39,11 +58,19 @@ public class FOSSpinnerAdapter extends ArrayAdapter<SpinnerData> {
     }
 
     private View getCustomView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        SpinnerData model = spinnerModels.get(position);
-        FOSTextView textView = new FOSTextView(parent.getContext());
-        textView.setPadding(16, 16, 16, 16);
-        textView.setText(model.getValue());
-        return textView;
+        try {
+            SpinnerData model = spinnerModels.get(position);
+            FOSTextView textView = new FOSTextView(parent.getContext());
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            textView.setPadding(24, 24, 24, 24);
+            textView.setText(model.getValue());
+            return textView;
+
+        } catch (Exception ex) {
+            Log.e("Exception", ex.toString());
+        }
+        return convertView;
+
     }
 
     @NonNull

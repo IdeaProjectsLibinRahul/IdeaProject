@@ -68,6 +68,8 @@ public class CollectionDetailMapper implements FOSBaseMapper<ActivityDetailReque
         models.setFromExecutive(model.getResponse().getFromExecutive());
         models.setFromMico(model.getResponse().getFromMico());
         models.setFromZsm(model.getResponse().getFromZsm());
+        models.setVisitStatus(model.getResponse().getVisitStatus());
+        models.setFeedback(model.getResponse().getFeedback());
 
         return models;
     }

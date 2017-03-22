@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 
@@ -26,9 +28,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import tech.libin.rahul.ideaproject.R;
+import tech.libin.rahul.ideaproject.configurations.Config;
 import tech.libin.rahul.ideaproject.configurations.Constants;
 import tech.libin.rahul.ideaproject.facade.FOSFacade;
 import tech.libin.rahul.ideaproject.facade.FOSFacadeImpl;
@@ -57,7 +61,6 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     public static final String SUCCESS_DIALOG = "SUCCESS_DIALOG";
     private static final String TAG = SMEDetailsFragment.class.getName();
     private Spinner spnStatus;
-    private Spinner spnFeedback;
     private Spinner spnReason;
     private LinearLayout linLayoutFeedback;
     private LinearLayout linLayoutReason;
@@ -70,15 +73,8 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewBiller;
     private FOSTextView textViewCompanyName;
     private FOSTextView textViewTotAlConnections;
-    private FOSTextView textViewFbConnections;
-    private FOSTextView textViewMico;
-    private FOSTextView textViewMicoCode;
-    private FOSTextView textViewMicoName;
-    private FOSTextView textViewZone;
-    private FOSTextView textViewSegment;
     private FOSTextView textViewBeginningDate;
     private FOSTextView textViewActiveReason;
-    private FOSTextView textViewTmCode;
     private FOSTextView textViewRatePlan;
     private FOSTextView textViewCRLimit;
     private FOSTextView textViewAddress;
@@ -86,6 +82,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewLandLineHead;
     private FOSTextView textViewType;
     private FOSTextView textViewTypeHead;
+    private FOSTextView textViewFbConnections;
     private Button buttonSubmit;
     private Switch switchLocation;
     private Switch switchUpdateLocation;
@@ -98,6 +95,11 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private SupportMapFragment mapFragment;
     private Marker mMarker;
     private GPSTracker gpsTracker;
+    private SmeDetailModel detailModel;
+    private RatingBar ratingBar;
+    private FOSTextView textViewRatingInfo;
+    private FOSSpinnerAdapter statusAdapter;
+    private FOSSpinnerAdapter reasonAdapter;
 
     //endregion
 
@@ -126,14 +128,8 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         textViewCompanyName = (FOSTextView) view.findViewById(R.id.textViewCompanyName);
         textViewTotAlConnections = (FOSTextView) view.findViewById(R.id.textViewTotalCollection);
         textViewFbConnections = (FOSTextView) view.findViewById(R.id.textViewFbCollection);
-        textViewMico = (FOSTextView) view.findViewById(R.id.textViewMico);
-        textViewMicoCode = (FOSTextView) view.findViewById(R.id.textViewMicoCode);
-        textViewMicoName = (FOSTextView) view.findViewById(R.id.textViewMicoName);
-        textViewZone = (FOSTextView) view.findViewById(R.id.textViewZone);
-        textViewSegment = (FOSTextView) view.findViewById(R.id.textViewSegment);
         textViewBeginningDate = (FOSTextView) view.findViewById(R.id.textViewBegeningDate);
         textViewActiveReason = (FOSTextView) view.findViewById(R.id.textViewActiveReason);
-        textViewTmCode = (FOSTextView) view.findViewById(R.id.textViewTmCode);
         textViewRatePlan = (FOSTextView) view.findViewById(R.id.textViewRatePlan);
         textViewCRLimit = (FOSTextView) view.findViewById(R.id.textViewCrLimit);
         textViewLandLine = (FOSTextView) view.findViewById(R.id.textViewLandLine);
@@ -146,7 +142,6 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 
         spnStatus = (Spinner) view.findViewById(R.id.spinnerStatus);
         spnReason = (Spinner) view.findViewById(R.id.spinnerReason);
-        spnFeedback = (Spinner) view.findViewById(R.id.spinnerFeedBack);
 
         switchLocation = (Switch) view.findViewById(R.id.switchLocation);
         switchUpdateLocation = (Switch) view.findViewById(R.id.switchUpdateLocation);
@@ -158,6 +153,9 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         linLayoutFeedback = (LinearLayout) view.findViewById(R.id.linLayoutFeedback);
         linLayoutReason = (LinearLayout) view.findViewById(R.id.linLayoutReason);
         linLayoutReminder = (LinearLayout) view.findViewById(R.id.linLayoutReminder);
+
+        ratingBar = (RatingBar) view.findViewById(R.id.ratingBar);
+        textViewRatingInfo = (FOSTextView) view.findViewById(R.id.ratingInfo);
     }
     //endregion
 
@@ -197,9 +195,9 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     if (dialog != null) {
                         dialog.cancel();
                     }
+                    detailModel = response;
                     bindDetails(response);
                     setFomListeners();
-                    setLinearLayoutGone();
                 }
 
                 @Override
@@ -244,6 +242,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             }
         });
 
+        editTextReminder.setInputType(InputType.TYPE_NULL);
         editTextReminder.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
@@ -267,6 +266,28 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         });
 
 
+        spnStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if ((detailModel.getVisitStatus().get(position)).getId() == 2) {
+                    linLayoutReminder.setVisibility(View.VISIBLE);
+                    linLayoutFeedback.setVisibility(View.GONE);
+                    linLayoutReason.setVisibility(View.GONE);
+
+                } else {
+                    linLayoutReminder.setVisibility(View.GONE);
+                    linLayoutFeedback.setVisibility(View.VISIBLE);
+                    linLayoutReason.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
         buttonSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -285,17 +306,23 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             requestModel.setStatus(((SpinnerData) spnStatus.getSelectedItem()).getId());
             requestModel.setRemarks(editTextRemarks.getText().toString().trim());
 
-
-            if (gpsTracker.getIsGPSTrackingEnabled()) {
-                requestModel.setLatitude(gpsTracker.getLatitude() + "");
-                requestModel.setLongitude(gpsTracker.getLongitude() + "");
-            } else {
-                gpsTracker.showSettingsAlert();
-                return;
+            GPSTracker gpsTracker = new GPSTracker(getActivity());
+            if (switchUpdateLocation.isChecked()) {
+                if (gpsTracker.getIsGPSTrackingEnabled()) {
+                    requestModel.setLatitude(gpsTracker.getLatitude() + "");
+                    requestModel.setLongitude(gpsTracker.getLongitude() + "");
+                } else {
+                    gpsTracker.showSettingsAlert();
+                    return;
+                }
             }
-
+            requestModel.setAmountPaid("0");
             if (linLayoutFeedback.getVisibility() == View.VISIBLE) {
-                requestModel.setFeedback(((SpinnerData) spnFeedback.getSelectedItem()).getId());
+                int feedback = (int) ratingBar.getRating();
+                if (feedback > 0) {
+                    SpinnerData data = detailModel.getFeedback().get(feedback - 1);
+                    requestModel.setFeedback(data.getId());
+                }
             }
             if (linLayoutReason.getVisibility() == View.VISIBLE) {
                 requestModel.setReason(((SpinnerData) spnReason.getSelectedItem()).getId());
@@ -345,21 +372,14 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     //endregion
 
     //region bindDetails
-    private void bindDetails(SmeDetailModel model) {
+    private void bindDetails(final SmeDetailModel model) {
         textViewName.setText(model.getCcName());
         textViewMobileNum.setVisibility(View.GONE);
         textViewBiller.setText(model.getBiller());
         textViewCompanyName.setText(model.getCcName());
         textViewTotAlConnections.setText(model.getTotalConnection());
-        textViewFbConnections.setText(model.getFBConnection());
-        textViewMico.setText(model.getMico());
-        textViewMicoCode.setText(model.getMicoCode());
-        textViewMicoName.setText(model.getMiName());
-        textViewZone.setText(model.getZone());
-        textViewSegment.setText(model.getSegment());
         textViewBeginningDate.setText(model.getBegdate());
         textViewActiveReason.setText(model.getActReason());
-        textViewTmCode.setText(model.getTmcode());
         textViewRatePlan.setText(model.getRatePlan());
         textViewCRLimit.setText(model.getCr_limit());
         textViewLandLine.setText(model.getLandLine2());
@@ -374,92 +394,73 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         textViewAddress.setText(model.getBill1() + "\n" + model.getBill2() + "\n" + model.getBill3() + "\n" + model.getBill4() + "\n" + model.getBill5());
 
         setLinearLayoutVisible();
-        final List visitStatus = model.getVisitStatus();
-        final List visitFeedback = model.getFeedback();
-
-        FOSSpinnerAdapter statusAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getVisitStatus());
+        statusAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getVisitStatus());
         spnStatus.setAdapter(statusAdapter);
 
-        FOSSpinnerAdapter reasonAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getReason());
+        reasonAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getReason());
         spnReason.setAdapter(reasonAdapter);
 
-        FOSSpinnerAdapter feedbackAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, model.getFeedback());
-        spnFeedback.setAdapter(feedbackAdapter);
-
-        if (activityType != Constants.ActivityType.NEW_ACTIVITY) {
-            DetailFromSMERoleModel fromExecutive = model.getFromExecutive();
-            //bind data to submit from
-            if (fromExecutive != null) {
-                if (fromExecutive.getVisitStatus() != 0) {
-                    SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getVisitStatus(), visitStatus);
-                    if (spinnerElement != null) {
-                        int position = statusAdapter.getPosition(spinnerElement);
-                        spnStatus.setSelection(position);
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float value, boolean b) {
+                ArrayList<SpinnerData> feedback = model.getFeedback();
+                for (SpinnerData data : feedback) {
+                    if (data.getId() == (int) value) {
+                        if (data.getId() != 5) {
+                            linLayoutReason.setVisibility(View.VISIBLE);
+                        } else {
+                            linLayoutReason.setVisibility(View.GONE);
+                        }
+                        String text = data.getValue();
+                        textViewRatingInfo.setText(text);
+                        textViewRatingInfo.setVisibility(View.VISIBLE);
                     }
-                }
-
-                if (fromExecutive.getFeedback() != 0) {
-                    linLayoutFeedback.setVisibility(View.VISIBLE);
-                    SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getFeedback(), visitFeedback);
-                    if (spinnerElement != null) {
-                        int position = statusAdapter.getPosition(spinnerElement);
-                        spnFeedback.setSelection(position);
-                    }
-                }
-
-                if (fromExecutive.getReason() != 0 && fromExecutive.getFeedback()!=5) {
-                    linLayoutReason.setVisibility(View.VISIBLE);
-                    SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getReason(), model.getReason());
-                    if (spinnerElement != null) {
-                        int position = statusAdapter.getPosition(spinnerElement);
-                        spnFeedback.setSelection(position);
-                    }
-                }
-
-                editTextRemarks.setText(fromExecutive.getRemarks());
-                if(model.getReminderDate()!=null && !model.getReminderDate().isEmpty()) {
-                    linLayoutReminder.setVisibility(View.VISIBLE);
-                    editTextReminder.setText(model.getReminderDate());
                 }
             }
+        });
+
+        if (model.getLocation() != null && model.getLocation().getLatitude() != null && !model.getLocation().getLatitude().isEmpty()) {
+            switchLocation.setVisibility(View.VISIBLE);
+        }
+        ratingBar.setRating(1);
+
+        //load executive details if user is executive
+        //need not to be load from executive if the record is new activity
+        if ((Config.getInstance().getUser().getRole() == Constants.Role.EXECUTIVE) && (activityType != Constants.ActivityType.NEW_ACTIVITY)) {
+            loadExecutiveOwnData();
         }
 
-        spnStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (((SpinnerData) visitStatus.get(position)).getId() == 2) {
-                    linLayoutReminder.setVisibility(View.VISIBLE);
-                    linLayoutFeedback.setVisibility(View.GONE);
-                    linLayoutReason.setVisibility(View.GONE);
+    }
+    //endregion
 
-                } else {
-                    linLayoutReminder.setVisibility(View.GONE);
-                    linLayoutFeedback.setVisibility(View.VISIBLE);
-                    linLayoutReason.setVisibility(View.VISIBLE);
-                }
+    //region loadExecutiveOwnData
+    private void loadExecutiveOwnData()
+    {
+        DetailFromSMERoleModel fromExecutive = detailModel.getFromExecutive();
+        //bind data to submit from
+        if (fromExecutive != null) {
+            if (fromExecutive.getVisitStatus() != 0) {
+                int position = statusAdapter.findElementPosition(fromExecutive.getVisitStatus());
+                spnStatus.setSelection(position);
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        spnFeedback.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (((SpinnerData) visitFeedback.get(position)).getId() != 5) {
-                    linLayoutReason.setVisibility(View.VISIBLE);
-                } else {
-                    linLayoutReason.setVisibility(View.GONE);
-                }
+            if (fromExecutive.getFeedback() != 0 && ((SpinnerData) spnStatus.getSelectedItem()).getId() == 1) {
+                linLayoutFeedback.setVisibility(View.VISIBLE);
+                ratingBar.setRating(fromExecutive.getFeedback());
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            if (fromExecutive.getReason() != 0 && fromExecutive.getFeedback() != 5) {
+                linLayoutReason.setVisibility(View.VISIBLE);
+                int position = reasonAdapter.findElementPosition(fromExecutive.getReason());
+                spnReason.setSelection(position, false);
             }
-        });
+
+            editTextRemarks.setText(fromExecutive.getRemarks());
+            if (detailModel.getReminderDate() != null && !detailModel.getReminderDate().isEmpty()) {
+                linLayoutReminder.setVisibility(View.VISIBLE);
+                editTextReminder.setText(detailModel.getReminderDate());
+            }
+        }
     }
     //endregion
 
@@ -482,14 +483,6 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     }
     //endregion
 
-    //region setLinearLayoutGone
-    private void setLinearLayoutGone() {
-        linLayoutFeedback.setVisibility(View.GONE);
-        linLayoutReason.setVisibility(View.GONE);
-        linLayoutReason.setVisibility(View.GONE);
-    }
-    //endregion
-
     //region isValid
     private boolean isValid() {
         if (((SpinnerData) spnStatus.getSelectedItem()).getId() == 0) {
@@ -506,13 +499,17 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         mMap = googleMap;
 
         LatLng latLng;
-        if (gpsTracker != null) {
+        if (detailModel != null && !detailModel.getLocation().getLatitude().isEmpty() && !detailModel.getLocation().getLongitude().isEmpty()) {
+            double latitude = Double.parseDouble(detailModel.getLocation().getLatitude());
+            double longitude = Double.parseDouble(detailModel.getLocation().getLongitude());
+            latLng = new LatLng(latitude, longitude);
+        } else if (gpsTracker != null) {
             double latitude = gpsTracker.getLatitude();
             double longitude = gpsTracker.getLongitude();
             latLng = new LatLng(latitude, longitude);
             Log.d(TAG, "onMapReady: (lat, long) - (" + latitude + ", " + longitude + ")");
         } else {
-            latLng = new LatLng(9.977052, 76.317974);
+            latLng = new LatLng(0.0, 0.0);
         }
 
         googleMap.addMarker(new MarkerOptions().position(latLng)
@@ -526,7 +523,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private void initMap() {
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         View mapView = mapFragment.getView();
-        if (mapView != null) {
+        if (mapView != null && switchLocation.getVisibility()==View.VISIBLE) {
             if (!switchLocation.isChecked()) {
                 mapView.setVisibility(View.GONE);
             } else {
@@ -534,6 +531,9 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                 mapFragment.getMapAsync(this);
             }
         }
+        else
+            mapView.setVisibility(View.GONE);
+
     }
     //endregion
 

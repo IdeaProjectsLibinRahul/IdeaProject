@@ -52,6 +52,8 @@ public class UpcDetailResponse extends FOSBaseResponse {
         private DetailFromUPCRoleModel fromMico;
         private DetailFromUPCRoleModel fromExecutive;
         private ArrayList<SpinnerData> visitStatus;
+        private ArrayList<SpinnerData> feedbackRetained;
+        private ArrayList<SpinnerData> feedbackNotRetained;
 
         public String getReminderDate() {
             return reminderDate;
@@ -235,6 +237,22 @@ public class UpcDetailResponse extends FOSBaseResponse {
 
         public void setVisitStatus(ArrayList<SpinnerData> visitStatus) {
             this.visitStatus = visitStatus;
+        }
+
+        public ArrayList<SpinnerData> getFeedbackRetained() {
+            return feedbackRetained;
+        }
+
+        public void setFeedbackRetained(ArrayList<SpinnerData> feedbackRetained) {
+            this.feedbackRetained = feedbackRetained;
+        }
+
+        public ArrayList<SpinnerData> getFeedbackNotRetained() {
+            return feedbackNotRetained;
+        }
+
+        public void setFeedbackNotRetained(ArrayList<SpinnerData> feedbackNotRetained) {
+            this.feedbackNotRetained = feedbackNotRetained;
         }
     }
 }

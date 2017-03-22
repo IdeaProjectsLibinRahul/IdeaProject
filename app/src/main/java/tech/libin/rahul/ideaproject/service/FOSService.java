@@ -1,6 +1,9 @@
 package tech.libin.rahul.ideaproject.service;
 
+import android.net.Uri;
+
 import java.util.List;
+import java.util.Map;
 
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.CollectionDetailModel;
@@ -13,6 +16,7 @@ import tech.libin.rahul.ideaproject.views.homescreen.viewmodels.ActivityModel;
 import tech.libin.rahul.ideaproject.views.models.ActivityDetailRequestModel;
 import tech.libin.rahul.ideaproject.views.models.ActivityRequestModel;
 import tech.libin.rahul.ideaproject.views.models.Login;
+import tech.libin.rahul.ideaproject.views.models.RegisterModel;
 import tech.libin.rahul.ideaproject.views.models.User;
 
 /**
@@ -33,6 +37,10 @@ public interface FOSService {
     void getCollectionDetail(ActivityDetailRequestModel model, ServiceCallback<CollectionDetailModel> callback);
 
     void doSubmitVisitDetails(FormSubmitModel model, ServiceCallback<String> callback);
+
+    void doRegistration(Map<String, String> data, final Map<String, Uri> files, ServiceCallback<String> callback);
+
+    void doRegistrationDummy(RegisterModel model, ServiceCallback<String> callback);
 
     void doLogout(String userId, ServiceCallback<String> callback);
 }

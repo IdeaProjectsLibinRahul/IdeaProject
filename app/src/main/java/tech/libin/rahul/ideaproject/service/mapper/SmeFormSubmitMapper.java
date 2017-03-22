@@ -29,6 +29,7 @@ public class SmeFormSubmitMapper implements FOSBaseMapper<FormSubmitModel, SmeFo
         request.setLongitude(model.getLongitude());
         request.setReminder(model.getReminder());
         request.setRecordType(model.getRecordType());
+        request.setAmountPaid(model.getAmountPaid());
 
         return request;
     }

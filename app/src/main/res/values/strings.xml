@@ -4,12 +4,13 @@
     <string name="retention">Retention</string>
     <string name="activities">Activities</string>
     <string name="new_activities">New Activities</string>
-    <string name="customer_type">Customer type</string>
+    <string name="customer_type">Customer Type</string>
     <string name="reminders">Reminders</string>
     <string name="logout">Logout</string>
 
     <string name="user_name">User Name</string>
     <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
     <string name="forgot_password">Forgot your password ?</string>
@@ -25,9 +26,11 @@
     <string name="zip">Zip</string>
     <string name="dummy_address"> Adress1 \nAddress2 A \nAddress 3\n Address4</string>
     <string name="visit_status">Visit Status</string>
-    <string name="visited_date">Visited Date</string>
+    <string name="last_visited_date">Last Visited On</string>
     <string name="view_location">View Location</string>
     <string name="update_location">Update Location</string>
+    <string name="reminder_hint">mm/dd/yyyy</string>
+
 
     <string-array name="dummy_array">
         <item>item 1</item>
@@ -40,13 +43,16 @@
     <string name="feedback">Feedback</string>
     <string name="reason">Reason</string>
     <string name="remarks">Remarks</string>
+    <string name="total_visit">Total Visit</string>
+    <string name="rating">Rate Us</string>
     <string name="hint_remarks">Please write your comments here...</string>
     <string name="title_submit">UPDATE VISIT STATUS</string>
     <string name="title_from_executive">EXECUTIVE VISIT</string>
     <string name="title_from_mico">MICO VISIT</string>
     <string name="title_details">CUSTOMER DETAILS</string>
     <string name="submit">Submit</string>
-    <string name="reminder_date">Reminder Date</string>
+    <string name="reminder_date">Revisit Date</string>
+    <string name="amount_collected">Amount Collected</string>
 
     <string name="upc">UPC</string>
     <string name="cust_sub_type">Customer sub type</string>
@@ -54,7 +60,7 @@
     <string name="subscriber_type">Subscriber Type</string>
     <string name="credit_code">Cs Credit Code</string>
     <string name="alternate_num">Alternate Number</string>
-    <string name="serv_seg">servSeg</string>
+    <string name="serv_seg">Serv Seg</string>
 
     <string name="biller">Biller</string>
     <string name="ser">Ser</string>
@@ -62,11 +68,11 @@
     <string name="due_amount">Due Amount</string>
     <string name="bucket">Bucket</string>
     <string name="type">Type</string>
-    <string name="crm_status">crm Status</string>
+    <string name="crm_status">Crm Status</string>
     <string name="my_idea_code">My Idea Code</string>
     <string name="my_idea_location">My Idea Location</string>
-    <string name="land_line1">Land Line 1</string>
-    <string name="land_line2">Land Line 2</string>
+    <string name="land_line1">Alternate Number 1</string>
+    <string name="land_line2">Alternate Number 2</string>
     <string name="activatiom_mi">Activation Mi</string>
     <string name="my_idea">My Idea</string>
 
@@ -78,6 +84,7 @@
     <string name="default_Habit">Default Habit</string>
     <string name="current_status">Current Status</string>
     <string name="cust_num">Customer Number</string>
+    <string name="pay_on">Pay On</string>
 
     <string name="warn_request_timed_out">Your request timed out, please retry.</string>
 
@@ -85,6 +92,30 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="no_data">No Data</string>
+    <string name="dob">Date Of Birth</string>
+    <string name="doj">Date Of Joining</string>
+    <string name="address1">Address Line 1</string>
+    <string name="address2">Address Line 2</string>
+    <string name="address3">Address Line 3</string>
+    <string name="father_name">Father\'s Name</string>
+    <string name="mi_code">Mi Code</string>
+    <string name="mobile_no">Mobile No</string>
+
+    <string name="executive">Executive</string>
+    <string name="mico">Mico</string>
+    <string name="zsm">Zsm</string>
+
+    <string name="warn_name">Enter your Name</string>
+    <string name="warn_dob">Enter your DOB</string>
+    <string name="warn_address">Enter your Address</string>
+    <string name="warn_zip">Enter Zip</string>
+    <string name="warn_mobile">Enter Mobile Number</string>
+    <string name="warn_mi_code">Enter your MI Code</string>
+    <string name="warn_password">Enter a new password</string>
+    <string name="warn_password_miss_match">Password miss match</string>
+    <string name="personal">Personal</string>
+    <string name="login">Login</string>
+    <string name="official">Official</string>
 
 
 </resources>

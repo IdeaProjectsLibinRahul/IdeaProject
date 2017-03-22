@@ -2,6 +2,7 @@ package tech.libin.rahul.ideaproject.views.homescreen.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -52,6 +53,7 @@ public class FOSActivityTab extends FOSBaseFragment {
     private ActivityTabAdapter adapter;
     private FOSFacade fosFacade;
     private RecyclerView.OnScrollListener recyclerViewOnScrollListener;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private boolean isLoading;
     private boolean isLastPage;
     private int pageNo = 1;
@@ -72,6 +74,7 @@ public class FOSActivityTab extends FOSBaseFragment {
         setClickListener();
         setScrollListener();
         initRecyclerView();
+        setSwipeRefresh();
         return view;
     }
 
@@ -90,6 +93,19 @@ public class FOSActivityTab extends FOSBaseFragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewActivity);
         progressBarLoading = (ProgressBar) view.findViewById(R.id.progressBarLoading);
         textViewError = (FOSTextView) view.findViewById(R.id.textViewError);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
+    }
+
+    private void setSwipeRefresh() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                initRecyclerView();
+                pageNo = 1;
+                isLastPage = false;
+                sendRequest();
+            }
+        });
     }
 
     private void initRecyclerView() {
@@ -139,10 +155,11 @@ public class FOSActivityTab extends FOSBaseFragment {
                 } else {
                     changeAdapter(response);
                     isLoading = false;
-                    recyclerView.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setVisibility(View.VISIBLE);
                     pageNo++;
                 }
                 progressBarLoading.setVisibility(View.GONE);
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
@@ -150,6 +167,7 @@ public class FOSActivityTab extends FOSBaseFragment {
                 Toast.makeText(getActivity(), "TimeOut", Toast.LENGTH_SHORT).show();
                 isLoading = false;
                 progressBarLoading.setVisibility(View.GONE);
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
@@ -161,6 +179,7 @@ public class FOSActivityTab extends FOSBaseFragment {
                 isLoading = false;
                 progressBarLoading.setVisibility(View.GONE);
                 maxPages = pageNo;
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
