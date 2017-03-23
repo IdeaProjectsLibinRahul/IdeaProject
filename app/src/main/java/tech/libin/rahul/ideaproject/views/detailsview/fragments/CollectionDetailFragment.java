@@ -126,6 +126,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
     CardView cardViewFromExe;
     CardView cardViewFromMico;
     CardView cardViewFromZsm;
+    CardView cardViewFromSubmit;
 
     private View view;
     private Button buttonSubmit;
@@ -214,6 +215,28 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
         linLayoutReminder = (LinearLayout) view.findViewById(R.id.linLayoutReminder);
         linLayoutFeedback = (LinearLayout) view.findViewById(R.id.linLayoutFeedback);
         linLayoutPaidAmount = (LinearLayout) view.findViewById(R.id.linLayoutPaidAmount);
+
+        //role wise
+
+        textViewFromExeName = (FOSTextView) view.findViewById(R.id.textViewSer);
+        textViewFromExeMobileNum = (FOSTextView) view.findViewById(R.id.textViewSer);
+        textViewFromExeMyIdea = (FOSTextView) view.findViewById(R.id.textViewSer);
+        textViewFromExeMyIdeaCode = (FOSTextView) view.findViewById(R.id.textViewSer);
+        textViewFromExeVisitStatus = (FOSTextView) view.findViewById(R.id.textViewSer);
+        textViewFromExeVisitedDate = (FOSTextView) view.findViewById(R.id.textViewSer);
+        textViewFromExeVisitFeedback = (FOSTextView) view.findViewById(R.id.textViewSer);
+        textViewFromExeAmountCollected = (FOSTextView) view.findViewById(R.id.textViewSer);
+        textViewExeRemarks = (FOSTextView) view.findViewById(R.id.textViewSer);
+        textViewFromExeEscalateNoVisit = (FOSTextView) view.findViewById(R.id.textViewSer);
+
+        llFromMicoVisitDetails = (LinearLayout) view.findViewById(R.id.textViewSer);
+        llFromZsmVisitDetails = (LinearLayout) view.findViewById(R.id.textViewSer);
+        llFromExeVisitDetails = (LinearLayout) view.findViewById(R.id.textViewSer);
+
+        cardViewFromExe = (CardView) view.findViewById(R.id.textViewSer);
+        cardViewFromMico = (CardView) view.findViewById(R.id.textViewSer);
+        cardViewFromZsm = (CardView) view.findViewById(R.id.textViewSer);
+
     }
     //endregion initComponents
 
