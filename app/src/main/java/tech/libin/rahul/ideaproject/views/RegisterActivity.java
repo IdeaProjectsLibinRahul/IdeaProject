@@ -1,7 +1,10 @@
 package tech.libin.rahul.ideaproject.views;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -12,7 +15,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.IdRes;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,8 +29,8 @@ import android.widget.RadioGroup;
 import android.widget.ViewFlipper;
 
 import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -48,8 +51,11 @@ public class RegisterActivity extends AppCompatActivity {
     public static final int FLIP_INTERVAL = 2000;
     public static final String COLOR_TRANSPARENT = "#00000000";
     public static final String COLOR_BACKGROUND = "#55000000";
+    public static final String DIR_NAME = "MyVisit";
+    public static final String USER_PIC_PREFIX = "user_pic_";
     //region declarations
     private static final int CAMERA_PIC_REQUEST = 1003;
+    private static final int SELECT_PICTURE = 1004;
     String mCurrentPhotoPath;
     private FloatingActionButton floatingActionButton;
     private FOSIconEditText editTextRegName;
@@ -80,7 +86,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private EditText selectedEditText;
 
-    private float lastX;
+    private Uri outputFileUri;
+
     //endregion
 
     //region onCreate
@@ -128,10 +135,7 @@ public class RegisterActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(takePictureIntent, CAMERA_PIC_REQUEST);
-
-                // dispatchTakePictureIntent();
+                openImageIntent();
             }
         });
 
@@ -362,73 +366,95 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    private File createImageFile() throws IOException {
-// Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,
-                ".jpg",
-                storageDir);
-// Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
+    private void openImageIntent() {
 
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-
+        final CharSequence[] items = {"Take Photo", "Choose from Library",
+                "Cancel"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+        builder.setTitle("Add Photo!");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (items[item].equals("Take Photo")) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    File f = new File(android.os.Environment
+                            .getExternalStorageDirectory(), "temp.jpg");
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                    startActivityForResult(intent, CAMERA_PIC_REQUEST);
+                } else if (items[item].equals("Choose from Library")) {
+                    Intent intent = new Intent(
+                            Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    intent.setType("image/*");
+                    startActivityForResult(
+                            Intent.createChooser(intent, "Select File"),
+                            SELECT_PICTURE);
+                } else if (items[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
             }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                mPhotoURI = FileProvider.getUriForFile(this, "com.example.android.fileprovider", photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoURI);
-                startActivityForResult(takePictureIntent, CAMERA_PIC_REQUEST);
-            }
-        }
-    }
-
-    private void setPic() {
-        // Get the dimensions of the View
-        int targetW = imageViewRegProfilePic.getWidth();
-        int targetH = imageViewRegProfilePic.getHeight();
-
-        // Get the dimensions of the bitmap
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-        int photoW = bmOptions.outWidth;
-        int photoH = bmOptions.outHeight;
-
-        // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
-
-        // Decode the image file into a Bitmap sized to fill the View
-        bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = scaleFactor;
-        bmOptions.inPurgeable = true;
-
-        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-        imageViewRegProfilePic.setImageBitmap(bitmap);
+        });
+        builder.show();
     }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAMERA_PIC_REQUEST && resultCode == RESULT_OK) {
-            if (mPhotoURI != null) {
-                setPic();
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == CAMERA_PIC_REQUEST) {
+                File f = new File(Environment.getExternalStorageDirectory()
+                        .toString());
+                for (File temp : f.listFiles()) {
+                    if (temp.getName().equals("temp.jpg")) {
+                        f = temp;
+                        break;
+                    }
+                }
+                try {
+                    Bitmap bm;
+                    BitmapFactory.Options btmapOptions = new BitmapFactory.Options();
+                    btmapOptions.inSampleSize = 2;
+                    bm = BitmapFactory.decodeFile(f.getAbsolutePath(),
+                            btmapOptions);
+
+                    // bm = Bitmap.createScaledBitmap(bm, 70, 70, true);
+                    imageViewRegProfilePic.setImageBitmap(bm);
+
+                    String path = android.os.Environment
+                            .getExternalStorageDirectory()
+                            + File.separator
+                            + "test";
+                    f.delete();
+                    OutputStream fOut = null;
+                    File file = new File(path, String.valueOf(System
+                            .currentTimeMillis()) + ".jpg");
+                    fOut = new FileOutputStream(file);
+                    bm.compress(Bitmap.CompressFormat.JPEG, 85, fOut);
+                    fOut.flush();
+                    fOut.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (requestCode == SELECT_PICTURE) {
+                Uri selectedImageUri = data.getData();
+                String tempPath = getPath(selectedImageUri, RegisterActivity.this);
+                Bitmap bm;
+                BitmapFactory.Options btmapOptions = new BitmapFactory.Options();
+                btmapOptions.inSampleSize = 2;
+                bm = BitmapFactory.decodeFile(tempPath, btmapOptions);
+                imageViewRegProfilePic.setImageBitmap(bm);
             }
         }
+
+    }
+
+    public String getPath(Uri uri, Activity activity) {
+        String[] projection = {MediaStore.MediaColumns.DATA};
+        Cursor cursor = activity
+                .managedQuery(uri, projection, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
     }
 
     private boolean isValid() {
