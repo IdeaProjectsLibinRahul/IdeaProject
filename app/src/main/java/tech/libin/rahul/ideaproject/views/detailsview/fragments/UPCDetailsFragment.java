@@ -1,6 +1,9 @@
 package tech.libin.rahul.ideaproject.views.detailsview.fragments;
 
 import android.app.ProgressDialog;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -48,6 +51,7 @@ import tech.libin.rahul.ideaproject.views.models.ActivityDetailRequestModel;
 import tech.libin.rahul.ideaproject.views.utils.GPSTracker;
 import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
 
+import static android.R.attr.shape;
 import static tech.libin.rahul.ideaproject.views.detailsview.fragments.SMEDetailsFragment.DATE_DIALOG;
 
 /**
@@ -77,6 +81,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewServSeg;
     private FOSTextView textViewAddress;
     private FOSTextView textViewMicoName;
+    private FOSTextView textViewExecutiveVisit;
     private FOSTextView textViewMicoMobileNum;
     private FOSTextView textViewMicoMyIdea;
     private FOSTextView textViewMicoMyIdeaCode;
@@ -147,6 +152,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         textViewMicoVisitedDate = (FOSTextView) view.findViewById(R.id.textViewFromMicoVisitedDate);
         textViewMicoRemarks = (FOSTextView) view.findViewById(R.id.textViewFromMicoRemarks);
 
+        textViewExecutiveVisit = (FOSTextView) view.findViewById(R.id.textViewExecutiveVisit);
         textViewExeName = (FOSTextView) view.findViewById(R.id.textViewFromExeName);
         textViewExeMobileNum = (FOSTextView) view.findViewById(R.id.textViewFromExeMobileNum);
         textViewExeMyIdea = (FOSTextView) view.findViewById(R.id.textViewFromExeMyIdea);
@@ -166,6 +172,8 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         switchUpdateLocation = (Switch) view.findViewById(R.id.switchUpdateLocation);
         buttonSubmit = (Button) view.findViewById(R.id.buttonSubmit);
         linLayoutReminder = (LinearLayout) view.findViewById(R.id.linLayoutReminder);
+
+
     }
     //endregion
 

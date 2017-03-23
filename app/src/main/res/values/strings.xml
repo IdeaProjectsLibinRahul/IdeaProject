@@ -52,6 +52,7 @@
     <string name="title_submit">UPDATE VISIT STATUS</string>
     <string name="title_from_executive">EXECUTIVE VISIT</string>
     <string name="title_from_mico">MICO VISIT</string>
+    <string name="title_from_zsm">ZSM VISIT</string>
     <string name="title_details">CUSTOMER DETAILS</string>
     <string name="submit">Submit</string>
     <string name="reminder_date">Revisit Date</string>

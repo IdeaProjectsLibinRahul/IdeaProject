@@ -22,4 +22,16 @@
     <color name="colorBottomTabSelected">#968f00</color>
     <color name="editTextBottom">#91b0bef7</color>
 
+    <color name="title_executive">#dd380258</color>
+    <color name="title_executive_stroke">#dd380258</color>
+    <color name="body_executive_back">#ddf1e2fa</color>
+    <color name="title_zsm">#dd035802</color>
+    <color name="title_zsm_stroke">#dd035802</color>
+    <color name="body_zsm_back">#ddddffd7</color>
+
+    <color name="title_mico">#dd680312</color>
+    <color name="title_mico_stroke">#dd680312</color>
+    <color name="body_mico_back">#ddffdbe0</color>
+
+
 </resources>

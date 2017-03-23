@@ -122,6 +122,33 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="DetailsZsmTitleViewText">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@drawable/detail_title_back_zsm</item>
+
+        <item name="android:padding">10dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="DetailsMicoTitleViewText">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@drawable/detail_title_back_mico</item>
+
+        <item name="android:padding">10dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="DetailsExeTitleViewText">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@drawable/detail_title_back_executive</item>
+
+        <item name="android:padding">10dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
+
     <style name="DetailsSubmitTitleViewText">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:background">@drawable/detail_title_submit_back</item>
