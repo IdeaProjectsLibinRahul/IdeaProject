@@ -4,6 +4,7 @@ package tech.libin.rahul.ideaproject.views.detailsview.fragments;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.util.Log;
@@ -85,21 +86,46 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
     private FOSTextView textViewAddress;
     private FOSTextView textViewReminderDate;
 
-    private FOSTextView textViewMicoName;
-    private FOSTextView textViewMicoMobileNum;
-    private FOSTextView textViewMicoMyIdea;
-    private FOSTextView textViewMicoMyIdeaCode;
-    private FOSTextView textViewMicoVisitStatus;
-    private FOSTextView textViewMicoVisitedDate;
-    private FOSTextView textViewMicoRemarks;
+    private FOSTextView textViewFromZsmName;
+    private FOSTextView textViewFromZsmMobileNum;
+    private FOSTextView textViewFromZsmMyIdea;
+    private FOSTextView textViewFromZsmMyIdeaCode;
+    private FOSTextView textViewFromZsmVisitStatus;
+    private FOSTextView textViewFromZsmVisitedDate;
+    private FOSTextView textViewFromZsmVisitFeedback;
+    private FOSTextView textViewFromZsmAmountCollected;
+    private FOSTextView textViewZsmRemarks;
+    private FOSTextView textViewFromZsmEscalateNoVisit;
 
-    private FOSTextView textViewExeName;
-    private FOSTextView textViewExeMobileNum;
-    private FOSTextView textViewExeMyIdea;
-    private FOSTextView textViewExeMyIdeaCode;
-    private FOSTextView textViewExeVisitStatus;
-    private FOSTextView textViewExeVisitedDate;
+    private FOSTextView textViewFromMicoName;
+    private FOSTextView textViewFromMicoMobileNum;
+    private FOSTextView textViewFromMicoMyIdea;
+    private FOSTextView textViewFromMicoMyIdeaCode;
+    private FOSTextView textViewFromMicoVisitStatus;
+    private FOSTextView textViewFromMicoVisitedDate;
+    private FOSTextView textViewFromMicoVisitFeedback;
+    private FOSTextView textViewFromMicoAmountCollected;
+    private FOSTextView textViewMicoRemarks;
+    private FOSTextView textViewFromMicoEscalateNoVisit;
+    
+    private FOSTextView textViewFromExeName;
+    private FOSTextView textViewFromExeMobileNum;
+    private FOSTextView textViewFromExeMyIdea;
+    private FOSTextView textViewFromExeMyIdeaCode;
+    private FOSTextView textViewFromExeVisitStatus;
+    private FOSTextView textViewFromExeVisitedDate;
+    private FOSTextView textViewFromExeVisitFeedback;
+    private FOSTextView textViewFromExeAmountCollected;
     private FOSTextView textViewExeRemarks;
+    private FOSTextView textViewFromExeEscalateNoVisit;
+
+    LinearLayout llFromMicoVisitDetails;
+    LinearLayout llFromZsmVisitDetails;
+    LinearLayout llFromExeVisitDetails;
+
+    CardView cardViewFromExe;
+    CardView cardViewFromMico;
+    CardView cardViewFromZsm;
 
     private View view;
     private Button buttonSubmit;
