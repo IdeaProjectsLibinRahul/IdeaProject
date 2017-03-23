@@ -1,5 +1,6 @@
 package tech.libin.rahul.ideaproject.views.widgets.dialogs;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -22,14 +23,18 @@ public class FOSDialog extends DialogFragment {
     private FOSButton buttonOK;
     private FOSTextView textViewTitle;
     private FOSTextView textViewMessage;
+    private boolean isRegister;
+    private Activity activity;
 
-    public static FOSDialog newInstance(String title, String message) {
+    public static FOSDialog newInstance(Activity activity, String title, String message, boolean isRegister) {
         Bundle bundle = new Bundle();
         bundle.putString(TITLE, title);
         bundle.putString(MESSAGE, message);
 
         FOSDialog fosDialog = new FOSDialog();
         fosDialog.setArguments(bundle);
+        fosDialog.isRegister = isRegister;
+        fosDialog.activity = activity;
 
         return fosDialog;
     }
@@ -54,6 +59,9 @@ public class FOSDialog extends DialogFragment {
             @Override
             public void onClick(View view) {
                 getDialog().dismiss();
+                if (isRegister) {
+                    activity.finish();
+                }
             }
         });
     }

@@ -1,13 +1,12 @@
-package tech.libin.rahul.ideaproject.service.requests;
+package tech.libin.rahul.ideaproject.views.models;
 
 import tech.libin.rahul.ideaproject.configurations.Constants;
-import tech.libin.rahul.ideaproject.service.requests.base.FOSBaseRequest;
 
 /**
- * Created by 10945 on 10/27/2016.
+ * Created by rahul on 3/21/2017.
  */
 
-public class RegisterRequest extends FOSBaseRequest {
+public class RegisterModel {
 
     String name;
     String miCode;

@@ -1,6 +1,9 @@
 package tech.libin.rahul.ideaproject.facade;
 
+import android.net.Uri;
+
 import java.util.List;
+import java.util.Map;
 
 import tech.libin.rahul.ideaproject.service.FOSService;
 import tech.libin.rahul.ideaproject.service.FOSServiceImpl;
@@ -15,6 +18,7 @@ import tech.libin.rahul.ideaproject.views.homescreen.viewmodels.ActivityModel;
 import tech.libin.rahul.ideaproject.views.models.ActivityDetailRequestModel;
 import tech.libin.rahul.ideaproject.views.models.ActivityRequestModel;
 import tech.libin.rahul.ideaproject.views.models.Login;
+import tech.libin.rahul.ideaproject.views.models.RegisterModel;
 import tech.libin.rahul.ideaproject.views.models.User;
 
 /**
@@ -65,7 +69,19 @@ public class FOSFacadeImpl implements FOSFacade {
     }
 
     @Override
+    public void doRegistration(Map<String, String> data, Map<String, Uri> files, ServiceCallback<String> callback) {
+        fosService.doRegistration(data,files,callback);
+    }
+
+    @Override
+    public void doRegistrationDummy(RegisterModel model, ServiceCallback<String> callback) {
+        fosService.doRegistrationDummy(model, callback);
+    }
+
+    @Override
     public void doLogout(String userId, ServiceCallback<String> callback) {
         fosService.doLogout(userId, callback);
     }
+
+
 }

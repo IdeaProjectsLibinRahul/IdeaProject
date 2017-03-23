@@ -61,7 +61,7 @@ public class FOSIconEditText extends LinearLayout {
             imageViewLeft = new ImageView(context);
             editText = new EditText(context);
 //            editText.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-           // editText.setBackgroundResource(R.drawable.edit_text_bottom_border);
+            // editText.setBackgroundResource(R.drawable.edit_text_bottom_border);
 
             editText.setTextColor(getResources().getColor(R.color.gray2X));
             editText.setHintTextColor(getResources().getColor(R.color.baseGray));
@@ -119,8 +119,12 @@ public class FOSIconEditText extends LinearLayout {
 
             if (inputType == 0) {
                 editText.setInputType(InputType.TYPE_CLASS_TEXT);
-            } else {
+            } else if (inputType == 1) {
                 editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            } else if (inputType == 3) {
+                editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_NUMBER);
+            } else {
+                editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
             }
         } finally {
             attributes.recycle();
@@ -129,6 +133,14 @@ public class FOSIconEditText extends LinearLayout {
 
     public String getText() {
         return this.editText.getText().toString();
+    }
+
+    public void setText(String text) {
+        this.editText.setText(text);
+    }
+
+    public EditText getEditText() {
+        return editText;
     }
 
     public void setError(String error) {

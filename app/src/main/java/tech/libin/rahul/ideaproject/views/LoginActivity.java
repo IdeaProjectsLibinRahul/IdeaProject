@@ -17,11 +17,11 @@ import tech.libin.rahul.ideaproject.facade.FOSFacadeImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseActivity;
-import tech.libin.rahul.ideaproject.views.widgets.dialogs.FOSDialog;
 import tech.libin.rahul.ideaproject.views.models.Login;
 import tech.libin.rahul.ideaproject.views.models.User;
 import tech.libin.rahul.ideaproject.views.utils.TelephonyInfo;
 import tech.libin.rahul.ideaproject.views.widgets.button.FOSButton;
+import tech.libin.rahul.ideaproject.views.widgets.dialogs.FOSDialog;
 import tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText;
 
 public class LoginActivity extends FOSBaseActivity {
@@ -66,7 +66,8 @@ public class LoginActivity extends FOSBaseActivity {
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
             }
         });
         //endregion
@@ -110,7 +111,7 @@ public class LoginActivity extends FOSBaseActivity {
                     public void onRequestTimout() {
                         dialog.cancel();
                         String title = "Request Fail";
-                        fosDialog = FOSDialog.newInstance(title, getResources().getString(R.string.warn_request_timed_out));
+                        fosDialog = FOSDialog.newInstance(LoginActivity.this, title, getResources().getString(R.string.warn_request_timed_out), false);
                         fosDialog.show(getSupportFragmentManager(), "tag");
                     }
 
@@ -119,7 +120,7 @@ public class LoginActivity extends FOSBaseActivity {
                         dialog.cancel();
                         String message = "Invalid user name or password,Please check your inputs.";
                         String title = "Authentication Fail";
-                        fosDialog = FOSDialog.newInstance(title, message);
+                        fosDialog = FOSDialog.newInstance(LoginActivity.this, title, message, false);
 
 
                         fosDialog.show(getSupportFragmentManager(), "tag");
