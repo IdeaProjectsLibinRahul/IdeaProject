@@ -9,215 +9,223 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="4dp">
+        android:padding="5dp">
 
-        <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-            style="@style/DetailsTitleViewText"
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/title_details" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@drawable/detail_back"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:elevation="@dimen/cardview_default_elevation"
+            app:cardBackgroundColor="@color/cust_detail_title_back"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardPreventCornerOverlap="true">
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                android:id="@+id/textViewName"
-                style="@style/DetailsName"
+                style="@style/DetailsTitleViewText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                app:fos_textview_font="sansation_bold" />
-
-            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                android:id="@+id/textViewPhoneNum"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp" />
-
-            <View
-                style="@style/DialogDivider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp" />
+                android:text="@string/title_details" />
 
             <LinearLayout
+                style="@style/DetailsBodyLinearBack"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                android:background="@color/detail_cust_body_back"
+                android:orientation="vertical">
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    style="@style/DetailsViewHeader"
-                    android:layout_width="0dp"
+                    android:id="@+id/textViewName"
+                    style="@style/DetailsName"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/upc"
-                    android:textStyle="bold"
+                    android:textSize="20sp"
                     app:fos_textview_font="sansation_bold" />
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                    android:id="@+id/textViewPhoneNum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp" />
+
+                <View
+                    style="@style/DialogDivider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                        style="@style/DetailsViewHeader"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/upc"
+                        android:textStyle="bold"
+                        app:fos_textview_font="sansation_bold" />
+
+                    <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                        style="@style/DetailsViewHeader"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="UPC Date"
+                        app:fos_textview_font="sansation_bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                        android:id="@+id/textViewUpc"
+                        style="@style/DetailsViewText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+
+                    <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                        android:id="@+id/textViewBegeningDate"
+                        style="@style/DetailsViewText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                        style="@style/DetailsViewHeader"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/segment"
+                        app:fos_textview_font="sansation_bold" />
+
+
+                    <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                        style="@style/DetailsViewHeader"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/serv_seg"
+                        app:fos_textview_font="sansation_bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                        android:id="@+id/textViewSegment"
+                        style="@style/DetailsViewText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+
+                    <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                        android:id="@+id/textViewServSeg"
+                        style="@style/DetailsViewText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                        style="@style/DetailsViewHeader"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Customer Type"
+
+                        app:fos_textview_font="sansation_bold" />
+
+                    <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                        style="@style/DetailsViewHeader"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/alternate_num"
+                        app:fos_textview_font="sansation_bold" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                        android:id="@+id/textViewCustomerType"
+                        style="@style/DetailsViewText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+
+                    <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                        android:id="@+id/textViewAlternateNum"
+                        style="@style/DetailsViewText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                </LinearLayout>
+
+                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                     style="@style/DetailsViewHeader"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="UPC Date"
-                    app:fos_textview_font="sansation_bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    android:id="@+id/textViewUpc"
-                    style="@style/DetailsViewText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-
-                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    android:id="@+id/textViewBegeningDate"
-                    style="@style/DetailsViewText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    style="@style/DetailsViewHeader"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/segment"
-                    app:fos_textview_font="sansation_bold" />
-
-
-                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    style="@style/DetailsViewHeader"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/serv_seg"
-                    app:fos_textview_font="sansation_bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    android:id="@+id/textViewSegment"
-                    style="@style/DetailsViewText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-
-                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    android:id="@+id/textViewServSeg"
-                    style="@style/DetailsViewText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-
-                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    style="@style/DetailsViewHeader"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Customer Type"
-
+                    android:text="Address"
                     app:fos_textview_font="sansation_bold" />
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    style="@style/DetailsViewHeader"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/alternate_num"
-                    app:fos_textview_font="sansation_bold" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    android:id="@+id/textViewCustomerType"
+                    android:id="@+id/textViewAddress"
                     style="@style/DetailsViewText"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:text="@string/dummy_address" />
 
-
-                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    android:id="@+id/textViewAlternateNum"
-                    style="@style/DetailsViewText"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:orientation="horizontal">
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recViewOther"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
-
-            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                style="@style/DetailsViewHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Address"
-                app:fos_textview_font="sansation_bold" />
-
-            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                android:id="@+id/textViewAddress"
-                style="@style/DetailsViewText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/dummy_address" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-            </LinearLayout>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recViewOther"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+        </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
             android:id="@+id/cardViewFromZsm"
@@ -225,22 +233,22 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/main_content_vertical_spacing"
             android:elevation="@dimen/cardview_default_elevation"
-            app:cardBackgroundColor="@color/body_zsm_back"
-            app:cardCornerRadius="5dp">
+            app:cardBackgroundColor="@color/title_zsm"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardPreventCornerOverlap="true">
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                android:id="@+id/textViewZsmcutiveVisit"
-                style="@style/DetailsZsmTitleViewText"
+                style="@style/DetailsTitleViewText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/title_from_zsm" />
 
             <LinearLayout
+                style="@style/DetailsBodyLinearBack"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="19dp"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:background="@color/body_zsm_back"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -254,7 +262,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:ellipsize="end"
-                        android:text="Sreehari A M"
+                        android:text="Muhamadh"
                         app:fos_textview_font="sansation_bold" />
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -263,15 +271,24 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="9863566711"
+                        android:text="9867556651"
                         app:fos_textview_font="sansation_bold" />
 
                 </LinearLayout>
 
+                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                    android:id="@+id/textViewFromZsmMyIdea"
+                    style="@style/DetailsViewText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nakshathra Communication" />
 
-
-
-
+                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                    android:id="@+id/textViewFromZsmMyIdeaCode"
+                    style="@style/DetailsViewText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="KRCOC00012" />
 
                 <View
                     android:layout_width="match_parent"
@@ -319,8 +336,8 @@
                             style="@style/DetailsViewText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Follow Up"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:text="Follow Up" />
 
 
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -328,8 +345,8 @@
                             style="@style/DetailsViewText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="22/03/2017"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:text="12/03/2017" />
 
 
                     </LinearLayout>
@@ -340,7 +357,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/visit_feedback"
-
                         app:fos_textview_font="sansation_bold" />
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -348,7 +364,7 @@
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Tariff Related Competition"/>
+                        android:text="Tariff Related Competition" />
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                         style="@style/DetailsViewHeader"
@@ -381,22 +397,22 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/main_content_vertical_spacing"
             android:elevation="@dimen/cardview_default_elevation"
-            app:cardBackgroundColor="@color/body_mico_back"
-            app:cardCornerRadius="5dp">
+            app:cardBackgroundColor="@color/title_mico"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardPreventCornerOverlap="true">
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                android:id="@+id/textViewMicocutiveVisit"
-                style="@style/DetailsMicoTitleViewText"
+                style="@style/DetailsTitleViewText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/title_from_mico" />
 
             <LinearLayout
+                style="@style/DetailsBodyLinearBack"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="19dp"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:background="@color/body_mico_back"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -410,7 +426,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:ellipsize="end"
-                        android:text="Sreejesh A M"
+                        android:text="Muhamadh"
                         app:fos_textview_font="sansation_bold" />
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -419,15 +435,24 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="9863566711"
+                        android:text="9867556651"
                         app:fos_textview_font="sansation_bold" />
 
                 </LinearLayout>
 
+                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                    android:id="@+id/textViewFromMicoMyIdea"
+                    style="@style/DetailsViewText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nakshathra Communication" />
 
-
-
-
+                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                    android:id="@+id/textViewFromMicoMyIdeaCode"
+                    style="@style/DetailsViewText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="KRCOC00012" />
 
                 <View
                     android:layout_width="match_parent"
@@ -475,8 +500,8 @@
                             style="@style/DetailsViewText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Follow Up"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:text="Follow Up" />
 
 
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -484,8 +509,8 @@
                             style="@style/DetailsViewText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="12/03/2017"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:text="12/03/2017" />
 
 
                     </LinearLayout>
@@ -496,7 +521,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/visit_feedback"
-
                         app:fos_textview_font="sansation_bold" />
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -504,7 +528,7 @@
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Tariff Related Competition"/>
+                        android:text="Tariff Related Competition" />
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                         style="@style/DetailsViewHeader"
@@ -518,7 +542,7 @@
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="good replay from customer"/>
+                        android:text="Customer like to share " />
                 </LinearLayout>
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -537,22 +561,22 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/main_content_vertical_spacing"
             android:elevation="@dimen/cardview_default_elevation"
-            app:cardBackgroundColor="@color/body_executive_back"
-            app:cardCornerRadius="5dp">
+            app:cardBackgroundColor="@color/title_executive_stroke"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardPreventCornerOverlap="true">
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                android:id="@+id/textViewExecutiveVisit"
-                style="@style/DetailsExeTitleViewText"
+                style="@style/DetailsTitleViewText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/title_from_executive" />
 
             <LinearLayout
+                style="@style/DetailsBodyLinearBack"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="19dp"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:background="@color/body_executive_back"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -579,7 +603,6 @@
                         app:fos_textview_font="sansation_bold" />
 
                 </LinearLayout>
-
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                     android:id="@+id/textViewFromExeMyIdea"
@@ -641,8 +664,8 @@
                             style="@style/DetailsViewText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Follow Up"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:text="Follow Up" />
 
 
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -650,8 +673,8 @@
                             style="@style/DetailsViewText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="12/03/2017"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:text="12/03/2017" />
 
 
                     </LinearLayout>
@@ -662,7 +685,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/visit_feedback"
-
                         app:fos_textview_font="sansation_bold" />
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -670,7 +692,7 @@
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Tariff Related Competition"/>
+                        android:text="Tariff Related Competition" />
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                         style="@style/DetailsViewHeader"
@@ -684,7 +706,7 @@
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Customer like to share "/>
+                        android:text="Customer like to share " />
                 </LinearLayout>
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -698,32 +720,33 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
+            android:id="@+id/cardViewFormSubmit"
+            style="@style/DetailsSubmitCardStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/main_content_vertical_spacing"
-            android:elevation="@dimen/cardview_default_elevation"
-            app:cardBackgroundColor="@color/detail_submit_color"
-            app:cardCornerRadius="5dp">
+            app:cardBackgroundColor="@color/form_submit_title"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardPreventCornerOverlap="true">
 
-            <LinearLayout
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                android:id="@+id/FOSTextView2"
+                style="@style/DetailsTitleViewText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/from_submit_content_padding"
-                android:paddingLeft="@dimen/from_submit_content_padding"
-                android:paddingRight="@dimen/from_submit_content_padding">
+                android:text="@string/title_submit" />
 
-                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    style="@style/DetailsSubmitTitleViewText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_submit" />
+            <LinearLayout
+                style="@style/DetailsBodyLinearBack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/body_form_submit"
+                android:orientation="vertical">
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                     style="@style/SwitchStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/from_submit_content_vertical_spacing"
+                    android:layout_marginTop="3dp"
                     android:text="@string/land_mark"
                     app:fos_textview_font="sansation_bold" />
 
@@ -732,18 +755,19 @@
                     style="@style/SubmitEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="9dp"
+                    android:layout_marginTop="3dp"
                     android:gravity="top|left"
                     android:hint="@string/hint_land_marks"
                     android:maxLength="150"
+                    android:minHeight="@dimen/input_minimum_height"
                     android:maxLines="1" />
 
                 <fragment
                     android:id="@+id/map"
                     android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="240dp"
-                    android:layout_marginTop="9dp" />
+                    android:layout_height="@dimen/map_height"
+                    android:layout_marginTop="@dimen/from_submit_content_vertical_spacing" />
 
                 <Switch
                     android:id="@+id/switchLocation"

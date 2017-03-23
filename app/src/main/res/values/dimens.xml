@@ -14,5 +14,13 @@
     <dimen name="main_content_vertical_spacing">10dp</dimen>
     <dimen name="from_submit_content_vertical_spacing">12dp</dimen>
     <dimen name="reg_profilepic_margin">8dp</dimen>
+    <dimen name="card_corner_radius">9dp</dimen>
+
+    <dimen name="map_height">230dp</dimen>
+
+    <dimen name="input_minimum_height">40dp</dimen>
+
+
     <!--End Details View-->
+
 </resources>

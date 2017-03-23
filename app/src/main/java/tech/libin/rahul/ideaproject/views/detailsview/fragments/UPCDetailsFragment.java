@@ -152,7 +152,6 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         textViewMicoVisitedDate = (FOSTextView) view.findViewById(R.id.textViewFromMicoVisitedDate);
         textViewMicoRemarks = (FOSTextView) view.findViewById(R.id.textViewFromMicoRemarks);
 
-        textViewExecutiveVisit = (FOSTextView) view.findViewById(R.id.textViewExecutiveVisit);
         textViewExeName = (FOSTextView) view.findViewById(R.id.textViewFromExeName);
         textViewExeMobileNum = (FOSTextView) view.findViewById(R.id.textViewFromExeMobileNum);
         textViewExeMyIdea = (FOSTextView) view.findViewById(R.id.textViewFromExeMyIdea);

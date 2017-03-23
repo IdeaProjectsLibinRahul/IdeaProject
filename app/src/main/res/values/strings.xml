@@ -2,7 +2,7 @@
     <string name="app_name">My Visit</string>
     <string name="collection">Collection</string>
     <string name="retention">Retention</string>
-    <string name="activities">Activities</string>
+    <string name="activities">Actioned</string>
     <string name="new_activities">New Activities</string>
     <string name="customer_type">Customer Type</string>
     <string name="reminders">Reminders</string>
