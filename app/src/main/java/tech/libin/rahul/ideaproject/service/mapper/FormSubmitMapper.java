@@ -10,7 +10,7 @@ import tech.libin.rahul.ideaproject.views.models.User;
  * Created by libin on 01/03/17.
  */
 
-public class SmeFormSubmitMapper implements FOSBaseMapper<FormSubmitModel, SmeFormSubmitRequest, String, String> {
+public class FormSubmitMapper implements FOSBaseMapper<FormSubmitModel, SmeFormSubmitRequest, String, String> {
 
     @Override
     public SmeFormSubmitRequest getRequest(FormSubmitModel model) {
@@ -30,6 +30,7 @@ public class SmeFormSubmitMapper implements FOSBaseMapper<FormSubmitModel, SmeFo
         request.setReminder(model.getReminder());
         request.setRecordType(model.getRecordType());
         request.setAmountPaid(model.getAmountPaid());
+        request.setLandmark(model.getLandmark());
 
         return request;
     }

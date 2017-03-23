@@ -7,6 +7,7 @@ package tech.libin.rahul.ideaproject.service.models;
 public class LocationModel {
     String latitude;
     String longitude;
+    String landmark;
 
     public String getLongitude() {
         return longitude;
@@ -22,5 +23,13 @@ public class LocationModel {
 
     public void setLatitude(String latitude) {
         this.latitude = latitude;
+    }
+
+    public String getLandmark() {
+        return landmark;
+    }
+
+    public void setLandmark(String landmark) {
+        this.landmark = landmark;
     }
 }
