@@ -277,12 +277,11 @@
             android:id="@+id/cardViewFromZsm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/title_zsm"
-            app:cardCornerRadius="@dimen/card_corner_radius"
-            app:cardPreventCornerOverlap="true"
             android:layout_marginTop="@dimen/main_content_vertical_spacing"
             android:elevation="@dimen/cardview_default_elevation"
-            >
+            app:cardBackgroundColor="@color/title_zsm"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardPreventCornerOverlap="true">
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                 style="@style/DetailsTitleViewText"
@@ -323,19 +322,6 @@
 
                 </LinearLayout>
 
-                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    android:id="@+id/textViewFromZsmMyIdea"
-                    style="@style/DetailsViewText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Nakshathra Communication" />
-
-                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    android:id="@+id/textViewFromZsmMyIdeaCode"
-                    style="@style/DetailsViewText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="KRCOC00012" />
 
                 <View
                     android:layout_width="match_parent"
@@ -345,6 +331,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/llFromZsmVisitDetails"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -383,8 +370,8 @@
                             style="@style/DetailsViewText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Follow Up"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:text="Follow Up" />
 
 
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -392,8 +379,8 @@
                             style="@style/DetailsViewText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="12/03/2017"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:text="12/03/2017" />
 
 
                     </LinearLayout>
@@ -411,7 +398,7 @@
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Tariff Related Competition"/>
+                        android:text="Tariff Related Competition" />
 
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -427,7 +414,7 @@
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Customer Specific"/>
+                        android:text="Customer Specific" />
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                         style="@style/DetailsViewHeader"
@@ -441,7 +428,7 @@
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Customer like to share "/>
+                        android:text="Customer like to share " />
                 </LinearLayout>
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -458,12 +445,11 @@
             android:id="@+id/cardViewFromMico"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/title_mico"
-            app:cardCornerRadius="@dimen/card_corner_radius"
-            app:cardPreventCornerOverlap="true"
             android:layout_marginTop="@dimen/main_content_vertical_spacing"
             android:elevation="@dimen/cardview_default_elevation"
-            >
+            app:cardBackgroundColor="@color/title_mico"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardPreventCornerOverlap="true">
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                 style="@style/DetailsTitleViewText"
@@ -504,21 +490,8 @@
 
                 </LinearLayout>
 
-                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    android:id="@+id/textViewFromMicoMyIdea"
-                    style="@style/DetailsViewText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Nakshathra Communication" />
-
-                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    android:id="@+id/textViewFromMicoMyIdeaCode"
-                    style="@style/DetailsViewText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="KRCOC00012" />
-
                 <View
+                    android:id="@+id/llFromMicoVisitDetails"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="20dp"
@@ -564,8 +537,8 @@
                             style="@style/DetailsViewText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Follow Up"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:text="Follow Up" />
 
 
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -573,8 +546,8 @@
                             style="@style/DetailsViewText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="12/03/2017"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:text="12/03/2017" />
 
 
                     </LinearLayout>
@@ -592,7 +565,7 @@
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Tariff Related Competition"/>
+                        android:text="Tariff Related Competition" />
 
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -608,7 +581,7 @@
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Custimer Specific"/>
+                        android:text="Custimer Specific" />
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                         style="@style/DetailsViewHeader"
@@ -622,7 +595,7 @@
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Customer like to share "/>
+                        android:text="Customer like to share " />
                 </LinearLayout>
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -639,12 +612,11 @@
             android:id="@+id/cardViewFromExe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/title_executive_stroke"
-            app:cardCornerRadius="@dimen/card_corner_radius"
-            app:cardPreventCornerOverlap="true"
             android:layout_marginTop="@dimen/main_content_vertical_spacing"
             android:elevation="@dimen/cardview_default_elevation"
-            >
+            app:cardBackgroundColor="@color/title_executive_stroke"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardPreventCornerOverlap="true">
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                 style="@style/DetailsTitleViewText"
@@ -705,8 +677,8 @@
                     android:layout_marginTop="20dp"
                     android:background="@android:color/black"></View>
 
-
                 <LinearLayout
+                    android:id="@+id/llFromExeVisitDetails"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -745,8 +717,8 @@
                             style="@style/DetailsViewText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Follow Up"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:text="Follow Up" />
 
 
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -754,8 +726,8 @@
                             style="@style/DetailsViewText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="12/03/2017"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:text="12/03/2017" />
 
 
                     </LinearLayout>
@@ -773,7 +745,7 @@
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Tariff Related Competition"/>
+                        android:text="Tariff Related Competition" />
 
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -789,7 +761,7 @@
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Customer Specific"/>
+                        android:text="Customer Specific" />
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                         style="@style/DetailsViewHeader"
@@ -803,7 +775,7 @@
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Customer like to share "/>
+                        android:text="Customer like to share " />
                 </LinearLayout>
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView

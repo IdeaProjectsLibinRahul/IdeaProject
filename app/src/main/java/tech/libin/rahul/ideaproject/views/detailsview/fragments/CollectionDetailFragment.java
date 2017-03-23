@@ -666,6 +666,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                         textViewFromExeAmountCollectedTitle.setVisibility(View.VISIBLE);
                         textViewFromExeAmountCollected.setText(fromExecutive.getAmountPaid());
                     }
+                    textViewFromExeVisitedDate.setText(fromExecutive.getVisitedDate());
                     textViewExeRemarks.setText(fromExecutive.getRemarks());
                 } else {
                     llFromExeVisitDetails.setVisibility(View.GONE);
@@ -688,16 +689,25 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
             if (fromMico != null) {
                 textViewFromMicoName.setText(fromMico.getName());
                 textViewFromMicoMobileNum.setText(fromMico.getPhoneNum());
-                textViewFromMicoVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromMico.getStatus(), visitStatus));
-                textViewFromMicoVisitFeedback.setText(SpinnerOperations.getSpinnerItem(fromMico.getFeedback(), feedback));
-                if (fromMico.getFeedback() == 2) {
-                    //payment collected
-                    textViewFromMicoAmountCollected.setVisibility(View.VISIBLE);
-                    textViewFromMicoAmountCollectedTitle.setVisibility(View.VISIBLE);
-                    textViewFromMicoAmountCollected.setText(fromMico.getAmountPaid());
+                if (fromMico.getTotalVisit() > 0) {
+                    textViewFromMicoVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromMico.getStatus(), visitStatus));
+                    textViewFromMicoVisitFeedback.setText(SpinnerOperations.getSpinnerItem(fromMico.getFeedback(), feedback));
+                    if (fromMico.getFeedback() == 2) {
+                        //payment collected
+                        textViewFromMicoAmountCollected.setVisibility(View.VISIBLE);
+                        textViewFromMicoAmountCollectedTitle.setVisibility(View.VISIBLE);
+                        textViewFromMicoAmountCollected.setText(fromMico.getAmountPaid());
+                    }
+                    textViewFromMicoVisitedDate.setText(fromMico.getVisitedDate());
+                    textViewMicoRemarks.setText(fromMico.getRemarks());
+                }
+                else
+                {
+                    llFromMicoVisitDetails.setVisibility(View.GONE);
+                    textViewFromMicoEscalateNoVisit.setVisibility(View.VISIBLE);
+                    textViewFromMicoEscalateNoVisit.setText(getString(R.string.warn_not_visited));
                 }
 
-                textViewMicoRemarks.setText(fromMico.getRemarks());
             }
 
         } catch (Exception ex) {
@@ -714,16 +724,24 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
             if (fromZsm != null) {
                 textViewFromZsmName.setText(fromZsm.getName());
                 textViewFromZsmMobileNum.setText(fromZsm.getPhoneNum());
-                textViewFromZsmVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromZsm.getStatus(), visitStatus));
-                textViewFromZsmVisitFeedback.setText(SpinnerOperations.getSpinnerItem(fromZsm.getFeedback(), feedback));
-                if (fromZsm.getFeedback() == 2) {
-                    //payment collected
-                    textViewFromZsmAmountCollected.setVisibility(View.VISIBLE);
-                    textViewFromZsmAmountCollectedTitle.setVisibility(View.VISIBLE);
-                    textViewFromZsmAmountCollected.setText(fromZsm.getAmountPaid());
+                if (fromZsm.getTotalVisit() > 0) {
+                    textViewFromZsmVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromZsm.getStatus(), visitStatus));
+                    textViewFromZsmVisitFeedback.setText(SpinnerOperations.getSpinnerItem(fromZsm.getFeedback(), feedback));
+                    if (fromZsm.getFeedback() == 2) {
+                        //payment collected
+                        textViewFromZsmAmountCollected.setVisibility(View.VISIBLE);
+                        textViewFromZsmAmountCollectedTitle.setVisibility(View.VISIBLE);
+                        textViewFromZsmAmountCollected.setText(fromZsm.getAmountPaid());
+                    }
+                    textViewFromZsmVisitedDate.setText(fromZsm.getVisitedDate());
+                    textViewZsmRemarks.setText(fromZsm.getRemarks());
                 }
-
-                textViewZsmRemarks.setText(fromZsm.getRemarks());
+            }
+            else
+            {
+                llFromZsmVisitDetails.setVisibility(View.GONE);
+                textViewFromZsmEscalateNoVisit.setVisibility(View.VISIBLE);
+                textViewFromZsmEscalateNoVisit.setText(getString(R.string.warn_not_visited));
             }
 
         } catch (Exception ex) {

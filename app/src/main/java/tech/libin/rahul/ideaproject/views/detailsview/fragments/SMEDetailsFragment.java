@@ -3,6 +3,7 @@ package tech.libin.rahul.ideaproject.views.detailsview.fragments;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.util.Log;
@@ -15,7 +16,9 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Switch;
 
@@ -62,6 +65,10 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private static final String TAG = SMEDetailsFragment.class.getName();
     private Spinner spnStatus;
     private Spinner spnReason;
+    ScrollView scrollViewDetails;
+    ProgressBar progressBarLoading;
+    private EditText editTextLandmark;
+
     private LinearLayout linLayoutFeedback;
     private LinearLayout linLayoutReason;
     private LinearLayout linLayoutReminder;
@@ -100,6 +107,49 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewRatingInfo;
     private FOSSpinnerAdapter statusAdapter;
     private FOSSpinnerAdapter reasonAdapter;
+
+
+
+    private FOSTextView textViewFromZsmName;
+    private FOSTextView textViewFromZsmMobileNum;
+    private FOSTextView textViewFromZsmVisitStatus;
+    private FOSTextView textViewFromZsmVisitedDate;
+    private FOSTextView textViewFromZsmVisitFeedback;
+    private FOSTextView textViewFromZsmAmountCollected;
+    private FOSTextView textViewZsmRemarks;
+    private FOSTextView textViewFromZsmEscalateNoVisit;
+    private FOSTextView textViewFromZsmAmountCollectedTitle;
+
+    private FOSTextView textViewFromMicoName;
+    private FOSTextView textViewFromMicoMobileNum;
+    private FOSTextView textViewFromMicoVisitStatus;
+    private FOSTextView textViewFromMicoVisitedDate;
+    private FOSTextView textViewFromMicoVisitFeedback;
+    private FOSTextView textViewFromMicoAmountCollected;
+    private FOSTextView textViewMicoRemarks;
+    private FOSTextView textViewFromMicoEscalateNoVisit;
+    private FOSTextView textViewFromMicoAmountCollectedTitle;
+
+    private FOSTextView textViewFromExeName;
+    private FOSTextView textViewFromExeMobileNum;
+    private FOSTextView textViewFromExeMyIdea;
+    private FOSTextView textViewFromExeMyIdeaCode;
+    private FOSTextView textViewFromExeVisitStatus;
+    private FOSTextView textViewFromExeVisitedDate;
+    private FOSTextView textViewFromExeVisitFeedback;
+    private FOSTextView textViewFromExeAmountCollected;
+    private FOSTextView textViewExeRemarks;
+    private FOSTextView textViewFromExeEscalateNoVisit;
+    private FOSTextView textViewFromExeAmountCollectedTitle;
+
+    LinearLayout llFromMicoVisitDetails;
+    LinearLayout llFromZsmVisitDetails;
+    LinearLayout llFromExeVisitDetails;
+
+    CardView cardViewFromExe;
+    CardView cardViewFromMico;
+    CardView cardViewFromZsm;
+    CardView cardViewFromSubmit;
 
     //endregion
 
@@ -156,6 +206,53 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 
         ratingBar = (RatingBar) view.findViewById(R.id.ratingBar);
         textViewRatingInfo = (FOSTextView) view.findViewById(R.id.ratingInfo);
+
+        //role wise
+
+        textViewFromExeName = (FOSTextView) view.findViewById(R.id.textViewFromExeName);
+        textViewFromExeMobileNum = (FOSTextView) view.findViewById(R.id.textViewFromExeMobileNum);
+        textViewFromExeMyIdea = (FOSTextView) view.findViewById(R.id.textViewFromExeMyIdea);
+        textViewFromExeMyIdeaCode = (FOSTextView) view.findViewById(R.id.textViewFromExeMyIdeaCode);
+        textViewFromExeVisitStatus = (FOSTextView) view.findViewById(R.id.textViewFromExeVisitStatus);
+        textViewFromExeVisitedDate = (FOSTextView) view.findViewById(R.id.textViewFromExeVisitedDate);
+        textViewFromExeVisitFeedback = (FOSTextView) view.findViewById(R.id.textViewFromExeVisitFeedback);
+        textViewFromExeAmountCollected = (FOSTextView) view.findViewById(R.id.textViewFromExeAmountCollected);
+        textViewExeRemarks = (FOSTextView) view.findViewById(R.id.textViewFromExeRemarks);
+        textViewFromExeEscalateNoVisit = (FOSTextView) view.findViewById(R.id.textViewFromExeEscalateNoVisit);
+        textViewFromExeAmountCollectedTitle = (FOSTextView) view.findViewById(R.id.textViewFromExeAmountCollectedTitle);
+
+        textViewFromMicoName = (FOSTextView) view.findViewById(R.id.textViewFromMicoName);
+        textViewFromMicoMobileNum = (FOSTextView) view.findViewById(R.id.textViewFromMicoMobileNum);
+        textViewFromMicoVisitStatus = (FOSTextView) view.findViewById(R.id.textViewFromMicoVisitStatus);
+        textViewFromMicoVisitedDate = (FOSTextView) view.findViewById(R.id.textViewFromMicoVisitedDate);
+        textViewFromMicoVisitFeedback = (FOSTextView) view.findViewById(R.id.textViewFromMicoVisitFeedback);
+        textViewFromMicoAmountCollected = (FOSTextView) view.findViewById(R.id.textViewFromMicoAmountCollected);
+        textViewMicoRemarks = (FOSTextView) view.findViewById(R.id.textViewFromMicoRemarks);
+        textViewFromMicoEscalateNoVisit = (FOSTextView) view.findViewById(R.id.textViewFromMicoEscalateNoVisit);
+        textViewFromMicoAmountCollectedTitle = (FOSTextView) view.findViewById(R.id.textViewFromMicoAmountCollectedTitle);
+
+        textViewFromZsmName = (FOSTextView) view.findViewById(R.id.textViewFromZsmName);
+        textViewFromZsmMobileNum = (FOSTextView) view.findViewById(R.id.textViewFromZsmMobileNum);
+        textViewFromZsmVisitStatus = (FOSTextView) view.findViewById(R.id.textViewFromZsmVisitStatus);
+        textViewFromZsmVisitedDate = (FOSTextView) view.findViewById(R.id.textViewFromZsmVisitedDate);
+        textViewFromZsmVisitFeedback = (FOSTextView) view.findViewById(R.id.textViewFromZsmVisitFeedback);
+        textViewFromZsmAmountCollected = (FOSTextView) view.findViewById(R.id.textViewFromZsmAmountCollected);
+        textViewZsmRemarks = (FOSTextView) view.findViewById(R.id.textViewFromZsmRemarks);
+        textViewFromZsmEscalateNoVisit = (FOSTextView) view.findViewById(R.id.textViewFromZsmEscalateNoVisit);
+        textViewFromZsmAmountCollectedTitle = (FOSTextView) view.findViewById(R.id.textViewFromZsmAmountCollectedTitle);
+
+        llFromMicoVisitDetails = (LinearLayout) view.findViewById(R.id.llFromMicoVisitDetails);
+        llFromZsmVisitDetails = (LinearLayout) view.findViewById(R.id.llFromZsmVisitDetails);
+        llFromExeVisitDetails = (LinearLayout) view.findViewById(R.id.llFromExeVisitDetails);
+
+        cardViewFromExe = (CardView) view.findViewById(R.id.cardViewFromExe);
+        cardViewFromMico = (CardView) view.findViewById(R.id.cardViewFromMico);
+        cardViewFromZsm = (CardView) view.findViewById(R.id.cardViewFromZsm);
+        cardViewFromSubmit = (CardView) view.findViewById(R.id.cardViewFormSubmit);
+
+//        scrollViewDetails = (ScrollView) view.findViewById(R.id.scrollViewDetails);
+//        progressBarLoading = (ProgressBar) view.findViewById(R.id.progressBarLoading);
+
     }
     //endregion
 

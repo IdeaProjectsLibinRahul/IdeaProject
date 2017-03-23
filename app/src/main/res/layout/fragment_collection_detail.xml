@@ -497,12 +497,12 @@
 
 
                     <LinearLayout
+                        android:id="@+id/llFromZsmVisitDetails"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
                         <LinearLayout
-                            android:id="@+id/llFromZsmVisitDetails"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
@@ -670,12 +670,12 @@
 
 
                     <LinearLayout
+                        android:id="@+id/llFromMicoVisitDetails"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
                         <LinearLayout
-                            android:id="@+id/llFromMicoVisitDetails"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
