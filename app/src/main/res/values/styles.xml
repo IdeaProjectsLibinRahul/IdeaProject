@@ -131,6 +131,18 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="DetailsEsclateName">
+        <item name="android:textSize">23sp</item>
+        <item name="android:layout_marginTop">14dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/gray2X</item>
+    </style>
+    <style name="DetailsEsclatePhoneNum">
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginTop">14dp</item>
+        <item name="android:textColor">@color/gray2X</item>
+    </style>
+
     <style name="DetailsButton" parent="Widget.AppCompat.Button.Borderless">
         <item name="android:background">@drawable/button_common_background</item>
         <item name="android:textColor">@android:color/white</item>
