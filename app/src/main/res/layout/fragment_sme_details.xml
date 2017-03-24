@@ -308,7 +308,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:ellipsize="end"
-                        android:text="Muhamadh"
+                        android:text="Ram Varma"
                         app:fos_textview_font="sansation_bold" />
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -317,7 +317,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="9867556651"
+                        android:text="9878828051"
                         app:fos_textview_font="sansation_bold" />
 
                 </LinearLayout>
@@ -371,7 +371,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Follow Up" />
+                            android:text="Visited" />
 
 
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -380,7 +380,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="12/03/2017" />
+                            android:text="12/02/2017" />
 
 
                     </LinearLayout>
@@ -398,7 +398,7 @@
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Tariff Related Competition" />
+                        android:text="Very Disatisfied" />
 
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -414,7 +414,7 @@
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Customer Specific" />
+                        android:text="Cusomer Specific" />
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                         style="@style/DetailsViewHeader"
@@ -428,7 +428,7 @@
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Customer like to share " />
+                        android:text="Customer is not happy with idea offers." />
                 </LinearLayout>
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -476,7 +476,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:ellipsize="end"
-                        android:text="Muhamadh"
+                        android:text="Sreejesh"
                         app:fos_textview_font="sansation_bold" />
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -485,7 +485,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="9867556651"
+                        android:text="9866789931"
                         app:fos_textview_font="sansation_bold" />
 
                 </LinearLayout>
@@ -565,7 +565,7 @@
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Tariff Related Competition" />
+                        android:text="Very Satisfied" />
 
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -595,7 +595,7 @@
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Customer like to share " />
+                        android:text="Customer not willing to share " />
                 </LinearLayout>
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView

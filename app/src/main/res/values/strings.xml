@@ -50,9 +50,9 @@
     <string name="hint_remarks">Please write your comments here...</string>
     <string name="hint_land_marks">Write landmark</string>
     <string name="title_submit">UPDATE VISIT STATUS</string>
-    <string name="title_from_executive">EXECUTIVE VISIT</string>
-    <string name="title_from_mico">MICO VISIT</string>
-    <string name="title_from_zsm">ZSM VISIT</string>
+    <string name="title_from_executive">EXECUTIVE VISIT DETAILS</string>
+    <string name="title_from_mico">MICO VISIT DETAILS</string>
+    <string name="title_from_zsm">ZSM VISIT DETAILS</string>
     <string name="title_details">CUSTOMER DETAILS</string>
     <string name="submit">Submit</string>
     <string name="follow_up_date">Follow Up Date</string>

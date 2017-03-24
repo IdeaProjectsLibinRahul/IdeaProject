@@ -338,7 +338,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:ellipsize="end"
-                        android:text="Muhamadh"
+                        android:text="Anoop"
                         app:fos_textview_font="sansation_bold" />
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -351,20 +351,6 @@
                         app:fos_textview_font="sansation_bold" />
 
                 </LinearLayout>
-
-                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    android:id="@+id/textViewFromZsmMyIdea"
-                    style="@style/DetailsViewText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Nakshathra Communication" />
-
-                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    android:id="@+id/textViewFromZsmMyIdeaCode"
-                    style="@style/DetailsViewText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="KRCOC00012" />
 
                 <View
                     android:layout_width="match_parent"
@@ -412,7 +398,7 @@
                             style="@style/DetailsViewText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Follow Up"
+                            android:text="Visited"
                             android:layout_weight="1" />
 
 
@@ -440,7 +426,7 @@
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Tariff Related Competition"/>
+                        android:text="Payment Collected"/>
 
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -470,7 +456,7 @@
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Customer like to share "/>
+                        android:text="Amount collected"/>
                 </LinearLayout>
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -519,7 +505,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:ellipsize="end"
-                        android:text="Muhamadh"
+                        android:text="Backer"
                         app:fos_textview_font="sansation_bold" />
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -533,19 +519,6 @@
 
                 </LinearLayout>
 
-                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    android:id="@+id/textViewFromMicoMyIdea"
-                    style="@style/DetailsViewText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Nakshathra Communication" />
-
-                <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                    android:id="@+id/textViewFromMicoMyIdeaCode"
-                    style="@style/DetailsViewText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="KRCOC00012" />
 
                 <View
                     android:layout_width="match_parent"
@@ -621,7 +594,7 @@
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Tariff Related Competition"/>
+                        android:text="Payment Collected"/>
 
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -774,7 +747,7 @@
                             style="@style/DetailsViewText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Follow Up"
+                            android:text="Retained"
                             android:layout_weight="1" />
 
 
@@ -832,7 +805,7 @@
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Customer like to share "/>
+                        android:text="Customer specific reason"/>
                 </LinearLayout>
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView

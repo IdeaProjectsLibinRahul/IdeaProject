@@ -241,9 +241,9 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         textViewFromZsmEscalateNoVisit = (FOSTextView) view.findViewById(R.id.textViewFromZsmEscalateNoVisit);
         textViewFromZsmAmountCollectedTitle = (FOSTextView) view.findViewById(R.id.textViewFromZsmAmountCollectedTitle);
 
-        llFromMicoVisitDetails = (LinearLayout) view.findViewById(R.id.llFromMicoVisitDetails);
-        llFromZsmVisitDetails = (LinearLayout) view.findViewById(R.id.llFromZsmVisitDetails);
-        llFromExeVisitDetails = (LinearLayout) view.findViewById(R.id.llFromExeVisitDetails);
+//        llFromMicoVisitDetails = (LinearLayout) view.findViewById(R.id.llFromMicoVisitDetails);
+//        llFromZsmVisitDetails = (LinearLayout) view.findViewById(R.id.llFromZsmVisitDetails);
+//        llFromExeVisitDetails = (LinearLayout) view.findViewById(R.id.llFromExeVisitDetails);
 
         cardViewFromExe = (CardView) view.findViewById(R.id.cardViewFromExe);
         cardViewFromMico = (CardView) view.findViewById(R.id.cardViewFromMico);
