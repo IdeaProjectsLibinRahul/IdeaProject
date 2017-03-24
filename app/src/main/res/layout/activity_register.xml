@@ -61,6 +61,15 @@
                 android:textColor="@android:color/white" />
 
             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                android:id="@+id/tabItemOfficial"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/official" />
+
+            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                 android:id="@+id/tabItemLogin"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -69,14 +78,6 @@
                 android:padding="5dp"
                 android:text="@string/login" />
 
-            <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                android:id="@+id/tabItemOfficial"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/official" />
         </LinearLayout>
 
         <ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
@@ -115,8 +116,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:drawableLeft="@mipmap/ic_calendar"
-                    app:hint="@string/dob"
-                    app:textString="03/22/1990" />
+                    app:hint="@string/dob" />
 
                 <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
                     android:id="@+id/editTextRegAddress1"
@@ -162,40 +162,6 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
-                    android:id="@+id/editTextRegMobileNo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:drawableLeft="@mipmap/ic_phone"
-                    app:hint="@string/mobile_no"
-                    app:inputType="number"
-                    app:maxLength="12" />
-
-
-                <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
-                    android:id="@+id/editTextRegPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:drawableLeft="@mipmap/ic_phone"
-                    app:hint="@string/password"
-                    app:inputType="password"
-                    app:maxLength="15" />
-
-                <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
-                    android:id="@+id/editTextRegConfirmPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:drawableLeft="@mipmap/ic_phone"
-                    app:hint="@string/confirm_password"
-                    app:inputType="password"
-                    app:maxLength="15" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
                 <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/radioGroupRegRole"
                     android:layout_width="fill_parent"
@@ -232,8 +198,7 @@
                     android:maxLength="15"
                     app:drawableLeft="@mipmap/ic_calendar"
                     app:hint="@string/doj"
-                    app:maxLength="12"
-                    app:textString="03/22/2017" />
+                    app:maxLength="12" />
 
 
                 <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
@@ -244,6 +209,41 @@
                     app:hint="@string/mi_code"
                     app:maxLength="15" />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
+                    android:id="@+id/editTextRegMobileNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:drawableLeft="@mipmap/ic_phone"
+                    app:hint="@string/mobile_no"
+                    app:inputType="number"
+                    app:maxLength="12" />
+
+
+                <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
+                    android:id="@+id/editTextRegPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:drawableLeft="@mipmap/ic_phone"
+                    app:hint="@string/password"
+                    app:inputType="password"
+                    app:maxLength="15" />
+
+                <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
+                    android:id="@+id/editTextRegConfirmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:drawableLeft="@mipmap/ic_phone"
+                    app:hint="@string/confirm_password"
+                    app:inputType="password"
+                    app:maxLength="15" />
+            </LinearLayout>
+
         </ViewFlipper>
 
 

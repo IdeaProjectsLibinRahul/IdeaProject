@@ -116,6 +116,7 @@
     <string name="personal">Personal</string>
     <string name="login">Login</string>
     <string name="official">Official</string>
+    <string name="storage_permission_message">Please enable storage access permission to add photo</string>
 
 
 </resources>

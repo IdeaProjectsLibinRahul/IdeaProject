@@ -1,9 +1,11 @@
 package tech.libin.rahul.ideaproject.views;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,9 +16,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -26,6 +30,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import java.io.File;
@@ -40,22 +45,25 @@ import tech.libin.rahul.ideaproject.facade.FOSFacade;
 import tech.libin.rahul.ideaproject.facade.FOSFacadeImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
+import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseActivity;
 import tech.libin.rahul.ideaproject.views.models.RegisterModel;
 import tech.libin.rahul.ideaproject.views.widgets.button.FOSButton;
 import tech.libin.rahul.ideaproject.views.widgets.dialogs.FOSDialog;
 import tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText;
 import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends FOSBaseActivity {
 
     public static final int FLIP_INTERVAL = 2000;
     public static final String COLOR_TRANSPARENT = "#00000000";
     public static final String COLOR_BACKGROUND = "#55000000";
     public static final String DIR_NAME = "MyVisit";
     public static final String USER_PIC_PREFIX = "user_pic_";
+    private static final int PERMISSION_REQUEST_CODE = 1001;
     //region declarations
     private static final int CAMERA_PIC_REQUEST = 1003;
     private static final int SELECT_PICTURE = 1004;
+    private static final String TAG = RegisterActivity.class.getName();
     String mCurrentPhotoPath;
     private FloatingActionButton floatingActionButton;
     private FOSIconEditText editTextRegName;
@@ -100,6 +108,16 @@ public class RegisterActivity extends AppCompatActivity {
         setListeners();
         initViewFlipper();
     }
+
+    @Override
+    protected void setToolbarElevation() {
+        setToolbarElevation(0);
+    }
+
+    @Override
+    protected void setHasToolBar() {
+        setHasToolBar(false);
+    }
     //endregion
 
     //region initComponents
@@ -135,7 +153,14 @@ public class RegisterActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openImageIntent();
+                boolean storagePermission = ActivityCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+
+                if (!storagePermission) {
+                    ActivityCompat.requestPermissions(RegisterActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+                } else {
+                    openImageIntent();
+                }
+
             }
         });
 
@@ -161,15 +186,15 @@ public class RegisterActivity extends AppCompatActivity {
                 if (isValid()) {
                     FOSFacade facade = new FOSFacadeImpl();
                     RegisterModel registerModel = new RegisterModel();
-                    registerModel.setName(editTextRegName.getText().toString());
-                    registerModel.setAddress1(editTextRegAddress1.getText().toString());
-                    registerModel.setAddress2(editTextRegAddress2.getText().toString());
-                    registerModel.setAddress3(editTextRegAddress3.getText().toString());
-                    registerModel.setZip(editTextRegZip.getText().toString());
-                    registerModel.setFatherName(editTextRegFatherName.getText().toString());
-                    registerModel.setMiCode(editTextRegMICode.getText().toString());
-                    registerModel.setMobileNum(editTextRegMobileNo.getText().toString());
-                    registerModel.setPassword(editTextRegPassword.getText().toString());
+                    registerModel.setName(editTextRegName.getText());
+                    registerModel.setAddress1(editTextRegAddress1.getText());
+                    registerModel.setAddress2(editTextRegAddress2.getText());
+                    registerModel.setAddress3(editTextRegAddress3.getText());
+                    registerModel.setZip(editTextRegZip.getText());
+                    registerModel.setFatherName(editTextRegFatherName.getText());
+                    registerModel.setMiCode(editTextRegMICode.getText());
+                    registerModel.setMobileNum(editTextRegMobileNo.getText());
+                    registerModel.setPassword(editTextRegPassword.getText());
                     if (rdbMico.isChecked()) {
                         registerModel.setRole(Constants.Role.MICO);
                     } else if (rdbZsm.isChecked()) {
@@ -179,10 +204,10 @@ public class RegisterActivity extends AppCompatActivity {
                         registerModel.setRole(Constants.Role.EXECUTIVE);
                     }
 
-                    registerModel.setName(editTextRegName.getText().toString());
-                    registerModel.setName(editTextRegName.getText().toString());
-                    registerModel.setDob(editTextRegDOB.getText().toString());
-                    registerModel.setDateOfJoining(editTextRegJoinDate.getText().toString());
+                    registerModel.setName(editTextRegName.getText());
+                    registerModel.setName(editTextRegName.getText());
+                    registerModel.setDob(editTextRegDOB.getText());
+                    registerModel.setDateOfJoining(editTextRegJoinDate.getText());
 
                     facade.doRegistrationDummy(registerModel, new ServiceCallback<String>() {
                         @Override
@@ -319,7 +344,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if (view == tabItemPersonal) {
                     nextView = 0;
-                } else if (view == tabItemLogin) {
+                } else if (view == tabItemOfficial) {
                     nextView = 1;
                 } else {
                     nextView = 2;
@@ -396,6 +421,19 @@ public class RegisterActivity extends AppCompatActivity {
         builder.show();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                Log.i(TAG, "onRequestPermissionsResult: Permission Granted");
+                openImageIntent();
+            } else {
+
+                String message = getString(R.string.storage_permission_message);
+                Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -468,45 +506,50 @@ public class RegisterActivity extends AppCompatActivity {
         editTextRegMICode.setError(null);
 
         boolean status = true;
-        if (editTextRegName.getText().toString().trim().isEmpty()) {
+        int slideIndex = 0;
+        if (editTextRegName.getText().trim().isEmpty()) {
             status = false;
             editTextRegName.setError(getResources().getString(R.string.warn_name));
-            slideTabView(0);
+            slideIndex = 0;
         }
-        if (editTextRegDOB.getText().toString().trim().isEmpty()) {
+        if (editTextRegDOB.getText().trim().isEmpty()) {
             status = false;
             editTextRegDOB.setError(getResources().getString(R.string.warn_dob));
-            slideTabView(0);
+            slideIndex = 0;
         }
-        if (editTextRegAddress1.getText().toString().trim().isEmpty()) {
+        if (editTextRegAddress1.getText().trim().isEmpty()) {
             status = false;
             editTextRegAddress1.setError(getResources().getString(R.string.warn_address));
-            slideTabView(0);
+            slideIndex = 0;
         }
-        if (editTextRegZip.getText().toString().trim().isEmpty()) {
+        if (editTextRegZip.getText().trim().isEmpty()) {
             status = false;
             editTextRegZip.setError(getResources().getString(R.string.warn_zip));
-            slideTabView(0);
+            slideIndex = 0;
         }
-        if (editTextRegMobileNo.getText().toString().trim().isEmpty()) {
+        if (editTextRegMobileNo.getText().trim().isEmpty()) {
             status = false;
             editTextRegMobileNo.setError(getResources().getString(R.string.warn_mobile));
-            slideTabView(1);
+            slideIndex = 1;
         }
-        if (editTextRegPassword.getText().toString().trim().isEmpty()) {
+        if (editTextRegPassword.getText().trim().isEmpty()) {
             status = false;
             editTextRegPassword.setError(getResources().getString(R.string.warn_password));
-            slideTabView(1);
+            slideIndex = 1;
         }
-        if ((!editTextRegPassword.getText().toString().trim().isEmpty()) && !editTextRegPassword.getText().toString().trim().equals(editTextRegConfirmPassword.getText().toString().trim())) {
+        if ((!editTextRegPassword.getText().trim().isEmpty()) && !editTextRegPassword.getText().trim().equals(editTextRegConfirmPassword.getText().trim())) {
             status = false;
             editTextRegConfirmPassword.setError(getResources().getString(R.string.warn_password_miss_match));
-            slideTabView(1);
+            slideIndex = 1;
         }
-        if (editTextRegMICode.getVisibility() == View.VISIBLE && editTextRegMICode.getText().toString().trim().isEmpty()) {
+        if (editTextRegMICode.getVisibility() == View.VISIBLE && editTextRegMICode.getText().trim().isEmpty()) {
             status = false;
             editTextRegMICode.setError(getResources().getString(R.string.warn_mi_code));
-            slideTabView(2);
+            slideIndex = 2;
+        }
+
+        if (!status) {
+            slideTabView(slideIndex);
         }
 
         return status;
