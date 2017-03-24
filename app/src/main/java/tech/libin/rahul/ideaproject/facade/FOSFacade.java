@@ -6,11 +6,11 @@ import android.net.Uri;
 import java.util.List;
 import java.util.Map;
 
-import tech.libin.rahul.ideaproject.network.handlers.NetworkCallback;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
+import tech.libin.rahul.ideaproject.views.credentialviews.viewmodels.ForgotPasswordModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.CollectionDetailModel;
-import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.FormSubmitModel;
+import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.TdDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.UpcDetailModel;
 import tech.libin.rahul.ideaproject.views.homescreen.viewmodels.ActivityModel;
@@ -44,4 +44,6 @@ public interface FOSFacade {
     void doRegistrationDummy(RegisterModel model, ServiceCallback<String> callback);
 
     void doLogout(String userId, ServiceCallback<String> callback);
+
+    void forgotPassword(String miCode, String mobileNum, ServiceCallback<ForgotPasswordModel> callback);
 }

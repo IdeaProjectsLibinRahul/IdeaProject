@@ -16,7 +16,6 @@ import tech.libin.rahul.ideaproject.network.handlers.NetworkCallback;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
 import tech.libin.rahul.ideaproject.service.mapper.ActivityMapper;
 import tech.libin.rahul.ideaproject.service.mapper.CollectionDetailMapper;
-import tech.libin.rahul.ideaproject.service.mapper.OtherFormSubmitMapper;
 import tech.libin.rahul.ideaproject.service.mapper.RegisterMapper;
 import tech.libin.rahul.ideaproject.service.mapper.SmeDetailMapper;
 import tech.libin.rahul.ideaproject.service.mapper.SmeFormSubmitMapper;
@@ -24,13 +23,14 @@ import tech.libin.rahul.ideaproject.service.mapper.TdDetailMapper;
 import tech.libin.rahul.ideaproject.service.mapper.UpcDetailMapper;
 import tech.libin.rahul.ideaproject.service.requests.ActivityDetailRequest;
 import tech.libin.rahul.ideaproject.service.requests.ActivityRequest;
+import tech.libin.rahul.ideaproject.service.requests.ForgotPasswordRequest;
 import tech.libin.rahul.ideaproject.service.requests.LoginRequest;
 import tech.libin.rahul.ideaproject.service.requests.LogoutRequest;
-import tech.libin.rahul.ideaproject.service.requests.OtherFormSubmitRequest;
 import tech.libin.rahul.ideaproject.service.requests.RegisterRequest;
 import tech.libin.rahul.ideaproject.service.requests.SmeFormSubmitRequest;
 import tech.libin.rahul.ideaproject.service.responses.ActivityResponse;
 import tech.libin.rahul.ideaproject.service.responses.CollectionDetailResponse;
+import tech.libin.rahul.ideaproject.service.responses.ForgotPasswordResponse;
 import tech.libin.rahul.ideaproject.service.responses.FormSubmitResponse;
 import tech.libin.rahul.ideaproject.service.responses.LoginResponse;
 import tech.libin.rahul.ideaproject.service.responses.LogoutResponse;
@@ -40,10 +40,10 @@ import tech.libin.rahul.ideaproject.service.responses.TdDetailResponse;
 import tech.libin.rahul.ideaproject.service.responses.UpcDetailResponse;
 import tech.libin.rahul.ideaproject.service.responses.UserRegisterResponse;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
+import tech.libin.rahul.ideaproject.views.credentialviews.viewmodels.ForgotPasswordModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.CollectionDetailModel;
-import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.OtherFormSubmitModel;
-import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.FormSubmitModel;
+import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.TdDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.UpcDetailModel;
 import tech.libin.rahul.ideaproject.views.homescreen.viewmodels.ActivityModel;
@@ -295,7 +295,7 @@ public class FOSServiceImpl implements FOSService {
     }
 
     @Override
-    public void doRegistration(Map<String, String> data, Map<String, Uri> files,final ServiceCallback<String> callback) {
+    public void doRegistration(Map<String, String> data, Map<String, Uri> files, final ServiceCallback<String> callback) {
         FOSNetworkRequest<UserRegisterResponse> upload = new FOSNetworkRequestImpl<>(ServiceURLs.REGISTER, UserRegisterResponse.class);
         upload.uploadFile(Request.Method.POST, new NetworkCallback<UserRegisterResponse>() {
             @Override
@@ -312,11 +312,11 @@ public class FOSServiceImpl implements FOSService {
             public void onFail(FOSError error) {
 
             }
-        },data,files);
+        }, data, files);
     }
 
     @Override
-    public void doRegistrationDummy(RegisterModel model,final ServiceCallback<String> callback) {
+    public void doRegistrationDummy(RegisterModel model, final ServiceCallback<String> callback) {
         final RegisterMapper mapper = new RegisterMapper();
         RegisterRequest registerRequest = mapper.getRequest(model);
 
@@ -369,6 +369,40 @@ public class FOSServiceImpl implements FOSService {
                     callback.onRequestFail(error);
                 } else {
                     callback.onResponse(response.getMessage());
+                }
+            }
+
+            @Override
+            public void onTimeout() {
+                callback.onRequestTimout();
+            }
+
+            @Override
+            public void onFail(FOSError error) {
+                callback.onRequestFail(error);
+            }
+        });
+    }
+
+    @Override
+    public void forgotPassword(String miCode, final String mobileNum, final ServiceCallback<ForgotPasswordModel> callback) {
+        ForgotPasswordRequest forgotPasswordRequest = new ForgotPasswordRequest();
+        forgotPasswordRequest.setMiCode(miCode);
+        forgotPasswordRequest.setMobileNum(mobileNum);
+        final FOSNetworkRequest<ForgotPasswordResponse> request = new FOSNetworkRequestImpl<>(forgotPasswordRequest, ServiceURLs.FORGOT_PASSWORD, ForgotPasswordResponse.class);
+        request.request(Request.Method.POST, new NetworkCallback<ForgotPasswordResponse>() {
+            @Override
+            public void onSuccess(ForgotPasswordResponse response) {
+
+                if (response.getStatus() != Constants.Status.SUCCESS) {
+                    FOSError error = new FOSError();
+                    error.setErrorMessage(response.getMessage());
+                    callback.onRequestFail(error);
+                } else {
+                    ForgotPasswordModel model = new ForgotPasswordModel();
+                    model.setStatus(response.getStatus());
+                    model.setMessage(response.getMessage());
+                    callback.onResponse(model);
                 }
             }
 

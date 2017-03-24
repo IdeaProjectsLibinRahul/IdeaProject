@@ -100,6 +100,12 @@ public class Constants {
         }
     }
 
+    public enum CredentialsMode {
+        FORGOT_PASSWORD,
+        RESET_PASSWORD,
+        OTP
+    }
+
     public class PARAMS {
         public static final String DETAILS_OBJECT_ID = "detailsObjectId";
         public static final String DETAILS_OBJECT_NAME = "detailsObjectName";

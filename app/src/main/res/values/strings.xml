@@ -117,6 +117,10 @@
     <string name="login">Login</string>
     <string name="official">Official</string>
     <string name="storage_permission_message">Please enable storage access permission to add photo</string>
+    <string name="verify">Verify</string>
+    <string name="otp">OTP</string>
+    <string name="timer_dummy">00:00 s</string>
+    <string name="resend_password">Resend Password</string>
 
 
 </resources>
