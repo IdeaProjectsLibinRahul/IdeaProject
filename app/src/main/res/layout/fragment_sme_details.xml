@@ -491,7 +491,6 @@
                 </LinearLayout>
 
                 <View
-                    android:id="@+id/llFromMicoVisitDetails"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="20dp"
@@ -499,9 +498,11 @@
 
 
                 <LinearLayout
+                    android:id="@+id/llFromMicoVisitDetails"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    >
 
                     <LinearLayout
                         android:layout_width="match_parent"

@@ -265,13 +265,11 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 
                 @Override
                 public void onRequestTimout() {
-                    hideProgressBar();
                     showMessage(getString(R.string.warn_time_out_title), getString(R.string.warn_time_out_message));
                 }
 
                 @Override
                 public void onRequestFail(FOSError error) {
-                    hideProgressBar();
                     showMessage(getString(R.string.warn_server_error), error.getErrorMessage());
                 }
             });
