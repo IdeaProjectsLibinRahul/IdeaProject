@@ -75,7 +75,6 @@
     </style>
 
     <style name="LoginButton" parent="Widget.AppCompat.Button.Borderless">
-        <item name="android:layout_weight">1</item>
         <item name="android:background">@color/button_back</item>
         <item name="android:textColor">@android:color/white</item>
 

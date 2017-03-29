@@ -1,11 +1,17 @@
-package tech.libin.rahul.ideaproject;
+package tech.libin.rahul.ideaproject.views;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import tech.libin.rahul.ideaproject.R;
 import tech.libin.rahul.ideaproject.configurations.Constants;
+import tech.libin.rahul.ideaproject.events.OTPEvent;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseActivity;
 import tech.libin.rahul.ideaproject.views.credentialviews.fragments.ForgotPasswordFragment;
+import tech.libin.rahul.ideaproject.views.credentialviews.fragments.OtpFragment;
 
 public class LoginCredentialsActivity extends FOSBaseActivity {
 
@@ -39,12 +45,26 @@ public class LoginCredentialsActivity extends FOSBaseActivity {
 
     private void handleView() {
         if (viewMode == Constants.CredentialsMode.FORGOT_PASSWORD) {
-            Fragment fragment = new ForgotPasswordFragment();
-            addFragment(R.id.credential_container, fragment);
+            showForgotView();
         } else if (viewMode == Constants.CredentialsMode.RESET_PASSWORD) {
 
         } else if (viewMode == Constants.CredentialsMode.OTP) {
 
         }
+    }
+
+    private void showForgotView() {
+        Fragment fragment = new ForgotPasswordFragment();
+        addFragment(R.id.credential_container, fragment);
+    }
+
+    private void showOtpView() {
+        Fragment fragment = new OtpFragment();
+        addFragment(R.id.credential_container, fragment);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(OTPEvent event) {
+        showOtpView();
     }
 }

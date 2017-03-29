@@ -96,7 +96,11 @@ public abstract class FOSBaseActivity extends AppCompatActivity {
             textViewName = (TextView) toolbar.findViewById(R.id.textViewUserName);
             textViewPhone = (TextView) toolbar.findViewById(R.id.textViewUserPhone);
         }
+
+
     }
+
+    
 
     protected void setToolbarUsername(String username){
         textViewName.setText(username);

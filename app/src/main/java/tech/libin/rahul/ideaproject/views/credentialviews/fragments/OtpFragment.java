@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Locale;
+
 import tech.libin.rahul.ideaproject.R;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
 import tech.libin.rahul.ideaproject.views.widgets.button.FOSButton;
@@ -48,11 +50,12 @@ public class OtpFragment extends FOSBaseFragment {
         new CountDownTimer(30000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                textViewTime.setText((millisUntilFinished / 1000) + "");
+                textViewTime.setText(String.format(Locale.UK, "%02d s", millisUntilFinished / 1000));
             }
 
             public void onFinish() {
-                textViewTime.setText("done!");
+                editTextOtp.setEnabled(false);
+                textViewTime.setText("00 s");
                 textViewResendOtp.setVisibility(View.VISIBLE);
             }
 
@@ -64,6 +67,15 @@ public class OtpFragment extends FOSBaseFragment {
             @Override
             public void onClick(View view) {
                 String otp = editTextOtp.getText().toString();
+            }
+        });
+
+        textViewResendOtp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editTextOtp.setEnabled(true);
+                textViewResendOtp.setVisibility(View.INVISIBLE);
+                startTimer();
             }
         });
     }

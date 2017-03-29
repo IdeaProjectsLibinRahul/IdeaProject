@@ -6,7 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.greenrobot.eventbus.EventBus;
+
 import tech.libin.rahul.ideaproject.R;
+import tech.libin.rahul.ideaproject.events.OTPEvent;
 import tech.libin.rahul.ideaproject.facade.FOSFacade;
 import tech.libin.rahul.ideaproject.facade.FOSFacadeImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
@@ -34,6 +37,7 @@ public class ForgotPasswordFragment extends FOSBaseFragment {
         view = inflater.inflate(R.layout.fragment_forgot_password, container, false);
 
         initComponents();
+        setListeners();
 
         return view;
     }
@@ -50,6 +54,8 @@ public class ForgotPasswordFragment extends FOSBaseFragment {
         buttonVerify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                EventBus.getDefault().post(new OTPEvent());
+
                 String miCode = editTextMiCode.getText();
                 String mobileNum = editTextMoblieNum.getText();
 

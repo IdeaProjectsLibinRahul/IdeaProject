@@ -12,6 +12,7 @@ import android.view.View;
 
 import tech.libin.rahul.ideaproject.R;
 import tech.libin.rahul.ideaproject.configurations.Config;
+import tech.libin.rahul.ideaproject.configurations.Constants;
 import tech.libin.rahul.ideaproject.facade.FOSFacade;
 import tech.libin.rahul.ideaproject.facade.FOSFacadeImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
@@ -19,7 +20,6 @@ import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseActivity;
 import tech.libin.rahul.ideaproject.views.models.Login;
 import tech.libin.rahul.ideaproject.views.models.User;
-import tech.libin.rahul.ideaproject.views.utils.TelephonyInfo;
 import tech.libin.rahul.ideaproject.views.widgets.button.FOSButton;
 import tech.libin.rahul.ideaproject.views.widgets.dialogs.FOSDialog;
 import tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText;
@@ -52,7 +52,7 @@ public class LoginActivity extends FOSBaseActivity {
         buttonSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  checkPhoneStatePermission();
+                //  checkPhoneStatePermission();
                 doLogin();
             }
         });
@@ -60,7 +60,13 @@ public class LoginActivity extends FOSBaseActivity {
         buttonForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(LoginCredentialsActivity.VIEW_MODE, Constants.CredentialsMode.FORGOT_PASSWORD);
 
+                Intent intent = new Intent(LoginActivity.this, LoginCredentialsActivity.class);
+                intent.putExtras(bundle);
+
+                startActivity(intent);
             }
         });
 
