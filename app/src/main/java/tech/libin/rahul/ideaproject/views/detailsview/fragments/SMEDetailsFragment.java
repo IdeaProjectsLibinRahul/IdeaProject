@@ -513,36 +513,36 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     }
     //endregion
 
-//
-//    //region loadReminderData
-//    private void loadReminderData(DetailFromUPCRoleModel reminderData)
-//    {
-//        //bind data to submit from
-//        if (reminderData != null) {
-//            if (reminderData.getStatus() != 0) {
-//                int position = statusAdapter.findElementPosition(reminderData.getStatus());
-//                spnStatus.setSelection(position);
-//            }
-//
-//            if (reminderData.getFeedback() != 0 && ((SpinnerData) spnStatus.getSelectedItem()).getId() == 1) {
-//                linLayoutFeedback.setVisibility(View.VISIBLE);
-//                ratingBar.setRating(reminderData.getFeedback());
-//            }
-//
-//            if (reminderData.getRE() != 0 && reminderData.getFeedback() != 5) {
-//                linLayoutReason.setVisibility(View.VISIBLE);
-//                int position = reasonAdapter.findElementPosition(reminderData.getReason());
-//                spnReason.setSelection(position, false);
-//            }
-//
-//            editTextRemarks.setText(reminderData.getRemarks());
-//            if (detailModel.getReminderDate() != null && !detailModel.getReminderDate().isEmpty()) {
-//                linLayoutReminder.setVisibility(View.VISIBLE);
-//                editTextReminder.setText(detailModel.getReminderDate());
-//            }
-//        }
-//    }
-//    //endregion
+
+    //region loadReminderData
+    private void loadReminderData(DetailFromSMERoleModel reminderData)
+    {
+        //bind data to submit from
+        if (reminderData != null) {
+            if (reminderData.getVisitStatus() != 0) {
+                int position = statusAdapter.findElementPosition(reminderData.getVisitStatus());
+                spnStatus.setSelection(position);
+            }
+
+            if (reminderData.getFeedback() != 0 && ((SpinnerData) spnStatus.getSelectedItem()).getId() == 1) {
+                linLayoutFeedback.setVisibility(View.VISIBLE);
+                ratingBar.setRating(reminderData.getFeedback());
+            }
+
+            if (reminderData.getReason() != 0 && reminderData.getFeedback() != 5) {
+                linLayoutReason.setVisibility(View.VISIBLE);
+                int position = reasonAdapter.findElementPosition(reminderData.getReason());
+                spnReason.setSelection(position, false);
+            }
+
+            editTextRemarks.setText(reminderData.getRemarks());
+            if (detailModel.getReminderDate() != null && !detailModel.getReminderDate().isEmpty()) {
+                linLayoutReminder.setVisibility(View.VISIBLE);
+                editTextReminder.setText(detailModel.getReminderDate());
+            }
+        }
+    }
+    //endregion
 
 //    //region loadExecutiveOwnData
 //    private void loadExecutiveOwnData()
