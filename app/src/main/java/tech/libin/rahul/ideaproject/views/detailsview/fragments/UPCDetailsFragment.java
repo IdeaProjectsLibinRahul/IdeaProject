@@ -88,6 +88,8 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewAddress;
     private EditText editTextLandmark;
 
+
+
     private FOSTextView textViewZsmName;
     private FOSTextView textViewZsmMobileNum;
     private FOSTextView textViewZsmVisitStatus;
