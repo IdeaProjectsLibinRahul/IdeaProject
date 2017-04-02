@@ -41,6 +41,7 @@ import tech.libin.rahul.ideaproject.facade.FOSFacade;
 import tech.libin.rahul.ideaproject.facade.FOSFacadeImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
 import tech.libin.rahul.ideaproject.service.models.DetailFromSMERoleModel;
+import tech.libin.rahul.ideaproject.service.models.DetailFromUPCRoleModel;
 import tech.libin.rahul.ideaproject.service.models.SpinnerData;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
@@ -281,8 +282,8 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             fosFacade.getSmeDetail(requestModel, new ServiceCallback<SmeDetailModel>() {
                 @Override
                 public void onResponse(SmeDetailModel response) {
-                    hideProgressBar();
 
+                    hideProgressBar();
                     detailModel = response;
                     bindDetails(response);
                     setFomListeners();
@@ -291,15 +292,11 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                 @Override
                 public void onRequestTimout() {
                     showMessage(getString(R.string.warn_time_out_title), getString(R.string.warn_time_out_message));
-
-                    showSuccessInfo(getResources().getString(R.string.warn_request_timed_out));
                 }
 
                 @Override
                 public void onRequestFail(FOSError error) {
                     showMessage(getString(R.string.warn_server_error), error.getErrorMessage());
-
-                    showSuccessInfo(error.getErrorMessage());
                 }
             });
         }
@@ -469,14 +466,11 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         textViewRatePlan.setText(model.getRatePlan());
         textViewCRLimit.setText(model.getCr_limit());
         textViewLandLine.setText(model.getLandLine2());
-        if (model.getLandLine2() == null) {
-            textViewLandLine.setVisibility(view.GONE);
-            textViewLandLineHead.setVisibility(view.GONE);
-        }
-        if (model.getType() == null || model.getType().isEmpty()) {
-            textViewTypeHead.setVisibility(view.GONE);
-            textViewType.setVisibility(view.GONE);
-        }
+
+//        if (model.getType() == null || model.getType().isEmpty()) {
+//            textViewTypeHead.setVisibility(view.GONE);
+//            textViewType.setVisibility(view.GONE);
+//        }
         textViewAddress.setText(model.getBill1() + "\n" + model.getBill2() + "\n" + model.getBill3() + "\n" + model.getBill4() + "\n" + model.getBill5());
 
         setLinearLayoutVisible();
@@ -505,50 +499,81 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             }
         });
 
+        ratingBar.setRating(1);
         if (model.getLocation() != null && model.getLocation().getLatitude() != null && !model.getLocation().getLatitude().isEmpty()) {
             switchLocation.setVisibility(View.VISIBLE);
         }
-        ratingBar.setRating(1);
 
-        //load executive details if user is executive
-        //need not to be load from executive if the record is new activity
-        if ((Config.getInstance().getUser().getRole() == Constants.Role.EXECUTIVE) && (activityType != Constants.ActivityType.NEW_ACTIVITY)) {
-            loadExecutiveOwnData();
-        }
+//        //load executive details if user is executive
+//        //need not to be load from executive if the record is new activity
+//        if ((Config.getInstance().getUser().getRole() == Constants.Role.EXECUTIVE) && (activityType != Constants.ActivityType.NEW_ACTIVITY)) {
+//            loadExecutiveOwnData();
+//        }
 
     }
     //endregion
 
-    //region loadExecutiveOwnData
-    private void loadExecutiveOwnData()
-    {
-        DetailFromSMERoleModel fromExecutive = detailModel.getFromExecutive();
-        //bind data to submit from
-        if (fromExecutive != null) {
-            if (fromExecutive.getVisitStatus() != 0) {
-                int position = statusAdapter.findElementPosition(fromExecutive.getVisitStatus());
-                spnStatus.setSelection(position);
-            }
+//
+//    //region loadReminderData
+//    private void loadReminderData(DetailFromUPCRoleModel reminderData)
+//    {
+//        //bind data to submit from
+//        if (reminderData != null) {
+//            if (reminderData.getStatus() != 0) {
+//                int position = statusAdapter.findElementPosition(reminderData.getStatus());
+//                spnStatus.setSelection(position);
+//            }
+//
+//            if (reminderData.getFeedback() != 0 && ((SpinnerData) spnStatus.getSelectedItem()).getId() == 1) {
+//                linLayoutFeedback.setVisibility(View.VISIBLE);
+//                ratingBar.setRating(reminderData.getFeedback());
+//            }
+//
+//            if (reminderData.getRE() != 0 && reminderData.getFeedback() != 5) {
+//                linLayoutReason.setVisibility(View.VISIBLE);
+//                int position = reasonAdapter.findElementPosition(reminderData.getReason());
+//                spnReason.setSelection(position, false);
+//            }
+//
+//            editTextRemarks.setText(reminderData.getRemarks());
+//            if (detailModel.getReminderDate() != null && !detailModel.getReminderDate().isEmpty()) {
+//                linLayoutReminder.setVisibility(View.VISIBLE);
+//                editTextReminder.setText(detailModel.getReminderDate());
+//            }
+//        }
+//    }
+//    //endregion
 
-            if (fromExecutive.getFeedback() != 0 && ((SpinnerData) spnStatus.getSelectedItem()).getId() == 1) {
-                linLayoutFeedback.setVisibility(View.VISIBLE);
-                ratingBar.setRating(fromExecutive.getFeedback());
-            }
-
-            if (fromExecutive.getReason() != 0 && fromExecutive.getFeedback() != 5) {
-                linLayoutReason.setVisibility(View.VISIBLE);
-                int position = reasonAdapter.findElementPosition(fromExecutive.getReason());
-                spnReason.setSelection(position, false);
-            }
-
-            editTextRemarks.setText(fromExecutive.getRemarks());
-            if (detailModel.getReminderDate() != null && !detailModel.getReminderDate().isEmpty()) {
-                linLayoutReminder.setVisibility(View.VISIBLE);
-                editTextReminder.setText(detailModel.getReminderDate());
-            }
-        }
-    }
-    //endregion
+//    //region loadExecutiveOwnData
+//    private void loadExecutiveOwnData()
+//    {
+//        DetailFromSMERoleModel fromExecutive = detailModel.getFromExecutive();
+//        //bind data to submit from
+//        if (fromExecutive != null) {
+//            if (fromExecutive.getVisitStatus() != 0) {
+//                int position = statusAdapter.findElementPosition(fromExecutive.getVisitStatus());
+//                spnStatus.setSelection(position);
+//            }
+//
+//            if (fromExecutive.getFeedback() != 0 && ((SpinnerData) spnStatus.getSelectedItem()).getId() == 1) {
+//                linLayoutFeedback.setVisibility(View.VISIBLE);
+//                ratingBar.setRating(fromExecutive.getFeedback());
+//            }
+//
+//            if (fromExecutive.getReason() != 0 && fromExecutive.getFeedback() != 5) {
+//                linLayoutReason.setVisibility(View.VISIBLE);
+//                int position = reasonAdapter.findElementPosition(fromExecutive.getReason());
+//                spnReason.setSelection(position, false);
+//            }
+//
+//            editTextRemarks.setText(fromExecutive.getRemarks());
+//            if (detailModel.getReminderDate() != null && !detailModel.getReminderDate().isEmpty()) {
+//                linLayoutReminder.setVisibility(View.VISIBLE);
+//                editTextReminder.setText(detailModel.getReminderDate());
+//            }
+//        }
+//    }
+//    //endregion
 
     //region findSpinnerElementPosition
     private SpinnerData findSpinnerElementPosition(int value, List<SpinnerData> spinnerData) {
