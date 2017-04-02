@@ -96,7 +96,6 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewZsmRemarks;
     private FOSTextView textViewFromZsmEscalateNoVisit;
 
-
     private FOSTextView textViewMicoName;
     private FOSTextView textViewMicoMobileNum;
     private FOSTextView textViewMicoVisitStatus;
@@ -189,7 +188,6 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         editTextLandmark = (EditText) view.findViewById(R.id.editTextLandmark);
 
         //role wise
-
 
         textViewZsmName = (FOSTextView) view.findViewById(R.id.textViewFromZsmName);
         textViewZsmMobileNum = (FOSTextView) view.findViewById(R.id.textViewFromZsmMobileNum);
@@ -293,7 +291,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         spnStatus.setAdapter(statusAdapter);
 
         //if not retained
-        if (((SpinnerData) spnStatus.getSelectedItem()).getId() == 2)
+        if (((SpinnerData) spnStatus.getSelectedItem()).getId() == Constants.VisitStatus.NOT_RETAINED.getValue())
             loadFeedback(model.getFeedbackNotRetained());
             //if retained
         else
@@ -396,8 +394,8 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 
                 int visitStatus = ((SpinnerData) spnStatus.getSelectedItem()).getId();
                 if (reminderData.getFeedback() != 0) {
-                    //if not retained
-                    if (visitStatus == 2) {
+                    //if not retained or follow up
+                    if (visitStatus != Constants.VisitStatus.RETAINED.getValue()) {
                         loadFeedback(detailModel.getFeedbackNotRetained());
                     } else {
                         loadFeedback(detailModel.getFeedbackRetained());
@@ -435,7 +433,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 
                 if (fromExecutive.getTotalVisit() > 0) {
                     textViewExeVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromExecutive.getStatus(), detailModel.getVisitStatus()));
-                    if (fromExecutive.getStatus() == 1) //retained
+                    if (fromExecutive.getStatus() == Constants.VisitStatus.RETAINED.getValue()) //retained
                     {
                         textViewExeFeedback.setText(SpinnerOperations.getSpinnerItem(fromExecutive.getFeedback(), detailModel.getFeedbackRetained()));
                     } else {
@@ -467,7 +465,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 
                 if (fromMico.getTotalVisit() > 0) {
                     textViewMicoVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromMico.getStatus(), detailModel.getVisitStatus()));
-                    if (fromMico.getStatus() == 1) //retained
+                    if (fromMico.getStatus() == Constants.VisitStatus.RETAINED.getValue()) //retained
                     {
                         textViewMicoFeedback.setText(SpinnerOperations.getSpinnerItem(fromMico.getFeedback(), detailModel.getFeedbackRetained()));
                     } else {
@@ -499,7 +497,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 
                 if (fromZsm.getTotalVisit() > 0) {
                     textViewZsmVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromZsm.getStatus(), detailModel.getVisitStatus()));
-                    if (fromZsm.getStatus() == 1) //retained
+                    if (fromZsm.getStatus() == Constants.VisitStatus.RETAINED.getValue()) //retained
                     {
                         textViewZsmFeedback.setText(SpinnerOperations.getSpinnerItem(fromZsm.getFeedback(), detailModel.getFeedbackRetained()));
                     } else {
@@ -591,7 +589,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         spnStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (detailModel.getVisitStatus().get(position).getId() == 2) {
+                if (detailModel.getVisitStatus().get(position).getId() != Constants.VisitStatus.RETAINED.getValue()) {
                     loadFeedback(detailModel.getFeedbackNotRetained());
                     linLayoutReminder.setVisibility(View.VISIBLE);
                 } else {
@@ -627,7 +625,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         requestModel.setRecordType(Constants.RecordType.UPC);
         requestModel.setLandmark(editTextLandmark.getText().toString());
 
-        GPSTracker gpsTracker = new GPSTracker(getActivity());
+        gpsTracker = new GPSTracker(getActivity());
         if (switchUpdateLocation.isChecked()) {
             if (gpsTracker != null) {
                 double latitude = gpsTracker.getLatitude();
@@ -729,14 +727,6 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         } catch (Exception ex) {
             Log.e("Error", ex.toString());
         }
-    }
-    //endregion
-
-    //region showSuccessInfo
-    private void showSuccessInfo(String message) {
-        String title = "Info";
-        InfoDialog infoDialog = InfoDialog.newInstance(title, message);
-        infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
     }
     //endregion
 

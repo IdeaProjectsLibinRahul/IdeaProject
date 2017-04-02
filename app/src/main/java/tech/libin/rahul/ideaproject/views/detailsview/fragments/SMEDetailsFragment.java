@@ -96,8 +96,6 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private GoogleMap mMap;
     private RecyclerView recViewOther;
     private String objectId;
-    private String userName;
-    private String userPhone;
     private Constants.ActivityType activityType;
     private SupportMapFragment mapFragment;
     private Marker mMarker;
@@ -207,6 +205,9 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         ratingBar = (RatingBar) view.findViewById(R.id.ratingBar);
         textViewRatingInfo = (FOSTextView) view.findViewById(R.id.ratingInfo);
 
+        editTextLandmark = (EditText) view.findViewById(R.id.editTextLandmark);
+
+
         //role wise
 
         textViewFromExeName = (FOSTextView) view.findViewById(R.id.textViewFromExeName);
@@ -250,8 +251,10 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         cardViewFromZsm = (CardView) view.findViewById(R.id.cardViewFromZsm);
         cardViewFromSubmit = (CardView) view.findViewById(R.id.cardViewFormSubmit);
 
-//        scrollViewDetails = (ScrollView) view.findViewById(R.id.scrollViewDetails);
-//        progressBarLoading = (ProgressBar) view.findViewById(R.id.progressBarLoading);
+        scrollViewDetails = (ScrollView) view.findViewById(R.id.scrollViewDetails);
+        progressBarLoading = (ProgressBar) view.findViewById(R.id.progressBarLoading);
+
+
 
     }
     //endregion
@@ -261,19 +264,8 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         Bundle bundle = getArguments();
         if (bundle != null) {
             objectId = bundle.getString(Constants.PARAMS.DETAILS_OBJECT_ID);
-            userName = bundle.getString(Constants.PARAMS.DETAILS_OBJECT_NAME);
-            userPhone = bundle.getString(Constants.PARAMS.DETAILS_OBJECT_PHONE);
             activityType = (Constants.ActivityType) bundle.getSerializable(Constants.PARAMS.DETAILS_OBJECT_TAB);
-
-            setHeader();
         }
-    }
-    //endregion
-
-    //region setHeader
-    private void setHeader() {
-        textViewName.setText(userName);
-        textViewMobileNum.setText(userPhone);
     }
     //endregion
 
@@ -283,15 +275,14 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             ActivityDetailRequestModel requestModel = new ActivityDetailRequestModel();
             requestModel.setObjectId(objectId);
             requestModel.setRecordType(Constants.RecordType.SME);
-            final ProgressDialog dialog = ProgressDialog.show(getActivity(), null, getResources().getString(R.string.requesting), true, true);
+            showProgressBar();
 
             FOSFacade fosFacade = new FOSFacadeImpl();
             fosFacade.getSmeDetail(requestModel, new ServiceCallback<SmeDetailModel>() {
                 @Override
                 public void onResponse(SmeDetailModel response) {
-                    if (dialog != null) {
-                        dialog.cancel();
-                    }
+                    hideProgressBar();
+
                     detailModel = response;
                     bindDetails(response);
                     setFomListeners();
@@ -299,17 +290,15 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 
                 @Override
                 public void onRequestTimout() {
-                    if (dialog != null) {
-                        dialog.cancel();
-                    }
+                    showMessage(getString(R.string.warn_time_out_title), getString(R.string.warn_time_out_message));
+
                     showSuccessInfo(getResources().getString(R.string.warn_request_timed_out));
                 }
 
                 @Override
                 public void onRequestFail(FOSError error) {
-                    if (dialog != null) {
-                        dialog.cancel();
-                    }
+                    showMessage(getString(R.string.warn_server_error), error.getErrorMessage());
+
                     showSuccessInfo(error.getErrorMessage());
                 }
             });
@@ -366,7 +355,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         spnStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if ((detailModel.getVisitStatus().get(position)).getId() == 2) {
+                if ((detailModel.getVisitStatus().get(position)).getId() == Constants.VisitStatus.FOLLOW_UP.getValue()) {
                     linLayoutReminder.setVisibility(View.VISIBLE);
                     linLayoutFeedback.setVisibility(View.GONE);
                     linLayoutReason.setVisibility(View.GONE);
@@ -631,6 +620,25 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         else
             mapView.setVisibility(View.GONE);
 
+    }
+    //endregion
+
+    //region ProgressBar
+    private void showProgressBar() {
+        progressBarLoading.setVisibility(View.VISIBLE);
+        scrollViewDetails.setVisibility(View.GONE);
+    }
+
+    private void hideProgressBar() {
+        progressBarLoading.setVisibility(View.GONE);
+        scrollViewDetails.setVisibility(View.VISIBLE);
+    }
+    //endregion
+
+    //region showMessage
+    private void showMessage(String title, String message) {
+        InfoDialog infoDialog = InfoDialog.newInstance(title, message);
+        infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
     }
     //endregion
 

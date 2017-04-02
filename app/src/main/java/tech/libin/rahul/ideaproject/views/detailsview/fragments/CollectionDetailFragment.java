@@ -352,6 +352,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
 
             }
         });
+
         editTextReminder.setInputType(InputType.TYPE_NULL);
         editTextReminder.setOnTouchListener(new View.OnTouchListener() {
 
@@ -379,7 +380,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
         spnStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (((SpinnerData) visitStatus.get(position)).getId() == 2) {
+                if (((SpinnerData) visitStatus.get(position)).getId() == Constants.VisitStatus.FOLLOW_UP.getValue()) {
                     linLayoutReminder.setVisibility(View.VISIBLE);
                     linLayoutFeedback.setVisibility(View.GONE);
                     linLayoutPaidAmount.setVisibility(View.GONE);
@@ -404,7 +405,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
         spnFeedback.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int selectedValue = ((SpinnerData) detailModel.getFeedback().get(position)).getId();
+                int selectedValue = detailModel.getFeedback().get(position).getId();
                 if (selectedValue == 2 || selectedValue == 3 || selectedValue == 7) {
                     linLayoutReminder.setVisibility(View.VISIBLE);
                     linLayoutPaidAmount.setVisibility(View.GONE);
