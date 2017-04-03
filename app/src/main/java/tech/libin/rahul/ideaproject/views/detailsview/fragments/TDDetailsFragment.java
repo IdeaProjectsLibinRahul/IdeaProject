@@ -370,8 +370,8 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
         try {
             String reminder = detailModel.getReminderDate();
             if (reminderData != null) {
-                if (reminderData.getStatus() != 0 && spnStatus != null) {
-                    int position = statusAdapter.findElementPosition(reminderData.getStatus());
+                if (reminderData.getVisitStatus() != 0 && spnStatus != null) {
+                    int position = statusAdapter.findElementPosition(reminderData.getVisitStatus());
                     spnStatus.setSelection(position, false);
                 }
 
@@ -379,7 +379,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                 linLayoutReminder.setVisibility(View.GONE);
                 if (reminderData.getFeedback() != 0 && spnFeedback != null) {
                     linLayoutFeedback.setVisibility(View.VISIBLE);
-                    if (reminderData.getStatus() != 0 && spnStatus != null) {
+                    if (reminderData.getVisitStatus() != 0 && spnStatus != null) {
                         int position = feedbackAdapter.findElementPosition(reminderData.getFeedback());
                         spnFeedback.setSelection(position, false);
                     }
@@ -397,7 +397,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                         editTextReminder.setText(reminder);
                     }
                 }
-                if ((reminder != null || !reminder.isEmpty()) && reminderData.getStatus() == 2) {
+                if ((reminder != null || !reminder.isEmpty()) && reminderData.getVisitStatus() == 2) {
                     linLayoutReminder.setVisibility(View.VISIBLE);
                     textViewReminderDate.setText(getResources().getString(R.string.follow_up_date));
                     editTextReminder.setText(reminder);
@@ -444,7 +444,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                 textViewFromExeMyIdea.setText(fromExecutive.getMyIdea());
                 textViewFromExeMyIdeaCode.setText(fromExecutive.getMyIdeaCode());
                 if (fromExecutive.getTotalVisit() > 0) {
-                    textViewFromExeVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromExecutive.getStatus(), visitStatus));
+                    textViewFromExeVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromExecutive.getVisitStatus(), visitStatus));
                     textViewFromExeVisitFeedback.setText(SpinnerOperations.getSpinnerItem(fromExecutive.getFeedback(), feedback));
                     if (fromExecutive.getFeedback() == 2) {
                         //payment collected
@@ -476,7 +476,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                 textViewFromMicoName.setText(fromMico.getName());
                 textViewFromMicoMobileNum.setText(fromMico.getPhoneNum());
                 if (fromMico.getTotalVisit() > 0) {
-                    textViewFromMicoVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromMico.getStatus(), visitStatus));
+                    textViewFromMicoVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromMico.getVisitStatus(), visitStatus));
                     textViewFromMicoVisitFeedback.setText(SpinnerOperations.getSpinnerItem(fromMico.getFeedback(), feedback));
                     if (fromMico.getFeedback() == 2) {
                         //payment collected
@@ -511,7 +511,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                 textViewFromZsmName.setText(fromZsm.getName());
                 textViewFromZsmMobileNum.setText(fromZsm.getPhoneNum());
                 if (fromZsm.getTotalVisit() > 0) {
-                    textViewFromZsmVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromZsm.getStatus(), visitStatus));
+                    textViewFromZsmVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromZsm.getVisitStatus(), visitStatus));
                     textViewFromZsmVisitFeedback.setText(SpinnerOperations.getSpinnerItem(fromZsm.getFeedback(), feedback));
                     if (fromZsm.getFeedback() == 2) {
                         //payment collected
@@ -539,8 +539,8 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
 //     if (activityType != Constants.ActivityType.NEW_ACTIVITY) {
 //        DetailFromUPCRoleModel fromExecutive = model.getFromExecutive();
 //        if (fromExecutive != null) {
-//            if (fromExecutive.getStatus() != 0) {
-//                SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getStatus(), visitStatus);
+//            if (fromExecutive.getVisitStatus() != 0) {
+//                SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getVisitStatus(), visitStatus);
 //                if (spinnerElement != null) {
 //                    int position = statusAdapter.getPosition(spinnerElement);
 //                    spnStatus.setSelection(position);
@@ -584,8 +584,8 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
 //
 //            if (activityType != Constants.ActivityType.NEW_ACTIVITY) {
 //                if (fromExecutive != null) {
-//                    if (fromExecutive.getStatus() != 0 && spnStatus != null) {
-//                        SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getStatus(), detailModel.getVisitStatus());
+//                    if (fromExecutive.getVisitStatus() != 0 && spnStatus != null) {
+//                        SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getVisitStatus(), detailModel.getVisitStatus());
 //                        if (spinnerElement != null) {
 //                            int position = statusAdapter.getPosition(spinnerElement);
 //                            spnStatus.setSelection(position);
@@ -614,7 +614,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
 //                            editTextReminder.setText(reminder);
 //                        }
 //                    }
-//                    if ((reminder != null || !reminder.isEmpty()) && fromExecutive.getStatus() == 2) {
+//                    if ((reminder != null || !reminder.isEmpty()) && fromExecutive.getVisitStatus() == 2) {
 //                        linLayoutReminder.setVisibility(View.VISIBLE);
 //                        textViewReminderDate.setText(getResources().getString(R.string.follow_up_date));
 //                        editTextReminder.setText(reminder);

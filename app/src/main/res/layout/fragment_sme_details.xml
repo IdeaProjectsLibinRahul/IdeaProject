@@ -294,7 +294,8 @@
                 android:elevation="@dimen/cardview_default_elevation"
                 app:cardBackgroundColor="@color/title_zsm"
                 app:cardCornerRadius="@dimen/card_corner_radius"
-                app:cardPreventCornerOverlap="true">
+                app:cardPreventCornerOverlap="true"
+                android:visibility="gone">
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                     style="@style/DetailsTitleViewText"
@@ -462,7 +463,8 @@
                 android:elevation="@dimen/cardview_default_elevation"
                 app:cardBackgroundColor="@color/title_mico"
                 app:cardCornerRadius="@dimen/card_corner_radius"
-                app:cardPreventCornerOverlap="true">
+                app:cardPreventCornerOverlap="true"
+                android:visibility="gone">
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                     style="@style/DetailsTitleViewText"
@@ -629,7 +631,8 @@
                 android:elevation="@dimen/cardview_default_elevation"
                 app:cardBackgroundColor="@color/title_executive_stroke"
                 app:cardCornerRadius="@dimen/card_corner_radius"
-                app:cardPreventCornerOverlap="true">
+                app:cardPreventCornerOverlap="true"
+                android:visibility="gone">
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                     style="@style/DetailsTitleViewText"
@@ -808,7 +811,8 @@
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/form_submit_title"
                 app:cardCornerRadius="@dimen/card_corner_radius"
-                app:cardPreventCornerOverlap="true">
+                app:cardPreventCornerOverlap="true"
+                android:visibility="gone">
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                     android:id="@+id/FOSTextView2"

@@ -1,9 +1,6 @@
 package tech.libin.rahul.ideaproject.views.detailsview.fragments;
 
 import android.app.ProgressDialog;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
@@ -55,7 +52,6 @@ import tech.libin.rahul.ideaproject.views.utils.GPSTracker;
 import tech.libin.rahul.ideaproject.views.utils.SpinnerOperations;
 import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
 
-import static android.R.attr.shape;
 import static tech.libin.rahul.ideaproject.views.detailsview.fragments.SMEDetailsFragment.DATE_DIALOG;
 
 /**
@@ -87,7 +83,6 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewServSeg;
     private FOSTextView textViewAddress;
     private EditText editTextLandmark;
-
 
 
     private FOSTextView textViewZsmName;
@@ -303,6 +298,10 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         if (model.getLocation() != null && model.getLocation().getLatitude() != null && !model.getLocation().getLatitude().isEmpty()) {
             switchLocation.setVisibility(View.VISIBLE);
         }
+        //Show view location switch only if location already saved
+        if (model.getLocation() != null && model.getLocation().getLandmark() != null) {
+            editTextLandmark.setText(model.getLocation().getLandmark());
+        }
         loadPreviousData();
     }
 
@@ -318,7 +317,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             }
             if (Config.getInstance().getUser().getRole() == Constants.Role.MICO) {
                 //need to load  mico data to from submit and executive data from executive card
-                loadFromMicoData();
+                loadFromExecutiveData();
                 loadReminderData(detailModel.getFromMico());
             }
 
@@ -341,7 +340,15 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                 loadFromZsmData();
             }
         }
+        if (activityType == Constants.ActivityType.NEW_ACTIVITY) {
+            if (Config.getInstance().getUser().getRole() == Constants.Role.MICO)
+                loadFromExecutiveData();
 
+            if (Config.getInstance().getUser().getRole() == Constants.Role.ZSM) {
+                loadFromMicoData();
+                loadFromExecutiveData();
+            }
+        }
     }
     //endregion
 
@@ -351,8 +358,8 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 //            DetailFromUPCRoleModel fromExecutive = detailModel.getFromExecutive();
 //            if (fromExecutive != null) {
 //                //find out visit status and set spinner selection
-//                if (fromExecutive.getStatus() != 0 && spnStatus != null) {
-//                    int position = statusAdapter.findElementPosition(fromExecutive.getStatus());
+//                if (fromExecutive.getVisitStatus() != 0 && spnStatus != null) {
+//                    int position = statusAdapter.findElementPosition(fromExecutive.getVisitStatus());
 //                    spnStatus.setSelection(position, false);
 //                }
 //
@@ -389,8 +396,8 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         try {
             if (reminderData != null) {
                 //find out visit status and set spinner selection
-                if (reminderData.getStatus() != 0 && spnStatus != null) {
-                    int position = statusAdapter.findElementPosition(reminderData.getStatus());
+                if (reminderData.getVisitStatus() != 0 && spnStatus != null) {
+                    int position = statusAdapter.findElementPosition(reminderData.getVisitStatus());
                     spnStatus.setSelection(position, false);
                 }
 
@@ -434,8 +441,8 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                 textViewExeMyIdeaCode.setText(fromExecutive.getMyIdeaCode());
 
                 if (fromExecutive.getTotalVisit() > 0) {
-                    textViewExeVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromExecutive.getStatus(), detailModel.getVisitStatus()));
-                    if (fromExecutive.getStatus() == Constants.VisitStatus.RETAINED.getValue()) //retained
+                    textViewExeVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromExecutive.getVisitStatus(), detailModel.getVisitStatus()));
+                    if (fromExecutive.getVisitStatus() == Constants.VisitStatus.RETAINED.getValue()) //retained
                     {
                         textViewExeFeedback.setText(SpinnerOperations.getSpinnerItem(fromExecutive.getFeedback(), detailModel.getFeedbackRetained()));
                     } else {
@@ -466,8 +473,8 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                 textViewMicoMobileNum.setText(fromMico.getPhoneNum());
 
                 if (fromMico.getTotalVisit() > 0) {
-                    textViewMicoVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromMico.getStatus(), detailModel.getVisitStatus()));
-                    if (fromMico.getStatus() == Constants.VisitStatus.RETAINED.getValue()) //retained
+                    textViewMicoVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromMico.getVisitStatus(), detailModel.getVisitStatus()));
+                    if (fromMico.getVisitStatus() == Constants.VisitStatus.RETAINED.getValue()) //retained
                     {
                         textViewMicoFeedback.setText(SpinnerOperations.getSpinnerItem(fromMico.getFeedback(), detailModel.getFeedbackRetained()));
                     } else {
@@ -498,8 +505,8 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                 textViewZsmMobileNum.setText(fromZsm.getPhoneNum());
 
                 if (fromZsm.getTotalVisit() > 0) {
-                    textViewZsmVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromZsm.getStatus(), detailModel.getVisitStatus()));
-                    if (fromZsm.getStatus() == Constants.VisitStatus.RETAINED.getValue()) //retained
+                    textViewZsmVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromZsm.getVisitStatus(), detailModel.getVisitStatus()));
+                    if (fromZsm.getVisitStatus() == Constants.VisitStatus.RETAINED.getValue()) //retained
                     {
                         textViewZsmFeedback.setText(SpinnerOperations.getSpinnerItem(fromZsm.getFeedback(), detailModel.getFeedbackRetained()));
                     } else {
@@ -593,7 +600,8 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (detailModel.getVisitStatus().get(position).getId() != Constants.VisitStatus.RETAINED.getValue()) {
                     loadFeedback(detailModel.getFeedbackNotRetained());
-                    linLayoutReminder.setVisibility(View.VISIBLE);
+                    if (detailModel.getVisitStatus().get(position).getId() == Constants.VisitStatus.FOLLOW_UP.getValue())
+                        linLayoutReminder.setVisibility(View.VISIBLE);
                 } else {
                     loadFeedback(detailModel.getFeedbackRetained());
                     linLayoutReminder.setVisibility(View.GONE);

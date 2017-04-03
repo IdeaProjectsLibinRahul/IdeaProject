@@ -21,7 +21,6 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -51,7 +50,6 @@ import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.FormSubmitModel
 import tech.libin.rahul.ideaproject.views.models.ActivityDetailRequestModel;
 import tech.libin.rahul.ideaproject.views.utils.GPSTracker;
 import tech.libin.rahul.ideaproject.views.utils.SpinnerOperations;
-import tech.libin.rahul.ideaproject.views.widgets.edittext.FOSEditText;
 import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
 
 import static tech.libin.rahul.ideaproject.views.detailsview.fragments.SMEDetailsFragment.DATE_DIALOG;
@@ -585,8 +583,8 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
         try {
             String reminder = detailModel.getReminderDate();
             if (reminderData != null) {
-                if (reminderData.getStatus() != 0 && spnStatus != null) {
-                    int position = statusAdapter.findElementPosition(reminderData.getStatus());
+                if (reminderData.getVisitStatus() != 0 && spnStatus != null) {
+                    int position = statusAdapter.findElementPosition(reminderData.getVisitStatus());
                     spnStatus.setSelection(position, false);
                 }
 
@@ -594,7 +592,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                 linLayoutReminder.setVisibility(View.GONE);
                 if (reminderData.getFeedback() != 0 && spnFeedback != null) {
                     linLayoutFeedback.setVisibility(View.VISIBLE);
-                    if (reminderData.getStatus() != 0 && spnStatus != null) {
+                    if (reminderData.getVisitStatus() != 0 && spnStatus != null) {
                         int position = feedbackAdapter.findElementPosition(reminderData.getFeedback());
                         spnFeedback.setSelection(position, false);
                     }
@@ -612,7 +610,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                         editTextReminder.setText(reminder);
                     }
                 }
-                if ((reminder != null || !reminder.isEmpty()) && reminderData.getStatus() == 2) {
+                if ((reminder != null || !reminder.isEmpty()) && reminderData.getVisitStatus() == 2) {
                     linLayoutReminder.setVisibility(View.VISIBLE);
                     textViewReminderDate.setText(getResources().getString(R.string.follow_up_date));
                     editTextReminder.setText(reminder);
@@ -659,7 +657,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                 textViewFromExeMyIdea.setText(fromExecutive.getMyIdea());
                 textViewFromExeMyIdeaCode.setText(fromExecutive.getMyIdeaCode());
                 if (fromExecutive.getTotalVisit() > 0) {
-                    textViewFromExeVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromExecutive.getStatus(), visitStatus));
+                    textViewFromExeVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromExecutive.getVisitStatus(), visitStatus));
                     textViewFromExeVisitFeedback.setText(SpinnerOperations.getSpinnerItem(fromExecutive.getFeedback(), feedback));
                     if (fromExecutive.getFeedback() == 2) {
                         //payment collected
@@ -691,7 +689,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                 textViewFromMicoName.setText(fromMico.getName());
                 textViewFromMicoMobileNum.setText(fromMico.getPhoneNum());
                 if (fromMico.getTotalVisit() > 0) {
-                    textViewFromMicoVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromMico.getStatus(), visitStatus));
+                    textViewFromMicoVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromMico.getVisitStatus(), visitStatus));
                     textViewFromMicoVisitFeedback.setText(SpinnerOperations.getSpinnerItem(fromMico.getFeedback(), feedback));
                     if (fromMico.getFeedback() == 2) {
                         //payment collected
@@ -726,7 +724,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                 textViewFromZsmName.setText(fromZsm.getName());
                 textViewFromZsmMobileNum.setText(fromZsm.getPhoneNum());
                 if (fromZsm.getTotalVisit() > 0) {
-                    textViewFromZsmVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromZsm.getStatus(), visitStatus));
+                    textViewFromZsmVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromZsm.getVisitStatus(), visitStatus));
                     textViewFromZsmVisitFeedback.setText(SpinnerOperations.getSpinnerItem(fromZsm.getFeedback(), feedback));
                     if (fromZsm.getFeedback() == 2) {
                         //payment collected
