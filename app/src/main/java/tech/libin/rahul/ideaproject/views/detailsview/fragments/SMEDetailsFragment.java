@@ -461,10 +461,6 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         textViewCRLimit.setText(model.getCr_limit());
         textViewLandLine.setText(model.getLandLine2());
 
-//        if (model.getType() == null || model.getType().isEmpty()) {
-//            textViewTypeHead.setVisibility(view.GONE);
-//            textViewType.setVisibility(view.GONE);
-//        }
         textViewAddress.setText(model.getBill1() + "\n" + model.getBill2() + "\n" + model.getBill3() + "\n" + model.getBill4() + "\n" + model.getBill5());
 
         setLinearLayoutVisible();
@@ -498,11 +494,6 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             switchLocation.setVisibility(View.VISIBLE);
         }
 
-//        //load executive details if user is executive
-//        //need not to be load from executive if the record is new activity
-//        if ((Config.getInstance().getUser().getRole() == Constants.Role.EXECUTIVE) && (activityType != Constants.ActivityType.NEW_ACTIVITY)) {
-//            loadExecutiveOwnData();
-//        }
         loadPreviousData();
     }
     //endregion

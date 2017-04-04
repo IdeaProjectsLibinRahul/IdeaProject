@@ -812,7 +812,7 @@
                 app:cardBackgroundColor="@color/form_submit_title"
                 app:cardCornerRadius="@dimen/card_corner_radius"
                 app:cardPreventCornerOverlap="true"
-                android:visibility="gone">
+                >
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                     android:id="@+id/FOSTextView2"
