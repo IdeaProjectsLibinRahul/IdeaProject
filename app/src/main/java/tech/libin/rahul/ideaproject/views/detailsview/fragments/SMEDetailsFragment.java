@@ -519,7 +519,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             }
             if (Config.getInstance().getUser().getRole() == Constants.Role.MICO) {
                 //need to load  mico data to from submit and executive data from executive card
-                loadFromMicoData();
+                loadFromExecutiveData();
                 loadReminderData(detailModel.getFromMico());
             }
 
@@ -540,6 +540,16 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             if (Config.getInstance().getUser().getRole() == Constants.Role.ZSM) {
                 loadFromMicoData();
                 loadFromZsmData();
+            }
+        }
+
+        if (activityType == Constants.ActivityType.NEW_ACTIVITY) {
+            if (Config.getInstance().getUser().getRole() == Constants.Role.MICO)
+                loadFromExecutiveData();
+
+            if (Config.getInstance().getUser().getRole() == Constants.Role.ZSM) {
+                loadFromMicoData();
+                loadFromExecutiveData();
             }
         }
 
