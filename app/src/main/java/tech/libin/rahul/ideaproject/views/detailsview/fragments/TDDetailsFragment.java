@@ -73,6 +73,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
     ScrollView scrollViewDetails;
     private EditText editTextRemarks;
     private EditText editTextReminder;
+    private EditText editTextLandmark;
     private EditText editTextAmountCollected;
     private FOSTextView textViewCustNum;
     private FOSTextView textViewMobile;
@@ -186,6 +187,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
         textViewReminderDate = (FOSTextView) view.findViewById(R.id.textViewReminderDate);
 
         editTextRemarks = (EditText) view.findViewById(R.id.editTextRemarks);
+        editTextLandmark = (EditText) view.findViewById(R.id.editTextLandmark);
         editTextAmountCollected = (EditText) view.findViewById(R.id.editTextPaidAmount);
         textViewAddress = (FOSTextView) view.findViewById(R.id.textViewAddress);
         recViewOther = (RecyclerView) view.findViewById(R.id.recViewOther);
@@ -322,6 +324,11 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
         if (model.getLocation() != null && model.getLocation().getLatitude() != null && !model.getLocation().getLatitude().isEmpty()) {
             switchLocation.setVisibility(View.VISIBLE);
         }
+        if (model.getLocation() != null && model.getLocation().getLandmark() != null)
+        {
+            editTextLandmark.setText(model.getLocation().getLandmark());
+        }
+
 
         loadPreviousData();
     }
@@ -743,6 +750,8 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
             requestModel.setObjectId(Long.parseLong(objectId));
             requestModel.setStatus(((SpinnerData) spnStatus.getSelectedItem()).getId());
             requestModel.setRemarks(editTextRemarks.getText().toString().trim());
+            requestModel.setLandmark(editTextLandmark.getText().toString().trim());
+
             if (switchUpdateLocation.isChecked()) {
                 GPSTracker gpsTracker = new GPSTracker(getActivity());
                 if (gpsTracker.getIsGPSTrackingEnabled()) {

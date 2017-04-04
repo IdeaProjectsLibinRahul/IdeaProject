@@ -536,6 +536,12 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
             switchLocation.setVisibility(View.VISIBLE);
         }
 
+        if (model.getLocation() != null && model.getLocation().getLandmark() != null)
+        {
+            editTextLandmark.setText(model.getLocation().getLandmark());
+        }
+
+
         loadPreviousData();
     }
     //endregion
@@ -551,7 +557,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
             }
             if (Config.getInstance().getUser().getRole() == Constants.Role.MICO) {
                 //need to load  mico data to from submit and executive data from executive card
-                loadFromMicoData();
+                loadFromExecutiveData();
                 loadReminderData(detailModel.getFromMico());
             }
 
@@ -572,6 +578,16 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
             if (Config.getInstance().getUser().getRole() == Constants.Role.ZSM) {
                 loadFromMicoData();
                 loadFromZsmData();
+            }
+        }
+
+        if (activityType == Constants.ActivityType.NEW_ACTIVITY) {
+            if (Config.getInstance().getUser().getRole() == Constants.Role.MICO)
+                loadFromExecutiveData();
+
+            if (Config.getInstance().getUser().getRole() == Constants.Role.ZSM) {
+                loadFromMicoData();
+                loadFromExecutiveData();
             }
         }
 
@@ -606,11 +622,10 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                     } else if (selectedFeedback == 2 || selectedFeedback == 3 || selectedFeedback == 7) {
                         linLayoutPaidAmount.setVisibility(View.GONE);
                         linLayoutReminder.setVisibility(View.VISIBLE);
-                        //textViewReminderDate.setText(getResources().getString(R.string.pay_on));
                         editTextReminder.setText(reminder);
                     }
                 }
-                if ((reminder != null || !reminder.isEmpty()) && reminderData.getVisitStatus() == 2) {
+                if ((reminder != null || !reminder.isEmpty()) && reminderData.getVisitStatus() == Constants.VisitStatus.FOLLOW_UP.getValue()) {
                     linLayoutReminder.setVisibility(View.VISIBLE);
                     textViewReminderDate.setText(getResources().getString(R.string.follow_up_date));
                     editTextReminder.setText(reminder);
@@ -618,7 +633,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                 editTextRemarks.setText(reminderData.getRemarks());
             }
             //if not visited
-            if (((SpinnerData) spnStatus.getSelectedItem()).getId() == 2) {
+            if (((SpinnerData) spnStatus.getSelectedItem()).getId() == Constants.VisitStatus.FOLLOW_UP.getValue()) {
                 linLayoutFeedback.setVisibility(View.GONE);
                 linLayoutPaidAmount.setVisibility(View.GONE);
                 linLayoutReminder.setVisibility(View.VISIBLE);
@@ -637,7 +652,6 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                 } else if (((SpinnerData) spnFeedback.getSelectedItem()).getId() == 2) {
                     linLayoutPaidAmount.setVisibility(View.GONE);
                     linLayoutReminder.setVisibility(View.VISIBLE);
-                    // textViewReminderDate.setText(getResources().getString(R.string.pay_on));
                 }
             }
         } catch (Exception ex) {

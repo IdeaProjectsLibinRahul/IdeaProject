@@ -382,6 +382,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             requestModel.setObjectId(Long.parseLong(objectId));
             requestModel.setStatus(((SpinnerData) spnStatus.getSelectedItem()).getId());
             requestModel.setRemarks(editTextRemarks.getText().toString().trim());
+            requestModel.setLandmark(editTextLandmark.getText().toString().trim());
 
             GPSTracker gpsTracker = new GPSTracker(getActivity());
             if (switchUpdateLocation.isChecked()) {
@@ -494,10 +495,15 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             switchLocation.setVisibility(View.VISIBLE);
         }
 
+        if (model.getLocation() != null && model.getLocation().getLandmark() != null)
+        {
+          editTextLandmark.setText(model.getLocation().getLandmark());
+        }
+
+
         loadPreviousData();
     }
     //endregion
-
 
     //region loadPreviousData
     private void loadPreviousData() {
@@ -709,16 +715,6 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     }
     //endregion
 
-    //region isValid
-    private boolean isValid() {
-        if (((SpinnerData) spnStatus.getSelectedItem()).getId() == 0) {
-            return false;
-        }
-
-        return false;
-    }
-    //endregion
-
     //region onMapReady
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -729,17 +725,12 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             double latitude = Double.parseDouble(detailModel.getLocation().getLatitude());
             double longitude = Double.parseDouble(detailModel.getLocation().getLongitude());
             latLng = new LatLng(latitude, longitude);
-        } else if (gpsTracker != null) {
-            double latitude = gpsTracker.getLatitude();
-            double longitude = gpsTracker.getLongitude();
-            latLng = new LatLng(latitude, longitude);
-            Log.d(TAG, "onMapReady: (lat, long) - (" + latitude + ", " + longitude + ")");
-        } else {
+        }else {
             latLng = new LatLng(0.0, 0.0);
         }
 
         googleMap.addMarker(new MarkerOptions().position(latLng)
-                .title("My Idea"));
+                .title("here"));
         CameraUpdate location = CameraUpdateFactory.newLatLngZoom(latLng, 12);
         mMap.animateCamera(location);
     }

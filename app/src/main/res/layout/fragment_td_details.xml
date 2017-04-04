@@ -975,7 +975,6 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="@string/reminder_hint"
                             android:text="@string/follow_up_date"
                             app:fos_textview_font="sansation_bold" />
 
@@ -985,6 +984,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:hint="@string/reminder_hint"
                             android:maxLength="12"
                             android:minHeight="45dp" />
                     </LinearLayout>
