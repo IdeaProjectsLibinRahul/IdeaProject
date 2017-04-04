@@ -1,8 +1,12 @@
 package tech.libin.rahul.ideaproject.views.detailsview.fragments;
 
 import android.app.ProgressDialog;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.util.Log;
@@ -15,6 +19,8 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Switch;
 
@@ -46,8 +52,10 @@ import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.FormSubmitModel
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.UpcDetailModel;
 import tech.libin.rahul.ideaproject.views.models.ActivityDetailRequestModel;
 import tech.libin.rahul.ideaproject.views.utils.GPSTracker;
+import tech.libin.rahul.ideaproject.views.utils.SpinnerOperations;
 import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
 
+import static android.R.attr.shape;
 import static tech.libin.rahul.ideaproject.views.detailsview.fragments.SMEDetailsFragment.DATE_DIALOG;
 
 /**
@@ -66,7 +74,9 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     FOSSpinnerAdapter feedbackAdapter;
     String userName;
     String userPhone;
-    private List feedbackList;
+    List<SpinnerData> feedbackList;
+    ScrollView scrollViewDetails;
+    ProgressBar progressBarLoading;
     private FOSTextView textViewCustNum;
     private FOSTextView textViewMobile;
     private FOSTextView textViewUpc;
@@ -76,20 +86,46 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewAlternateNumber;
     private FOSTextView textViewServSeg;
     private FOSTextView textViewAddress;
+    private EditText editTextLandmark;
+
+    private FOSTextView textViewZsmName;
+    private FOSTextView textViewZsmMobileNum;
+    private FOSTextView textViewZsmVisitStatus;
+    private FOSTextView textViewZsmVisitedDate;
+    private FOSTextView textViewZsmFeedback;
+    private FOSTextView textViewZsmRemarks;
+    private FOSTextView textViewFromZsmEscalateNoVisit;
+
+
     private FOSTextView textViewMicoName;
     private FOSTextView textViewMicoMobileNum;
-    private FOSTextView textViewMicoMyIdea;
-    private FOSTextView textViewMicoMyIdeaCode;
     private FOSTextView textViewMicoVisitStatus;
     private FOSTextView textViewMicoVisitedDate;
+    private FOSTextView textViewMicoFeedback;
     private FOSTextView textViewMicoRemarks;
+    private FOSTextView textViewFromMicoEscalateNoVisit;
+
+
     private FOSTextView textViewExeName;
     private FOSTextView textViewExeMobileNum;
     private FOSTextView textViewExeMyIdea;
     private FOSTextView textViewExeMyIdeaCode;
     private FOSTextView textViewExeVisitStatus;
     private FOSTextView textViewExeVisitedDate;
+    private FOSTextView textViewExeFeedback;
     private FOSTextView textViewExeRemarks;
+    private FOSTextView textViewFromExeEscalateNoVisit;
+
+
+    LinearLayout llFromMicoVisitDetails;
+    LinearLayout llFromZsmVisitDetails;
+    LinearLayout llFromExeVisitDetails;
+
+    CardView cardViewFromExe;
+    CardView cardViewFromMico;
+    CardView cardViewFromZsm;
+    CardView cardViewFromSubmit;
+
     private EditText editTextReminder;
     private EditText editTextRemarks;
     private View view;
@@ -139,22 +175,6 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         textViewAlternateNumber = (FOSTextView) view.findViewById(R.id.textViewAlternateNum);
         textViewServSeg = (FOSTextView) view.findViewById(R.id.textViewServSeg);
 
-        textViewMicoName = (FOSTextView) view.findViewById(R.id.textViewFromMicoName);
-        textViewMicoMobileNum = (FOSTextView) view.findViewById(R.id.textViewFromMicoMobileNum);
-        textViewMicoMyIdea = (FOSTextView) view.findViewById(R.id.textViewFromMicoMyIdea);
-        textViewMicoMyIdeaCode = (FOSTextView) view.findViewById(R.id.textViewFromMicoMyIdeaCode);
-        textViewMicoVisitStatus = (FOSTextView) view.findViewById(R.id.textViewFromMicoVisitStatus);
-        textViewMicoVisitedDate = (FOSTextView) view.findViewById(R.id.textViewFromMicoVisitedDate);
-        textViewMicoRemarks = (FOSTextView) view.findViewById(R.id.textViewFromMicoRemarks);
-
-        textViewExeName = (FOSTextView) view.findViewById(R.id.textViewFromExeName);
-        textViewExeMobileNum = (FOSTextView) view.findViewById(R.id.textViewFromExeMobileNum);
-        textViewExeMyIdea = (FOSTextView) view.findViewById(R.id.textViewFromExeMyIdea);
-        textViewExeMyIdeaCode = (FOSTextView) view.findViewById(R.id.textViewFromExeMyIdeaCode);
-        textViewExeVisitStatus = (FOSTextView) view.findViewById(R.id.textViewFromExeVisitStatus);
-        textViewExeVisitedDate = (FOSTextView) view.findViewById(R.id.textViewFromExeVisitedDate);
-        textViewExeRemarks = (FOSTextView) view.findViewById(R.id.textViewFromExeRemarks);
-
         editTextRemarks = (EditText) view.findViewById(R.id.editTextRemarks);
         textViewAddress = (FOSTextView) view.findViewById(R.id.textViewAddress);
         recViewOther = (RecyclerView) view.findViewById(R.id.recViewOther);
@@ -166,6 +186,49 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         switchUpdateLocation = (Switch) view.findViewById(R.id.switchUpdateLocation);
         buttonSubmit = (Button) view.findViewById(R.id.buttonSubmit);
         linLayoutReminder = (LinearLayout) view.findViewById(R.id.linLayoutReminder);
+        editTextLandmark = (EditText) view.findViewById(R.id.editTextLandmark);
+
+        //role wise
+
+
+        textViewZsmName = (FOSTextView) view.findViewById(R.id.textViewFromZsmName);
+        textViewZsmMobileNum = (FOSTextView) view.findViewById(R.id.textViewFromZsmMobileNum);
+        textViewZsmVisitStatus = (FOSTextView) view.findViewById(R.id.textViewFromZsmVisitStatus);
+        textViewZsmVisitedDate = (FOSTextView) view.findViewById(R.id.textViewFromZsmVisitedDate);
+        textViewZsmFeedback = (FOSTextView) view.findViewById(R.id.textViewFromZsmVisitFeedback);
+        textViewZsmRemarks = (FOSTextView) view.findViewById(R.id.textViewFromZsmRemarks);
+        textViewFromZsmEscalateNoVisit = (FOSTextView) view.findViewById(R.id.textViewFromZsmEscalateNoVisit);
+
+        textViewMicoName = (FOSTextView) view.findViewById(R.id.textViewFromMicoName);
+        textViewMicoMobileNum = (FOSTextView) view.findViewById(R.id.textViewFromMicoMobileNum);
+        textViewMicoVisitStatus = (FOSTextView) view.findViewById(R.id.textViewFromMicoVisitStatus);
+        textViewMicoVisitedDate = (FOSTextView) view.findViewById(R.id.textViewFromMicoVisitedDate);
+        textViewMicoFeedback = (FOSTextView) view.findViewById(R.id.textViewFromMicoVisitFeedback);
+        textViewMicoRemarks = (FOSTextView) view.findViewById(R.id.textViewFromMicoRemarks);
+        textViewFromMicoEscalateNoVisit = (FOSTextView) view.findViewById(R.id.textViewFromMicoEscalateNoVisit);
+
+        textViewExeName = (FOSTextView) view.findViewById(R.id.textViewFromExeName);
+        textViewExeMobileNum = (FOSTextView) view.findViewById(R.id.textViewFromExeMobileNum);
+        textViewExeMyIdea = (FOSTextView) view.findViewById(R.id.textViewFromExeMyIdea);
+        textViewExeMyIdeaCode = (FOSTextView) view.findViewById(R.id.textViewFromExeMyIdeaCode);
+        textViewExeVisitStatus = (FOSTextView) view.findViewById(R.id.textViewFromExeVisitStatus);
+        textViewExeVisitedDate = (FOSTextView) view.findViewById(R.id.textViewFromExeVisitedDate);
+        textViewExeFeedback = (FOSTextView) view.findViewById(R.id.textViewFromExeVisitFeedback);
+        textViewExeRemarks = (FOSTextView) view.findViewById(R.id.textViewFromExeRemarks);
+        textViewFromExeEscalateNoVisit = (FOSTextView) view.findViewById(R.id.textViewFromExeEscalateNoVisit);
+
+        llFromMicoVisitDetails = (LinearLayout) view.findViewById(R.id.llFromMicoVisitDetails);
+        llFromZsmVisitDetails = (LinearLayout) view.findViewById(R.id.llFromZsmVisitDetails);
+        llFromExeVisitDetails = (LinearLayout) view.findViewById(R.id.llFromExeVisitDetails);
+
+        cardViewFromExe = (CardView) view.findViewById(R.id.cardViewFromExe);
+        cardViewFromMico = (CardView) view.findViewById(R.id.cardViewFromMico);
+        cardViewFromZsm = (CardView) view.findViewById(R.id.cardViewFromZsm);
+        cardViewFromSubmit = (CardView) view.findViewById(R.id.cardViewFormSubmit);
+
+        scrollViewDetails = (ScrollView) view.findViewById(R.id.scrollViewDetails);
+        progressBarLoading = (ProgressBar) view.findViewById(R.id.progressBarLoading);
+
     }
     //endregion
 
@@ -189,34 +252,25 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             requestModel.setObjectId(objectId);
             requestModel.setRecordType(Constants.RecordType.UPC);
 
-            final ProgressDialog dialog = ProgressDialog.show(getActivity(), null, getResources().getString(R.string.requesting), true, true);
+            showProgressBar();
             FOSFacade fosFacade = new FOSFacadeImpl();
             fosFacade.getUpcDetail(requestModel, new ServiceCallback<UpcDetailModel>() {
                 @Override
                 public void onResponse(UpcDetailModel response) {
-                    if (dialog != null) {
-                        dialog.cancel();
-                    }
+                    hideProgressBar();
                     detailModel = response;
                     bindData(response);
                     setFomListeners();
-
                 }
 
                 @Override
                 public void onRequestTimout() {
-                    if (dialog != null) {
-                        dialog.cancel();
-                    }
-                    showTimeOutInfo();
+                    showMessage(getString(R.string.warn_time_out_title), getString(R.string.warn_time_out_message));
                 }
 
                 @Override
                 public void onRequestFail(FOSError error) {
-                    if (dialog != null) {
-                        dialog.cancel();
-                    }
-                    showErrorInfo();
+                    showMessage(getString(R.string.warn_server_error), error.getErrorMessage());
                 }
             });
         }
@@ -249,27 +303,99 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         if (model.getLocation() != null && model.getLocation().getLatitude() != null && !model.getLocation().getLatitude().isEmpty()) {
             switchLocation.setVisibility(View.VISIBLE);
         }
-
-        //load executive details if user is executive
-        //need not to be load from executive if the record is new activity
-        if ((Config.getInstance().getUser().getRole() == Constants.Role.EXECUTIVE) && (activityType != Constants.ActivityType.NEW_ACTIVITY)) {
-            loadExecutiveOwnData();
-        }
+        loadPreviousData();
     }
 
-    //region loadExecutiveOwnData
-    private void loadExecutiveOwnData() {
+
+    //region loadPreviousData
+    private void loadPreviousData() {
+        //if its a new activity then not need to load anything based on role,its default settings
+
+        if (activityType == Constants.ActivityType.REMINDER) {
+            if (Config.getInstance().getUser().getRole() == Constants.Role.EXECUTIVE) {
+                // only need to load executive data to form submit card
+                loadReminderData(detailModel.getFromExecutive());
+            }
+            if (Config.getInstance().getUser().getRole() == Constants.Role.MICO) {
+                //need to load  mico data to from submit and executive data from executive card
+                loadFromMicoData();
+                loadReminderData(detailModel.getFromMico());
+            }
+
+            if (Config.getInstance().getUser().getRole() == Constants.Role.ZSM) {
+                //load all data from server
+                loadFromMicoData();
+                loadFromExecutiveData();
+                loadReminderData(detailModel.getFromZsm());
+            }
+        }
+
+        if (activityType == Constants.ActivityType.ACTIVITY) {
+            cardViewFromSubmit.setVisibility(View.GONE);
+            loadFromExecutiveData();
+            if (Config.getInstance().getUser().getRole() == Constants.Role.MICO)
+                loadFromMicoData();
+
+            if (Config.getInstance().getUser().getRole() == Constants.Role.ZSM) {
+                loadFromMicoData();
+                loadFromZsmData();
+            }
+        }
+
+    }
+    //endregion
+
+//    //region loadExecutiveOwnData
+//    private void loadExecutiveOwnData() {
+//        try {
+//            DetailFromUPCRoleModel fromExecutive = detailModel.getFromExecutive();
+//            if (fromExecutive != null) {
+//                //find out visit status and set spinner selection
+//                if (fromExecutive.getStatus() != 0 && spnStatus != null) {
+//                    int position = statusAdapter.findElementPosition(fromExecutive.getStatus());
+//                    spnStatus.setSelection(position, false);
+//                }
+//
+//                int visitStatus = ((SpinnerData) spnStatus.getSelectedItem()).getId();
+//                if (fromExecutive.getFeedback() != 0) {
+//                    //if not retained
+//                    if (visitStatus == 2) {
+//                        loadFeedback(detailModel.getFeedbackNotRetained());
+//                    } else {
+//                        loadFeedback(detailModel.getFeedbackRetained());
+//                    }
+//
+//                    //find out feedback and set feedback spinner selection
+//                    int position = feedbackAdapter.findElementPosition(fromExecutive.getFeedback());
+//                    if (position != 0) {
+//                        spnFeedback.setSelection(position, false);
+//                    }
+//                }
+//                String reminder = detailModel.getReminderDate();
+//                if (reminder != null && !reminder.isEmpty()) {
+//                    linLayoutReminder.setVisibility(View.VISIBLE);
+//                    editTextReminder.setText(reminder);
+//                }
+//                editTextRemarks.setText(fromExecutive.getRemarks());
+//            }
+//        } catch (Exception ex) {
+//            Log.e(TAG, ex.toString());
+//        }
+//    }
+//    //endregion
+
+    //region loadReminderData
+    private void loadReminderData(DetailFromUPCRoleModel reminderData) {
         try {
-            DetailFromUPCRoleModel fromExecutive = detailModel.getFromExecutive();
-            if (fromExecutive != null) {
+            if (reminderData != null) {
                 //find out visit status and set spinner selection
-                if (fromExecutive.getStatus() != 0 && spnStatus != null) {
-                    int position = statusAdapter.findElementPosition(fromExecutive.getStatus());
+                if (reminderData.getStatus() != 0 && spnStatus != null) {
+                    int position = statusAdapter.findElementPosition(reminderData.getStatus());
                     spnStatus.setSelection(position, false);
                 }
 
                 int visitStatus = ((SpinnerData) spnStatus.getSelectedItem()).getId();
-                if (fromExecutive.getFeedback() != 0) {
+                if (reminderData.getFeedback() != 0) {
                     //if not retained
                     if (visitStatus == 2) {
                         loadFeedback(detailModel.getFeedbackNotRetained());
@@ -278,7 +404,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     }
 
                     //find out feedback and set feedback spinner selection
-                    int position = feedbackAdapter.findElementPosition(fromExecutive.getFeedback());
+                    int position = feedbackAdapter.findElementPosition(reminderData.getFeedback());
                     if (position != 0) {
                         spnFeedback.setSelection(position, false);
                     }
@@ -288,8 +414,106 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     linLayoutReminder.setVisibility(View.VISIBLE);
                     editTextReminder.setText(reminder);
                 }
-                editTextRemarks.setText(fromExecutive.getRemarks());
+                editTextRemarks.setText(reminderData.getRemarks());
             }
+        } catch (Exception ex) {
+            Log.e(TAG, ex.toString());
+        }
+    }
+    //endregion
+
+    //region loadFromExecutiveData
+    private void loadFromExecutiveData() {
+        try {
+            cardViewFromExe.setVisibility(View.VISIBLE);
+            DetailFromUPCRoleModel fromExecutive = detailModel.getFromExecutive();
+            if (fromExecutive != null) {
+                textViewExeName.setText(fromExecutive.getName());
+                textViewExeMobileNum.setText(fromExecutive.getPhoneNum());
+                textViewExeMyIdea.setText(fromExecutive.getMyIdea());
+                textViewExeMyIdeaCode.setText(fromExecutive.getMyIdeaCode());
+
+                if (fromExecutive.getTotalVisit() > 0) {
+                    textViewExeVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromExecutive.getStatus(), detailModel.getVisitStatus()));
+                    if (fromExecutive.getStatus() == 1) //retained
+                    {
+                        textViewExeFeedback.setText(SpinnerOperations.getSpinnerItem(fromExecutive.getFeedback(), detailModel.getFeedbackRetained()));
+                    } else {
+                        textViewExeFeedback.setText(SpinnerOperations.getSpinnerItem(fromExecutive.getFeedback(), detailModel.getFeedbackNotRetained()));
+                    }
+                    textViewExeVisitedDate.setText(fromExecutive.getVisitedDate());
+                    textViewExeRemarks.setText(fromExecutive.getRemarks());
+                } else {
+                    llFromExeVisitDetails.setVisibility(View.GONE);
+                    textViewFromExeEscalateNoVisit.setVisibility(View.VISIBLE);
+                    textViewFromExeEscalateNoVisit.setText(getString(R.string.warn_not_visited));
+                }
+            }
+
+        } catch (Exception ex) {
+            Log.e(TAG, ex.toString());
+        }
+    }
+    //endregion
+
+    //region loadFromMicoData
+    private void loadFromMicoData() {
+        try {
+            cardViewFromMico.setVisibility(View.VISIBLE);
+            DetailFromUPCRoleModel fromMico = detailModel.getFromMico();
+            if (fromMico != null) {
+                textViewMicoName.setText(fromMico.getName());
+                textViewMicoMobileNum.setText(fromMico.getPhoneNum());
+
+                if (fromMico.getTotalVisit() > 0) {
+                    textViewMicoVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromMico.getStatus(), detailModel.getVisitStatus()));
+                    if (fromMico.getStatus() == 1) //retained
+                    {
+                        textViewMicoFeedback.setText(SpinnerOperations.getSpinnerItem(fromMico.getFeedback(), detailModel.getFeedbackRetained()));
+                    } else {
+                        textViewMicoFeedback.setText(SpinnerOperations.getSpinnerItem(fromMico.getFeedback(), detailModel.getFeedbackNotRetained()));
+                    }
+                    textViewMicoVisitedDate.setText(fromMico.getVisitedDate());
+                    textViewMicoRemarks.setText(fromMico.getRemarks());
+                } else {
+                    llFromMicoVisitDetails.setVisibility(View.GONE);
+                    textViewFromMicoEscalateNoVisit.setVisibility(View.VISIBLE);
+                    textViewFromMicoEscalateNoVisit.setText(getString(R.string.warn_not_visited));
+                }
+            }
+
+        } catch (Exception ex) {
+            Log.e(TAG, ex.toString());
+        }
+    }
+    //endregion
+
+    //region loadFromZsmData
+    private void loadFromZsmData() {
+        try {
+            cardViewFromZsm.setVisibility(View.VISIBLE);
+            DetailFromUPCRoleModel fromZsm = detailModel.getFromZsm();
+            if (fromZsm != null) {
+                textViewZsmName.setText(fromZsm.getName());
+                textViewZsmMobileNum.setText(fromZsm.getPhoneNum());
+
+                if (fromZsm.getTotalVisit() > 0) {
+                    textViewZsmVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromZsm.getStatus(), detailModel.getVisitStatus()));
+                    if (fromZsm.getStatus() == 1) //retained
+                    {
+                        textViewZsmFeedback.setText(SpinnerOperations.getSpinnerItem(fromZsm.getFeedback(), detailModel.getFeedbackRetained()));
+                    } else {
+                        textViewZsmFeedback.setText(SpinnerOperations.getSpinnerItem(fromZsm.getFeedback(), detailModel.getFeedbackNotRetained()));
+                    }
+                    textViewZsmVisitedDate.setText(fromZsm.getVisitedDate());
+                    textViewZsmRemarks.setText(fromZsm.getRemarks());
+                } else {
+                    llFromZsmVisitDetails.setVisibility(View.GONE);
+                    textViewFromZsmEscalateNoVisit.setVisibility(View.VISIBLE);
+                    textViewFromZsmEscalateNoVisit.setText(getString(R.string.warn_not_visited));
+                }
+            }
+
         } catch (Exception ex) {
             Log.e(TAG, ex.toString());
         }
@@ -302,6 +526,18 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         feedbackAdapter = new FOSSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, feedback);
         spnFeedback.setAdapter(feedbackAdapter);
         feedbackList = feedback;
+    }
+    //endregion
+
+    //region ProgressBar
+    private void showProgressBar() {
+        progressBarLoading.setVisibility(View.VISIBLE);
+        scrollViewDetails.setVisibility(View.GONE);
+    }
+
+    private void hideProgressBar() {
+        progressBarLoading.setVisibility(View.GONE);
+        scrollViewDetails.setVisibility(View.VISIBLE);
     }
     //endregion
 
@@ -389,6 +625,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         requestModel.setFeedback(((SpinnerData) spnFeedback.getSelectedItem()).getId());
         requestModel.setRemarks(editTextRemarks.getText().toString().trim());
         requestModel.setRecordType(Constants.RecordType.UPC);
+        requestModel.setLandmark(editTextLandmark.getText().toString());
 
         GPSTracker gpsTracker = new GPSTracker(getActivity());
         if (switchUpdateLocation.isChecked()) {
@@ -423,19 +660,15 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                 if (dialog != null) {
                     dialog.cancel();
                 }
-
-                showTimeOutInfo();
+                showMessage(getString(R.string.warn_time_out_title), getString(R.string.warn_time_out_message));
             }
 
             @Override
             public void onRequestFail(FOSError error) {
-                Log.e("Submit Fail", error.getErrorMessage());
-
                 if (dialog != null) {
                     dialog.cancel();
                 }
-
-                showErrorInfo();
+                showMessage(getString(R.string.warn_server_error), error.getErrorMessage());
             }
         });
     }
@@ -447,19 +680,10 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         InfoDialog infoDialog = InfoDialog.newInstance(title, message);
         infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
     }
+    //endregion
 
-    private void showErrorInfo() {
-        String message = "Form submission error";
-        String title = "Error";
-
-        InfoDialog infoDialog = InfoDialog.newInstance(title, message);
-        infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
-    }
-
-    private void showTimeOutInfo() {
-        String message = "Form submission timeout";
-        String title = "TimeOut";
-
+    //region showMessage
+    private void showMessage(String title, String message) {
         InfoDialog infoDialog = InfoDialog.newInstance(title, message);
         infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
     }
@@ -475,13 +699,8 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             double latitude = Double.parseDouble(detailModel.getLocation().getLatitude());
             double longitude = Double.parseDouble(detailModel.getLocation().getLongitude());
             latLng = new LatLng(latitude, longitude);
-        } else if (gpsTracker != null) {
-            double latitude = gpsTracker.getLatitude();
-            double longitude = gpsTracker.getLongitude();
-            latLng = new LatLng(latitude, longitude);
-            Log.d(TAG, "onMapReady: (lat, long) - (" + latitude + ", " + longitude + ")");
         } else {
-            latLng = new LatLng(9.977052, 76.317974);
+            latLng = new LatLng(0, 0);
         }
 
         googleMap.addMarker(new MarkerOptions().position(latLng)

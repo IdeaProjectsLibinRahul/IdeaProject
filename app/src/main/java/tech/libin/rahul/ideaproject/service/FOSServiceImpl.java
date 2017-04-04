@@ -16,9 +16,9 @@ import tech.libin.rahul.ideaproject.network.handlers.NetworkCallback;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
 import tech.libin.rahul.ideaproject.service.mapper.ActivityMapper;
 import tech.libin.rahul.ideaproject.service.mapper.CollectionDetailMapper;
+import tech.libin.rahul.ideaproject.service.mapper.FormSubmitMapper;
 import tech.libin.rahul.ideaproject.service.mapper.RegisterMapper;
 import tech.libin.rahul.ideaproject.service.mapper.SmeDetailMapper;
-import tech.libin.rahul.ideaproject.service.mapper.SmeFormSubmitMapper;
 import tech.libin.rahul.ideaproject.service.mapper.TdDetailMapper;
 import tech.libin.rahul.ideaproject.service.mapper.UpcDetailMapper;
 import tech.libin.rahul.ideaproject.service.requests.ActivityDetailRequest;
@@ -38,7 +38,6 @@ import tech.libin.rahul.ideaproject.service.responses.RegisterResponse;
 import tech.libin.rahul.ideaproject.service.responses.SmeDetailResponse;
 import tech.libin.rahul.ideaproject.service.responses.TdDetailResponse;
 import tech.libin.rahul.ideaproject.service.responses.UpcDetailResponse;
-import tech.libin.rahul.ideaproject.service.responses.UserRegisterResponse;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.credentialviews.viewmodels.ForgotPasswordModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.CollectionDetailModel;
@@ -259,7 +258,7 @@ public class FOSServiceImpl implements FOSService {
 
     @Override
     public void doSubmitVisitDetails(FormSubmitModel model, final ServiceCallback<String> callback) {
-        final SmeFormSubmitMapper mapper = new SmeFormSubmitMapper();
+        final FormSubmitMapper mapper = new FormSubmitMapper();
         SmeFormSubmitRequest smeFormSubmitRequest = mapper.getRequest(model);
 
         FOSNetworkRequest<FormSubmitResponse> request = new FOSNetworkRequestImpl<>(smeFormSubmitRequest, ServiceURLs.FORM_SUBMIT, FormSubmitResponse.class);
@@ -295,22 +294,23 @@ public class FOSServiceImpl implements FOSService {
     }
 
     @Override
-    public void doRegistration(Map<String, String> data, Map<String, Uri> files, final ServiceCallback<String> callback) {
-        FOSNetworkRequest<UserRegisterResponse> upload = new FOSNetworkRequestImpl<>(ServiceURLs.REGISTER, UserRegisterResponse.class);
-        upload.uploadFile(Request.Method.POST, new NetworkCallback<UserRegisterResponse>() {
-            @Override
-            public void onSuccess(UserRegisterResponse response) {
 
+    public void doRegistration(Map<String, String> data, Map<String, Uri> files, final ServiceCallback<RegisterResponse> callback) {
+        FOSNetworkRequest<RegisterResponse> upload = new FOSNetworkRequestImpl<>(ServiceURLs.REGISTER, RegisterResponse.class);
+        upload.uploadFile(Request.Method.POST, new NetworkCallback<RegisterResponse>() {
+            @Override
+            public void onSuccess(RegisterResponse response) {
+                callback.onResponse(response);
             }
 
             @Override
             public void onTimeout() {
-
+                callback.onRequestTimout();
             }
 
             @Override
             public void onFail(FOSError error) {
-
+                callback.onRequestFail(error);
             }
         }, data, files);
     }

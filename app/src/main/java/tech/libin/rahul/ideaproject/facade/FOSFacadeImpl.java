@@ -8,6 +8,7 @@ import java.util.Map;
 import tech.libin.rahul.ideaproject.service.FOSService;
 import tech.libin.rahul.ideaproject.service.FOSServiceImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
+import tech.libin.rahul.ideaproject.service.responses.RegisterResponse;
 import tech.libin.rahul.ideaproject.views.credentialviews.viewmodels.ForgotPasswordModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.CollectionDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.FormSubmitModel;
@@ -69,7 +70,8 @@ public class FOSFacadeImpl implements FOSFacade {
     }
 
     @Override
-    public void doRegistration(Map<String, String> data, Map<String, Uri> files, ServiceCallback<String> callback) {
+
+    public void doRegistration(Map<String, String> data, Map<String, Uri> files, ServiceCallback<RegisterResponse> callback) {
         fosService.doRegistration(data, files, callback);
     }
 

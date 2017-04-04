@@ -38,15 +38,18 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import tech.libin.rahul.ideaproject.R;
 import tech.libin.rahul.ideaproject.configurations.Constants;
 import tech.libin.rahul.ideaproject.facade.FOSFacade;
 import tech.libin.rahul.ideaproject.facade.FOSFacadeImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
+import tech.libin.rahul.ideaproject.service.requests.RegisterRequest;
+import tech.libin.rahul.ideaproject.service.responses.RegisterResponse;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseActivity;
-import tech.libin.rahul.ideaproject.views.models.RegisterModel;
 import tech.libin.rahul.ideaproject.views.widgets.button.FOSButton;
 import tech.libin.rahul.ideaproject.views.widgets.dialogs.FOSDialog;
 import tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText;
@@ -95,6 +98,7 @@ public class RegisterActivity extends FOSBaseActivity {
     private EditText selectedEditText;
 
     private Uri outputFileUri;
+    private FOSFacade facade;
 
     //endregion
 
@@ -122,6 +126,7 @@ public class RegisterActivity extends FOSBaseActivity {
 
     //region initComponents
     private void initComponents() {
+        facade = new FOSFacadeImpl();
         floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         editTextRegName = (FOSIconEditText) findViewById(R.id.editTextRegName);
         editTextRegDOB = (FOSIconEditText) findViewById(R.id.editTextRegDOB);
@@ -184,96 +189,60 @@ public class RegisterActivity extends FOSBaseActivity {
             public void onClick(View v) {
 
                 if (isValid()) {
-                    FOSFacade facade = new FOSFacadeImpl();
-                    RegisterModel registerModel = new RegisterModel();
-                    registerModel.setName(editTextRegName.getText());
-                    registerModel.setAddress1(editTextRegAddress1.getText());
-                    registerModel.setAddress2(editTextRegAddress2.getText());
-                    registerModel.setAddress3(editTextRegAddress3.getText());
-                    registerModel.setZip(editTextRegZip.getText());
-                    registerModel.setFatherName(editTextRegFatherName.getText());
-                    registerModel.setMiCode(editTextRegMICode.getText());
-                    registerModel.setMobileNum(editTextRegMobileNo.getText());
-                    registerModel.setPassword(editTextRegPassword.getText());
-                    if (rdbMico.isChecked()) {
-                        registerModel.setRole(Constants.Role.MICO);
-                    } else if (rdbZsm.isChecked()) {
-                        registerModel.setRole(Constants.Role.ZSM);
 
-                    } else if (rdbExecutive.isChecked()) {
-                        registerModel.setRole(Constants.Role.EXECUTIVE);
-                    }
-
-                    registerModel.setName(editTextRegName.getText());
-                    registerModel.setName(editTextRegName.getText());
-                    registerModel.setDob(editTextRegDOB.getText());
-                    registerModel.setDateOfJoining(editTextRegJoinDate.getText());
-
-                    facade.doRegistrationDummy(registerModel, new ServiceCallback<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            String title = "Success";
-                            fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, response, true);
-                            fosDialog.show(getSupportFragmentManager(), "tag");
-
-                        }
-
-                        @Override
-                        public void onRequestTimout() {
-                            String title = "Info";
-                            fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, getResources().getString(R.string.warn_request_timed_out), false);
-                            fosDialog.show(getSupportFragmentManager(), "tag");
-
-                        }
-
-                        @Override
-                        public void onRequestFail(FOSError error) {
-                            String message = error.getErrorMessage();
-                            String title = "Info";
-                            fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, message, false);
-
-                            fosDialog.show(getSupportFragmentManager(), "tag");
-                        }
-                    });
+                    sendRegisterRequest();
+//                    RegisterModel registerModel = new RegisterModel();
+//                    registerModel.setName(editTextRegName.getText());
+//                    registerModel.setAddress1(editTextRegAddress1.getText());
+//                    registerModel.setAddress2(editTextRegAddress2.getText());
+//                    registerModel.setAddress3(editTextRegAddress3.getText());
+//                    registerModel.setZip(editTextRegZip.getText());
+//                    registerModel.setFatherName(editTextRegFatherName.getText());
+//                    registerModel.setMiCode(editTextRegMICode.getText());
+//                    registerModel.setMobileNum(editTextRegMobileNo.getText());
+//                    registerModel.setPassword(editTextRegPassword.getText());
+//                    if (rdbMico.isChecked()) {
+//                        registerModel.setRole(Constants.Role.MICO);
+//                    } else if (rdbZsm.isChecked()) {
+//                        registerModel.setRole(Constants.Role.ZSM);
+//
+//                    } else if (rdbExecutive.isChecked()) {
+//                        registerModel.setRole(Constants.Role.EXECUTIVE);
+//                    }
+//
+//                    registerModel.setName(editTextRegName.getText());
+//                    registerModel.setName(editTextRegName.getText());
+//                    registerModel.setDob(editTextRegDOB.getText());
+//                    registerModel.setDateOfJoining(editTextRegJoinDate.getText());
+//
+//                    facade.doRegistrationDummy(registerModel, new ServiceCallback<String>() {
+//                        @Override
+//                        public void onResponse(String response) {
+//                            String title = "Success";
+//                            fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, response, true);
+//                            fosDialog.show(getSupportFragmentManager(), "tag");
+//
+//                        }
+//
+//                        @Override
+//                        public void onRequestTimout() {
+//                            String title = "Info";
+//                            fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, getResources().getString(R.string.warn_request_timed_out), false);
+//                            fosDialog.show(getSupportFragmentManager(), "tag");
+//
+//                        }
+//
+//                        @Override
+//                        public void onRequestFail(FOSError error) {
+//                            String message = error.getErrorMessage();
+//                            String title = "Info";
+//                            fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, message, false);
+//
+//                            fosDialog.show(getSupportFragmentManager(), "tag");
+//                        }
+//                    });
                 }
 
-//                Map<String, String> params = new HashMap<>();
-//
-//                params.put("name", editTextRegName.getText().toString());
-//                params.put("miCode", editTextRegName.getText().toString());
-//                params.put("mobileNum", editTextRegName.getText().toString());
-//                params.put("dob", editTextRegName.getText().toString());
-//                params.put("dateOfJoining", editTextRegName.getText().toString());
-//                params.put("address1", editTextRegName.getText().toString());
-//                params.put("address2", editTextRegName.getText().toString());
-//                params.put("address3", editTextRegName.getText().toString());
-//                params.put("zip", editTextRegName.getText().toString());
-//                params.put("fatherName", editTextRegName.getText().toString());
-//                params.put("password", editTextRegName.getText().toString());
-//                Map<String, Uri> files= new HashMap<>();
-//
-//                if(mPhotoURI!=null) {
-//                    files.put("profilePic",mPhotoURI);
-//                }
-//
-//                FOSFacade facade = new FOSFacadeImpl();
-//
-//                facade.doRegistration(params, files, new ServiceCallback<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onRequestTimout() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onRequestFail(FOSError error) {
-//
-//                    }
-//                });
 
             }
         });
@@ -314,6 +283,74 @@ public class RegisterActivity extends FOSBaseActivity {
         editTextRegDOB.getEditText().setOnTouchListener(touchListener);
         editTextRegJoinDate.setOnTouchListener(touchListener);
         editTextRegJoinDate.getEditText().setOnTouchListener(touchListener);
+    }
+
+    private void sendRegisterRequest() {
+        String name = editTextRegName.getText();
+        String miCode = editTextRegMICode.getText();
+        Constants.Role role = null;
+        if (rdbMico.isChecked()) {
+            role = Constants.Role.MICO;
+        } else if (rdbZsm.isChecked()) {
+            role = Constants.Role.ZSM;
+
+        } else if (rdbExecutive.isChecked()) {
+            role = Constants.Role.EXECUTIVE;
+        }
+
+        String mobileNo = editTextRegMobileNo.getText();
+        String dob = editTextRegDOB.getText();
+        String doj = editTextRegJoinDate.getText();
+        String address1 = editTextRegAddress1.getText();
+        String address2 = editTextRegAddress2.getText();
+        String address3 = editTextRegAddress3.getText();
+        String zip = editTextRegZip.getText();
+        String fatherName = editTextRegFatherName.getText();
+        String password = editTextRegPassword.getText();
+
+        Map<String, String> data = new HashMap<>();
+        data.put(RegisterRequest.NAME, name);
+        data.put(RegisterRequest.MI_CODE, miCode);
+        data.put(RegisterRequest.ROLE, role.toString());
+        data.put(RegisterRequest.MOBILE_NUM, mobileNo);
+        data.put(RegisterRequest.DOB, dob);
+        data.put(RegisterRequest.DOJ, doj);
+        data.put(RegisterRequest.ADDRESS1, address1);
+        data.put(RegisterRequest.ADDRESS2, address2);
+        data.put(RegisterRequest.ADDRESS3, address3);
+        data.put(RegisterRequest.ZIP, zip);
+        data.put(RegisterRequest.FATHER_NAME, fatherName);
+        data.put(RegisterRequest.PASSWORD, password);
+
+        Map<String, Uri> files = new HashMap<>();
+        files.put(RegisterRequest.IMAGE, mPhotoURI);
+
+        facade.doRegistration(data, files, new ServiceCallback<RegisterResponse>() {
+            @Override
+            public void onResponse(RegisterResponse response) {
+                String title = "Success";
+                fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, response.getMessage(), true);
+                fosDialog.show(getSupportFragmentManager(), "tag");
+
+            }
+
+            @Override
+            public void onRequestTimout() {
+                String title = "Info";
+                fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, getResources().getString(R.string.warn_request_timed_out), false);
+                fosDialog.show(getSupportFragmentManager(), "tag");
+
+            }
+
+            @Override
+            public void onRequestFail(FOSError error) {
+                String message = error.getErrorMessage();
+                String title = "Info";
+                fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, message, false);
+
+                fosDialog.show(getSupportFragmentManager(), "tag");
+            }
+        });
     }
 
     private void initViewFlipper() {
@@ -470,11 +507,13 @@ public class RegisterActivity extends FOSBaseActivity {
                     bm.compress(Bitmap.CompressFormat.JPEG, 85, fOut);
                     fOut.flush();
                     fOut.close();
+                    mPhotoURI = Uri.fromFile(file);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else if (requestCode == SELECT_PICTURE) {
                 Uri selectedImageUri = data.getData();
+                mPhotoURI = selectedImageUri;
                 String tempPath = getPath(selectedImageUri, RegisterActivity.this);
                 Bitmap bm;
                 BitmapFactory.Options btmapOptions = new BitmapFactory.Options();

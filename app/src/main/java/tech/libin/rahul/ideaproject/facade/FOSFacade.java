@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
+import tech.libin.rahul.ideaproject.service.responses.RegisterResponse;
 import tech.libin.rahul.ideaproject.views.credentialviews.viewmodels.ForgotPasswordModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.CollectionDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.FormSubmitModel;
@@ -39,7 +40,7 @@ public interface FOSFacade {
 
     void doSubmitVisitDetails(FormSubmitModel model, ServiceCallback<String> callback);
 
-    void doRegistration(Map<String, String> data, final Map<String, Uri> files, ServiceCallback<String> callback);
+    void doRegistration(Map<String, String> data, final Map<String, Uri> files, ServiceCallback<RegisterResponse> callback);
 
     void doRegistrationDummy(RegisterModel model, ServiceCallback<String> callback);
 

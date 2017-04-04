@@ -308,7 +308,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
             linLayoutFeedback.setVisibility(View.GONE);
             linLayoutPaidAmount.setVisibility(View.GONE);
             linLayoutReminder.setVisibility(View.VISIBLE);
-            textViewReminderDate.setText(getResources().getString(R.string.reminder_date));
+            textViewReminderDate.setText(getResources().getString(R.string.follow_up_date));
         } else {
             linLayoutFeedback.setVisibility(View.VISIBLE);
             linLayoutReminder.setVisibility(View.GONE);
@@ -369,7 +369,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                     }
                     if ((reminder != null || !reminder.isEmpty()) && fromExecutive.getStatus() == 2) {
                         linLayoutReminder.setVisibility(View.VISIBLE);
-                        textViewReminderDate.setText(getResources().getString(R.string.reminder_date));
+                        textViewReminderDate.setText(getResources().getString(R.string.follow_up_date));
                         editTextReminder.setText(reminder);
                     }
                     editTextRemarks.setText(fromExecutive.getRemarks());

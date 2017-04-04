@@ -9,6 +9,20 @@ import tech.libin.rahul.ideaproject.service.requests.base.FOSBaseRequest;
 
 public class RegisterRequest extends FOSBaseRequest {
 
+    public static final String NAME = "name";
+    public static final String MI_CODE = "miCode";
+    public static final String ROLE = "role";
+    public static final String MOBILE_NUM = "mobileNum";
+    public static final String DOB = "dob";
+    public static final String DOJ = "dateOfJoining";
+    public static final String ADDRESS1 = "address1";
+    public static final String ADDRESS2 = "address2";
+    public static final String ADDRESS3 = "address3";
+    public static final String ZIP = "zip";
+    public static final String FATHER_NAME = "fatherName";
+    public static final String PASSWORD = "password";
+    public static final String IMAGE = "image";
+
     String name;
     String miCode;
     Constants.Role role;

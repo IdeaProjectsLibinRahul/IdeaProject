@@ -43,9 +43,11 @@ public class Constants {
         @SerializedName("1")
         SUCCESS(1),
         @SerializedName("2")
-        INVALID_USER(2),
+        FIRST_TIME_LOGIN(2),
         @SerializedName("3")
-        SESSION_EXIST(3);
+        INVALID_USER(3),
+        @SerializedName("4")
+        SESSION_EXIST(4);
 
         private int value;
 

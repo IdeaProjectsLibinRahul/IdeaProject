@@ -1,5 +1,6 @@
 package tech.libin.rahul.ideaproject.service.responses;
 
+import tech.libin.rahul.ideaproject.configurations.Constants;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSBaseResponse;
 
 /**
@@ -7,32 +8,26 @@ import tech.libin.rahul.ideaproject.service.responses.base.FOSBaseResponse;
  */
 
 public class RegisterResponse extends FOSBaseResponse {
-    private Long userId;
-    private String phoneNo;
-    private String result;
+    private Constants.Status status;
+    private String message;
 
-    public String getResult() {
-        return result;
+    @Override
+    public Constants.Status getStatus() {
+        return status;
     }
 
-    public void setResult(String result) {
-        this.result = result;
+    @Override
+    public void setStatus(Constants.Status status) {
+        this.status = status;
     }
 
-    public Long getUserId() {
-        return userId;
+    @Override
+    public String getMessage() {
+        return message;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    @Override
+    public void setMessage(String message) {
+        this.message = message;
     }
-
-    public String getPhoneNo() {
-        return phoneNo;
-    }
-
-    public void setPhoneNo(String phoneNo) {
-        this.phoneNo = phoneNo;
-    }
-
 }
