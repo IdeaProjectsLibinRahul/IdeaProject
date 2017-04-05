@@ -9,7 +9,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -29,6 +32,7 @@ public abstract class FOSBaseActivity extends AppCompatActivity {
     protected float toolbarElevation = 0;
     private TextView textViewName;
     private TextView textViewPhone;
+    private ImageView imageViewProfilePic;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,19 +99,25 @@ public abstract class FOSBaseActivity extends AppCompatActivity {
 
             textViewName = (TextView) toolbar.findViewById(R.id.textViewUserName);
             textViewPhone = (TextView) toolbar.findViewById(R.id.textViewUserPhone);
+            imageViewProfilePic = (ImageView) toolbar.findViewById(R.id.imageViewProfilePic);
         }
 
 
     }
 
-    
 
-    protected void setToolbarUsername(String username){
+    protected void setToolbarUsername(String username) {
         textViewName.setText(username);
     }
 
-    protected void setToolbarPhoneNo(String phoneNo){
+    protected void setToolbarPhoneNo(String phoneNo) {
         textViewPhone.setText(phoneNo);
+    }
+
+    protected void setToolbarProfilePic(String url) {
+        if (imageViewProfilePic != null && url != null) {
+            Picasso.with(this).load(url).resize(60, 60).into(imageViewProfilePic);
+        }
     }
 
     protected void setMainView(Fragment fragment) {

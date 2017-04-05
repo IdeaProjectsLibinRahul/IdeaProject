@@ -32,7 +32,6 @@
         app:maxLength="12" />
 
 
-
     <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
         android:id="@+id/editTextPasswordLogin"
         android:layout_width="match_parent"
@@ -51,23 +50,24 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/editTextPasswordLogin"
         android:layout_marginTop="@dimen/button_vertical_margin"
-        android:orientation="horizontal"
-        android:weightSum="2">
+        android:orientation="horizontal">
 
         <tech.libin.rahul.ideaproject.views.widgets.button.FOSButton
             android:id="@+id/buttonSignInLogin"
             style="@style/LoginButton"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="@dimen/btn_height"
             android:layout_marginRight="2dp"
+            android:layout_weight="1"
             android:text="@string/sign_in" />
 
         <tech.libin.rahul.ideaproject.views.widgets.button.FOSButton
             android:id="@+id/buttonSignUpLogin"
             style="@style/LoginButton"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="@dimen/btn_height"
             android:layout_marginLeft="2dp"
+            android:layout_weight="1"
             android:text="@string/sign_up" />
 
     </LinearLayout>

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import tech.libin.rahul.ideaproject.R;
+import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseDialog;
 import tech.libin.rahul.ideaproject.views.widgets.button.FOSButton;
 import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
 
@@ -16,7 +17,7 @@ import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
  * Created by libin on 26/02/17.
  */
 
-public class FOSDialog extends DialogFragment {
+public class FOSDialog extends FOSBaseDialog {
     public static final String TITLE = "title";
     public static final String MESSAGE = "message";
     private View view;

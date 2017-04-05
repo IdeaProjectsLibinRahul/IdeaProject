@@ -19,6 +19,7 @@ import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -323,7 +324,9 @@ public class RegisterActivity extends FOSBaseActivity {
         data.put(RegisterRequest.PASSWORD, password);
 
         Map<String, Uri> files = new HashMap<>();
-        files.put(RegisterRequest.IMAGE, mPhotoURI);
+        if (mPhotoURI != null) {
+            files.put(RegisterRequest.IMAGE, mPhotoURI);
+        }
 
         facade.doRegistration(data, files, new ServiceCallback<RegisterResponse>() {
             @Override
@@ -441,7 +444,8 @@ public class RegisterActivity extends FOSBaseActivity {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     File f = new File(android.os.Environment
                             .getExternalStorageDirectory(), "temp.jpg");
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                    Uri uri = FileProvider.getUriForFile(RegisterActivity.this, getApplicationContext().getPackageName() + ".provider", f);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                     startActivityForResult(intent, CAMERA_PIC_REQUEST);
                 } else if (items[item].equals("Choose from Library")) {
                     Intent intent = new Intent(
@@ -507,7 +511,7 @@ public class RegisterActivity extends FOSBaseActivity {
                     bm.compress(Bitmap.CompressFormat.JPEG, 85, fOut);
                     fOut.flush();
                     fOut.close();
-                    mPhotoURI = Uri.fromFile(file);
+                    mPhotoURI = FileProvider.getUriForFile(RegisterActivity.this, getApplicationContext().getPackageName() + ".provider", file);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
