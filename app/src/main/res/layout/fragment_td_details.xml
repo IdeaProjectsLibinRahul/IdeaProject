@@ -352,7 +352,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
                             android:ellipsize="end"
-                            android:text="Anoop"
                             app:fos_textview_font="sansation_bold" />
 
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -361,7 +360,6 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="9867556651"
                             app:fos_textview_font="sansation_bold" />
 
                     </LinearLayout>
@@ -414,7 +412,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Visited" />
+                                 />
 
 
                             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -423,7 +421,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="12/03/2017" />
+                                 />
 
 
                         </LinearLayout>
@@ -441,7 +439,7 @@
                             style="@style/DetailsViewText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Payment Collected" />
+                            />
 
 
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -457,7 +455,7 @@
                             style="@style/DetailsViewText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="1000 Rs" />
+                            />
 
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                             style="@style/DetailsViewHeader"
@@ -471,7 +469,7 @@
                             style="@style/DetailsViewText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Amount collected" />
+                             />
                     </LinearLayout>
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -520,7 +518,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
                             android:ellipsize="end"
-                            android:text="Backer"
                             app:fos_textview_font="sansation_bold" />
 
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -529,7 +526,6 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="9867556651"
                             app:fos_textview_font="sansation_bold" />
 
                     </LinearLayout>
@@ -583,7 +579,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Follow Up" />
+                                />
 
 
                             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -592,7 +588,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="12/03/2017" />
+                                />
 
 
                         </LinearLayout>
@@ -626,7 +622,7 @@
                             style="@style/DetailsViewText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="1000 Rs" />
+                             />
 
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                             style="@style/DetailsViewHeader"
@@ -640,7 +636,7 @@
                             style="@style/DetailsViewText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Customer like to share " />
+                            />
                     </LinearLayout>
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -689,7 +685,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
                             android:ellipsize="end"
-                            android:text="Muhamadh"
                             app:fos_textview_font="sansation_bold" />
 
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -698,7 +693,6 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="9867556651"
                             app:fos_textview_font="sansation_bold" />
 
                     </LinearLayout>
@@ -708,14 +702,14 @@
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Nakshathra Communication" />
+                         />
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                         android:id="@+id/textViewFromExeMyIdeaCode"
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="KRCOC00012" />
+                         />
 
                     <View
                         android:layout_width="match_parent"
@@ -765,7 +759,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Retained" />
+                                 />
 
 
                             <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
@@ -774,7 +768,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="12/03/2017" />
+                               />
 
 
                         </LinearLayout>
@@ -792,10 +786,11 @@
                             style="@style/DetailsViewText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Tariff Related Competition" />
+                             />
 
 
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                            android:id="@+id/textViewFromExeAmountCollectedTitle"
                             style="@style/DetailsViewHeader"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -808,7 +803,7 @@
                             style="@style/DetailsViewText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="1000 Rs" />
+                             />
 
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                             style="@style/DetailsViewHeader"
@@ -822,7 +817,7 @@
                             style="@style/DetailsViewText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Customer specific reason" />
+                            />
                     </LinearLayout>
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView

@@ -165,18 +165,6 @@
                             android:layout_weight="1" />
                     </LinearLayout>
 
-                    <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                        style="@style/DetailsViewHeader"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Active Reason"
-                        app:fos_textview_font="sansation_bold" />
-
-                    <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                        android:id="@+id/textViewActiveReason"
-                        style="@style/DetailsViewText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -187,9 +175,10 @@
                             style="@style/DetailsViewHeader"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:text="Active Reason"
                             android:layout_weight="1"
-                            android:text="Rate Plan"
                             app:fos_textview_font="sansation_bold" />
+
 
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                             style="@style/DetailsViewHeader"
@@ -198,6 +187,7 @@
                             android:layout_weight="1"
                             android:text="CR Limit"
                             app:fos_textview_font="sansation_bold" />
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -205,8 +195,9 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
+
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                            android:id="@+id/textViewRatePlan"
+                            android:id="@+id/textViewActiveReason"
                             style="@style/DetailsViewText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -220,20 +211,20 @@
                             android:layout_weight="1" />
                     </LinearLayout>
 
+
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                         style="@style/DetailsViewHeader"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Address"
+                        android:text="Rate Plan"
                         app:fos_textview_font="sansation_bold" />
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                        android:id="@+id/textViewAddress"
+                        android:id="@+id/textViewRatePlan"
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/dummy_address" />
-
+                     />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -278,6 +269,21 @@
                             android:layout_weight="1" />
                     </LinearLayout>
 
+                    <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                        style="@style/DetailsViewHeader"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Address"
+                        app:fos_textview_font="sansation_bold" />
+
+                    <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+                        android:id="@+id/textViewAddress"
+                        style="@style/DetailsViewText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dummy_address" />
+
+
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recViewOther"
                         android:layout_width="match_parent"
@@ -292,10 +298,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/main_content_vertical_spacing"
                 android:elevation="@dimen/cardview_default_elevation"
+                android:visibility="gone"
                 app:cardBackgroundColor="@color/title_zsm"
                 app:cardCornerRadius="@dimen/card_corner_radius"
-                app:cardPreventCornerOverlap="true"
-                android:visibility="gone">
+                app:cardPreventCornerOverlap="true">
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                     style="@style/DetailsTitleViewText"
@@ -461,10 +467,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/main_content_vertical_spacing"
                 android:elevation="@dimen/cardview_default_elevation"
+                android:visibility="gone"
                 app:cardBackgroundColor="@color/title_mico"
                 app:cardCornerRadius="@dimen/card_corner_radius"
-                app:cardPreventCornerOverlap="true"
-                android:visibility="gone">
+                app:cardPreventCornerOverlap="true">
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                     style="@style/DetailsTitleViewText"
@@ -629,10 +635,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/main_content_vertical_spacing"
                 android:elevation="@dimen/cardview_default_elevation"
+                android:visibility="gone"
                 app:cardBackgroundColor="@color/title_executive_stroke"
                 app:cardCornerRadius="@dimen/card_corner_radius"
-                app:cardPreventCornerOverlap="true"
-                android:visibility="gone">
+                app:cardPreventCornerOverlap="true">
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                     style="@style/DetailsTitleViewText"
@@ -811,8 +817,7 @@
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/form_submit_title"
                 app:cardCornerRadius="@dimen/card_corner_radius"
-                app:cardPreventCornerOverlap="true"
-                >
+                app:cardPreventCornerOverlap="true">
 
                 <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                     android:id="@+id/FOSTextView2"

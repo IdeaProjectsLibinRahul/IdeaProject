@@ -421,7 +421,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                 editTextRemarks.setText(reminderData.getRemarks());
             }
             //if not visited
-            if (((SpinnerData) spnStatus.getSelectedItem()).getId() == 2) {
+            if (((SpinnerData) spnStatus.getSelectedItem()).getId() == Constants.VisitStatus.FOLLOW_UP.getValue()) {
                 linLayoutFeedback.setVisibility(View.GONE);
                 linLayoutPaidAmount.setVisibility(View.GONE);
                 linLayoutReminder.setVisibility(View.VISIBLE);
@@ -462,7 +462,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                 if (fromExecutive.getTotalVisit() > 0) {
                     textViewFromExeVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromExecutive.getVisitStatus(), visitStatus));
                     textViewFromExeVisitFeedback.setText(SpinnerOperations.getSpinnerItem(fromExecutive.getFeedback(), feedback));
-                    if (fromExecutive.getFeedback() == 2) {
+                    if (fromExecutive.getFeedback() == 1) {
                         //payment collected
                         textViewFromExeAmountCollected.setVisibility(View.VISIBLE);
                         textViewFromExeAmountCollectedTitle.setVisibility(View.VISIBLE);
@@ -494,7 +494,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                 if (fromMico.getTotalVisit() > 0) {
                     textViewFromMicoVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromMico.getVisitStatus(), visitStatus));
                     textViewFromMicoVisitFeedback.setText(SpinnerOperations.getSpinnerItem(fromMico.getFeedback(), feedback));
-                    if (fromMico.getFeedback() == 2) {
+                    if (fromMico.getFeedback() == 1) {
                         //payment collected
                         textViewFromMicoAmountCollected.setVisibility(View.VISIBLE);
                         textViewFromMicoAmountCollectedTitle.setVisibility(View.VISIBLE);
@@ -529,7 +529,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                 if (fromZsm.getTotalVisit() > 0) {
                     textViewFromZsmVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromZsm.getVisitStatus(), visitStatus));
                     textViewFromZsmVisitFeedback.setText(SpinnerOperations.getSpinnerItem(fromZsm.getFeedback(), feedback));
-                    if (fromZsm.getFeedback() == 2) {
+                    if (fromZsm.getFeedback() == 1) {
                         //payment collected
                         textViewFromZsmAmountCollected.setVisibility(View.VISIBLE);
                         textViewFromZsmAmountCollectedTitle.setVisibility(View.VISIBLE);
@@ -714,6 +714,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 int selectedValue = detailModel.getFeedback().get(position).getId();
                 if (selectedValue == 2 || selectedValue == 3 || selectedValue == 7) {
+                    //Promise to pay on , Out of Station, Door Locked
                     linLayoutReminder.setVisibility(View.VISIBLE);
                     linLayoutPaidAmount.setVisibility(View.GONE);
 
