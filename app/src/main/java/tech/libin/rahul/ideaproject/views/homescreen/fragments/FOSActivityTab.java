@@ -164,7 +164,9 @@ public class FOSActivityTab extends FOSBaseFragment {
 
             @Override
             public void onRequestTimout() {
-                Toast.makeText(getActivity(), "TimeOut", Toast.LENGTH_SHORT).show();
+                if (getActivity() != null) {
+                    Toast.makeText(getActivity(), "TimeOut", Toast.LENGTH_SHORT).show();                }
+
                 isLoading = false;
                 progressBarLoading.setVisibility(View.GONE);
                 swipeRefreshLayout.setRefreshing(false);
@@ -175,11 +177,15 @@ public class FOSActivityTab extends FOSBaseFragment {
                 if (pageNo == 1) {
                     textViewError.setVisibility(View.VISIBLE);
                 }
-                Toast.makeText(getActivity(), "Request Failed", Toast.LENGTH_SHORT).show();
                 isLoading = false;
                 progressBarLoading.setVisibility(View.GONE);
                 maxPages = pageNo;
                 swipeRefreshLayout.setRefreshing(false);
+
+                if (getActivity() != null) {
+                    Toast.makeText(getActivity(), "Request Failed", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }

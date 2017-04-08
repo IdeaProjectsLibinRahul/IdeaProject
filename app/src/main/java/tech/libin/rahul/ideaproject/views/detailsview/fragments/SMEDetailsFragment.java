@@ -114,6 +114,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewZsmVisitedDate;
     private FOSTextView textViewZsmFeedback;
     private FOSTextView textViewFromZsmReason;
+    private FOSTextView textViewFromZsmReasonHead;
     private FOSTextView textViewZsmRemarks;
     private FOSTextView textViewFromZsmEscalateNoVisit;
 
@@ -123,6 +124,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewMicoVisitedDate;
     private FOSTextView textViewMicoFeedback;
     private FOSTextView textViewFromMicoReason;
+    private FOSTextView textViewFromMicoReasonHead;
     private FOSTextView textViewMicoRemarks;
     private FOSTextView textViewFromMicoEscalateNoVisit;
 
@@ -135,6 +137,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewExeVisitedDate;
     private FOSTextView textViewExeFeedback;
     private FOSTextView textViewFromExeReason;
+    private FOSTextView textViewFromExeReasonHead;
     private FOSTextView textViewExeRemarks;
     private FOSTextView textViewFromExeEscalateNoVisit;
 
@@ -213,6 +216,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         textViewZsmVisitedDate = (FOSTextView) view.findViewById(R.id.textViewFromZsmVisitedDate);
         textViewZsmFeedback = (FOSTextView) view.findViewById(R.id.textViewFromZsmVisitFeedback);
         textViewFromZsmReason = (FOSTextView) view.findViewById(R.id.textViewFromZsmReason);
+        textViewFromZsmReasonHead = (FOSTextView) view.findViewById(R.id.textViewFromZsmReasonHead);
         textViewZsmRemarks = (FOSTextView) view.findViewById(R.id.textViewFromZsmRemarks);
         textViewFromZsmEscalateNoVisit = (FOSTextView) view.findViewById(R.id.textViewFromZsmEscalateNoVisit);
 
@@ -223,6 +227,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         textViewMicoFeedback = (FOSTextView) view.findViewById(R.id.textViewFromMicoVisitFeedback);
         textViewMicoRemarks = (FOSTextView) view.findViewById(R.id.textViewFromMicoRemarks);
         textViewFromMicoReason = (FOSTextView) view.findViewById(R.id.textViewFromMicoReason);
+        textViewFromMicoReasonHead = (FOSTextView) view.findViewById(R.id.textViewFromMicoReasonHead);
         textViewFromMicoEscalateNoVisit = (FOSTextView) view.findViewById(R.id.textViewFromMicoEscalateNoVisit);
 
         textViewExeName = (FOSTextView) view.findViewById(R.id.textViewFromExeName);
@@ -233,6 +238,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         textViewExeVisitedDate = (FOSTextView) view.findViewById(R.id.textViewFromExeVisitedDate);
         textViewExeFeedback = (FOSTextView) view.findViewById(R.id.textViewFromExeVisitFeedback);
         textViewFromExeReason = (FOSTextView) view.findViewById(R.id.textViewFromExeReason);
+        textViewFromExeReasonHead = (FOSTextView) view.findViewById(R.id.textViewFromExeReasonHead);
         textViewExeRemarks = (FOSTextView) view.findViewById(R.id.textViewFromExeRemarks);
         textViewFromExeEscalateNoVisit = (FOSTextView) view.findViewById(R.id.textViewFromExeEscalateNoVisit);
 
@@ -595,9 +601,12 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     textViewExeVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromExecutive.getVisitStatus(), detailModel.getVisitStatus()));
 
                     textViewExeFeedback.setText(SpinnerOperations.getSpinnerItem(fromExecutive.getFeedback(), detailModel.getFeedback()));
-                    if (detailModel.getReason() != null && fromExecutive.getReason() != 5)
+                    if (detailModel.getReason() != null && fromExecutive.getFeedback() != 5) {
+                        textViewFromExeReason.setVisibility(View.VISIBLE);
+                        textViewFromExeReasonHead.setVisibility(View.VISIBLE);
                         textViewFromExeReason.setText(SpinnerOperations.getSpinnerItem(fromExecutive.getReason(), detailModel.getReason()));
 
+                    }
                     textViewExeVisitedDate.setText(fromExecutive.getVisitedDate());
                     textViewExeRemarks.setText(fromExecutive.getRemarks());
                 } else {
@@ -626,9 +635,11 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     textViewMicoVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromMico.getVisitStatus(), detailModel.getVisitStatus()));
 
                     textViewMicoFeedback.setText(SpinnerOperations.getSpinnerItem(fromMico.getFeedback(), detailModel.getFeedback()));
-                    if (detailModel.getReason() != null && fromMico.getReason() != 5)
+                    if (detailModel.getReason() != null && fromMico.getFeedback() != 5) {
+                        textViewFromMicoReason.setVisibility(View.VISIBLE);
+                        textViewFromMicoReasonHead.setVisibility(View.VISIBLE);
                         textViewFromMicoReason.setText(SpinnerOperations.getSpinnerItem(fromMico.getReason(), detailModel.getReason()));
-
+                    }
                     textViewMicoVisitedDate.setText(fromMico.getVisitedDate());
                     textViewMicoRemarks.setText(fromMico.getRemarks());
                 } else {
@@ -656,9 +667,11 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     textViewZsmVisitStatus.setText(SpinnerOperations.getSpinnerItem(fromZsm.getVisitStatus(), detailModel.getVisitStatus()));
 
                     textViewZsmFeedback.setText(SpinnerOperations.getSpinnerItem(fromZsm.getFeedback(), detailModel.getFeedback()));
-                    if (detailModel.getReason() != null && fromZsm.getReason() != 5)
+                    if (detailModel.getReason() != null && fromZsm.getFeedback() != 5) {
+                        textViewFromZsmReason.setVisibility(View.VISIBLE);
+                        textViewFromZsmReasonHead.setVisibility(View.VISIBLE);
                         textViewFromZsmReason.setText(SpinnerOperations.getSpinnerItem(fromZsm.getReason(), detailModel.getReason()));
-
+                    }
                     textViewZsmVisitedDate.setText(fromZsm.getVisitedDate());
                     textViewZsmRemarks.setText(fromZsm.getRemarks());
                 } else {

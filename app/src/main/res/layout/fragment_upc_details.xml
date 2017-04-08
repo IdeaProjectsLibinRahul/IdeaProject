@@ -752,6 +752,7 @@
                         android:layout_marginTop="3dp"
                         android:gravity="top|left"
                         android:hint="@string/hint_land_marks"
+                        android:inputType="text"
                         android:maxLength="150"
                         android:maxLines="1"
                         android:minHeight="@dimen/input_minimum_height" />
@@ -880,6 +881,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="9dp"
                         android:gravity="top|left"
+                        android:inputType="text"
+                        android:maxLines="5"
                         android:hint="@string/hint_remarks"
                         android:maxLength="250"
                         android:minHeight="100dp" />
