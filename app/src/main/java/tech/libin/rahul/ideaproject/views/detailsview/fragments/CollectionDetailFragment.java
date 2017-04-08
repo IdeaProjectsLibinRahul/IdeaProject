@@ -147,7 +147,6 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
     private GoogleMap mMap;
     private Constants.ActivityType activityType;
     private SupportMapFragment mapFragment;
-    private GPSTracker gpsTracker;
     private FOSSpinnerAdapter statusAdapter;
     private FOSSpinnerAdapter feedbackAdapter;
 
@@ -181,7 +180,6 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
 
     //region initComponents
     private void initComponents() {
-        gpsTracker = new GPSTracker(getActivity());
 
         textViewName = (FOSTextView) view.findViewById(R.id.textViewName);
         textViewMobile = (FOSTextView) view.findViewById(R.id.textViewPhoneNum);
@@ -443,13 +441,15 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
         requestModel.setRemarks(editTextRemarks.getText().toString().trim());
         requestModel.setRecordType(Constants.RecordType.COLLECTION);
         requestModel.setLandmark(editTextLandmark.getText().toString());
+
         GPSTracker gpsTracker = new GPSTracker(getActivity());
         if (switchUpdateLocation.isChecked()) {
-            if (gpsTracker != null) {
-                double latitude = gpsTracker.getLatitude();
-                double longitude = gpsTracker.getLongitude();
-                requestModel.setLatitude(latitude + "");
-                requestModel.setLongitude(longitude + "");
+            if (gpsTracker.getIsGPSTrackingEnabled()) {
+                requestModel.setLatitude(gpsTracker.getLatitude() + "");
+                requestModel.setLongitude(gpsTracker.getLongitude() + "");
+            } else {
+                gpsTracker.showSettingsAlert();
+                return;
             }
         }
         requestModel.setReminder("");
@@ -540,7 +540,6 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
         {
             editTextLandmark.setText(model.getLocation().getLandmark());
         }
-
 
         loadPreviousData();
     }

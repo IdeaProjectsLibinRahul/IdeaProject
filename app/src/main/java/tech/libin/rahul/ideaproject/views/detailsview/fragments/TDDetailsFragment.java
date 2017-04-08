@@ -102,7 +102,6 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
     private String userPhone;
     private Constants.ActivityType activityType;
     private SupportMapFragment mapFragment;
-    private GPSTracker gpsTracker;
     private GoogleMap mMap;
     List<SpinnerData> visitStatus;
     List<SpinnerData> feedback;
@@ -169,7 +168,6 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
 
     //region initComponents
     private void initComponents() {
-        gpsTracker = new GPSTracker(getActivity());
 
         textViewCustNum = (FOSTextView) view.findViewById(R.id.textViewName);
         textViewMobile = (FOSTextView) view.findViewById(R.id.textViewPhoneNum);
@@ -328,8 +326,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
         {
             editTextLandmark.setText(model.getLocation().getLandmark());
         }
-
-
+        
         loadPreviousData();
     }
 
@@ -835,12 +832,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
             double latitude = Double.parseDouble(detailModel.getLocation().getLatitude());
             double longitude = Double.parseDouble(detailModel.getLocation().getLongitude());
             latLng = new LatLng(latitude, longitude);
-        } else if (gpsTracker != null) {
-            double latitude = gpsTracker.getLatitude();
-            double longitude = gpsTracker.getLongitude();
-            latLng = new LatLng(latitude, longitude);
-            Log.d(TAG, "onMapReady: (lat, long) - (" + latitude + ", " + longitude + ")");
-        } else {
+        }  else {
             latLng = new LatLng(0, 0);
         }
 

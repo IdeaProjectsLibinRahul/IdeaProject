@@ -135,7 +135,6 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private Constants.ActivityType activityType;
     private SupportMapFragment mapFragment;
     private UpcDetailModel detailModel;
-    private GPSTracker gpsTracker;
     //endregion
 
     //region onCreateView
@@ -158,7 +157,6 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private void initComponents() {
 
         //to get current location from device
-        gpsTracker = new GPSTracker(getActivity());
 
         textViewCustNum = (FOSTextView) view.findViewById(R.id.textViewName);
         textViewMobile = (FOSTextView) view.findViewById(R.id.textViewPhoneNum);
@@ -635,13 +633,14 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         requestModel.setRecordType(Constants.RecordType.UPC);
         requestModel.setLandmark(editTextLandmark.getText().toString());
 
-        gpsTracker = new GPSTracker(getActivity());
+        GPSTracker gpsTracker = new GPSTracker(getActivity());
         if (switchUpdateLocation.isChecked()) {
-            if (gpsTracker != null) {
-                double latitude = gpsTracker.getLatitude();
-                double longitude = gpsTracker.getLongitude();
-                requestModel.setLatitude(latitude + "");
-                requestModel.setLongitude(longitude + "");
+            if (gpsTracker.getIsGPSTrackingEnabled()) {
+                requestModel.setLatitude(gpsTracker.getLatitude() + "");
+                requestModel.setLongitude(gpsTracker.getLongitude() + "");
+            } else {
+                gpsTracker.showSettingsAlert();
+                return;
             }
         }
 

@@ -101,7 +101,6 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private Constants.ActivityType activityType;
     private SupportMapFragment mapFragment;
     private Marker mMarker;
-    private GPSTracker gpsTracker;
     private SmeDetailModel detailModel;
     private RatingBar ratingBar;
     private FOSTextView textViewRatingInfo;
@@ -168,7 +167,6 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 
     //region initComponents
     private void initComponents() {
-        gpsTracker = new GPSTracker(getActivity());
 
         textViewName = (FOSTextView) view.findViewById(R.id.textViewName);
         textViewMobileNum = (FOSTextView) view.findViewById(R.id.textViewPhoneNum);
