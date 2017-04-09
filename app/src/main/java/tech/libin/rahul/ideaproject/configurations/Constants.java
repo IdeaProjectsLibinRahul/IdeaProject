@@ -115,4 +115,25 @@ public class Constants {
         public static final String DETAILS_OBJECT_TAB = "detailsObjectTab";
     }
 
+    public enum VisitStatus {
+        @SerializedName("1")
+        VISITED(1),
+        @SerializedName("2")
+        RETAINED(2),
+        @SerializedName("3")
+        NOT_RETAINED(3),
+        @SerializedName("4")
+        FOLLOW_UP(4);
+
+        private int value;
+
+        private VisitStatus(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
 }
