@@ -14,6 +14,7 @@ public class DetailFromSMERoleModel {
     int reason;
     String visitedDate;
     String remarks;
+    int totalVisit;
 
     public String getMyIdea() {
         return myIdea;
@@ -85,5 +86,13 @@ public class DetailFromSMERoleModel {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public int getTotalVisit() {
+        return totalVisit;
+    }
+
+    public void setTotalVisit(int totalVisit) {
+        this.totalVisit = totalVisit;
     }
 }

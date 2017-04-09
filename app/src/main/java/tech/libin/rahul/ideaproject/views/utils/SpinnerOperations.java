@@ -8,15 +8,15 @@ import tech.libin.rahul.ideaproject.service.models.SpinnerData;
  * Created by rahul on 3/24/2017.
  */
 
-public  class SpinnerOperations {
+public class SpinnerOperations {
     //region findSpinnerElementPosition
     public static String getSpinnerItem(int value, List<SpinnerData> spinnerData) {
         for (SpinnerData spnData : spinnerData) {
             if (spnData.getId() == value) {
-                spnData.getValue();
+                return spnData.getValue();
             }
         }
-        return "Nill";
+        return "Nil";
     }
     //endregion
 }

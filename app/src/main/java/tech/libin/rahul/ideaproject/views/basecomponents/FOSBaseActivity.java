@@ -100,9 +100,20 @@ public abstract class FOSBaseActivity extends AppCompatActivity {
             textViewName = (TextView) toolbar.findViewById(R.id.textViewUserName);
             textViewPhone = (TextView) toolbar.findViewById(R.id.textViewUserPhone);
             imageViewProfilePic = (ImageView) toolbar.findViewById(R.id.imageViewProfilePic);
+
+            setToolbarEvents();
         }
 
 
+    }
+
+    private void setToolbarEvents() {
+        imageViewProfilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
 

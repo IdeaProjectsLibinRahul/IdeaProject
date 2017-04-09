@@ -11,7 +11,7 @@ public class DetailFromUPCRoleModel {
     String myIdea;
     String myIdeaCode;
     String amountPaid;
-    int status;
+    int visitStatus;
     int feedback;
     int totalVisit;
     String remarks;
@@ -33,12 +33,12 @@ public class DetailFromUPCRoleModel {
         this.myIdeaCode = myIdeaCode;
     }
 
-    public int getStatus() {
-        return status;
+    public int getVisitStatus() {
+        return visitStatus;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setVisitStatus(int status) {
+        this.visitStatus = status;
     }
 
     public String getRemarks() {
