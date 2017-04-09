@@ -12,7 +12,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import tech.libin.rahul.ideaproject.R;
 import tech.libin.rahul.ideaproject.events.SearchEvent;
-import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseDialog;
 import tech.libin.rahul.ideaproject.views.widgets.button.FOSButton;
 import tech.libin.rahul.ideaproject.views.widgets.edittext.FOSEditText;
 
@@ -20,7 +19,7 @@ import tech.libin.rahul.ideaproject.views.widgets.edittext.FOSEditText;
  * Created by libin on 05/03/17.
  */
 
-public class FOSSearchDialog extends FOSBaseDialog {
+public class FOSSearchDialog extends DialogFragment {
     private View view;
     private ImageView imageViewBackButton;
     private FOSButton buttonSearch;
