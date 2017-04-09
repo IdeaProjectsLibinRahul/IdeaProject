@@ -18,6 +18,7 @@ public class FormSubmitModel {
     int reason;
     String remarks;
     String reminder;
+    String landmark;
     Constants.RecordType recordType;
 
     public Long getUserId() {
@@ -106,5 +107,13 @@ public class FormSubmitModel {
 
     public void setAmountPaid(String amountPaid) {
         this.amountPaid = amountPaid;
+    }
+
+    public String getLandmark() {
+        return landmark;
+    }
+
+    public void setLandmark(String landmark) {
+        this.landmark = landmark;
     }
 }

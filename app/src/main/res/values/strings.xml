@@ -2,7 +2,7 @@
     <string name="app_name">My Visit</string>
     <string name="collection">Collection</string>
     <string name="retention">Retention</string>
-    <string name="activities">Activities</string>
+    <string name="activities">Actioned</string>
     <string name="new_activities">New Activities</string>
     <string name="customer_type">Customer Type</string>
     <string name="reminders">Reminders</string>
@@ -26,7 +26,8 @@
     <string name="zip">Zip</string>
     <string name="dummy_address"> Adress1 \nAddress2 A \nAddress 3\n Address4</string>
     <string name="visit_status">Visit Status</string>
-    <string name="last_visited_date">Last Visited On</string>
+    <string name="visit_feedback">Feedback </string>
+    <string name="last_visited_date">Visited On</string>
     <string name="view_location">View Location</string>
     <string name="update_location">Update Location</string>
     <string name="reminder_hint">mm/dd/yyyy</string>
@@ -45,13 +46,16 @@
     <string name="remarks">Remarks</string>
     <string name="total_visit">Total Visit</string>
     <string name="rating">Rate Us</string>
+    <string name="land_mark">Landmark</string>
     <string name="hint_remarks">Please write your comments here...</string>
+    <string name="hint_land_marks">Write landmark</string>
     <string name="title_submit">UPDATE VISIT STATUS</string>
-    <string name="title_from_executive">EXECUTIVE VISIT</string>
-    <string name="title_from_mico">MICO VISIT</string>
+    <string name="title_from_executive">EXECUTIVE VISIT DETAILS</string>
+    <string name="title_from_mico">MICO VISIT DETAILS</string>
+    <string name="title_from_zsm">ZSM VISIT DETAILS</string>
     <string name="title_details">CUSTOMER DETAILS</string>
     <string name="submit">Submit</string>
-    <string name="reminder_date">Revisit Date</string>
+    <string name="follow_up_date">Follow Up Date</string>
     <string name="amount_collected">Amount Collected</string>
 
     <string name="upc">UPC</string>
@@ -70,11 +74,15 @@
     <string name="type">Type</string>
     <string name="crm_status">Crm Status</string>
     <string name="my_idea_code">My Idea Code</string>
-    <string name="my_idea_location">My Idea Location</string>
+    <string name="my_idea_location">My Idea Allocation</string>
     <string name="land_line1">Alternate Number 1</string>
     <string name="land_line2">Alternate Number 2</string>
     <string name="activatiom_mi">Activation Mi</string>
     <string name="my_idea">My Idea</string>
+
+    <string name="warn_time_out_title">Time Out</string>
+    <string name="warn_time_out_message">Your request timed out</string>
+    <string name="warn_server_error">Request Failed</string>
 
     <string name="bal_00">Bal_00</string>
     <string name="bal_30">Bal_30</string>
@@ -116,6 +124,17 @@
     <string name="personal">Personal</string>
     <string name="login">Login</string>
     <string name="official">Official</string>
+    <string name="storage_permission_message">Please enable storage access permission to add photo</string>
+    <string name="verify">Verify</string>
+    <string name="otp">OTP</string>
+    <string name="timer_dummy">00:00 s</string>
+    <string name="resend_password">Resend Password</string>
+
+
+    <string name="warn_not_visited">Not visited</string>
+
+
+    <string name="warn_not_visited">Not visited</string>
 
 
 </resources>

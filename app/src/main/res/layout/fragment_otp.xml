@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/login_background"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_horizontal_margin">
+
+    <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSEditText
+        android:id="@+id/editTextOtp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:hint="@string/otp" />
+
+    <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+        android:id="@+id/textViewTimer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center_horizontal"
+        android:text="@string/timer_dummy"
+        android:textColor="@android:color/holo_red_light"
+        android:textSize="22sp" />
+
+    <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
+        android:id="@+id/textViewResendOtp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/resend_password"
+        android:textColor="@color/button_back"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="invisible" />
+
+    <tech.libin.rahul.ideaproject.views.widgets.button.FOSButton
+        android:id="@+id/buttonOtpVerify"
+        style="@style/LoginButton"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_height"
+        android:layout_marginTop="@dimen/button_vertical_margin"
+        android:text="@string/verify" />
+
+</LinearLayout>

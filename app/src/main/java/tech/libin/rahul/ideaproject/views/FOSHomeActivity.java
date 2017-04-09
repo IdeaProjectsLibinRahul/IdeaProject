@@ -36,6 +36,7 @@ public class FOSHomeActivity extends FOSBaseActivity {
         if (user != null) {
             setToolbarUsername(user.getName());
             setToolbarPhoneNo(user.getPhoneNo());
+            setToolbarProfilePic(user.getProfileImage());
         }
     }
 

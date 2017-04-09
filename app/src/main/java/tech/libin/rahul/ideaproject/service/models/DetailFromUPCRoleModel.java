@@ -5,13 +5,17 @@ package tech.libin.rahul.ideaproject.service.models;
  */
 
 public class DetailFromUPCRoleModel {
-   String myIdea;
-   String myIdeaCode;
-   String amountPaid;
-   int status;
-   int feedback;
-   String remarks;
-   String visitedDate;
+
+    String name;
+    String phoneNum;
+    String myIdea;
+    String myIdeaCode;
+    String amountPaid;
+    int visitStatus;
+    int feedback;
+    int totalVisit;
+    String remarks;
+    String visitedDate;
 
     public String getMyIdea() {
         return myIdea;
@@ -29,12 +33,12 @@ public class DetailFromUPCRoleModel {
         this.myIdeaCode = myIdeaCode;
     }
 
-    public int getStatus() {
-        return status;
+    public int getVisitStatus() {
+        return visitStatus;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setVisitStatus(int status) {
+        this.visitStatus = status;
     }
 
     public String getRemarks() {
@@ -67,5 +71,29 @@ public class DetailFromUPCRoleModel {
 
     public void setFeedback(int feedback) {
         this.feedback = feedback;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhoneNum() {
+        return phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
+    }
+
+    public int getTotalVisit() {
+        return totalVisit;
+    }
+
+    public void setTotalVisit(int totalVisit) {
+        this.totalVisit = totalVisit;
     }
 }

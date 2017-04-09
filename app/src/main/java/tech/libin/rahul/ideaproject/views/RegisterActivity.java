@@ -1,7 +1,12 @@
 package tech.libin.rahul.ideaproject.views;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -11,9 +16,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -23,33 +31,43 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import tech.libin.rahul.ideaproject.R;
 import tech.libin.rahul.ideaproject.configurations.Constants;
 import tech.libin.rahul.ideaproject.facade.FOSFacade;
 import tech.libin.rahul.ideaproject.facade.FOSFacadeImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
+import tech.libin.rahul.ideaproject.service.requests.RegisterRequest;
+import tech.libin.rahul.ideaproject.service.responses.RegisterResponse;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
-import tech.libin.rahul.ideaproject.views.models.RegisterModel;
+import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseActivity;
 import tech.libin.rahul.ideaproject.views.widgets.button.FOSButton;
 import tech.libin.rahul.ideaproject.views.widgets.dialogs.FOSDialog;
 import tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText;
 import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends FOSBaseActivity {
 
     public static final int FLIP_INTERVAL = 2000;
     public static final String COLOR_TRANSPARENT = "#00000000";
     public static final String COLOR_BACKGROUND = "#55000000";
+    public static final String DIR_NAME = "MyVisit";
+    public static final String USER_PIC_PREFIX = "user_pic_";
+    private static final int PERMISSION_REQUEST_CODE = 1001;
     //region declarations
     private static final int CAMERA_PIC_REQUEST = 1003;
+    private static final int SELECT_PICTURE = 1004;
+    private static final String TAG = RegisterActivity.class.getName();
     String mCurrentPhotoPath;
     private FloatingActionButton floatingActionButton;
     private FOSIconEditText editTextRegName;
@@ -80,7 +98,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     private EditText selectedEditText;
 
-    private float lastX;
+    private Uri outputFileUri;
+    private FOSFacade facade;
+
     //endregion
 
     //region onCreate
@@ -93,10 +113,21 @@ public class RegisterActivity extends AppCompatActivity {
         setListeners();
         initViewFlipper();
     }
+
+    @Override
+    protected void setToolbarElevation() {
+        setToolbarElevation(0);
+    }
+
+    @Override
+    protected void setHasToolBar() {
+        setHasToolBar(false);
+    }
     //endregion
 
     //region initComponents
     private void initComponents() {
+        facade = new FOSFacadeImpl();
         floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         editTextRegName = (FOSIconEditText) findViewById(R.id.editTextRegName);
         editTextRegDOB = (FOSIconEditText) findViewById(R.id.editTextRegDOB);
@@ -128,10 +159,14 @@ public class RegisterActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(takePictureIntent, CAMERA_PIC_REQUEST);
+                boolean storagePermission = ActivityCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
 
-                // dispatchTakePictureIntent();
+                if (!storagePermission) {
+                    ActivityCompat.requestPermissions(RegisterActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+                } else {
+                    openImageIntent();
+                }
+
             }
         });
 
@@ -155,96 +190,60 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (isValid()) {
-                    FOSFacade facade = new FOSFacadeImpl();
-                    RegisterModel registerModel = new RegisterModel();
-                    registerModel.setName(editTextRegName.getText().toString());
-                    registerModel.setAddress1(editTextRegAddress1.getText().toString());
-                    registerModel.setAddress2(editTextRegAddress2.getText().toString());
-                    registerModel.setAddress3(editTextRegAddress3.getText().toString());
-                    registerModel.setZip(editTextRegZip.getText().toString());
-                    registerModel.setFatherName(editTextRegFatherName.getText().toString());
-                    registerModel.setMiCode(editTextRegMICode.getText().toString());
-                    registerModel.setMobileNum(editTextRegMobileNo.getText().toString());
-                    registerModel.setPassword(editTextRegPassword.getText().toString());
-                    if (rdbMico.isChecked()) {
-                        registerModel.setRole(Constants.Role.MICO);
-                    } else if (rdbZsm.isChecked()) {
-                        registerModel.setRole(Constants.Role.ZSM);
 
-                    } else if (rdbExecutive.isChecked()) {
-                        registerModel.setRole(Constants.Role.EXECUTIVE);
-                    }
-
-                    registerModel.setName(editTextRegName.getText().toString());
-                    registerModel.setName(editTextRegName.getText().toString());
-                    registerModel.setDob(editTextRegDOB.getText().toString());
-                    registerModel.setDateOfJoining(editTextRegJoinDate.getText().toString());
-
-                    facade.doRegistrationDummy(registerModel, new ServiceCallback<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            String title = "Success";
-                            fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, response, true);
-                            fosDialog.show(getSupportFragmentManager(), "tag");
-
-                        }
-
-                        @Override
-                        public void onRequestTimout() {
-                            String title = "Info";
-                            fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, getResources().getString(R.string.warn_request_timed_out), false);
-                            fosDialog.show(getSupportFragmentManager(), "tag");
-
-                        }
-
-                        @Override
-                        public void onRequestFail(FOSError error) {
-                            String message = error.getErrorMessage();
-                            String title = "Info";
-                            fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, message, false);
-
-                            fosDialog.show(getSupportFragmentManager(), "tag");
-                        }
-                    });
+                    sendRegisterRequest();
+//                    RegisterModel registerModel = new RegisterModel();
+//                    registerModel.setName(editTextRegName.getText());
+//                    registerModel.setAddress1(editTextRegAddress1.getText());
+//                    registerModel.setAddress2(editTextRegAddress2.getText());
+//                    registerModel.setAddress3(editTextRegAddress3.getText());
+//                    registerModel.setZip(editTextRegZip.getText());
+//                    registerModel.setFatherName(editTextRegFatherName.getText());
+//                    registerModel.setMiCode(editTextRegMICode.getText());
+//                    registerModel.setMobileNum(editTextRegMobileNo.getText());
+//                    registerModel.setPassword(editTextRegPassword.getText());
+//                    if (rdbMico.isChecked()) {
+//                        registerModel.setRole(Constants.Role.MICO);
+//                    } else if (rdbZsm.isChecked()) {
+//                        registerModel.setRole(Constants.Role.ZSM);
+//
+//                    } else if (rdbExecutive.isChecked()) {
+//                        registerModel.setRole(Constants.Role.EXECUTIVE);
+//                    }
+//
+//                    registerModel.setName(editTextRegName.getText());
+//                    registerModel.setName(editTextRegName.getText());
+//                    registerModel.setDob(editTextRegDOB.getText());
+//                    registerModel.setDateOfJoining(editTextRegJoinDate.getText());
+//
+//                    facade.doRegistrationDummy(registerModel, new ServiceCallback<String>() {
+//                        @Override
+//                        public void onResponse(String response) {
+//                            String title = "Success";
+//                            fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, response, true);
+//                            fosDialog.show(getSupportFragmentManager(), "tag");
+//
+//                        }
+//
+//                        @Override
+//                        public void onRequestTimout() {
+//                            String title = "Info";
+//                            fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, getResources().getString(R.string.warn_request_timed_out), false);
+//                            fosDialog.show(getSupportFragmentManager(), "tag");
+//
+//                        }
+//
+//                        @Override
+//                        public void onRequestFail(FOSError error) {
+//                            String message = error.getErrorMessage();
+//                            String title = "Info";
+//                            fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, message, false);
+//
+//                            fosDialog.show(getSupportFragmentManager(), "tag");
+//                        }
+//                    });
                 }
 
-//                Map<String, String> params = new HashMap<>();
-//
-//                params.put("name", editTextRegName.getText().toString());
-//                params.put("miCode", editTextRegName.getText().toString());
-//                params.put("mobileNum", editTextRegName.getText().toString());
-//                params.put("dob", editTextRegName.getText().toString());
-//                params.put("dateOfJoining", editTextRegName.getText().toString());
-//                params.put("address1", editTextRegName.getText().toString());
-//                params.put("address2", editTextRegName.getText().toString());
-//                params.put("address3", editTextRegName.getText().toString());
-//                params.put("zip", editTextRegName.getText().toString());
-//                params.put("fatherName", editTextRegName.getText().toString());
-//                params.put("password", editTextRegName.getText().toString());
-//                Map<String, Uri> files= new HashMap<>();
-//
-//                if(mPhotoURI!=null) {
-//                    files.put("profilePic",mPhotoURI);
-//                }
-//
-//                FOSFacade facade = new FOSFacadeImpl();
-//
-//                facade.doRegistration(params, files, new ServiceCallback<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onRequestTimout() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onRequestFail(FOSError error) {
-//
-//                    }
-//                });
 
             }
         });
@@ -287,6 +286,76 @@ public class RegisterActivity extends AppCompatActivity {
         editTextRegJoinDate.getEditText().setOnTouchListener(touchListener);
     }
 
+    private void sendRegisterRequest() {
+        String name = editTextRegName.getText();
+        String miCode = editTextRegMICode.getText();
+        Constants.Role role = null;
+        if (rdbMico.isChecked()) {
+            role = Constants.Role.MICO;
+        } else if (rdbZsm.isChecked()) {
+            role = Constants.Role.ZSM;
+
+        } else if (rdbExecutive.isChecked()) {
+            role = Constants.Role.EXECUTIVE;
+        }
+
+        String mobileNo = editTextRegMobileNo.getText();
+        String dob = editTextRegDOB.getText();
+        String doj = editTextRegJoinDate.getText();
+        String address1 = editTextRegAddress1.getText();
+        String address2 = editTextRegAddress2.getText();
+        String address3 = editTextRegAddress3.getText();
+        String zip = editTextRegZip.getText();
+        String fatherName = editTextRegFatherName.getText();
+        String password = editTextRegPassword.getText();
+
+        Map<String, String> data = new HashMap<>();
+        data.put(RegisterRequest.NAME, name);
+        data.put(RegisterRequest.MI_CODE, miCode);
+        data.put(RegisterRequest.ROLE, role.toString());
+        data.put(RegisterRequest.MOBILE_NUM, mobileNo);
+        data.put(RegisterRequest.DOB, dob);
+        data.put(RegisterRequest.DOJ, doj);
+        data.put(RegisterRequest.ADDRESS1, address1);
+        data.put(RegisterRequest.ADDRESS2, address2);
+        data.put(RegisterRequest.ADDRESS3, address3);
+        data.put(RegisterRequest.ZIP, zip);
+        data.put(RegisterRequest.FATHER_NAME, fatherName);
+        data.put(RegisterRequest.PASSWORD, password);
+
+        Map<String, Uri> files = new HashMap<>();
+        if (mPhotoURI != null) {
+            files.put(RegisterRequest.IMAGE, mPhotoURI);
+        }
+
+        facade.doRegistration(data, files, new ServiceCallback<RegisterResponse>() {
+            @Override
+            public void onResponse(RegisterResponse response) {
+                String title = "Success";
+                fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, response.getMessage(), true);
+                fosDialog.show(getSupportFragmentManager(), "tag");
+
+            }
+
+            @Override
+            public void onRequestTimout() {
+                String title = "Info";
+                fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, getResources().getString(R.string.warn_request_timed_out), false);
+                fosDialog.show(getSupportFragmentManager(), "tag");
+
+            }
+
+            @Override
+            public void onRequestFail(FOSError error) {
+                String message = error.getErrorMessage();
+                String title = "Info";
+                fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, message, false);
+
+                fosDialog.show(getSupportFragmentManager(), "tag");
+            }
+        });
+    }
+
     private void initViewFlipper() {
         viewFlipper.setFlipInterval(FLIP_INTERVAL);
 
@@ -315,7 +384,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if (view == tabItemPersonal) {
                     nextView = 0;
-                } else if (view == tabItemLogin) {
+                } else if (view == tabItemOfficial) {
                     nextView = 1;
                 } else {
                     nextView = 2;
@@ -362,73 +431,111 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    private File createImageFile() throws IOException {
-// Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,
-                ".jpg",
-                storageDir);
-// Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
+    private void openImageIntent() {
+
+        final CharSequence[] items = {"Take Photo", "Choose from Library",
+                "Cancel"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+        builder.setTitle("Add Photo!");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (items[item].equals("Take Photo")) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    File f = new File(android.os.Environment
+                            .getExternalStorageDirectory(), "temp.jpg");
+                    Uri uri = FileProvider.getUriForFile(RegisterActivity.this, getApplicationContext().getPackageName() + ".provider", f);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                    startActivityForResult(intent, CAMERA_PIC_REQUEST);
+                } else if (items[item].equals("Choose from Library")) {
+                    Intent intent = new Intent(
+                            Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    intent.setType("image/*");
+                    startActivityForResult(
+                            Intent.createChooser(intent, "Select File"),
+                            SELECT_PICTURE);
+                } else if (items[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
     }
 
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                Log.i(TAG, "onRequestPermissionsResult: Permission Granted");
+                openImageIntent();
+            } else {
 
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                mPhotoURI = FileProvider.getUriForFile(this, "com.example.android.fileprovider", photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoURI);
-                startActivityForResult(takePictureIntent, CAMERA_PIC_REQUEST);
+                String message = getString(R.string.storage_permission_message);
+                Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_SHORT).show();
             }
         }
     }
-
-    private void setPic() {
-        // Get the dimensions of the View
-        int targetW = imageViewRegProfilePic.getWidth();
-        int targetH = imageViewRegProfilePic.getHeight();
-
-        // Get the dimensions of the bitmap
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-        int photoW = bmOptions.outWidth;
-        int photoH = bmOptions.outHeight;
-
-        // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
-
-        // Decode the image file into a Bitmap sized to fill the View
-        bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = scaleFactor;
-        bmOptions.inPurgeable = true;
-
-        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-        imageViewRegProfilePic.setImageBitmap(bitmap);
-    }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAMERA_PIC_REQUEST && resultCode == RESULT_OK) {
-            if (mPhotoURI != null) {
-                setPic();
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == CAMERA_PIC_REQUEST) {
+                File f = new File(Environment.getExternalStorageDirectory()
+                        .toString());
+                for (File temp : f.listFiles()) {
+                    if (temp.getName().equals("temp.jpg")) {
+                        f = temp;
+                        break;
+                    }
+                }
+                try {
+                    Bitmap bm;
+                    BitmapFactory.Options btmapOptions = new BitmapFactory.Options();
+                    btmapOptions.inSampleSize = 2;
+                    bm = BitmapFactory.decodeFile(f.getAbsolutePath(),
+                            btmapOptions);
+
+                    // bm = Bitmap.createScaledBitmap(bm, 70, 70, true);
+                    imageViewRegProfilePic.setImageBitmap(bm);
+
+                    String path = android.os.Environment
+                            .getExternalStorageDirectory()
+                            + File.separator
+                            + "test";
+                    f.delete();
+                    OutputStream fOut = null;
+                    File file = new File(path, String.valueOf(System
+                            .currentTimeMillis()) + ".jpg");
+                    fOut = new FileOutputStream(file);
+                    bm.compress(Bitmap.CompressFormat.JPEG, 85, fOut);
+                    fOut.flush();
+                    fOut.close();
+                    mPhotoURI = FileProvider.getUriForFile(RegisterActivity.this, getApplicationContext().getPackageName() + ".provider", file);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (requestCode == SELECT_PICTURE) {
+                Uri selectedImageUri = data.getData();
+                mPhotoURI = selectedImageUri;
+                String tempPath = getPath(selectedImageUri, RegisterActivity.this);
+                Bitmap bm;
+                BitmapFactory.Options btmapOptions = new BitmapFactory.Options();
+                btmapOptions.inSampleSize = 2;
+                bm = BitmapFactory.decodeFile(tempPath, btmapOptions);
+                imageViewRegProfilePic.setImageBitmap(bm);
             }
         }
+
+    }
+
+    public String getPath(Uri uri, Activity activity) {
+        String[] projection = {MediaStore.MediaColumns.DATA};
+        Cursor cursor = activity
+                .managedQuery(uri, projection, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
     }
 
     private boolean isValid() {
@@ -442,45 +549,50 @@ public class RegisterActivity extends AppCompatActivity {
         editTextRegMICode.setError(null);
 
         boolean status = true;
-        if (editTextRegName.getText().toString().trim().isEmpty()) {
+        int slideIndex = 0;
+        if (editTextRegName.getText().trim().isEmpty()) {
             status = false;
             editTextRegName.setError(getResources().getString(R.string.warn_name));
-            slideTabView(0);
+            slideIndex = 0;
         }
-        if (editTextRegDOB.getText().toString().trim().isEmpty()) {
+        if (editTextRegDOB.getText().trim().isEmpty()) {
             status = false;
             editTextRegDOB.setError(getResources().getString(R.string.warn_dob));
-            slideTabView(0);
+            slideIndex = 0;
         }
-        if (editTextRegAddress1.getText().toString().trim().isEmpty()) {
+        if (editTextRegAddress1.getText().trim().isEmpty()) {
             status = false;
             editTextRegAddress1.setError(getResources().getString(R.string.warn_address));
-            slideTabView(0);
+            slideIndex = 0;
         }
-        if (editTextRegZip.getText().toString().trim().isEmpty()) {
+        if (editTextRegZip.getText().trim().isEmpty()) {
             status = false;
             editTextRegZip.setError(getResources().getString(R.string.warn_zip));
-            slideTabView(0);
+            slideIndex = 0;
         }
-        if (editTextRegMobileNo.getText().toString().trim().isEmpty()) {
+        if (editTextRegMobileNo.getText().trim().isEmpty()) {
             status = false;
             editTextRegMobileNo.setError(getResources().getString(R.string.warn_mobile));
-            slideTabView(1);
+            slideIndex = 1;
         }
-        if (editTextRegPassword.getText().toString().trim().isEmpty()) {
+        if (editTextRegPassword.getText().trim().isEmpty()) {
             status = false;
             editTextRegPassword.setError(getResources().getString(R.string.warn_password));
-            slideTabView(1);
+            slideIndex = 1;
         }
-        if ((!editTextRegPassword.getText().toString().trim().isEmpty()) && !editTextRegPassword.getText().toString().trim().equals(editTextRegConfirmPassword.getText().toString().trim())) {
+        if ((!editTextRegPassword.getText().trim().isEmpty()) && !editTextRegPassword.getText().trim().equals(editTextRegConfirmPassword.getText().trim())) {
             status = false;
             editTextRegConfirmPassword.setError(getResources().getString(R.string.warn_password_miss_match));
-            slideTabView(1);
+            slideIndex = 1;
         }
-        if (editTextRegMICode.getVisibility() == View.VISIBLE && editTextRegMICode.getText().toString().trim().isEmpty()) {
+        if (editTextRegMICode.getVisibility() == View.VISIBLE && editTextRegMICode.getText().trim().isEmpty()) {
             status = false;
             editTextRegMICode.setError(getResources().getString(R.string.warn_mi_code));
-            slideTabView(2);
+            slideIndex = 2;
+        }
+
+        if (!status) {
+            slideTabView(slideIndex);
         }
 
         return status;

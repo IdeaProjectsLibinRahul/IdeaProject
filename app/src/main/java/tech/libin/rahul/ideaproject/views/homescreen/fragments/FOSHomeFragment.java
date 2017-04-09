@@ -31,7 +31,7 @@ import tech.libin.rahul.ideaproject.views.homescreen.viewmodels.ActivityModel;
 
 public class FOSHomeFragment extends FOSBaseFragment {
 
-    public static final int PERMISSION_REQUEST_CODE = 1001;
+    private static final int PERMISSION_REQUEST_CODE = 1001;
     private static final String TAG = FOSHomeFragment.class.getName();
     private View mView;
 

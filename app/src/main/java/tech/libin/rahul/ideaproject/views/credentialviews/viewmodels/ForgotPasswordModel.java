@@ -1,32 +1,27 @@
-package tech.libin.rahul.ideaproject.service.responses;
+package tech.libin.rahul.ideaproject.views.credentialviews.viewmodels;
 
 import tech.libin.rahul.ideaproject.configurations.Constants;
-import tech.libin.rahul.ideaproject.service.responses.base.FOSBaseResponse;
 
 /**
- * Created by 10945 on 10/27/2016.
+ * Created by libin on 24/03/17.
  */
 
-public class RegisterResponse extends FOSBaseResponse {
+public class ForgotPasswordModel {
     private Constants.Status status;
     private String message;
 
-    @Override
     public Constants.Status getStatus() {
         return status;
     }
 
-    @Override
     public void setStatus(Constants.Status status) {
         this.status = status;
     }
 
-    @Override
     public String getMessage() {
         return message;
     }
 
-    @Override
     public void setMessage(String message) {
         this.message = message;
     }

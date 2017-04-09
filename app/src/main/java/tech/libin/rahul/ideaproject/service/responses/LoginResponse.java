@@ -26,6 +26,7 @@ public class LoginResponse extends FOSBaseResponse {
         private Constants.Type type;
         private String name;
         private String phoneNo;
+        private String profileImageUrl;
 
         public Long getUserId() {
             return userId;
@@ -73,6 +74,14 @@ public class LoginResponse extends FOSBaseResponse {
 
         public void setPhoneNo(String phoneNo) {
             this.phoneNo = phoneNo;
+        }
+
+        public String getProfileImageUrl() {
+            return profileImageUrl;
+        }
+
+        public void setProfileImageUrl(String profileImageUrl) {
+            this.profileImageUrl = profileImageUrl;
         }
     }
 }

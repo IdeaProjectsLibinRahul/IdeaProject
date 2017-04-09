@@ -14,17 +14,19 @@ public class User {
     private Constants.Type type;
     private String name;
     private String phoneNo;
+    private String profileImage;
 
     public User() {
     }
 
-    public User(LoginResponse.Response response){
+    public User(LoginResponse.Response response) {
         userId = response.getUserId();
         sessionKey = response.getSessionKey();
         role = response.getRole();
         type = response.getType();
         name = response.getName();
         phoneNo = response.getPhoneNo();
+        profileImage = response.getProfileImageUrl();
     }
 
     public Long getUserId() {
@@ -73,5 +75,13 @@ public class User {
 
     public void setPhoneNo(String phoneNo) {
         this.phoneNo = phoneNo;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 }

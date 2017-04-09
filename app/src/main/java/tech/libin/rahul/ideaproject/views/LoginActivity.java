@@ -12,6 +12,7 @@ import android.view.View;
 
 import tech.libin.rahul.ideaproject.R;
 import tech.libin.rahul.ideaproject.configurations.Config;
+import tech.libin.rahul.ideaproject.configurations.Constants;
 import tech.libin.rahul.ideaproject.facade.FOSFacade;
 import tech.libin.rahul.ideaproject.facade.FOSFacadeImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
@@ -19,7 +20,6 @@ import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseActivity;
 import tech.libin.rahul.ideaproject.views.models.Login;
 import tech.libin.rahul.ideaproject.views.models.User;
-import tech.libin.rahul.ideaproject.views.utils.TelephonyInfo;
 import tech.libin.rahul.ideaproject.views.widgets.button.FOSButton;
 import tech.libin.rahul.ideaproject.views.widgets.dialogs.FOSDialog;
 import tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText;
@@ -52,14 +52,21 @@ public class LoginActivity extends FOSBaseActivity {
         buttonSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkPhoneStatePermission();
+                //  checkPhoneStatePermission();
+                doLogin();
             }
         });
 
         buttonForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(LoginCredentialsActivity.VIEW_MODE, Constants.CredentialsMode.FORGOT_PASSWORD);
 
+                Intent intent = new Intent(LoginActivity.this, LoginCredentialsActivity.class);
+                intent.putExtras(bundle);
+
+                startActivity(intent);
             }
         });
 
@@ -90,11 +97,14 @@ public class LoginActivity extends FOSBaseActivity {
                 FOSFacade facade = new FOSFacadeImpl();
                 Login loginData = new Login();
 
-                TelephonyInfo telephonyInfo = TelephonyInfo.getInstance(this);
+//                TelephonyInfo telephonyInfo = TelephonyInfo.getInstance(this);
+//                loginData.setImei1(telephonyInfo.getImsiSIM1());
+//                loginData.setImei2(telephonyInfo.getImsiSIM2());
+
                 loginData.setUsername(editTextUserName.getText());
                 loginData.setPassword(editTextPassword.getText());
-                loginData.setImei1(telephonyInfo.getImsiSIM1());
-                loginData.setImei2(telephonyInfo.getImsiSIM2());
+                loginData.setImei1("00000");
+                loginData.setImei2("00000");
 
                 final ProgressDialog dialog = ProgressDialog.show(this, null, getResources().getString(R.string.requesting), true, true);
 
@@ -121,7 +131,6 @@ public class LoginActivity extends FOSBaseActivity {
                         String message = "Invalid user name or password,Please check your inputs.";
                         String title = "Authentication Fail";
                         fosDialog = FOSDialog.newInstance(LoginActivity.this, title, message, false);
-
 
                         fosDialog.show(getSupportFragmentManager(), "tag");
 //                        navigateToHome();

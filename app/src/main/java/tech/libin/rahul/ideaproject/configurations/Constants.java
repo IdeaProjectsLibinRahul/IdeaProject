@@ -43,9 +43,11 @@ public class Constants {
         @SerializedName("1")
         SUCCESS(1),
         @SerializedName("2")
-        INVALID_USER(2),
+        FIRST_TIME_LOGIN(2),
         @SerializedName("3")
-        SESSION_EXIST(3);
+        INVALID_USER(3),
+        @SerializedName("4")
+        SESSION_EXIST(4);
 
         private int value;
 
@@ -100,11 +102,38 @@ public class Constants {
         }
     }
 
+    public enum CredentialsMode {
+        FORGOT_PASSWORD,
+        RESET_PASSWORD,
+        OTP
+    }
+
     public class PARAMS {
         public static final String DETAILS_OBJECT_ID = "detailsObjectId";
         public static final String DETAILS_OBJECT_NAME = "detailsObjectName";
         public static final String DETAILS_OBJECT_PHONE = "detailsObjectPhone";
         public static final String DETAILS_OBJECT_TAB = "detailsObjectTab";
+    }
+
+    public enum VisitStatus {
+        @SerializedName("1")
+        VISITED(1),
+        @SerializedName("2")
+        RETAINED(2),
+        @SerializedName("3")
+        NOT_RETAINED(3),
+        @SerializedName("4")
+        FOLLOW_UP(4);
+
+        private int value;
+
+        private VisitStatus(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
     }
 
 }

@@ -8,10 +8,11 @@ import java.util.Map;
 import tech.libin.rahul.ideaproject.service.FOSService;
 import tech.libin.rahul.ideaproject.service.FOSServiceImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
+import tech.libin.rahul.ideaproject.service.responses.RegisterResponse;
+import tech.libin.rahul.ideaproject.views.credentialviews.viewmodels.ForgotPasswordModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.CollectionDetailModel;
-import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.OtherFormSubmitModel;
-import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.FormSubmitModel;
+import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.TdDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.UpcDetailModel;
 import tech.libin.rahul.ideaproject.views.homescreen.viewmodels.ActivityModel;
@@ -69,8 +70,9 @@ public class FOSFacadeImpl implements FOSFacade {
     }
 
     @Override
-    public void doRegistration(Map<String, String> data, Map<String, Uri> files, ServiceCallback<String> callback) {
-        fosService.doRegistration(data,files,callback);
+
+    public void doRegistration(Map<String, String> data, Map<String, Uri> files, ServiceCallback<RegisterResponse> callback) {
+        fosService.doRegistration(data, files, callback);
     }
 
     @Override
@@ -83,5 +85,8 @@ public class FOSFacadeImpl implements FOSFacade {
         fosService.doLogout(userId, callback);
     }
 
-
+    @Override
+    public void forgotPassword(String miCode, String mobileNum, ServiceCallback<ForgotPasswordModel> callback) {
+        fosService.forgotPassword(miCode, mobileNum, callback);
+    }
 }

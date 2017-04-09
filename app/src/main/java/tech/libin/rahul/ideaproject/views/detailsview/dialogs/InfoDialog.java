@@ -47,17 +47,6 @@ public class InfoDialog extends FOSBaseDialog {
         return view;
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Rect displayRectangle = new Rect();
-        Window window = getDialog().getWindow();
-        assert window != null;
-        window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
-        int width = (int) (0.9f * displayRectangle.width());
-        getDialog().getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
-    }
-
     private void initComponents() {
         buttonOK = (FOSButton) view.findViewById(R.id.button_dialog_ok);
         textViewTitle = (FOSTextView) view.findViewById(R.id.dialogTitle);

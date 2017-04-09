@@ -19,6 +19,7 @@ public class SmeFormSubmitRequest extends FOSBaseRequest {
     int reason;
     String remarks;
     String reminder;
+    String landmark;
     Constants.RecordType recordType;
 
     public Long getUserId() {
@@ -107,5 +108,13 @@ public class SmeFormSubmitRequest extends FOSBaseRequest {
 
     public void setAmountPaid(String amountPaid) {
         this.amountPaid = amountPaid;
+    }
+
+    public String getLandmark() {
+        return landmark;
+    }
+
+    public void setLandmark(String landmark) {
+        this.landmark = landmark;
     }
 }

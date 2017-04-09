@@ -42,14 +42,12 @@ public class FOSEditText extends EditText {
     }
 
     private void init(Context context, AttributeSet attrs) {
-
         if (attrs != null) {
             TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.FOSEditText, 0, 0);
 
             try {
                 int font = attributes.getInteger(R.styleable.FOSEditText_fos_edittext_font, 0);
                 int fontStyle = attributes.getInteger(R.styleable.FOSEditText_fos_edittext_fontstyle, 0);
-
                 switch (font) {
                     case 0:
                         setFont(fontStyle, context, Fonts.GEOSANS_FONT);

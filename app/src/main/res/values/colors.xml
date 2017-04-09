@@ -12,13 +12,37 @@
     <color name="lightYellow">#ebfcf1</color>
     <color name="button_back">#303F9F</color>
     <color name="background_holo_light">#fff3f3f3</color>
-    <color name="button_detail_back">#0071bc</color>
-
-    <color name="detail_head_back">#dda98b06</color>
+    <color name="button_detail_back">#f136322e</color>
 
     <color name="detail_body_color">#b0f7ff86</color>
     <color name="detail_submit_color">#b3c7e5f9</color>
     <color name="button_border">#f312110f</color>
     <color name="colorBottomTabSelected">#968f00</color>
+
+    <color name="title_executive">#dd380258</color>
+    <color name="title_executive_stroke">#dd380258</color>
+    <color name="body_executive_back">#f8f9f0ff</color>
+
+    <color name="title_zsm">#f706b104</color>
+    <color name="title_zsm_stroke">#dd035802</color>
+    <color name="body_zsm_back">#ddddffd7</color>
+
+    <color name="title_mico">#dd680312</color>
+    <color name="title_mico_stroke">#dd680312</color>
+    <color name="body_mico_back">#fdfcedef</color>
+
+
+    <color name="form_submit_title">#f136322e</color>
+    <color name="body_form_submit">#f5fcfcfc</color>
+
+    <color name="cust_detail_title_back">#dd163345</color>
+    <color name="detail_cust_body_back">#f8edf8ff</color>
+    <!--<color name="cust_detail_title_back">#dda98b06</color>-->
+    <!--<color name="detail_cust_body_back">#f1f2f5b7</color>-->
+
+    <color name="form_submit_edit_text">#fdfefffe</color>
+    <color name="editTextBottom">#f7515151</color>
+
+
 
 </resources>
