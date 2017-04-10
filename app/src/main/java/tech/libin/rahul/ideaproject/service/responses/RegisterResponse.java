@@ -8,26 +8,13 @@ import tech.libin.rahul.ideaproject.service.responses.base.FOSBaseResponse;
  */
 
 public class RegisterResponse extends FOSBaseResponse {
-    private Constants.Status status;
-    private String message;
+String response;
 
-    @Override
-    public Constants.Status getStatus() {
-        return status;
+    public String getResponse() {
+        return response;
     }
 
-    @Override
-    public void setStatus(Constants.Status status) {
-        this.status = status;
-    }
-
-    @Override
-    public String getMessage() {
-        return message;
-    }
-
-    @Override
-    public void setMessage(String message) {
-        this.message = message;
+    public void setResponse(String response) {
+        this.response = response;
     }
 }

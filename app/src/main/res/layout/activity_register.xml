@@ -99,7 +99,7 @@
                     android:id="@+id/editTextRegName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:drawableLeft="@mipmap/ic_calendar"
+                    app:drawableLeft="@mipmap/ic_name"
                     app:hint="@string/name"
                     app:maxLength="150" />
 
@@ -107,7 +107,7 @@
                     android:id="@+id/editTextRegFatherName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:drawableLeft="@mipmap/ic_user"
+                    app:drawableLeft="@mipmap/ic_name"
                     app:hint="@string/father_name"
                     app:maxLength="150" />
 
@@ -116,6 +116,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:drawableLeft="@mipmap/ic_calendar"
+                    app:setKeyboardEnabled="false"
                     app:hint="@string/dob" />
 
                 <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
@@ -151,7 +152,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLength="15"
-                    app:drawableLeft="@mipmap/ic_address"
+                    app:drawableLeft="@mipmap/ic_zip"
                     app:hint="@string/zip"
                     app:inputType="number"
                     app:maxLength="7" />
@@ -195,8 +196,8 @@
                     android:id="@+id/editTextRegJoinDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLength="15"
                     app:drawableLeft="@mipmap/ic_calendar"
+                    app:setKeyboardEnabled="false"
                     app:hint="@string/doj"
                     app:maxLength="12" />
 
@@ -205,7 +206,7 @@
                     android:id="@+id/editTextRegMICode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:drawableLeft="@mipmap/ic_phone"
+                    app:drawableLeft="@mipmap/ic_mi_code"
                     app:hint="@string/mi_code"
                     app:maxLength="15" />
             </LinearLayout>
@@ -224,12 +225,11 @@
                     app:inputType="number"
                     app:maxLength="12" />
 
-
                 <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
                     android:id="@+id/editTextRegPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:drawableLeft="@mipmap/ic_phone"
+                    app:drawableLeft="@mipmap/ic_password_reg"
                     app:hint="@string/password"
                     app:inputType="password"
                     app:maxLength="15" />
@@ -238,7 +238,7 @@
                     android:id="@+id/editTextRegConfirmPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:drawableLeft="@mipmap/ic_phone"
+                    app:drawableLeft="@mipmap/ic_password_reg"
                     app:hint="@string/confirm_password"
                     app:inputType="password"
                     app:maxLength="15" />

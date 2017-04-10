@@ -48,6 +48,7 @@
     <declare-styleable name="FOSIconEditText">
         <attr name="drawableLeft" format="integer" />
         <attr name="textString" format="string" />
+        <attr name="setKeyboardEnabled" format="boolean"/>
         <attr name="maxLength" format="integer" />
         <attr name="hint" format="string" />
         <attr name="inputType" format="enum">

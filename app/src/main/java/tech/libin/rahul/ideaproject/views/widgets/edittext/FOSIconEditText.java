@@ -96,12 +96,19 @@ public class FOSIconEditText extends LinearLayout {
         try {
             String hint = attributes.getString(R.styleable.FOSIconEditText_hint);
             String text = attributes.getString(R.styleable.FOSIconEditText_textString);
+            boolean enableKeyboard = attributes.getBoolean(R.styleable.FOSIconEditText_setKeyboardEnabled,true);
             int inputType = attributes.getInt(R.styleable.FOSIconEditText_inputType, 0);
             int maxLength = attributes.getInt(R.styleable.FOSIconEditText_maxLength, 0);
             Drawable image = attributes.getDrawable(R.styleable.FOSIconEditText_drawableLeft);
 
             if (hint != null) {
                 editText.setHint(hint);
+            }
+
+            if(!enableKeyboard)
+            {
+                editText.setInputType(InputType.TYPE_NULL);
+
             }
 
             if (text != null) {

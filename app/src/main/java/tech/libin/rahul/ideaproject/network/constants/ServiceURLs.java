@@ -5,7 +5,8 @@ package tech.libin.rahul.ideaproject.network.constants;
  */
 
 public class ServiceURLs {
-    public static final String REGISTER = "/Account/RegisterDummy";
+//    public static final String REGISTER = "/Account/RegisterDummy";
+    public static final String REGISTER = "/Account/Register";
     public static final String LOGIN = "/Account/Login";
     public static final String ACTIVITY = "/AppData/Activity";
     public static final String COLLECTION_DETAIL = "/AppData/UPCDetailActivity";

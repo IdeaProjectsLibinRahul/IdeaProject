@@ -302,7 +302,13 @@ public class FOSServiceImpl implements FOSService {
         upload.uploadFile(Request.Method.POST, new NetworkCallback<RegisterResponse>() {
             @Override
             public void onSuccess(RegisterResponse response) {
-                callback.onResponse(response);
+                if (response.getStatus() != Constants.Status.SUCCESS) {
+                    FOSError error = new FOSError();
+                    error.setErrorMessage(response.getMessage());
+                    callback.onRequestFail(error);
+                } else {
+                    callback.onResponse(response);
+                }
             }
 
             @Override

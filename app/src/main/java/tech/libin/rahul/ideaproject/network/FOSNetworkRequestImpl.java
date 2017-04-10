@@ -144,7 +144,7 @@ public class FOSNetworkRequestImpl<T> implements FOSNetworkRequest<T> {
         RequestQueue queue = Volley.newRequestQueue(context);
         SSLConnection.allowAllSSL();
 
-        VolleyMultipartRequest<T> multipartRequest = new VolleyMultipartRequest<T>(Request.Method.POST,  "http://192.9.200.183/IBS.Mvc4/api/Account/Register", responseClass, new Response.Listener<T>() {
+        VolleyMultipartRequest<T> multipartRequest = new VolleyMultipartRequest<T>(Request.Method.POST, url, responseClass, new Response.Listener<T>() {
             @Override
             public void onResponse(T response) {
                 callback.onSuccess(response);

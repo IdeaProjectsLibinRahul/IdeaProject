@@ -3,6 +3,7 @@ package tech.libin.rahul.ideaproject.views;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,6 +22,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -58,17 +60,18 @@ import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
 
 public class RegisterActivity extends FOSBaseActivity {
 
+    //region declarations
+
     public static final int FLIP_INTERVAL = 2000;
     public static final String COLOR_TRANSPARENT = "#00000000";
     public static final String COLOR_BACKGROUND = "#55000000";
     public static final String DIR_NAME = "MyVisit";
     public static final String USER_PIC_PREFIX = "user_pic_";
     private static final int PERMISSION_REQUEST_CODE = 1001;
-    //region declarations
+
     private static final int CAMERA_PIC_REQUEST = 1003;
     private static final int SELECT_PICTURE = 1004;
     private static final String TAG = RegisterActivity.class.getName();
-    String mCurrentPhotoPath;
     private FloatingActionButton floatingActionButton;
     private FOSIconEditText editTextRegName;
     private FOSIconEditText editTextRegDOB;
@@ -97,8 +100,6 @@ public class RegisterActivity extends FOSBaseActivity {
     private FOSTextView tabItemOfficial;
 
     private EditText selectedEditText;
-
-    private Uri outputFileUri;
     private FOSFacade facade;
 
     //endregion
@@ -190,61 +191,8 @@ public class RegisterActivity extends FOSBaseActivity {
             public void onClick(View v) {
 
                 if (isValid()) {
-
                     sendRegisterRequest();
-//                    RegisterModel registerModel = new RegisterModel();
-//                    registerModel.setName(editTextRegName.getText());
-//                    registerModel.setAddress1(editTextRegAddress1.getText());
-//                    registerModel.setAddress2(editTextRegAddress2.getText());
-//                    registerModel.setAddress3(editTextRegAddress3.getText());
-//                    registerModel.setZip(editTextRegZip.getText());
-//                    registerModel.setFatherName(editTextRegFatherName.getText());
-//                    registerModel.setMiCode(editTextRegMICode.getText());
-//                    registerModel.setMobileNum(editTextRegMobileNo.getText());
-//                    registerModel.setPassword(editTextRegPassword.getText());
-//                    if (rdbMico.isChecked()) {
-//                        registerModel.setRole(Constants.Role.MICO);
-//                    } else if (rdbZsm.isChecked()) {
-//                        registerModel.setRole(Constants.Role.ZSM);
-//
-//                    } else if (rdbExecutive.isChecked()) {
-//                        registerModel.setRole(Constants.Role.EXECUTIVE);
-//                    }
-//
-//                    registerModel.setName(editTextRegName.getText());
-//                    registerModel.setName(editTextRegName.getText());
-//                    registerModel.setDob(editTextRegDOB.getText());
-//                    registerModel.setDateOfJoining(editTextRegJoinDate.getText());
-//
-//                    facade.doRegistrationDummy(registerModel, new ServiceCallback<String>() {
-//                        @Override
-//                        public void onResponse(String response) {
-//                            String title = "Success";
-//                            fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, response, true);
-//                            fosDialog.show(getSupportFragmentManager(), "tag");
-//
-//                        }
-//
-//                        @Override
-//                        public void onRequestTimout() {
-//                            String title = "Info";
-//                            fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, getResources().getString(R.string.warn_request_timed_out), false);
-//                            fosDialog.show(getSupportFragmentManager(), "tag");
-//
-//                        }
-//
-//                        @Override
-//                        public void onRequestFail(FOSError error) {
-//                            String message = error.getErrorMessage();
-//                            String title = "Info";
-//                            fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, message, false);
-//
-//                            fosDialog.show(getSupportFragmentManager(), "tag");
-//                        }
-//                    });
                 }
-
-
             }
         });
 
@@ -285,7 +233,9 @@ public class RegisterActivity extends FOSBaseActivity {
         editTextRegJoinDate.setOnTouchListener(touchListener);
         editTextRegJoinDate.getEditText().setOnTouchListener(touchListener);
     }
+    //endregion
 
+    //region sendRegisterRequest
     private void sendRegisterRequest() {
         String name = editTextRegName.getText();
         String miCode = editTextRegMICode.getText();
@@ -312,7 +262,7 @@ public class RegisterActivity extends FOSBaseActivity {
         Map<String, String> data = new HashMap<>();
         data.put(RegisterRequest.NAME, name);
         data.put(RegisterRequest.MI_CODE, miCode);
-        data.put(RegisterRequest.ROLE, role.toString());
+        data.put(RegisterRequest.ROLE, role.getValue()+"");
         data.put(RegisterRequest.MOBILE_NUM, mobileNo);
         data.put(RegisterRequest.DOB, dob);
         data.put(RegisterRequest.DOJ, doj);
@@ -328,34 +278,41 @@ public class RegisterActivity extends FOSBaseActivity {
             files.put(RegisterRequest.IMAGE, mPhotoURI);
         }
 
+        final ProgressDialog dialog = ProgressDialog.show(this, null, getResources().getString(R.string.requesting), true, true);
+
         facade.doRegistration(data, files, new ServiceCallback<RegisterResponse>() {
             @Override
             public void onResponse(RegisterResponse response) {
+                if (dialog != null)
+                    dialog.dismiss();
                 String title = "Success";
                 fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, response.getMessage(), true);
                 fosDialog.show(getSupportFragmentManager(), "tag");
-
             }
 
             @Override
             public void onRequestTimout() {
+                if (dialog != null)
+                    dialog.dismiss();
                 String title = "Info";
                 fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, getResources().getString(R.string.warn_request_timed_out), false);
                 fosDialog.show(getSupportFragmentManager(), "tag");
-
             }
 
             @Override
             public void onRequestFail(FOSError error) {
+                if (dialog != null)
+                    dialog.dismiss();
                 String message = error.getErrorMessage();
                 String title = "Info";
                 fosDialog = FOSDialog.newInstance(RegisterActivity.this, title, message, false);
-
                 fosDialog.show(getSupportFragmentManager(), "tag");
             }
         });
     }
+    //endregion
 
+    //region initViewFlipper
     private void initViewFlipper() {
         viewFlipper.setFlipInterval(FLIP_INTERVAL);
 
@@ -363,25 +320,7 @@ public class RegisterActivity extends FOSBaseActivity {
             @Override
             public void onClick(View view) {
 
-                tabItemPersonal.setTypeface(tabItemPersonal.getTypeface(), Typeface.NORMAL);
-                tabItemPersonal.setTextColor(Color.BLACK);
-                tabItemPersonal.setBackgroundColor(Color.parseColor(COLOR_TRANSPARENT));
-
-                tabItemLogin.setTypeface(tabItemLogin.getTypeface(), Typeface.NORMAL);
-                tabItemLogin.setBackgroundColor(Color.parseColor(COLOR_TRANSPARENT));
-                tabItemLogin.setTextColor(Color.BLACK);
-
-                tabItemOfficial.setTypeface(tabItemOfficial.getTypeface(), Typeface.NORMAL);
-                tabItemOfficial.setBackgroundColor(Color.parseColor(COLOR_TRANSPARENT));
-                tabItemOfficial.setTextColor(Color.BLACK);
-
-                FOSTextView textView = (FOSTextView) view;
-                textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
-                textView.setBackgroundColor(Color.parseColor(COLOR_BACKGROUND));
-                textView.setTextColor(Color.WHITE);
-
-                int nextView;
-
+                int nextView=0;
                 if (view == tabItemPersonal) {
                     nextView = 0;
                 } else if (view == tabItemOfficial) {
@@ -390,7 +329,7 @@ public class RegisterActivity extends FOSBaseActivity {
                     nextView = 2;
                 }
 
-                slideTabView(nextView);
+                setSelection(view,nextView);
             }
         };
 
@@ -398,7 +337,31 @@ public class RegisterActivity extends FOSBaseActivity {
         tabItemLogin.setOnClickListener(tabClickListener);
         tabItemOfficial.setOnClickListener(tabClickListener);
     }
+    //endregion
 
+    private void setSelection(View view, int nextView)
+    {
+
+        tabItemPersonal.setTypeface(tabItemPersonal.getTypeface(), Typeface.NORMAL);
+        tabItemPersonal.setTextColor(Color.BLACK);
+        tabItemPersonal.setBackgroundColor(Color.parseColor(COLOR_TRANSPARENT));
+
+        tabItemLogin.setTypeface(tabItemLogin.getTypeface(), Typeface.NORMAL);
+        tabItemLogin.setBackgroundColor(Color.parseColor(COLOR_TRANSPARENT));
+        tabItemLogin.setTextColor(Color.BLACK);
+
+        tabItemOfficial.setTypeface(tabItemOfficial.getTypeface(), Typeface.NORMAL);
+        tabItemOfficial.setBackgroundColor(Color.parseColor(COLOR_TRANSPARENT));
+        tabItemOfficial.setTextColor(Color.BLACK);
+
+        FOSTextView textView = (FOSTextView) view;
+        textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
+        textView.setBackgroundColor(Color.parseColor(COLOR_BACKGROUND));
+
+        slideTabView(nextView);
+    }
+
+    //region slideTabView
     private void slideTabView(int nextView) {
         int currentView = viewFlipper.getDisplayedChild();
 
@@ -430,7 +393,9 @@ public class RegisterActivity extends FOSBaseActivity {
             }
         }
     }
+    //endregion
 
+    //region openImageIntent
     private void openImageIntent() {
 
         final CharSequence[] items = {"Take Photo", "Choose from Library",
@@ -461,7 +426,9 @@ public class RegisterActivity extends FOSBaseActivity {
         });
         builder.show();
     }
+    //endregion
 
+    //region onRequestPermissionsResult
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSION_REQUEST_CODE) {
@@ -475,7 +442,9 @@ public class RegisterActivity extends FOSBaseActivity {
             }
         }
     }
+    //endregion
 
+    //region onActivityResult
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -528,7 +497,9 @@ public class RegisterActivity extends FOSBaseActivity {
         }
 
     }
+    //endregion
 
+    //region getPath
     public String getPath(Uri uri, Activity activity) {
         String[] projection = {MediaStore.MediaColumns.DATA};
         Cursor cursor = activity
@@ -537,7 +508,9 @@ public class RegisterActivity extends FOSBaseActivity {
         cursor.moveToFirst();
         return cursor.getString(column_index);
     }
+    //endregion
 
+    //region isValid
     private boolean isValid() {
         editTextRegName.setError(null);
         editTextRegDOB.setError(null);
@@ -570,32 +543,40 @@ public class RegisterActivity extends FOSBaseActivity {
             editTextRegZip.setError(getResources().getString(R.string.warn_zip));
             slideIndex = 0;
         }
+        if (editTextRegMICode.getVisibility() == View.VISIBLE && editTextRegMICode.getText().trim().isEmpty()) {
+            status = false;
+            editTextRegMICode.setError(getResources().getString(R.string.warn_mi_code));
+            slideIndex = 1;
+        }
         if (editTextRegMobileNo.getText().trim().isEmpty()) {
             status = false;
             editTextRegMobileNo.setError(getResources().getString(R.string.warn_mobile));
-            slideIndex = 1;
+            slideIndex = 2;
         }
         if (editTextRegPassword.getText().trim().isEmpty()) {
             status = false;
             editTextRegPassword.setError(getResources().getString(R.string.warn_password));
-            slideIndex = 1;
+            slideIndex = 2;
         }
         if ((!editTextRegPassword.getText().trim().isEmpty()) && !editTextRegPassword.getText().trim().equals(editTextRegConfirmPassword.getText().trim())) {
             status = false;
             editTextRegConfirmPassword.setError(getResources().getString(R.string.warn_password_miss_match));
-            slideIndex = 1;
-        }
-        if (editTextRegMICode.getVisibility() == View.VISIBLE && editTextRegMICode.getText().trim().isEmpty()) {
-            status = false;
-            editTextRegMICode.setError(getResources().getString(R.string.warn_mi_code));
             slideIndex = 2;
         }
 
         if (!status) {
-            slideTabView(slideIndex);
+            View view = tabItemLogin;
+
+            if (slideIndex == 0)
+                view = tabItemPersonal;
+            if (slideIndex == 1)
+                view = tabItemOfficial;
+            setSelection(view, slideIndex);
+//            slideTabView(slideIndex);
         }
 
         return status;
     }
+    //endregion
 
 }
