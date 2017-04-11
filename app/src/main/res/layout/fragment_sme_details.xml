@@ -318,23 +318,21 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                             android:id="@+id/textViewFromZsmName"
                             style="@style/DetailsEsclateName"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2"
                             android:ellipsize="end"
                             app:fos_textview_font="sansation_bold" />
 
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                             android:id="@+id/textViewFromZsmMobileNum"
                             style="@style/DetailsEsclatePhoneNum"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             app:fos_textview_font="sansation_bold" />
 
                     </LinearLayout>
@@ -482,12 +480,12 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                             android:id="@+id/textViewFromMicoName"
                             style="@style/DetailsEsclateName"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
                             android:ellipsize="end"
@@ -496,7 +494,7 @@
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                             android:id="@+id/textViewFromMicoMobileNum"
                             style="@style/DetailsEsclatePhoneNum"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             app:fos_textview_font="sansation_bold" />

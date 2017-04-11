@@ -127,7 +127,7 @@ public abstract class FOSBaseActivity extends AppCompatActivity {
     }
 
     protected void setToolbarProfilePic(String url) {
-        if (imageViewProfilePic != null && url != null) {
+        if (imageViewProfilePic != null && url != null && !url.isEmpty()) {
             Picasso.with(this).load(url).resize(60, 60).into(imageViewProfilePic);
         }
     }
