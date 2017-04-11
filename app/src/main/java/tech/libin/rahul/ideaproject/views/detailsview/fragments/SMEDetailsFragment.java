@@ -289,12 +289,12 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 
                 @Override
                 public void onRequestTimout() {
-                    showMessage(getString(R.string.warn_time_out_title), getString(R.string.warn_time_out_message));
+                    showMessage(getString(R.string.warn_time_out_title), getResources().getString(R.string.warn_request_timed_out),Constants.MessageType.TIME_OUT);
                 }
 
                 @Override
                 public void onRequestFail(FOSError error) {
-                    showMessage(getString(R.string.warn_server_error), error.getErrorMessage());
+                    showMessage(getString(R.string.warn_server_error), error.getErrorMessage(),Constants.MessageType.ERROR);
                 }
             });
         }
@@ -423,7 +423,8 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     if (dialog != null) {
                         dialog.cancel();
                     }
-                    showSuccessInfo(response);
+                    showMessage(getString(R.string.warn_success),response,Constants.MessageType.TIME_OUT);
+
                 }
 
                 @Override
@@ -431,6 +432,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     if (dialog != null) {
                         dialog.cancel();
                     }
+                    showMessage(getString(R.string.warn_time_out_title), getResources().getString(R.string.warn_request_timed_out),Constants.MessageType.TIME_OUT);
                 }
 
                 @Override
@@ -438,17 +440,19 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     if (dialog != null) {
                         dialog.cancel();
                     }
-                    showSuccessInfo(error.getErrorMessage());
+                    showMessage(getString(R.string.warn_server_error), error.getErrorMessage(),Constants.MessageType.ERROR);
+
                 }
             });
         }
     }
     //endregion
 
-    //region showSuccessInfo
-    private void showSuccessInfo(String message) {
-        String title = "Info";
-        InfoDialog infoDialog = InfoDialog.newInstance(title, message);
+
+
+    //region showMessage
+    private void showMessage(String title, String message, Constants.MessageType type) {
+        InfoDialog infoDialog = InfoDialog.newInstance(title, message,type);
         infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
     }
     //endregion
@@ -776,11 +780,6 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     }
     //endregion
 
-    //region showMessage
-    private void showMessage(String title, String message) {
-        InfoDialog infoDialog = InfoDialog.newInstance(title, message);
-        infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
-    }
-    //endregion
+
 
 }

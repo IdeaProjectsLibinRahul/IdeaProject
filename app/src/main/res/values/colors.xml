@@ -43,6 +43,10 @@
     <color name="form_submit_edit_text">#fdfefffe</color>
     <color name="editTextBottom">#f7515151</color>
 
+    <color name="message_error">#f7f23c3c</color>
+    <color name="message_success">#f726ff05</color>
+    <color name="message_default">#33000000</color>
+
 
 
 </resources>

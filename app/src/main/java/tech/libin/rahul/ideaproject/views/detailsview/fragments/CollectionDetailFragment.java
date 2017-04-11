@@ -304,12 +304,12 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
 
                 @Override
                 public void onRequestTimout() {
-                    showMessage(getString(R.string.warn_time_out_title), getString(R.string.warn_time_out_message));
+                    showMessage(getString(R.string.warn_time_out_title), getResources().getString(R.string.warn_request_timed_out),Constants.MessageType.TIME_OUT);
                 }
 
                 @Override
                 public void onRequestFail(FOSError error) {
-                    showMessage(getString(R.string.warn_server_error), error.getErrorMessage());
+                    showMessage(getString(R.string.warn_server_error), error.getErrorMessage(),Constants.MessageType.ERROR);
                 }
             });
         }
@@ -473,7 +473,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                 if (dialog != null) {
                     dialog.cancel();
                 }
-                showSuccessInfo();
+                showMessage(getString(R.string.warn_success),response,Constants.MessageType.TIME_OUT);
             }
 
             @Override
@@ -481,25 +481,20 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                 if (dialog != null) {
                     dialog.cancel();
                 }
+                showMessage(getString(R.string.warn_time_out_title), getResources().getString(R.string.warn_request_timed_out),Constants.MessageType.TIME_OUT);
             }
 
             @Override
             public void onRequestFail(FOSError error) {
-                showSuccessInfo();
                 if (dialog != null) {
                     dialog.cancel();
                 }
+                showMessage(getString(R.string.warn_server_error), error.getErrorMessage(),Constants.MessageType.ERROR);
             }
         });
     }
 
-    private void showSuccessInfo() {
-        String message = "Form submitted successfully";
-        String title = "Info";
 
-        InfoDialog infoDialog = InfoDialog.newInstance(title, message);
-        infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
-    }
     //endregion
 
     //region bindDetails
@@ -804,8 +799,8 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
     //endregion
 
     //region showMessage
-    private void showMessage(String title, String message) {
-        InfoDialog infoDialog = InfoDialog.newInstance(title, message);
+    private void showMessage(String title, String message, Constants.MessageType type) {
+        InfoDialog infoDialog = InfoDialog.newInstance(title, message,type);
         infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
     }
     //endregion

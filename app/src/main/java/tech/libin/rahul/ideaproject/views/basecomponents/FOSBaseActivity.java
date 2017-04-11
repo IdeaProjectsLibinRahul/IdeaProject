@@ -1,5 +1,6 @@
 package tech.libin.rahul.ideaproject.views.basecomponents;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -19,6 +20,8 @@ import com.squareup.picasso.Picasso;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.lang.annotation.Target;
 
 import tech.libin.rahul.ideaproject.R;
 import tech.libin.rahul.ideaproject.events.base.BaseEvent;
@@ -86,23 +89,29 @@ public abstract class FOSBaseActivity extends AppCompatActivity {
     protected abstract void setHasToolBar();
 
     private void setToolBar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            if (hasToolBar) {
-                if (toolbar != null) {
-                    toolbar.setTitle("");
-                    toolbar.setElevation(toolbarElevation);
-                    setSupportActionBar(toolbar);
+        try {
+            toolbar = (Toolbar) findViewById(R.id.toolbar);
+            if (toolbar != null) {
+                if (hasToolBar) {
+                    if (toolbar != null) {
+                        toolbar.setTitle("");
+                        toolbar.setElevation(toolbarElevation);
+                        setSupportActionBar(toolbar);
+                    }
+                } else {
+                    toolbar.setVisibility(View.GONE);
                 }
-            } else {
-                toolbar.setVisibility(View.GONE);
+
+                textViewName = (TextView) toolbar.findViewById(R.id.textViewUserName);
+                textViewPhone = (TextView) toolbar.findViewById(R.id.textViewUserPhone);
+                imageViewProfilePic = (ImageView) toolbar.findViewById(R.id.imageViewProfilePic);
+
+                setToolbarEvents();
             }
+        }
+        catch (Exception ex)
+        {
 
-            textViewName = (TextView) toolbar.findViewById(R.id.textViewUserName);
-            textViewPhone = (TextView) toolbar.findViewById(R.id.textViewUserPhone);
-            imageViewProfilePic = (ImageView) toolbar.findViewById(R.id.imageViewProfilePic);
-
-            setToolbarEvents();
         }
 
 

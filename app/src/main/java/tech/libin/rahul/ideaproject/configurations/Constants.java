@@ -141,4 +141,20 @@ public class Constants {
         }
     }
 
+    public enum MessageType {
+        @SerializedName("0")
+        ERROR(0),
+        @SerializedName("1")
+        SUCCESS(1),
+        @SerializedName("2")
+        TIME_OUT(2);
+
+        private int value;
+
+        MessageType(int value) {
+            this.value = value;
+        }
+    }
+
+
 }

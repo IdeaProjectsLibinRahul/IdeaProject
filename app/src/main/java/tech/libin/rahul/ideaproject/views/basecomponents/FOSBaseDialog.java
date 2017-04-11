@@ -24,11 +24,18 @@ public abstract class FOSBaseDialog extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         Rect displayRectangle = new Rect();
         Window window = getDialog().getWindow();
         assert window != null;
+        try {
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        } catch (Exception ex) {
+
+        }
         window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
         int width = (int) (0.9f * displayRectangle.width());
         getDialog().getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
+
     }
 }

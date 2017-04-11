@@ -80,6 +80,7 @@
     <string name="activatiom_mi">Activation Mi</string>
     <string name="my_idea">My Idea</string>
 
+    <string name="warn_success">Success</string>
     <string name="warn_time_out_title">Time Out</string>
     <string name="warn_time_out_message">Your request timed out</string>
     <string name="warn_server_error">Request Failed</string>
@@ -132,6 +133,8 @@
 
 
     <string name="warn_not_visited">Not visited</string>
+
+
 
 
 </resources>
