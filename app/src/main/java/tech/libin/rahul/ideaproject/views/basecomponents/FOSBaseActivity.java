@@ -95,7 +95,7 @@ public abstract class FOSBaseActivity extends AppCompatActivity {
                 if (hasToolBar) {
                     if (toolbar != null) {
                         toolbar.setTitle("");
-                        toolbar.setElevation(toolbarElevation);
+                      //  toolbar.setElevation(toolbarElevation);
                         setSupportActionBar(toolbar);
                     }
                 } else {
