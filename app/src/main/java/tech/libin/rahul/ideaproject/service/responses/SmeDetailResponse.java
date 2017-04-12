@@ -47,6 +47,7 @@ public class SmeDetailResponse extends FOSBaseResponse {
         String bill5;
         String zip;
         String landLine2;
+        String landLine1;
         String type;
         private String reminderDate;
 
@@ -317,6 +318,14 @@ public class SmeDetailResponse extends FOSBaseResponse {
 
         public void setFromExecutive(DetailFromSMERoleModel fromExecutive) {
             this.fromExecutive = fromExecutive;
+        }
+
+        public String getLandLine1() {
+            return landLine1;
+        }
+
+        public void setLandLine1(String landLine1) {
+            this.landLine1 = landLine1;
         }
     }
 }

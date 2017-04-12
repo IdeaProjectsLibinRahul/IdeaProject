@@ -107,7 +107,6 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSSpinnerAdapter statusAdapter;
     private FOSSpinnerAdapter reasonAdapter;
 
-
     private FOSTextView textViewZsmName;
     private FOSTextView textViewZsmMobileNum;
     private FOSTextView textViewZsmVisitStatus;
@@ -127,7 +126,6 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewFromMicoReasonHead;
     private FOSTextView textViewMicoRemarks;
     private FOSTextView textViewFromMicoEscalateNoVisit;
-
 
     private FOSTextView textViewExeName;
     private FOSTextView textViewExeMobileNum;
@@ -468,6 +466,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         textViewActiveReason.setText(model.getActReason());
         textViewRatePlan.setText(model.getRatePlan());
         textViewCRLimit.setText(model.getCr_limit());
+        textViewLandLine.setText(model.getLandLine2());
         textViewLandLine.setText(model.getLandLine2());
 
         textViewAddress.setText(model.getBill1() + "\n" + model.getBill2() + "\n" + model.getBill3() + "\n" + model.getBill4() + "\n" + model.getBill5());

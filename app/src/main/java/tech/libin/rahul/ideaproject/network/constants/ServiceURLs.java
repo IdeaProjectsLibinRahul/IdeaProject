@@ -19,6 +19,7 @@ public class ServiceURLs {
 
     //   private static final String BASE_URL = "https://ibs.ideacellular.com/IFOST/api";//live
     private static final String BASE_URL = "http://122.166.96.206/isft/api";//local testing
+//    private static final String BASE_URL = "http://192.9.200.183/IBS.Mvc4/api";//local testing
 
     public static String build(String subURL) {
         return BASE_URL + subURL;

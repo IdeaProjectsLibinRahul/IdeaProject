@@ -39,6 +39,7 @@ public class SmeDetailModel {
     String bill5;
     String zip;
 
+    String landLine1;
     String landLine2;
 
     String type;
@@ -319,5 +320,13 @@ public class SmeDetailModel {
 
     public void setFromExecutive(DetailFromSMERoleModel fromExecutive) {
         this.fromExecutive = fromExecutive;
+    }
+
+    public String getLandLine1() {
+        return landLine1;
+    }
+
+    public void setLandLine1(String landLine1) {
+        this.landLine1 = landLine1;
     }
 }
