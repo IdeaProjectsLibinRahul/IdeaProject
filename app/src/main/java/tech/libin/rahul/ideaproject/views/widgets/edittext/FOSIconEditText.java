@@ -1,28 +1,38 @@
 package tech.libin.rahul.ideaproject.views.widgets.edittext;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.IntDef;
+import android.support.annotation.Nullable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import tech.libin.rahul.ideaproject.R;
+import tech.libin.rahul.ideaproject.configurations.Constants;
+import tech.libin.rahul.ideaproject.views.utils.ApplicationContextHolder;
 import tech.libin.rahul.ideaproject.views.utils.Fonts;
 
 
 public class FOSIconEditText extends LinearLayout {
     private ImageView imageViewLeft;
     private EditText editText;
+    Context mContext;
 
     public FOSIconEditText(Context context) {
         super(context);
@@ -56,6 +66,7 @@ public class FOSIconEditText extends LinearLayout {
     private void init(Context context) {
         try {
 
+            mContext = context;
 
             this.setGravity(Gravity.CENTER_VERTICAL);
             imageViewLeft = new ImageView(context);
@@ -83,6 +94,9 @@ public class FOSIconEditText extends LinearLayout {
             this.setBackgroundColor(getResources().getColor(android.R.color.transparent));
             this.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 50));
             this.setPadding(25, 10, 25, 1);
+
+            OnFocusChangeListener ofcListener = new MyFocusChangeListener();
+            editText.setOnFocusChangeListener(ofcListener);
         } catch (Exception ex) {
             Log.e("Ecxeption", ex.toString());
         }
@@ -96,7 +110,7 @@ public class FOSIconEditText extends LinearLayout {
         try {
             String hint = attributes.getString(R.styleable.FOSIconEditText_hint);
             String text = attributes.getString(R.styleable.FOSIconEditText_textString);
-            boolean enableKeyboard = attributes.getBoolean(R.styleable.FOSIconEditText_setKeyboardEnabled,true);
+            boolean enableKeyboard = attributes.getBoolean(R.styleable.FOSIconEditText_setKeyboardEnabled, true);
             int inputType = attributes.getInt(R.styleable.FOSIconEditText_inputType, 0);
             int maxLength = attributes.getInt(R.styleable.FOSIconEditText_maxLength, 0);
             Drawable image = attributes.getDrawable(R.styleable.FOSIconEditText_drawableLeft);
@@ -105,8 +119,7 @@ public class FOSIconEditText extends LinearLayout {
                 editText.setHint(hint);
             }
 
-            if(!enableKeyboard)
-            {
+            if (!enableKeyboard) {
                 editText.setInputType(InputType.TYPE_NULL);
 
             }
@@ -152,5 +165,17 @@ public class FOSIconEditText extends LinearLayout {
 
     public void setError(String error) {
         this.editText.setError(error);
+    }
+    private class MyFocusChangeListener implements OnFocusChangeListener {
+
+        public void onFocusChange(View v, boolean hasFocus){
+
+            if(!hasFocus) {
+
+                InputMethodManager imm =  (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+            }
+        }
     }
 }

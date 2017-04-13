@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@mipmap/login_background"
-    tools:context="tech.libin.rahul.ideaproject.views.RegisterActivity">
+    tools:context="tech.libin.rahul.ideaproject.views.RegisterActivity"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -13,7 +17,9 @@
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin">
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:clickable="true"
+        android:focusableInTouchMode="true">
 
         <FrameLayout
             android:id="@+id/profilePicContainer"
@@ -23,14 +29,13 @@
             android:layout_marginBottom="30dp"
             android:layout_marginTop="30dp">
 
-            <ImageView
+            <tech.libin.rahul.ideaproject.views.widgets.imageview.FOSRoundImageView
                 android:id="@+id/imageViewRegProfilePic"
                 android:layout_width="@dimen/image_size"
                 android:layout_height="@dimen/image_size"
                 android:layout_marginBottom="@dimen/reg_profilepic_margin"
                 android:layout_marginRight="@dimen/reg_profilepic_margin"
                 android:src="@mipmap/profile_image_placeholder" />
-
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/floatingActionButton"
@@ -101,7 +106,7 @@
                     android:layout_height="wrap_content"
                     app:drawableLeft="@mipmap/ic_name"
                     app:hint="@string/name"
-                    app:maxLength="150" />
+                    app:maxLength="45" />
 
                 <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
                     android:id="@+id/editTextRegFatherName"
@@ -109,7 +114,7 @@
                     android:layout_height="wrap_content"
                     app:drawableLeft="@mipmap/ic_name"
                     app:hint="@string/father_name"
-                    app:maxLength="150" />
+                    app:maxLength="45" />
 
                 <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
                     android:id="@+id/editTextRegDOB"
@@ -155,7 +160,7 @@
                     app:drawableLeft="@mipmap/ic_zip"
                     app:hint="@string/zip"
                     app:inputType="number"
-                    app:maxLength="7" />
+                    app:maxLength="6" />
             </LinearLayout>
 
             <LinearLayout
@@ -193,22 +198,22 @@
 
 
                 <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
-                    android:id="@+id/editTextRegJoinDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:drawableLeft="@mipmap/ic_calendar"
-                    app:setKeyboardEnabled="false"
-                    app:hint="@string/doj"
-                    app:maxLength="12" />
-
-
-                <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
                     android:id="@+id/editTextRegMICode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:drawableLeft="@mipmap/ic_mi_code"
                     app:hint="@string/mi_code"
                     app:maxLength="15" />
+
+                <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
+                    android:id="@+id/editTextRegJoinDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:drawableLeft="@mipmap/ic_calendar"
+                    app:setKeyboardEnabled="false"
+                    android:focusable="false"
+                    app:hint="@string/doj"
+                    app:maxLength="12" />
             </LinearLayout>
 
             <LinearLayout
@@ -223,7 +228,7 @@
                     app:drawableLeft="@mipmap/ic_phone"
                     app:hint="@string/mobile_no"
                     app:inputType="number"
-                    app:maxLength="12" />
+                    app:maxLength="10" />
 
                 <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText
                     android:id="@+id/editTextRegPassword"

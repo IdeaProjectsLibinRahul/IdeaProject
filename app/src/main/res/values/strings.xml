@@ -119,8 +119,10 @@
     <string name="warn_address">Enter your Address</string>
     <string name="warn_zip">Enter Zip</string>
     <string name="warn_mobile">Enter Mobile Number</string>
+    <string name="warn_invalid_mobile">Invalid Mobile Number</string>
     <string name="warn_mi_code">Enter your MI Code</string>
     <string name="warn_password">Enter a new password</string>
+    <string name="warn_password_minim">Minimum 6 characters required</string>
     <string name="warn_password_miss_match">Password miss match</string>
     <string name="personal">Personal</string>
     <string name="login">Login</string>

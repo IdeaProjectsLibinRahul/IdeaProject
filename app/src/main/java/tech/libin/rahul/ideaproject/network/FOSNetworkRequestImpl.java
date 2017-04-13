@@ -190,8 +190,6 @@ public class FOSNetworkRequestImpl<T> implements FOSNetworkRequest<T> {
 
                         }
                     }
-
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

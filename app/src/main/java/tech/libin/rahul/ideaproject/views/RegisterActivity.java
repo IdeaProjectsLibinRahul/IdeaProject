@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -28,11 +29,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -152,6 +155,7 @@ public class RegisterActivity extends FOSBaseActivity {
         tabItemPersonal = (FOSTextView) findViewById(R.id.tabItemPersonal);
         tabItemLogin = (FOSTextView) findViewById(R.id.tabItemLogin);
         tabItemOfficial = (FOSTextView) findViewById(R.id.tabItemOfficial);
+
     }
     //endregion
 
@@ -201,12 +205,17 @@ public class RegisterActivity extends FOSBaseActivity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
 
                 try {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
                     FOSIconEditText editText1 = (FOSIconEditText) view;
                     selectedEditText = editText1.getEditText();
+                    editText1.clearFocus();
                 } catch (Exception e) {
                     EditText editText1 = (EditText) view;
                     selectedEditText = editText1;
                 }
+
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     final Calendar calendar = Calendar.getInstance();
                     calendar.add(Calendar.DAY_OF_YEAR, -1);
@@ -262,7 +271,7 @@ public class RegisterActivity extends FOSBaseActivity {
         Map<String, String> data = new HashMap<>();
         data.put(RegisterRequest.NAME, name);
         data.put(RegisterRequest.MI_CODE, miCode);
-        data.put(RegisterRequest.ROLE, role.getValue()+"");
+        data.put(RegisterRequest.ROLE, role.getValue() + "");
         data.put(RegisterRequest.MOBILE_NUM, mobileNo);
         data.put(RegisterRequest.DOB, dob);
         data.put(RegisterRequest.DOJ, doj);
@@ -320,7 +329,7 @@ public class RegisterActivity extends FOSBaseActivity {
             @Override
             public void onClick(View view) {
 
-                int nextView=0;
+                int nextView = 0;
                 if (view == tabItemPersonal) {
                     nextView = 0;
                 } else if (view == tabItemOfficial) {
@@ -329,7 +338,7 @@ public class RegisterActivity extends FOSBaseActivity {
                     nextView = 2;
                 }
 
-                setSelection(view,nextView);
+                setSelection(view, nextView);
             }
         };
 
@@ -339,8 +348,8 @@ public class RegisterActivity extends FOSBaseActivity {
     }
     //endregion
 
-    private void setSelection(View view, int nextView)
-    {
+    //region setSelection
+    private void setSelection(View view, int nextView) {
 
         tabItemPersonal.setTypeface(tabItemPersonal.getTypeface(), Typeface.NORMAL);
         tabItemPersonal.setTextColor(Color.BLACK);
@@ -360,6 +369,7 @@ public class RegisterActivity extends FOSBaseActivity {
 
         slideTabView(nextView);
     }
+    //endregion
 
     //region slideTabView
     private void slideTabView(int nextView) {
@@ -553,12 +563,20 @@ public class RegisterActivity extends FOSBaseActivity {
             editTextRegMobileNo.setError(getResources().getString(R.string.warn_mobile));
             slideIndex = 2;
         }
+        else if (editTextRegMobileNo.getText().trim().length()!=10) {
+            status = false;
+            editTextRegMobileNo.setError(getResources().getString(R.string.warn_invalid_mobile));
+            slideIndex = 2;
+        }
         if (editTextRegPassword.getText().trim().isEmpty()) {
             status = false;
             editTextRegPassword.setError(getResources().getString(R.string.warn_password));
             slideIndex = 2;
-        }
-        if ((!editTextRegPassword.getText().trim().isEmpty()) && !editTextRegPassword.getText().trim().equals(editTextRegConfirmPassword.getText().trim())) {
+        } else if (editTextRegPassword.getText().trim().length() < 6) {
+            status = false;
+            editTextRegPassword.setError(getResources().getString(R.string.warn_password_minim));
+            slideIndex = 2;
+        } else if (!editTextRegPassword.getText().trim().equals(editTextRegConfirmPassword.getText().trim())) {
             status = false;
             editTextRegConfirmPassword.setError(getResources().getString(R.string.warn_password_miss_match));
             slideIndex = 2;
