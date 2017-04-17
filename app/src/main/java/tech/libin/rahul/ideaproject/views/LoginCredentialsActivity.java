@@ -12,6 +12,7 @@ import tech.libin.rahul.ideaproject.events.OTPEvent;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseActivity;
 import tech.libin.rahul.ideaproject.views.credentialviews.fragments.ForgotPasswordFragment;
 import tech.libin.rahul.ideaproject.views.credentialviews.fragments.OtpFragment;
+import tech.libin.rahul.ideaproject.views.credentialviews.fragments.ResetPasswordFragment;
 
 public class LoginCredentialsActivity extends FOSBaseActivity {
 
@@ -47,7 +48,7 @@ public class LoginCredentialsActivity extends FOSBaseActivity {
         if (viewMode == Constants.CredentialsMode.FORGOT_PASSWORD) {
             showForgotView();
         } else if (viewMode == Constants.CredentialsMode.RESET_PASSWORD) {
-
+            showResetView();
         } else if (viewMode == Constants.CredentialsMode.OTP) {
 
         }
@@ -55,6 +56,11 @@ public class LoginCredentialsActivity extends FOSBaseActivity {
 
     private void showForgotView() {
         Fragment fragment = new ForgotPasswordFragment();
+        addFragment(R.id.credential_container, fragment);
+    }
+
+    private void showResetView() {
+        Fragment fragment = new ResetPasswordFragment();
         addFragment(R.id.credential_container, fragment);
     }
 

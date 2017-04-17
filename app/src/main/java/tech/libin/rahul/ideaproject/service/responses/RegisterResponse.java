@@ -8,7 +8,7 @@ import tech.libin.rahul.ideaproject.service.responses.base.FOSBaseResponse;
  */
 
 public class RegisterResponse extends FOSBaseResponse {
-String response;
+    String response;
 
     public String getResponse() {
         return response;

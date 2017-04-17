@@ -47,4 +47,7 @@ public interface FOSFacade {
     void doLogout(String userId, ServiceCallback<String> callback);
 
     void forgotPassword(String miCode, String mobileNum, ServiceCallback<ForgotPasswordModel> callback);
+
+    void resetPassword(String password, ServiceCallback<String> callback);
+
 }

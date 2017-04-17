@@ -89,4 +89,9 @@ public class FOSFacadeImpl implements FOSFacade {
     public void forgotPassword(String miCode, String mobileNum, ServiceCallback<ForgotPasswordModel> callback) {
         fosService.forgotPassword(miCode, mobileNum, callback);
     }
+
+    @Override
+    public void resetPassword(String password, ServiceCallback<String> callback) {
+        fosService.resetPassword(password, callback);
+    }
 }

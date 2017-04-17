@@ -1,6 +1,8 @@
 package tech.libin.rahul.ideaproject.service;
 
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 
 import com.android.volley.Request;
 
@@ -28,6 +30,7 @@ import tech.libin.rahul.ideaproject.service.requests.ForgotPasswordRequest;
 import tech.libin.rahul.ideaproject.service.requests.LoginRequest;
 import tech.libin.rahul.ideaproject.service.requests.LogoutRequest;
 import tech.libin.rahul.ideaproject.service.requests.RegisterRequest;
+import tech.libin.rahul.ideaproject.service.requests.ResetPasswordRequest;
 import tech.libin.rahul.ideaproject.service.requests.SmeFormSubmitRequest;
 import tech.libin.rahul.ideaproject.service.responses.ActivityResponse;
 import tech.libin.rahul.ideaproject.service.responses.CollectionDetailResponse;
@@ -36,10 +39,13 @@ import tech.libin.rahul.ideaproject.service.responses.FormSubmitResponse;
 import tech.libin.rahul.ideaproject.service.responses.LoginResponse;
 import tech.libin.rahul.ideaproject.service.responses.LogoutResponse;
 import tech.libin.rahul.ideaproject.service.responses.RegisterResponse;
+import tech.libin.rahul.ideaproject.service.responses.ResetPasswordResponse;
 import tech.libin.rahul.ideaproject.service.responses.SmeDetailResponse;
 import tech.libin.rahul.ideaproject.service.responses.TdDetailResponse;
 import tech.libin.rahul.ideaproject.service.responses.UpcDetailResponse;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
+import tech.libin.rahul.ideaproject.views.LoginActivity;
+import tech.libin.rahul.ideaproject.views.LoginCredentialsActivity;
 import tech.libin.rahul.ideaproject.views.credentialviews.viewmodels.ForgotPasswordModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.CollectionDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeDetailModel;
@@ -74,12 +80,15 @@ public class FOSServiceImpl implements FOSService {
             @Override
             public void onSuccess(LoginResponse response) {
 
-                if (response.getStatus() != Constants.Status.SUCCESS) {
+                if (response.getStatus() != Constants.Status.SUCCESS && response.getStatus() != Constants.Status.FIRST_TIME_LOGIN) {
                     FOSError error = new FOSError();
                     error.setErrorMessage(response.getMessage());
                     callback.onRequestFail(error);
                 } else {
                     User user = new User(response.getResponse());
+                    user.setFirstTimeLogin(false);
+                    if(response.getStatus() == Constants.Status.FIRST_TIME_LOGIN)
+                        user.setFirstTimeLogin(true);
                     callback.onResponse(user);
                 }
             }
@@ -411,6 +420,38 @@ public class FOSServiceImpl implements FOSService {
                     model.setStatus(response.getStatus());
                     model.setMessage(response.getMessage());
                     callback.onResponse(model);
+                }
+            }
+
+            @Override
+            public void onTimeout() {
+                callback.onRequestTimout();
+            }
+
+            @Override
+            public void onFail(FOSError error) {
+                callback.onRequestFail(error);
+            }
+        });
+    }
+
+    @Override
+    public void resetPassword(String password, final ServiceCallback<String> callback) {
+        User user = Config.getInstance().getUser();
+        ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest();
+        resetPasswordRequest.setUserId(user.getUserId());
+        resetPasswordRequest.setNewPassword(password);
+        FOSNetworkRequest<ResetPasswordResponse> request = new FOSNetworkRequestImpl<>(resetPasswordRequest, ServiceURLs.LOGOUT, ResetPasswordResponse.class);
+        request.request(Request.Method.POST, new NetworkCallback<ResetPasswordResponse>() {
+            @Override
+            public void onSuccess(ResetPasswordResponse response) {
+
+                if (response.getStatus() != Constants.Status.SUCCESS) {
+                    FOSError error = new FOSError();
+                    error.setErrorMessage(response.getMessage());
+                    callback.onRequestFail(error);
+                } else {
+                    callback.onResponse(response.getMessage());
                 }
             }
 

@@ -46,4 +46,6 @@ public interface FOSService {
     void doLogout(String userId, ServiceCallback<String> callback);
 
     void forgotPassword(String miCode, String mobileNum, ServiceCallback<ForgotPasswordModel> callback);
+
+    void resetPassword(String password, final ServiceCallback<String> callback);
 }

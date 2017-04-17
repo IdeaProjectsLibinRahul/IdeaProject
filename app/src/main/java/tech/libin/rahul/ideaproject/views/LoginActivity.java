@@ -111,6 +111,10 @@ public class LoginActivity extends FOSBaseActivity {
                 facade.doLogin(loginData, new ServiceCallback<User>() {
                     @Override
                     public void onResponse(User response) {
+                        if(response.isFirstTimeLogin())
+                        {
+
+                        }
                         Config.getInstance().setUser(response);
                         dialog.cancel();
                         navigateToHome();

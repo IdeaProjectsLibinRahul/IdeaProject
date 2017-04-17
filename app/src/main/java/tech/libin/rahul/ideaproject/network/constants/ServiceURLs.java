@@ -16,6 +16,7 @@ public class ServiceURLs {
     public static final String FORM_SUBMIT = "/AppData/UpdateUPC_TDSME";
     public static final String LOGOUT = "/Account/Logout";
     public static final String FORGOT_PASSWORD = "/Account/ForgotPassword";
+    public static final String RESET_PASSWORD = "/Account/ResetPassword";
 
     //   private static final String BASE_URL = "https://ibs.ideacellular.com/IFOST/api";//live
     private static final String BASE_URL = "http://122.166.96.206/isft/api";//local testing

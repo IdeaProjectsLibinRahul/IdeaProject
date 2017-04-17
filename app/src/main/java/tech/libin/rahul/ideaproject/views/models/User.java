@@ -15,6 +15,7 @@ public class User {
     private String name;
     private String phoneNo;
     private String profileImage;
+    private boolean firstTimeLogin;
 
     public User() {
     }
@@ -83,5 +84,13 @@ public class User {
 
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
+    }
+
+    public boolean isFirstTimeLogin() {
+        return firstTimeLogin;
+    }
+
+    public void setFirstTimeLogin(boolean firstTimeLogin) {
+        this.firstTimeLogin = firstTimeLogin;
     }
 }
