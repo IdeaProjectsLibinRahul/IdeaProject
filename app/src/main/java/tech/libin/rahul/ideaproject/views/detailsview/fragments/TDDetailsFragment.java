@@ -48,6 +48,7 @@ import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.FormSubmitModel
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.TdDetailModel;
 import tech.libin.rahul.ideaproject.views.models.ActivityDetailRequestModel;
 import tech.libin.rahul.ideaproject.views.utils.GPSTracker;
+import tech.libin.rahul.ideaproject.views.utils.MakeCall;
 import tech.libin.rahul.ideaproject.views.utils.SpinnerOperations;
 import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
 
@@ -148,6 +149,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
     CardView cardViewFromZsm;
     CardView cardViewFromSubmit;
 
+    MakeCall makeCall;
 
     //endregion
 
@@ -281,12 +283,12 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
 
                 @Override
                 public void onRequestTimout() {
-                    showMessage(getString(R.string.warn_time_out_title), getResources().getString(R.string.warn_request_timed_out),Constants.MessageType.TIME_OUT);
+                    showMessage(getString(R.string.warn_time_out_title), getResources().getString(R.string.warn_request_timed_out), Constants.MessageType.TIME_OUT);
                 }
 
                 @Override
                 public void onRequestFail(FOSError error) {
-                    showMessage(getString(R.string.warn_server_error), error.getErrorMessage(),Constants.MessageType.ERROR);
+                    showMessage(getString(R.string.warn_server_error), error.getErrorMessage(), Constants.MessageType.ERROR);
                 }
             });
         }
@@ -322,11 +324,10 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
         if (model.getLocation() != null && model.getLocation().getLatitude() != null && !model.getLocation().getLatitude().isEmpty()) {
             switchLocation.setVisibility(View.VISIBLE);
         }
-        if (model.getLocation() != null && model.getLocation().getLandmark() != null)
-        {
+        if (model.getLocation() != null && model.getLocation().getLandmark() != null) {
             editTextLandmark.setText(model.getLocation().getLandmark());
         }
-        
+
         loadPreviousData();
     }
 
@@ -410,7 +411,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                         editTextReminder.setText(reminder);
                     }
                 }
-                if ((reminder != null || !reminder.isEmpty()) && reminderData.getVisitStatus() ==Constants.VisitStatus.FOLLOW_UP.getValue()) {
+                if ((reminder != null || !reminder.isEmpty()) && reminderData.getVisitStatus() == Constants.VisitStatus.FOLLOW_UP.getValue()) {
                     linLayoutReminder.setVisibility(View.VISIBLE);
                     textViewReminderDate.setText(getResources().getString(R.string.follow_up_date));
                     editTextReminder.setText(reminder);
@@ -499,9 +500,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                     }
                     textViewFromMicoVisitedDate.setText(fromMico.getVisitedDate());
                     textViewMicoRemarks.setText(fromMico.getRemarks());
-                }
-                else
-                {
+                } else {
                     llFromMicoVisitDetails.setVisibility(View.GONE);
                     textViewFromMicoEscalateNoVisit.setVisibility(View.VISIBLE);
                     textViewFromMicoEscalateNoVisit.setText(getString(R.string.warn_not_visited));
@@ -535,9 +534,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                     textViewFromZsmVisitedDate.setText(fromZsm.getVisitedDate());
                     textViewZsmRemarks.setText(fromZsm.getRemarks());
                 }
-            }
-            else
-            {
+            } else {
                 llFromZsmVisitDetails.setVisibility(View.GONE);
                 textViewFromZsmEscalateNoVisit.setVisibility(View.VISIBLE);
                 textViewFromZsmEscalateNoVisit.setText(getString(R.string.warn_not_visited));
@@ -738,6 +735,11 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
             }
         });
 
+        makeCall = new MakeCall(getActivity());
+        makeCall.setCallClick(textViewMobile);
+        makeCall.setCallClick(textViewLandline1);
+        makeCall.setCallClick(textViewLandLine2);
+
     }
     //endregion
 
@@ -782,7 +784,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                     if (dialog != null) {
                         dialog.cancel();
                     }
-                    showMessage(getString(R.string.warn_success),response,Constants.MessageType.TIME_OUT);
+                    showMessage(getString(R.string.warn_success), response, Constants.MessageType.TIME_OUT);
                 }
 
                 @Override
@@ -790,7 +792,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                     if (dialog != null) {
                         dialog.cancel();
                     }
-                    showMessage(getString(R.string.warn_time_out_title), getResources().getString(R.string.warn_request_timed_out),Constants.MessageType.TIME_OUT);
+                    showMessage(getString(R.string.warn_time_out_title), getResources().getString(R.string.warn_request_timed_out), Constants.MessageType.TIME_OUT);
                 }
 
                 @Override
@@ -798,7 +800,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                     if (dialog != null) {
                         dialog.cancel();
                     }
-                    showMessage(getString(R.string.warn_server_error), error.getErrorMessage(),Constants.MessageType.ERROR);
+                    showMessage(getString(R.string.warn_server_error), error.getErrorMessage(), Constants.MessageType.ERROR);
                 }
             });
         }
@@ -832,7 +834,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
             double latitude = Double.parseDouble(detailModel.getLocation().getLatitude());
             double longitude = Double.parseDouble(detailModel.getLocation().getLongitude());
             latLng = new LatLng(latitude, longitude);
-        }  else {
+        } else {
             latLng = new LatLng(0, 0);
         }
 
@@ -842,7 +844,6 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
         mMap.animateCamera(location);
     }
     //endregion
-
 
 
     //region ProgressBar
@@ -859,7 +860,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
 
     //region showMessage
     private void showMessage(String title, String message, Constants.MessageType type) {
-        InfoDialog infoDialog = InfoDialog.newInstance(title, message,type);
+        InfoDialog infoDialog = InfoDialog.newInstance(title, message, type);
         infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
     }
     //endregion

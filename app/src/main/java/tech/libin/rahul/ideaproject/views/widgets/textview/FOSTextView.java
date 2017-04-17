@@ -5,7 +5,9 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.text.style.ClickableSpan;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.TextView;
 
 import tech.libin.rahul.ideaproject.R;
@@ -122,4 +124,5 @@ public class FOSTextView extends TextView {
         }
         super.setText(text, type);
     }
+
 }

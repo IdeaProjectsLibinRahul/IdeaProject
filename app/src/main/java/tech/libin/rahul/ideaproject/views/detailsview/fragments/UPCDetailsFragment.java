@@ -49,6 +49,7 @@ import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.FormSubmitModel
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.UpcDetailModel;
 import tech.libin.rahul.ideaproject.views.models.ActivityDetailRequestModel;
 import tech.libin.rahul.ideaproject.views.utils.GPSTracker;
+import tech.libin.rahul.ideaproject.views.utils.MakeCall;
 import tech.libin.rahul.ideaproject.views.utils.SpinnerOperations;
 import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
 
@@ -135,6 +136,8 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private Constants.ActivityType activityType;
     private SupportMapFragment mapFragment;
     private UpcDetailModel detailModel;
+
+    MakeCall makeCall;
     //endregion
 
     //region onCreateView
@@ -258,12 +261,12 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 
                 @Override
                 public void onRequestTimout() {
-                    showMessage(getString(R.string.warn_time_out_title), getResources().getString(R.string.warn_request_timed_out),Constants.MessageType.TIME_OUT);
+                    showMessage(getString(R.string.warn_time_out_title), getResources().getString(R.string.warn_request_timed_out), Constants.MessageType.TIME_OUT);
                 }
 
                 @Override
                 public void onRequestFail(FOSError error) {
-                    showMessage(getString(R.string.warn_server_error), error.getErrorMessage(),Constants.MessageType.ERROR);
+                    showMessage(getString(R.string.warn_server_error), error.getErrorMessage(), Constants.MessageType.ERROR);
                 }
             });
         }
@@ -349,45 +352,6 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         }
     }
     //endregion
-
-//    //region loadExecutiveOwnData
-//    private void loadExecutiveOwnData() {
-//        try {
-//            DetailFromUPCRoleModel fromExecutive = detailModel.getFromExecutive();
-//            if (fromExecutive != null) {
-//                //find out visit status and set spinner selection
-//                if (fromExecutive.getVisitStatus() != 0 && spnStatus != null) {
-//                    int position = statusAdapter.findElementPosition(fromExecutive.getVisitStatus());
-//                    spnStatus.setSelection(position, false);
-//                }
-//
-//                int visitStatus = ((SpinnerData) spnStatus.getSelectedItem()).getId();
-//                if (fromExecutive.getFeedback() != 0) {
-//                    //if not retained
-//                    if (visitStatus == 2) {
-//                        loadFeedback(detailModel.getFeedbackNotRetained());
-//                    } else {
-//                        loadFeedback(detailModel.getFeedbackRetained());
-//                    }
-//
-//                    //find out feedback and set feedback spinner selection
-//                    int position = feedbackAdapter.findElementPosition(fromExecutive.getFeedback());
-//                    if (position != 0) {
-//                        spnFeedback.setSelection(position, false);
-//                    }
-//                }
-//                String reminder = detailModel.getReminderDate();
-//                if (reminder != null && !reminder.isEmpty()) {
-//                    linLayoutReminder.setVisibility(View.VISIBLE);
-//                    editTextReminder.setText(reminder);
-//                }
-//                editTextRemarks.setText(fromExecutive.getRemarks());
-//            }
-//        } catch (Exception ex) {
-//            Log.e(TAG, ex.toString());
-//        }
-//    }
-//    //endregion
 
     //region loadReminderData
     private void loadReminderData(DetailFromUPCRoleModel reminderData) {
@@ -619,6 +583,11 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                 submitFormData();
             }
         });
+
+        makeCall = new MakeCall(getActivity());
+        makeCall.setCallClick(textViewMobile);
+        makeCall.setCallClick(textViewAlternateNumber);
+        makeCall.setCallClick(textViewAlternateNumber);
     }
     //endregion
 
@@ -659,7 +628,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                 if (dialog != null) {
                     dialog.cancel();
                 }
-                showMessage(getString(R.string.warn_success),response,Constants.MessageType.TIME_OUT);
+                showMessage(getString(R.string.warn_success), response, Constants.MessageType.TIME_OUT);
             }
 
             @Override
@@ -667,7 +636,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                 if (dialog != null) {
                     dialog.cancel();
                 }
-                showMessage(getString(R.string.warn_time_out_title), getResources().getString(R.string.warn_request_timed_out),Constants.MessageType.TIME_OUT);
+                showMessage(getString(R.string.warn_time_out_title), getResources().getString(R.string.warn_request_timed_out), Constants.MessageType.TIME_OUT);
             }
 
             @Override
@@ -675,15 +644,13 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                 if (dialog != null) {
                     dialog.cancel();
                 }
-                showMessage(getString(R.string.warn_server_error), error.getErrorMessage(),Constants.MessageType.ERROR);
+                showMessage(getString(R.string.warn_server_error), error.getErrorMessage(), Constants.MessageType.ERROR);
             }
         });
     }
 
 
     //endregion
-
-
 
     //region onMapReady
     @Override
@@ -730,7 +697,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 
     //region showMessage
     private void showMessage(String title, String message, Constants.MessageType type) {
-        InfoDialog infoDialog = InfoDialog.newInstance(title, message,type);
+        InfoDialog infoDialog = InfoDialog.newInstance(title, message, type);
         infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
     }
     //endregion

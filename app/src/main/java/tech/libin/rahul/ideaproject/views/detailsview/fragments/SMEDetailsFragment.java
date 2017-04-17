@@ -21,6 +21,7 @@ import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,6 +34,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import tech.libin.rahul.ideaproject.R;
 import tech.libin.rahul.ideaproject.configurations.Config;
@@ -52,6 +54,7 @@ import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.FormSubmitModel
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeDetailModel;
 import tech.libin.rahul.ideaproject.views.models.ActivityDetailRequestModel;
 import tech.libin.rahul.ideaproject.views.utils.GPSTracker;
+import tech.libin.rahul.ideaproject.views.utils.MakeCall;
 import tech.libin.rahul.ideaproject.views.utils.SpinnerOperations;
 import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
 
@@ -88,7 +91,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewCRLimit;
     private FOSTextView textViewAddress;
     private FOSTextView textViewLandLine;
-    private FOSTextView textViewLandLineHead;
+    private FOSTextView textViewLandLine2;
     private FOSTextView textViewType;
     private FOSTextView textViewTypeHead;
     private FOSTextView textViewFbConnections;
@@ -149,6 +152,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     CardView cardViewFromZsm;
     CardView cardViewFromSubmit;
 
+    MakeCall makeCall;
     //endregion
 
     //region onCreateView
@@ -180,7 +184,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         textViewRatePlan = (FOSTextView) view.findViewById(R.id.textViewRatePlan);
         textViewCRLimit = (FOSTextView) view.findViewById(R.id.textViewCrLimit);
         textViewLandLine = (FOSTextView) view.findViewById(R.id.textViewLandLine);
-        textViewLandLineHead = (FOSTextView) view.findViewById(R.id.textViewLandLine1);
+        textViewLandLine2 = (FOSTextView) view.findViewById(R.id.textViewLandLine1);
         textViewType = (FOSTextView) view.findViewById(R.id.textViewType);
         textViewTypeHead = (FOSTextView) view.findViewById(R.id.textViewTypeHead);
         editTextRemarks = (EditText) view.findViewById(R.id.editTextRemarks);
@@ -287,12 +291,12 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
 
                 @Override
                 public void onRequestTimout() {
-                    showMessage(getString(R.string.warn_time_out_title), getResources().getString(R.string.warn_request_timed_out),Constants.MessageType.TIME_OUT);
+                    showMessage(getString(R.string.warn_time_out_title), getResources().getString(R.string.warn_request_timed_out), Constants.MessageType.TIME_OUT);
                 }
 
                 @Override
                 public void onRequestFail(FOSError error) {
-                    showMessage(getString(R.string.warn_server_error), error.getErrorMessage(),Constants.MessageType.ERROR);
+                    showMessage(getString(R.string.warn_server_error), error.getErrorMessage(), Constants.MessageType.ERROR);
                 }
             });
         }
@@ -374,8 +378,15 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                 submitFormData();
             }
         });
+
+        makeCall = new MakeCall(getActivity());
+        makeCall.setCallClick(textViewLandLine);
+        makeCall.setCallClick(textViewLandLine2);
+
     }
     //endregion
+
+
 
     //region submitFormData
     private void submitFormData() {
@@ -421,7 +432,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     if (dialog != null) {
                         dialog.cancel();
                     }
-                    showMessage(getString(R.string.warn_success),response,Constants.MessageType.TIME_OUT);
+                    showMessage(getString(R.string.warn_success), response, Constants.MessageType.TIME_OUT);
 
                 }
 
@@ -430,7 +441,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     if (dialog != null) {
                         dialog.cancel();
                     }
-                    showMessage(getString(R.string.warn_time_out_title), getResources().getString(R.string.warn_request_timed_out),Constants.MessageType.TIME_OUT);
+                    showMessage(getString(R.string.warn_time_out_title), getResources().getString(R.string.warn_request_timed_out), Constants.MessageType.TIME_OUT);
                 }
 
                 @Override
@@ -438,7 +449,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     if (dialog != null) {
                         dialog.cancel();
                     }
-                    showMessage(getString(R.string.warn_server_error), error.getErrorMessage(),Constants.MessageType.ERROR);
+                    showMessage(getString(R.string.warn_server_error), error.getErrorMessage(), Constants.MessageType.ERROR);
 
                 }
             });
@@ -446,11 +457,9 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     }
     //endregion
 
-
-
     //region showMessage
     private void showMessage(String title, String message, Constants.MessageType type) {
-        InfoDialog infoDialog = InfoDialog.newInstance(title, message,type);
+        InfoDialog infoDialog = InfoDialog.newInstance(title, message, type);
         infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
     }
     //endregion
@@ -466,8 +475,8 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         textViewActiveReason.setText(model.getActReason());
         textViewRatePlan.setText(model.getRatePlan());
         textViewCRLimit.setText(model.getCr_limit());
-        textViewLandLine.setText(model.getLandLine2());
-        textViewLandLine.setText(model.getLandLine2());
+        textViewLandLine.setText(model.getLandLine1());
+        textViewLandLine2.setText(model.getLandLine2());
 
         textViewAddress.setText(model.getBill1() + "\n" + model.getBill2() + "\n" + model.getBill3() + "\n" + model.getBill4() + "\n" + model.getBill5());
 
@@ -502,9 +511,8 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             switchLocation.setVisibility(View.VISIBLE);
         }
 
-        if (model.getLocation() != null && model.getLocation().getLandmark() != null)
-        {
-          editTextLandmark.setText(model.getLocation().getLandmark());
+        if (model.getLocation() != null && model.getLocation().getLandmark() != null) {
+            editTextLandmark.setText(model.getLocation().getLandmark());
         }
 
 
@@ -690,37 +698,6 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     }
     //endregion
 
-//    //region loadExecutiveOwnData
-//    private void loadExecutiveOwnData()
-//    {
-//        DetailFromSMERoleModel fromExecutive = detailModel.getFromExecutive();
-//        //bind data to submit from
-//        if (fromExecutive != null) {
-//            if (fromExecutive.getVisitStatus() != 0) {
-//                int position = statusAdapter.findElementPosition(fromExecutive.getVisitStatus());
-//                spnStatus.setSelection(position);
-//            }
-//
-//            if (fromExecutive.getFeedback() != 0 && ((SpinnerData) spnStatus.getSelectedItem()).getId() == 1) {
-//                linLayoutFeedback.setVisibility(View.VISIBLE);
-//                ratingBar.setRating(fromExecutive.getFeedback());
-//            }
-//
-//            if (fromExecutive.getReason() != 0 && fromExecutive.getFeedback() != 5) {
-//                linLayoutReason.setVisibility(View.VISIBLE);
-//                int position = reasonAdapter.findElementPosition(fromExecutive.getReason());
-//                spnReason.setSelection(position, false);
-//            }
-//
-//            editTextRemarks.setText(fromExecutive.getRemarks());
-//            if (detailModel.getReminderDate() != null && !detailModel.getReminderDate().isEmpty()) {
-//                linLayoutReminder.setVisibility(View.VISIBLE);
-//                editTextReminder.setText(detailModel.getReminderDate());
-//            }
-//        }
-//    }
-//    //endregion
-
     //region setLinearLayoutVisible
     private void setLinearLayoutVisible() {
         linLayoutFeedback.setVisibility(View.VISIBLE);
@@ -739,7 +716,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             double latitude = Double.parseDouble(detailModel.getLocation().getLatitude());
             double longitude = Double.parseDouble(detailModel.getLocation().getLongitude());
             latLng = new LatLng(latitude, longitude);
-        }else {
+        } else {
             latLng = new LatLng(0.0, 0.0);
         }
 
@@ -778,7 +755,5 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         scrollViewDetails.setVisibility(View.VISIBLE);
     }
     //endregion
-
-
 
 }

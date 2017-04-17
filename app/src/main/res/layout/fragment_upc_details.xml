@@ -55,6 +55,7 @@
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                         android:id="@+id/textViewPhoneNum"
+                        style="@style/DetailsPhone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp" />
@@ -198,7 +199,7 @@
 
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                             android:id="@+id/textViewAlternateNum"
-                            style="@style/DetailsViewText"
+                            style="@style/DetailsViewMobileNum"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"

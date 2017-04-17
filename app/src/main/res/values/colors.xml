@@ -47,6 +47,8 @@
     <color name="message_success">#f726ff05</color>
     <color name="message_default">#33000000</color>
 
+    <color name="mobile_num">#c4708786</color>
+
 
 
 </resources>

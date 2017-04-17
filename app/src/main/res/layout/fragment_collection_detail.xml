@@ -56,9 +56,11 @@
 
                     <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                         android:id="@+id/textViewPhoneNum"
+                        style="@style/DetailsPhone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp" />
+                        android:layout_marginTop="3dp"
+                        android:textIsSelectable="true"/>
 
                     <View
                         style="@style/DialogDivider"
@@ -101,7 +103,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:textColor="@android:color/holo_red_dark" />
+                            android:textColor="@android:color/holo_red_dark"
+                            android:textIsSelectable="true"/>
 
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                             android:id="@+id/textViewCustomerType"
@@ -322,7 +325,7 @@
                             app:fos_textview_font="sansation_bold" />
 
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
-                            style="@style/DetailsViewHeader"
+                            style="@style/DetailsViewHeaderPhone"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -385,7 +388,7 @@
 
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                             android:id="@+id/textViewLandLine1"
-                            style="@style/DetailsViewText"
+                            style="@style/DetailsViewMobileNum"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -393,7 +396,7 @@
 
                         <tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView
                             android:id="@+id/textViewLandLine2"
-                            style="@style/DetailsViewText"
+                            style="@style/DetailsViewMobileNum"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -414,7 +417,8 @@
                         style="@style/DetailsViewText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/dummy_address" />
+                        android:text="@string/dummy_address"
+                        android:textIsSelectable="true"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"

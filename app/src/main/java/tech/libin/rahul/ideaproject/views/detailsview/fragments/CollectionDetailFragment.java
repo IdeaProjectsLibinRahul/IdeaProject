@@ -49,6 +49,7 @@ import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.CollectionDetai
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.FormSubmitModel;
 import tech.libin.rahul.ideaproject.views.models.ActivityDetailRequestModel;
 import tech.libin.rahul.ideaproject.views.utils.GPSTracker;
+import tech.libin.rahul.ideaproject.views.utils.MakeCall;
 import tech.libin.rahul.ideaproject.views.utils.SpinnerOperations;
 import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
 
@@ -155,6 +156,8 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
     private List<SpinnerData> feedback;
 
     CollectionDetailModel detailModel;
+
+    MakeCall makeCall;
     //endregion
 
     //region CollectionDetailFragment
@@ -430,6 +433,11 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                 submitFormData();
             }
         });
+
+        makeCall = new MakeCall(getActivity());
+        makeCall.setCallClick(textViewMobile);
+        makeCall.setCallClick(textViewLandline1);
+        makeCall.setCallClick(textViewLandLine2);
     }
     //endregion
 
