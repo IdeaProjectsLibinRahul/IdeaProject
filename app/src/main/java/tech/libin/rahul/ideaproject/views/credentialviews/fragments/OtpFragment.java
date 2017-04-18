@@ -20,6 +20,7 @@ import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
 import tech.libin.rahul.ideaproject.views.detailsview.dialogs.InfoDialog;
 import tech.libin.rahul.ideaproject.views.widgets.button.FOSButton;
+import tech.libin.rahul.ideaproject.views.widgets.dialogs.FOSDialog;
 import tech.libin.rahul.ideaproject.views.widgets.edittext.FOSEditText;
 import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
 
@@ -38,6 +39,8 @@ public class OtpFragment extends FOSBaseFragment {
     private FOSTextView textViewResendOtp;
     private Long userId;
     private FOSFacade fosFacade;
+    private Constants.OtpVerificationType otpType;
+    private FOSDialog fosDialog;
 
     @Nullable
     @Override
@@ -54,8 +57,10 @@ public class OtpFragment extends FOSBaseFragment {
 
     private void parseBundle() {
         Bundle bundle = getArguments();
+        otpType = Constants.OtpVerificationType.FORGOT_PASSWORD;
         if (bundle != null) {
             userId = bundle.getLong(USER_ID);
+            otpType = (Constants.OtpVerificationType) bundle.getSerializable(Constants.KEY.OTP_TYPE);
         }
     }
 
@@ -68,7 +73,7 @@ public class OtpFragment extends FOSBaseFragment {
     }
 
     private void startTimer() {
-        new CountDownTimer(30000, 1000) {
+        new CountDownTimer(120000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 textViewTime.setText(String.format(Locale.UK, "%02d s", millisUntilFinished / 1000));
@@ -105,11 +110,20 @@ public class OtpFragment extends FOSBaseFragment {
     private void verifyOTP(String otp) {
         final ProgressDialog dialog = ProgressDialog.show(getActivity(), null, getResources().getString(R.string.requesting), true, true);
         dialog.show();
-        fosFacade.submitOTP(userId, otp, new ServiceCallback<OTPResponse>() {
+        fosFacade.submitOTP(userId,otpType, otp, new ServiceCallback<OTPResponse>() {
             @Override
             public void onResponse(OTPResponse response) {
                 dialog.dismiss();
-                getActivity().finish();
+                if(otpType!= Constants.OtpVerificationType.FORGOT_PASSWORD) {
+                    String title = "OTP Verified";
+                    fosDialog = FOSDialog.newInstance(getActivity(), title, response.getMessage(), true);
+                    fosDialog.show(getChildFragmentManager(), "tag");
+                    //getActivity().finish();
+                }
+                else
+                {
+
+                }
             }
 
             @Override

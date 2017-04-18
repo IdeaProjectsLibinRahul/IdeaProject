@@ -1,5 +1,6 @@
 package tech.libin.rahul.ideaproject.service.requests;
 
+import tech.libin.rahul.ideaproject.configurations.Constants;
 import tech.libin.rahul.ideaproject.service.requests.base.FOSBaseRequest;
 
 /**
@@ -9,6 +10,7 @@ import tech.libin.rahul.ideaproject.service.requests.base.FOSBaseRequest;
 public class OTPRequest extends FOSBaseRequest {
     private Long userId;
     private String otp;
+    private Constants.OtpVerificationType type;
 
     public Long getUserId() {
         return userId;
@@ -24,5 +26,13 @@ public class OTPRequest extends FOSBaseRequest {
 
     public void setOtp(String otp) {
         this.otp = otp;
+    }
+
+    public Constants.OtpVerificationType getType() {
+        return type;
+    }
+
+    public void setType(Constants.OtpVerificationType type) {
+        this.type = type;
     }
 }

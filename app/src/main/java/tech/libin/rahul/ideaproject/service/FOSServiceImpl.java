@@ -432,12 +432,12 @@ public class FOSServiceImpl implements FOSService {
     }
 
     @Override
-    public void resetPassword(String password, final ServiceCallback<String> callback) {
+    public void resetPassword(Long userId,String password, final ServiceCallback<String> callback) {
         User user = Config.getInstance().getUser();
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest();
         resetPasswordRequest.setUserId(user.getUserId());
         resetPasswordRequest.setNewPassword(password);
-        FOSNetworkRequest<ResetPasswordResponse> request = new FOSNetworkRequestImpl<>(resetPasswordRequest, ServiceURLs.LOGOUT, ResetPasswordResponse.class);
+        FOSNetworkRequest<ResetPasswordResponse> request = new FOSNetworkRequestImpl<>(resetPasswordRequest, ServiceURLs.RESET_PASSWORD, ResetPasswordResponse.class);
         request.request(Request.Method.POST, new NetworkCallback<ResetPasswordResponse>() {
             @Override
             public void onSuccess(ResetPasswordResponse response) {
@@ -464,9 +464,10 @@ public class FOSServiceImpl implements FOSService {
     }
 
     @Override
-    public void submitOTP(Long userId, String otp, final ServiceCallback<OTPResponse> callback) {
+    public void submitOTP(Long userId, Constants.OtpVerificationType otpType, String otp, final ServiceCallback<OTPResponse> callback) {
         OTPRequest otpRequest = new OTPRequest();
         otpRequest.setUserId(userId);
+        otpRequest.setType(otpType);
         otpRequest.setOtp(otp);
         FOSNetworkRequest<OTPResponse> request = new FOSNetworkRequestImpl<>(otpRequest, ServiceURLs.VERIFY_OTP, OTPResponse.class);
         request.request(Request.Method.POST, new NetworkCallback<OTPResponse>() {

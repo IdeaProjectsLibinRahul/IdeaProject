@@ -107,7 +107,6 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
     List<SpinnerData> visitStatus;
     List<SpinnerData> feedback;
 
-
     private FOSTextView textViewFromZsmName;
     private FOSTextView textViewFromZsmMobileNum;
     private FOSTextView textViewFromZsmVisitStatus;

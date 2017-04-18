@@ -5,6 +5,7 @@ import android.net.Uri;
 import java.util.List;
 import java.util.Map;
 
+import tech.libin.rahul.ideaproject.configurations.Constants;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
 import tech.libin.rahul.ideaproject.service.responses.OTPResponse;
 import tech.libin.rahul.ideaproject.service.responses.RegisterResponse;
@@ -48,7 +49,7 @@ public interface FOSService {
 
     void forgotPassword(String miCode, String mobileNum, ServiceCallback<ForgotPasswordModel> callback);
 
-    void resetPassword(String password, final ServiceCallback<String> callback);
+    void resetPassword(Long userId,String password, final ServiceCallback<String> callback);
 
-    void submitOTP(Long userId, String otp, ServiceCallback<OTPResponse> callback);
+    void submitOTP(Long userId, Constants.OtpVerificationType otpType, String otp, ServiceCallback<OTPResponse> callback);
 }

@@ -5,6 +5,7 @@ import android.net.Uri;
 import java.util.List;
 import java.util.Map;
 
+import tech.libin.rahul.ideaproject.configurations.Constants;
 import tech.libin.rahul.ideaproject.service.FOSService;
 import tech.libin.rahul.ideaproject.service.FOSServiceImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
@@ -92,12 +93,12 @@ public class FOSFacadeImpl implements FOSFacade {
     }
 
     @Override
-    public void resetPassword(String password, ServiceCallback<String> callback) {
-        fosService.resetPassword(password, callback);
+    public void resetPassword(Long userId,String password, ServiceCallback<String> callback) {
+        fosService.resetPassword(userId,password, callback);
     }
 
     @Override
-    public void submitOTP(Long userId, String otp, ServiceCallback<OTPResponse> callback) {
-        fosService.submitOTP(userId, otp, callback);
+    public void submitOTP(Long userId, Constants.OtpVerificationType otpType, String otp, ServiceCallback<OTPResponse> callback) {
+        fosService.submitOTP(userId,otpType, otp, callback);
     }
 }

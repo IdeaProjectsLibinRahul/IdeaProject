@@ -28,12 +28,13 @@ import tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText;
 
 public class ForgotPasswordFragment extends FOSBaseFragment {
 
+    //region declarations
     public static final String SUCCESS_DIALOG = "SUCCESS_DIALOG";
     private View view;
-    private FOSIconEditText editTextMiCode;
     private FOSIconEditText editTextMoblieNum;
     private FOSButton buttonVerify;
     private FOSFacade fosFacade;
+    //endregion
 
     @Nullable
     @Override
@@ -49,7 +50,6 @@ public class ForgotPasswordFragment extends FOSBaseFragment {
     private void initComponents() {
         fosFacade = new FOSFacadeImpl();
 
-        editTextMiCode = (FOSIconEditText) view.findViewById(R.id.editTextForgotMICode);
         editTextMoblieNum = (FOSIconEditText) view.findViewById(R.id.editTextForgotMobileNo);
         buttonVerify = (FOSButton) view.findViewById(R.id.buttonForgotVerify);
     }
@@ -61,7 +61,7 @@ public class ForgotPasswordFragment extends FOSBaseFragment {
 
                 if (!isValid()) {
 
-                    String miCode = editTextMiCode.getText().trim();
+                    String miCode = "0";
                     String mobileNum = editTextMoblieNum.getText().trim();
 
                     requestOtp(miCode, mobileNum);
@@ -80,6 +80,7 @@ public class ForgotPasswordFragment extends FOSBaseFragment {
                 if (response.getStatus() == Constants.Status.SUCCESS) {
                     OTPEvent event = new OTPEvent();
                     event.setUserId(response.getResponse().getUserId());
+                    event.setOtpType(Constants.OtpVerificationType.FORGOT_PASSWORD);
                     EventBus.getDefault().post(event);
                 } else {
                     showMessage("Error", response.getMessage(), Constants.MessageType.ERROR);

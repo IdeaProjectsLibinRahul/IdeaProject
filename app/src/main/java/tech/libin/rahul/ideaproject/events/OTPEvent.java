@@ -1,5 +1,6 @@
 package tech.libin.rahul.ideaproject.events;
 
+import tech.libin.rahul.ideaproject.configurations.Constants;
 import tech.libin.rahul.ideaproject.events.base.BaseEvent;
 
 /**
@@ -8,6 +9,7 @@ import tech.libin.rahul.ideaproject.events.base.BaseEvent;
 
 public class OTPEvent extends BaseEvent {
     private Long userId;
+    private Constants.OtpVerificationType otpType;
 
     public Long getUserId() {
         return userId;
@@ -15,5 +17,13 @@ public class OTPEvent extends BaseEvent {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public Constants.OtpVerificationType getOtpType() {
+        return otpType;
+    }
+
+    public void setOtpType(Constants.OtpVerificationType otpType) {
+        this.otpType = otpType;
     }
 }

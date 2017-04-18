@@ -20,6 +20,7 @@ public class LoginCredentialsActivity extends FOSBaseActivity {
     public static String VIEW_MODE = "VIEWMODE";
     public static String USER_ID = "USERID";
     private Constants.CredentialsMode viewMode;
+    private Constants.OtpVerificationType otpType;
     private Long userId;
 
     @Override
@@ -62,15 +63,19 @@ public class LoginCredentialsActivity extends FOSBaseActivity {
         Bundle bundle = getIntent().getExtras();
         viewMode = (Constants.CredentialsMode) bundle.getSerializable(VIEW_MODE);
         userId = bundle.getLong(USER_ID);
+        try {
+            otpType = (Constants.OtpVerificationType) bundle.getSerializable(Constants.KEY.OTP_TYPE);
+        } catch (Exception ex) {
+        }
     }
 
     private void handleView() {
         if (viewMode == Constants.CredentialsMode.FORGOT_PASSWORD) {
             showForgotView();
         } else if (viewMode == Constants.CredentialsMode.RESET_PASSWORD) {
-            showResetView();
+            showResetView(userId);
         } else if (viewMode == Constants.CredentialsMode.OTP) {
-            showOtpView(userId);
+            showOtpView(userId,otpType);
         }
     }
 
@@ -79,21 +84,25 @@ public class LoginCredentialsActivity extends FOSBaseActivity {
         addFragment(R.id.credential_container, fragment);
     }
 
-    private void showResetView() {
+    private void showResetView(Long userId) {
         Fragment fragment = new ResetPasswordFragment();
-        addFragment(R.id.credential_container, fragment);
-    }
-
-    private void showOtpView(Long userId) {
-        Fragment fragment = new OtpFragment();
         Bundle bundle = new Bundle();
         bundle.putLong(OtpFragment.USER_ID, userId);
         fragment.setArguments(bundle);
         addFragment(R.id.credential_container, fragment);
     }
 
+    private void showOtpView(Long userId, Constants.OtpVerificationType otpVerType) {
+        Fragment fragment = new OtpFragment();
+        Bundle bundle = new Bundle();
+        bundle.putLong(OtpFragment.USER_ID, userId);
+        bundle.putSerializable(Constants.KEY.OTP_TYPE, otpVerType);
+        fragment.setArguments(bundle);
+        addFragment(R.id.credential_container, fragment);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(OTPEvent event) {
-        showOtpView(event.getUserId());
+        showOtpView(event.getUserId(),event.getOtpType());
     }
 }

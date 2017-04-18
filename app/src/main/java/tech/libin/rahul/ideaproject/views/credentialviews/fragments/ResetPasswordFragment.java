@@ -37,26 +37,34 @@ public class ResetPasswordFragment extends FOSBaseFragment {
     private FOSFacade fosFacade;
     private FOSDialog fosDialog;
     public static final String SUCCESS_DIALOG = "SUCCESS_DIALOG";
+    private Long userId;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_reset_password, container, false);
 
+        parseBundle();
         initComponents();
         setListeners();
 
         return view;
     }
 
+
     private void initComponents() {
         fosFacade = new FOSFacadeImpl();
 
-        editTextPassword = (FOSIconEditText) view.findViewById(R.id.editTextForgotMICode);
+        editTextPassword = (FOSIconEditText) view.findViewById(R.id.editTextPassword);
         editTextConfirmPassword = (FOSIconEditText) view.findViewById(R.id.editTextForgotMobileNo);
         buttonVerify = (FOSButton) view.findViewById(R.id.buttonForgotVerify);
     }
-
+    private void parseBundle() {
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            userId = bundle.getLong(OtpFragment.USER_ID);
+        }
+    }
     private void setListeners() {
         buttonVerify.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +75,7 @@ public class ResetPasswordFragment extends FOSBaseFragment {
                     String password = editTextPassword.getText().trim();
 
                     final ProgressDialog dialog = ProgressDialog.show(getActivity(), null, getResources().getString(R.string.requesting), true, true);
-                    fosFacade.resetPassword(password, new ServiceCallback<String>() {
+                    fosFacade.resetPassword(userId,password, new ServiceCallback<String>() {
                         @Override
                         public void onResponse(String response) {
                             if (dialog != null) {

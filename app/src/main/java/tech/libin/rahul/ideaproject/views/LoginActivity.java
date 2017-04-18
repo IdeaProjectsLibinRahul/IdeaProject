@@ -117,6 +117,7 @@ public class LoginActivity extends FOSBaseActivity {
 
                             Bundle bundle = new Bundle();
                             bundle.putSerializable(LoginCredentialsActivity.VIEW_MODE, Constants.CredentialsMode.OTP);
+                            bundle.putSerializable(Constants.KEY.OTP_TYPE, Constants.OtpVerificationType.FIRST_TIME_LOGIN);
                             bundle.putLong(LoginCredentialsActivity.USER_ID, userId);
 
                             Intent intent = new Intent(LoginActivity.this, LoginCredentialsActivity.class);

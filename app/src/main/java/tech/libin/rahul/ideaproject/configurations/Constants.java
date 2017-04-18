@@ -158,11 +158,28 @@ public class Constants {
         }
     }
 
+    public enum OtpVerificationType {
+        @SerializedName("1")
+        FORGOT_PASSWORD(1),
+        @SerializedName("2")
+        FIRST_TIME_LOGIN(2);
+
+        private int value;
+
+        OtpVerificationType(int value) {
+            this.value = value;
+        }
+    }
+
     public class PARAMS {
         public static final String DETAILS_OBJECT_ID = "detailsObjectId";
         public static final String DETAILS_OBJECT_NAME = "detailsObjectName";
         public static final String DETAILS_OBJECT_PHONE = "detailsObjectPhone";
         public static final String DETAILS_OBJECT_TAB = "detailsObjectTab";
+    }
+
+    public class KEY {
+        public static final String OTP_TYPE = "otpType";
     }
 
 
