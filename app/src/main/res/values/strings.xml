@@ -135,8 +135,8 @@
 
 
     <string name="warn_not_visited">Not visited</string>
-
-
+    <string name="forgot_password_text">Forgot Password</string>
+    <string name="reset_password">Reset Password</string>
 
 
 </resources>

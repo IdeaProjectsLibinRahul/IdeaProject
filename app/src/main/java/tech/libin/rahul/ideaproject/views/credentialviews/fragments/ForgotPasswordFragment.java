@@ -16,12 +16,10 @@ import tech.libin.rahul.ideaproject.facade.FOSFacade;
 import tech.libin.rahul.ideaproject.facade.FOSFacadeImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
-import tech.libin.rahul.ideaproject.views.LoginActivity;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
 import tech.libin.rahul.ideaproject.views.credentialviews.viewmodels.ForgotPasswordModel;
 import tech.libin.rahul.ideaproject.views.detailsview.dialogs.InfoDialog;
 import tech.libin.rahul.ideaproject.views.widgets.button.FOSButton;
-import tech.libin.rahul.ideaproject.views.widgets.dialogs.FOSDialog;
 import tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText;
 
 /**
@@ -30,12 +28,12 @@ import tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText;
 
 public class ForgotPasswordFragment extends FOSBaseFragment {
 
+    public static final String SUCCESS_DIALOG = "SUCCESS_DIALOG";
     private View view;
     private FOSIconEditText editTextMiCode;
     private FOSIconEditText editTextMoblieNum;
     private FOSButton buttonVerify;
     private FOSFacade fosFacade;
-    public static final String SUCCESS_DIALOG = "SUCCESS_DIALOG";
 
     @Nullable
     @Override
@@ -66,42 +64,47 @@ public class ForgotPasswordFragment extends FOSBaseFragment {
                     String miCode = editTextMiCode.getText().trim();
                     String mobileNum = editTextMoblieNum.getText().trim();
 
-                    final ProgressDialog dialog = ProgressDialog.show(getActivity(), null, getResources().getString(R.string.requesting), true, true);
-                    fosFacade.forgotPassword(miCode, mobileNum, new ServiceCallback<ForgotPasswordModel>() {
-                        @Override
-                        public void onResponse(ForgotPasswordModel response) {
-                            if (dialog != null) {
-                                dialog.cancel();
-                            }
-                            EventBus.getDefault().post(new OTPEvent());
-                        }
-
-                        @Override
-                        public void onRequestTimout() {
-                            if (dialog != null) {
-                                dialog.cancel();
-                            }
-                            String title = "Request Timed Out";
-                            showMessage(title, getResources().getString(R.string.warn_request_timed_out),Constants.MessageType.TIME_OUT);
-                        }
-
-                        @Override
-                        public void onRequestFail(FOSError error) {
-                            if (dialog != null) {
-                                dialog.cancel();
-                            }
-                            String title = "Request Fail";
-                            showMessage(title, error.getErrorMessage(),Constants.MessageType.ERROR);
-                        }
-                    });
+                    requestOtp(miCode, mobileNum);
                 }
+            }
+        });
+    }
+
+    private void requestOtp(String miCode, String mobileNum) {
+        final ProgressDialog dialog = ProgressDialog.show(getActivity(), null, getResources().getString(R.string.requesting), true, true);
+        dialog.show();
+        fosFacade.forgotPassword(miCode, mobileNum, new ServiceCallback<ForgotPasswordModel>() {
+            @Override
+            public void onResponse(ForgotPasswordModel response) {
+                dialog.cancel();
+                if (response.getStatus() == Constants.Status.SUCCESS) {
+                    OTPEvent event = new OTPEvent();
+                    event.setUserId(response.getResponse().getUserId());
+                    EventBus.getDefault().post(event);
+                } else {
+                    showMessage("Error", response.getMessage(), Constants.MessageType.ERROR);
+                }
+            }
+
+            @Override
+            public void onRequestTimout() {
+                dialog.cancel();
+                String title = "Request Timed Out";
+                showMessage(title, getResources().getString(R.string.warn_request_timed_out), Constants.MessageType.TIME_OUT);
+            }
+
+            @Override
+            public void onRequestFail(FOSError error) {
+                dialog.cancel();
+                String title = "Request Fail";
+                showMessage(title, error.getErrorMessage(), Constants.MessageType.ERROR);
             }
         });
     }
 
     //region showMessage
     private void showMessage(String title, String message, Constants.MessageType type) {
-        InfoDialog infoDialog = InfoDialog.newInstance(title, message,type);
+        InfoDialog infoDialog = InfoDialog.newInstance(title, message, type);
         infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
     }
     //endregion

@@ -6,6 +6,13 @@
     android:orientation="vertical"
     android:padding="@dimen/activity_horizontal_margin">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        android:src="@mipmap/otp" />
+
     <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSEditText
         android:id="@+id/editTextOtp"
         android:layout_width="match_parent"

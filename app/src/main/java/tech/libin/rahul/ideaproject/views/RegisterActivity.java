@@ -23,7 +23,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
-import android.text.InputType;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -35,7 +34,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.ScrollView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -482,6 +480,10 @@ public class RegisterActivity extends FOSBaseActivity {
                             .getExternalStorageDirectory()
                             + File.separator
                             + "test";
+                    File dir = new File(path);
+                    if (!dir.exists()) {
+                        dir.mkdirs();
+                    }
                     f.delete();
                     OutputStream fOut = null;
                     File file = new File(path, String.valueOf(System
@@ -562,8 +564,7 @@ public class RegisterActivity extends FOSBaseActivity {
             status = false;
             editTextRegMobileNo.setError(getResources().getString(R.string.warn_mobile));
             slideIndex = 2;
-        }
-        else if (editTextRegMobileNo.getText().trim().length()!=10) {
+        } else if (editTextRegMobileNo.getText().trim().length() != 10) {
             status = false;
             editTextRegMobileNo.setError(getResources().getString(R.string.warn_invalid_mobile));
             slideIndex = 2;

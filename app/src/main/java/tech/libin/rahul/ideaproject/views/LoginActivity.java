@@ -111,13 +111,22 @@ public class LoginActivity extends FOSBaseActivity {
                 facade.doLogin(loginData, new ServiceCallback<User>() {
                     @Override
                     public void onResponse(User response) {
-                        if(response.isFirstTimeLogin())
-                        {
-
-                        }
-                        Config.getInstance().setUser(response);
                         dialog.cancel();
-                        navigateToHome();
+                        if (response.isFirstTimeLogin()) {
+                            Long userId = response.getUserId();
+
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable(LoginCredentialsActivity.VIEW_MODE, Constants.CredentialsMode.OTP);
+                            bundle.putLong(LoginCredentialsActivity.USER_ID, userId);
+
+                            Intent intent = new Intent(LoginActivity.this, LoginCredentialsActivity.class);
+                            intent.putExtras(bundle);
+
+                            startActivity(intent);
+                        } else {
+                            Config.getInstance().setUser(response);
+                            navigateToHome();
+                        }
 
                     }
 

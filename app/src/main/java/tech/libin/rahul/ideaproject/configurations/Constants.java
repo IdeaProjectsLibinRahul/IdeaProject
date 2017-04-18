@@ -21,9 +21,8 @@ public class Constants {
             this.value = value;
         }
 
-        public int getValue()
-        {
-            return  value;
+        public int getValue() {
+            return value;
         }
     }
 
@@ -45,14 +44,24 @@ public class Constants {
     public enum Status {
         @SerializedName("0")
         ERROR(0),
+
         @SerializedName("1")
         SUCCESS(1),
+
         @SerializedName("2")
         FIRST_TIME_LOGIN(2),
+
         @SerializedName("3")
         INVALID_USER(3),
+
         @SerializedName("4")
-        SESSION_EXIST(4);
+        SESSION_EXIST(4),
+
+        @SerializedName("7")
+        INVALID_OTP(7),
+
+        @SerializedName("8")
+        OTP_TIME_OUT(8);
 
         private int value;
 
@@ -113,13 +122,6 @@ public class Constants {
         OTP
     }
 
-    public class PARAMS {
-        public static final String DETAILS_OBJECT_ID = "detailsObjectId";
-        public static final String DETAILS_OBJECT_NAME = "detailsObjectName";
-        public static final String DETAILS_OBJECT_PHONE = "detailsObjectPhone";
-        public static final String DETAILS_OBJECT_TAB = "detailsObjectTab";
-    }
-
     public enum VisitStatus {
         @SerializedName("1")
         VISITED(1),
@@ -154,6 +156,13 @@ public class Constants {
         MessageType(int value) {
             this.value = value;
         }
+    }
+
+    public class PARAMS {
+        public static final String DETAILS_OBJECT_ID = "detailsObjectId";
+        public static final String DETAILS_OBJECT_NAME = "detailsObjectName";
+        public static final String DETAILS_OBJECT_PHONE = "detailsObjectPhone";
+        public static final String DETAILS_OBJECT_TAB = "detailsObjectTab";
     }
 
 

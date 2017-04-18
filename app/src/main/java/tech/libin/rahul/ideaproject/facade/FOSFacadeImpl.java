@@ -8,6 +8,7 @@ import java.util.Map;
 import tech.libin.rahul.ideaproject.service.FOSService;
 import tech.libin.rahul.ideaproject.service.FOSServiceImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
+import tech.libin.rahul.ideaproject.service.responses.OTPResponse;
 import tech.libin.rahul.ideaproject.service.responses.RegisterResponse;
 import tech.libin.rahul.ideaproject.views.credentialviews.viewmodels.ForgotPasswordModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.CollectionDetailModel;
@@ -93,5 +94,10 @@ public class FOSFacadeImpl implements FOSFacade {
     @Override
     public void resetPassword(String password, ServiceCallback<String> callback) {
         fosService.resetPassword(password, callback);
+    }
+
+    @Override
+    public void submitOTP(Long userId, String otp, ServiceCallback<OTPResponse> callback) {
+        fosService.submitOTP(userId, otp, callback);
     }
 }

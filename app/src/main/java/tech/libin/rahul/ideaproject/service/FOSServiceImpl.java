@@ -1,8 +1,6 @@
 package tech.libin.rahul.ideaproject.service;
 
-import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 
 import com.android.volley.Request;
 
@@ -21,7 +19,6 @@ import tech.libin.rahul.ideaproject.service.mapper.CollectionDetailMapper;
 import tech.libin.rahul.ideaproject.service.mapper.FormSubmitMapper;
 import tech.libin.rahul.ideaproject.service.mapper.RegisterMapper;
 import tech.libin.rahul.ideaproject.service.mapper.SmeDetailMapper;
-import tech.libin.rahul.ideaproject.service.mapper.FormSubmitMapper;
 import tech.libin.rahul.ideaproject.service.mapper.TdDetailMapper;
 import tech.libin.rahul.ideaproject.service.mapper.UpcDetailMapper;
 import tech.libin.rahul.ideaproject.service.requests.ActivityDetailRequest;
@@ -29,6 +26,7 @@ import tech.libin.rahul.ideaproject.service.requests.ActivityRequest;
 import tech.libin.rahul.ideaproject.service.requests.ForgotPasswordRequest;
 import tech.libin.rahul.ideaproject.service.requests.LoginRequest;
 import tech.libin.rahul.ideaproject.service.requests.LogoutRequest;
+import tech.libin.rahul.ideaproject.service.requests.OTPRequest;
 import tech.libin.rahul.ideaproject.service.requests.RegisterRequest;
 import tech.libin.rahul.ideaproject.service.requests.ResetPasswordRequest;
 import tech.libin.rahul.ideaproject.service.requests.SmeFormSubmitRequest;
@@ -38,17 +36,15 @@ import tech.libin.rahul.ideaproject.service.responses.ForgotPasswordResponse;
 import tech.libin.rahul.ideaproject.service.responses.FormSubmitResponse;
 import tech.libin.rahul.ideaproject.service.responses.LoginResponse;
 import tech.libin.rahul.ideaproject.service.responses.LogoutResponse;
+import tech.libin.rahul.ideaproject.service.responses.OTPResponse;
 import tech.libin.rahul.ideaproject.service.responses.RegisterResponse;
 import tech.libin.rahul.ideaproject.service.responses.ResetPasswordResponse;
 import tech.libin.rahul.ideaproject.service.responses.SmeDetailResponse;
 import tech.libin.rahul.ideaproject.service.responses.TdDetailResponse;
 import tech.libin.rahul.ideaproject.service.responses.UpcDetailResponse;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
-import tech.libin.rahul.ideaproject.views.LoginActivity;
-import tech.libin.rahul.ideaproject.views.LoginCredentialsActivity;
 import tech.libin.rahul.ideaproject.views.credentialviews.viewmodels.ForgotPasswordModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.CollectionDetailModel;
-import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.FormSubmitModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.TdDetailModel;
@@ -87,7 +83,7 @@ public class FOSServiceImpl implements FOSService {
                 } else {
                     User user = new User(response.getResponse());
                     user.setFirstTimeLogin(false);
-                    if(response.getStatus() == Constants.Status.FIRST_TIME_LOGIN)
+                    if (response.getStatus() == Constants.Status.FIRST_TIME_LOGIN)
                         user.setFirstTimeLogin(true);
                     callback.onResponse(user);
                 }
@@ -452,6 +448,37 @@ public class FOSServiceImpl implements FOSService {
                     callback.onRequestFail(error);
                 } else {
                     callback.onResponse(response.getMessage());
+                }
+            }
+
+            @Override
+            public void onTimeout() {
+                callback.onRequestTimout();
+            }
+
+            @Override
+            public void onFail(FOSError error) {
+                callback.onRequestFail(error);
+            }
+        });
+    }
+
+    @Override
+    public void submitOTP(Long userId, String otp, final ServiceCallback<OTPResponse> callback) {
+        OTPRequest otpRequest = new OTPRequest();
+        otpRequest.setUserId(userId);
+        otpRequest.setOtp(otp);
+        FOSNetworkRequest<OTPResponse> request = new FOSNetworkRequestImpl<>(otpRequest, ServiceURLs.VERIFY_OTP, OTPResponse.class);
+        request.request(Request.Method.POST, new NetworkCallback<OTPResponse>() {
+            @Override
+            public void onSuccess(OTPResponse response) {
+
+                if (response.getStatus() != Constants.Status.SUCCESS) {
+                    FOSError error = new FOSError();
+                    error.setErrorMessage(response.getMessage());
+                    callback.onRequestFail(error);
+                } else {
+                    callback.onResponse(response);
                 }
             }
 

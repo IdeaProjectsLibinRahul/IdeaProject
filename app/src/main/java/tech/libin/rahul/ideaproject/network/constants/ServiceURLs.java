@@ -5,7 +5,7 @@ package tech.libin.rahul.ideaproject.network.constants;
  */
 
 public class ServiceURLs {
-//    public static final String REGISTER = "/Account/RegisterDummy";
+    //    public static final String REGISTER = "/Account/RegisterDummy";
     public static final String REGISTER = "/Account/Register";
     public static final String LOGIN = "/Account/Login";
     public static final String ACTIVITY = "/AppData/Activity";
@@ -17,6 +17,7 @@ public class ServiceURLs {
     public static final String LOGOUT = "/Account/Logout";
     public static final String FORGOT_PASSWORD = "/Account/ForgotPassword";
     public static final String RESET_PASSWORD = "/Account/ResetPassword";
+    public static final String VERIFY_OTP = "/Account/doOtpVerification";
 
     //   private static final String BASE_URL = "https://ibs.ideacellular.com/IFOST/api";//live
     private static final String BASE_URL = "http://122.166.96.206/isft/api";//local testing

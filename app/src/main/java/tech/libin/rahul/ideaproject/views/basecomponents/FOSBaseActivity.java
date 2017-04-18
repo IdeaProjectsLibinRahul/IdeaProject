@@ -1,7 +1,5 @@
 package tech.libin.rahul.ideaproject.views.basecomponents;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
@@ -11,7 +9,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,8 +17,6 @@ import com.squareup.picasso.Picasso;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.lang.annotation.Target;
 
 import tech.libin.rahul.ideaproject.R;
 import tech.libin.rahul.ideaproject.events.base.BaseEvent;
@@ -95,7 +90,7 @@ public abstract class FOSBaseActivity extends AppCompatActivity {
                 if (hasToolBar) {
                     if (toolbar != null) {
                         toolbar.setTitle("");
-                      //  toolbar.setElevation(toolbarElevation);
+                        //  toolbar.setElevation(toolbarElevation);
                         setSupportActionBar(toolbar);
                     }
                 } else {
@@ -108,9 +103,7 @@ public abstract class FOSBaseActivity extends AppCompatActivity {
 
                 setToolbarEvents();
             }
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
 
         }
 
@@ -138,6 +131,22 @@ public abstract class FOSBaseActivity extends AppCompatActivity {
     protected void setToolbarProfilePic(String url) {
         if (imageViewProfilePic != null && url != null && !url.isEmpty()) {
             Picasso.with(this).load(url).resize(60, 60).into(imageViewProfilePic);
+        }
+    }
+
+    protected void showToolbarPhoneNo(boolean show) {
+        if (show) {
+            textViewPhone.setVisibility(View.VISIBLE);
+        } else {
+            textViewPhone.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    protected void showToolbarPhoto(boolean show) {
+        if (show) {
+            imageViewProfilePic.setVisibility(View.VISIBLE);
+        } else {
+            imageViewProfilePic.setVisibility(View.INVISIBLE);
         }
     }
 

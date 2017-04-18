@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
+import tech.libin.rahul.ideaproject.service.responses.OTPResponse;
 import tech.libin.rahul.ideaproject.service.responses.RegisterResponse;
 import tech.libin.rahul.ideaproject.views.credentialviews.viewmodels.ForgotPasswordModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.CollectionDetailModel;
@@ -48,4 +49,6 @@ public interface FOSService {
     void forgotPassword(String miCode, String mobileNum, ServiceCallback<ForgotPasswordModel> callback);
 
     void resetPassword(String password, final ServiceCallback<String> callback);
+
+    void submitOTP(Long userId, String otp, ServiceCallback<OTPResponse> callback);
 }
