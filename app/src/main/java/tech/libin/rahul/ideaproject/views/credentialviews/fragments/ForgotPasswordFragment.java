@@ -77,13 +77,22 @@ public class ForgotPasswordFragment extends FOSBaseFragment {
             @Override
             public void onResponse(ForgotPasswordModel response) {
                 dialog.cancel();
-                if (response.getStatus() == Constants.Status.SUCCESS) {
-                    OTPEvent event = new OTPEvent();
-                    event.setUserId(response.getResponse().getUserId());
-                    event.setOtpType(Constants.OtpVerificationType.FORGOT_PASSWORD);
-                    EventBus.getDefault().post(event);
+                if (response != null) {
+                    if (response.getStatus() == Constants.Status.SUCCESS) {
+                        ForgotPasswordModel.Response responseObject = response.getResponse();
+                        if (responseObject != null) {
+                            OTPEvent event = new OTPEvent();
+                            event.setUserId(responseObject.getUserId());
+                            event.setOtpType(Constants.OtpVerificationType.FORGOT_PASSWORD);
+                            EventBus.getDefault().post(event);
+                        } else {
+                            showMessage("Error", getString(R.string.no_response_message), Constants.MessageType.ERROR);
+                        }
+                    } else {
+                        showMessage("Error", response.getMessage(), Constants.MessageType.ERROR);
+                    }
                 } else {
-                    showMessage("Error", response.getMessage(), Constants.MessageType.ERROR);
+                    showMessage("Error", getString(R.string.no_response_message), Constants.MessageType.ERROR);
                 }
             }
 
