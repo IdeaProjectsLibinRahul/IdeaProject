@@ -44,8 +44,6 @@ public interface FOSFacade {
 
     void doRegistration(Map<String, String> data, final Map<String, Uri> files, ServiceCallback<RegisterResponse> callback);
 
-    void doRegistrationDummy(RegisterModel model, ServiceCallback<String> callback);
-
     void doLogout(String userId, ServiceCallback<String> callback);
 
     void forgotPassword(String miCode, String mobileNum, ServiceCallback<ForgotPasswordModel> callback);
@@ -53,4 +51,7 @@ public interface FOSFacade {
     void resetPassword(Long userId,String password, ServiceCallback<String> callback);
 
     void submitOTP(Long userId, Constants.OtpVerificationType otpType, String otp, ServiceCallback<OTPResponse> callback);
+
+    void regenerateOTP(Long userId,String password, ServiceCallback<String> callback);
+
 }

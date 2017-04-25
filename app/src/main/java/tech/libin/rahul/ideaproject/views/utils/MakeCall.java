@@ -25,6 +25,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import tech.libin.rahul.ideaproject.R;
+
 /**
  * Created by admin on 16/04/2017.
  */
@@ -41,6 +43,29 @@ public class MakeCall extends AppCompatActivity {
 
     public void setCallClick(View view) {
         try {
+
+            //to directly call, to use jus un comment and comment above code
+            if (view instanceof TextView) {
+                if (((TextView) view).getText().toString().trim().length() > 9) {
+                    ((TextView) view).setTextColor(mContext.getResources().getColor(R.color.mobile_num));
+
+                    view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (v instanceof TextView) {
+                                try {
+                                    String phoneNum = ((TextView) v).getText().toString().trim();
+                                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                                    intent.setData(Uri.parse("tel:" + phoneNum));
+                                    mContext.startActivity(intent);
+
+                                } catch (Exception ex) {
+                                }
+                            }
+                        }
+                    });
+                }
+            }
 
             //just open dialer, not need any permission
 //            Linkify.addLinks((TextView) view, Linkify.PHONE_NUMBERS);

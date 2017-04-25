@@ -18,7 +18,15 @@ public class ForgotPasswordResponse extends FOSBaseResponse {
         this.response = response;
     }
 
-    class Response {
+    public class Response {
+        private Long userId;
 
+        public Long getUserId() {
+            return userId;
+        }
+
+        public void setUserId(Long userId) {
+            this.userId = userId;
+        }
     }
 }

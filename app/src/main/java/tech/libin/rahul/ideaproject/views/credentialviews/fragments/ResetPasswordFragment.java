@@ -56,7 +56,7 @@ public class ResetPasswordFragment extends FOSBaseFragment {
         fosFacade = new FOSFacadeImpl();
 
         editTextPassword = (FOSIconEditText) view.findViewById(R.id.editTextPassword);
-        editTextConfirmPassword = (FOSIconEditText) view.findViewById(R.id.editTextForgotMobileNo);
+        editTextConfirmPassword = (FOSIconEditText) view.findViewById(R.id.editTextConfirmPassword);
         buttonVerify = (FOSButton) view.findViewById(R.id.buttonForgotVerify);
     }
     private void parseBundle() {

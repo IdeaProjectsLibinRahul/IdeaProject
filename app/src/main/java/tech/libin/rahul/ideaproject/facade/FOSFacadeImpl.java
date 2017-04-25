@@ -28,6 +28,7 @@ import tech.libin.rahul.ideaproject.views.models.User;
  * Created by 10945 on 10/27/2016.
  */
 
+
 public class FOSFacadeImpl implements FOSFacade {
     FOSService fosService;
 
@@ -78,11 +79,6 @@ public class FOSFacadeImpl implements FOSFacade {
     }
 
     @Override
-    public void doRegistrationDummy(RegisterModel model, ServiceCallback<String> callback) {
-        fosService.doRegistrationDummy(model, callback);
-    }
-
-    @Override
     public void doLogout(String userId, ServiceCallback<String> callback) {
         fosService.doLogout(userId, callback);
     }
@@ -100,5 +96,10 @@ public class FOSFacadeImpl implements FOSFacade {
     @Override
     public void submitOTP(Long userId, Constants.OtpVerificationType otpType, String otp, ServiceCallback<OTPResponse> callback) {
         fosService.submitOTP(userId,otpType, otp, callback);
+    }
+
+    @Override
+    public void regenerateOTP(Long userId, String password, ServiceCallback<String> callback) {
+
     }
 }

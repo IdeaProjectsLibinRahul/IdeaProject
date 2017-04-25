@@ -262,7 +262,6 @@ public class FOSServiceImpl implements FOSService {
         });
     }
 
-
     @Override
     public void doSubmitVisitDetails(FormSubmitModel model, final ServiceCallback<String> callback) {
         final FormSubmitMapper mapper = new FormSubmitMapper();
@@ -364,7 +363,6 @@ public class FOSServiceImpl implements FOSService {
         });
     }
 
-
     @Override
     public void doLogout(String userId, final ServiceCallback<String> callback) {
         User user = Config.getInstance().getUser();
@@ -415,6 +413,7 @@ public class FOSServiceImpl implements FOSService {
                     ForgotPasswordModel model = new ForgotPasswordModel();
                     model.setStatus(response.getStatus());
                     model.setMessage(response.getMessage());
+                    model.setUserId(response.getResponse().getUserId());
                     callback.onResponse(model);
                 }
             }
@@ -432,10 +431,9 @@ public class FOSServiceImpl implements FOSService {
     }
 
     @Override
-    public void resetPassword(Long userId,String password, final ServiceCallback<String> callback) {
-        User user = Config.getInstance().getUser();
+    public void resetPassword(Long userId, String password, final ServiceCallback<String> callback) {
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest();
-        resetPasswordRequest.setUserId(user.getUserId());
+        resetPasswordRequest.setUserId(userId);
         resetPasswordRequest.setNewPassword(password);
         FOSNetworkRequest<ResetPasswordResponse> request = new FOSNetworkRequestImpl<>(resetPasswordRequest, ServiceURLs.RESET_PASSWORD, ResetPasswordResponse.class);
         request.request(Request.Method.POST, new NetworkCallback<ResetPasswordResponse>() {

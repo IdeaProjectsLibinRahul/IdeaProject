@@ -9,7 +9,7 @@ import tech.libin.rahul.ideaproject.configurations.Constants;
 public class ForgotPasswordModel {
     private Constants.Status status;
     private String message;
-    private Response response;
+    private Long userId;
 
     public Constants.Status getStatus() {
         return status;
@@ -27,23 +27,31 @@ public class ForgotPasswordModel {
         this.message = message;
     }
 
-    public Response getResponse() {
-        return response;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setResponse(Response response) {
-        this.response = response;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public class Response {
-        private Long userId;
-
-        public Long getUserId() {
-            return userId;
-        }
-
-        public void setUserId(Long userId) {
-            this.userId = userId;
-        }
-    }
+    //    public Response getResponse() {
+//        return response;
+//    }
+//
+//    public void setResponse(Response response) {
+//        this.response = response;
+//    }
+//
+//    public class Response {
+//        private Long userId;
+//
+//        public Long getUserId() {
+//            return userId;
+//        }
+//
+//        public void setUserId(Long userId) {
+//            this.userId = userId;
+//        }
+//    }
 }
