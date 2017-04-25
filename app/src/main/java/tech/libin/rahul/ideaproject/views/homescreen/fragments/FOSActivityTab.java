@@ -64,6 +64,7 @@ public class FOSActivityTab extends FOSBaseFragment {
     private String searchName = "";
     private String searchMsisdn = "";
     private String searchZip = "";
+    private Constants.RecordType recordType;
 
 
     @Nullable
@@ -85,6 +86,7 @@ public class FOSActivityTab extends FOSBaseFragment {
     }
 
     private void initComponents() {
+        recordType = Constants.RecordType.ALL;
         pageNo = 1;
         maxPages = 100;
         isLastPage = false;
@@ -139,6 +141,7 @@ public class FOSActivityTab extends FOSBaseFragment {
         requestModel.setType(Config.getInstance().getTabSelected());
         requestModel.setUserId(user.getUserId());
         requestModel.setZip(searchZip);
+        requestModel.setRecordType(recordType);
 
         progressBarLoading.setVisibility(View.VISIBLE);
         isLoading = true;
@@ -165,7 +168,8 @@ public class FOSActivityTab extends FOSBaseFragment {
             @Override
             public void onRequestTimout() {
                 if (getActivity() != null) {
-                    Toast.makeText(getActivity(), "TimeOut", Toast.LENGTH_SHORT).show();                }
+                    Toast.makeText(getActivity(), "TimeOut", Toast.LENGTH_SHORT).show();
+                }
 
                 isLoading = false;
                 progressBarLoading.setVisibility(View.GONE);
@@ -236,6 +240,7 @@ public class FOSActivityTab extends FOSBaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(SearchEvent event) {
         if (event != null) {
+            modelList.clear();
             pageNo = 1;
             maxPages = 100;
             isLastPage = false;
@@ -244,6 +249,7 @@ public class FOSActivityTab extends FOSBaseFragment {
             searchName = event.getName();
             searchMsisdn = event.getMsisdn();
             searchZip = event.getZip();
+            recordType = event.getRecordType();
 
             sendRequest();
         }

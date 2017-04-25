@@ -142,7 +142,7 @@ public class LoginActivity extends FOSBaseActivity {
                     @Override
                     public void onRequestFail(FOSError error) {
                         dialog.cancel();
-                        String message = "Invalid user name or password,Please check your inputs.";
+                        String message = error.getErrorMessage();
                         String title = "Authentication Fail";
                         fosDialog = FOSDialog.newInstance(LoginActivity.this, title, message, false);
 

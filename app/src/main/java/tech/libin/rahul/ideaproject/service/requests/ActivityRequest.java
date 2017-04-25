@@ -19,6 +19,8 @@ public class ActivityRequest extends FOSBaseRequest {
 
     private Constants.ActivityType activityType;
 
+    private Constants.RecordType recordType;
+
     private String zip;
 
     private String msisdn;
@@ -87,5 +89,13 @@ public class ActivityRequest extends FOSBaseRequest {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Constants.RecordType getRecordType() {
+        return recordType;
+    }
+
+    public void setRecordType(Constants.RecordType recordType) {
+        this.recordType = recordType;
     }
 }

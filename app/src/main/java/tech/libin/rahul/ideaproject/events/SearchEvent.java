@@ -1,5 +1,6 @@
 package tech.libin.rahul.ideaproject.events;
 
+import tech.libin.rahul.ideaproject.configurations.Constants;
 import tech.libin.rahul.ideaproject.events.base.BaseEvent;
 
 /**
@@ -10,6 +11,7 @@ public class SearchEvent extends BaseEvent {
     private String name;
     private String msisdn;
     private String zip;
+    private Constants.RecordType recordType;
 
     public String getName() {
         return name;
@@ -33,5 +35,13 @@ public class SearchEvent extends BaseEvent {
 
     public void setZip(String zip) {
         this.zip = zip;
+    }
+
+    public Constants.RecordType getRecordType() {
+        return recordType;
+    }
+
+    public void setRecordType(Constants.RecordType recordType) {
+        this.recordType = recordType;
     }
 }

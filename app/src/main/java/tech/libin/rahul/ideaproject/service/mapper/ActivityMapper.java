@@ -32,6 +32,7 @@ public class ActivityMapper implements FOSBaseMapper<ActivityRequestModel, Activ
         request.setMsisdn(model.getMsisdn());
         request.setZip(model.getZip());
         request.setName(model.getName());
+        request.setRecordType(model.getRecordType());
         return request;
     }
 

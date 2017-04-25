@@ -87,6 +87,8 @@ public class Constants {
     }
 
     public enum RecordType {
+        @SerializedName("0")
+        ALL(0),
         @SerializedName("1")
         SME(1),
         @SerializedName("2")

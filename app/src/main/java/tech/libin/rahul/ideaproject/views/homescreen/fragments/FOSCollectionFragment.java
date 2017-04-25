@@ -109,7 +109,7 @@ public class FOSCollectionFragment extends FOSBaseFragment {
         textViewCollection.setTextColor(colorBlack);
 
         tabRetention.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorBottomTabSelected));
-        tabCollection.setBackgroundColor( ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+        tabCollection.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
     }
 
     private void setCollectionTabSelected() {
@@ -123,7 +123,7 @@ public class FOSCollectionFragment extends FOSBaseFragment {
         textViewCollection.setTextColor(colorWhite);
 
         tabCollection.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorBottomTabSelected));
-        tabRetention.setBackgroundColor( ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+        tabRetention.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
     }
 
     private void setListeners() {
@@ -166,6 +166,7 @@ public class FOSCollectionFragment extends FOSBaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_search) {
             FOSSearchDialog dialog = new FOSSearchDialog();
+            dialog.setUserSelectionType(userSelectionType);
             dialog.show(getFragmentManager(), "TAG");
         }
 

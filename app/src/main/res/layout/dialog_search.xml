@@ -33,10 +33,11 @@
         android:layout_marginTop="40dp"
         android:padding="12dp">
 
-        <LinearLayout
-            android:id="@+id/llType"
+        <RadioGroup
+            android:id="@+id/rbGroup"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/radioAll"
@@ -45,6 +46,7 @@
                 android:layout_weight="1"
                 android:checked="true"
                 android:text="All" />
+
 
             <RadioButton
                 android:id="@+id/radioUPC"
@@ -60,38 +62,22 @@
                 android:layout_weight="1"
                 android:text="SME" />
 
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/llType2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/llType"
-            android:layout_marginTop="15dp">
-
-            <RadioButton
-                android:id="@+id/radioCollection"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="Collection" />
-
             <RadioButton
                 android:id="@+id/radioTD"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="TD" />
-        </LinearLayout>
+
+
+        </RadioGroup>
 
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/textInputSearchName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/llType">
+            android:layout_below="@+id/rbGroup">
 
             <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSEditText
                 android:id="@+id/editTextSearchName"
@@ -105,8 +91,8 @@
             android:id="@+id/textInputSearchMsisdn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/llType2"
-            android:layout_marginTop="15dp">
+            android:layout_below="@id/textInputSearchName"
+            android:layout_marginTop="8dp">
 
             <tech.libin.rahul.ideaproject.views.widgets.edittext.FOSEditText
                 android:id="@+id/editTextSearchMsisdn"

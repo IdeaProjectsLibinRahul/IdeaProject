@@ -16,6 +16,8 @@ public class ActivityRequestModel {
 
     private Constants.Type type;
 
+    private Constants.RecordType recordType;
+
     private Constants.ActivityType activityType;
 
     private String zip;
@@ -86,5 +88,13 @@ public class ActivityRequestModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Constants.RecordType getRecordType() {
+        return recordType;
+    }
+
+    public void setRecordType(Constants.RecordType recordType) {
+        this.recordType = recordType;
     }
 }
