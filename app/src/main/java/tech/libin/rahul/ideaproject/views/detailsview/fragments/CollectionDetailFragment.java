@@ -44,6 +44,7 @@ import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
 import tech.libin.rahul.ideaproject.views.detailsview.adapters.FOSSpinnerAdapter;
 import tech.libin.rahul.ideaproject.views.detailsview.dialogs.FOSDateDialog;
+import tech.libin.rahul.ideaproject.views.detailsview.dialogs.FOSMapExploreDialog;
 import tech.libin.rahul.ideaproject.views.detailsview.dialogs.InfoDialog;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.CollectionDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.FormSubmitModel;
@@ -307,12 +308,12 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
 
                 @Override
                 public void onRequestTimout() {
-                    showMessage(getString(R.string.warn_time_out_title), getResources().getString(R.string.warn_request_timed_out),Constants.MessageType.TIME_OUT);
+                    showMessage(getString(R.string.warn_time_out_title), getResources().getString(R.string.warn_request_timed_out), Constants.MessageType.TIME_OUT);
                 }
 
                 @Override
                 public void onRequestFail(FOSError error) {
-                    showMessage(getString(R.string.warn_server_error), error.getErrorMessage(),Constants.MessageType.ERROR);
+                    showMessage(getString(R.string.warn_server_error), error.getErrorMessage(), Constants.MessageType.ERROR);
                 }
             });
         }
@@ -434,10 +435,6 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
             }
         });
 
-        makeCall = new MakeCall(getActivity());
-        makeCall.setCallClick(textViewMobile);
-        makeCall.setCallClick(textViewLandline1);
-        makeCall.setCallClick(textViewLandLine2);
     }
     //endregion
 
@@ -481,7 +478,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                 if (dialog != null) {
                     dialog.cancel();
                 }
-                showMessage(getString(R.string.warn_success),response,Constants.MessageType.TIME_OUT);
+                showMessage(getString(R.string.warn_success), response, Constants.MessageType.TIME_OUT);
             }
 
             @Override
@@ -489,7 +486,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                 if (dialog != null) {
                     dialog.cancel();
                 }
-                showMessage(getString(R.string.warn_time_out_title), getResources().getString(R.string.warn_request_timed_out),Constants.MessageType.TIME_OUT);
+                showMessage(getString(R.string.warn_time_out_title), getResources().getString(R.string.warn_request_timed_out), Constants.MessageType.TIME_OUT);
             }
 
             @Override
@@ -497,12 +494,10 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                 if (dialog != null) {
                     dialog.cancel();
                 }
-                showMessage(getString(R.string.warn_server_error), error.getErrorMessage(),Constants.MessageType.ERROR);
+                showMessage(getString(R.string.warn_server_error), error.getErrorMessage(), Constants.MessageType.ERROR);
             }
         });
     }
-
-
     //endregion
 
     //region bindDetails
@@ -540,10 +535,14 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
             switchLocation.setVisibility(View.VISIBLE);
         }
 
-        if (model.getLocation() != null && model.getLocation().getLandmark() != null)
-        {
+        if (model.getLocation() != null && model.getLocation().getLandmark() != null) {
             editTextLandmark.setText(model.getLocation().getLandmark());
         }
+
+        makeCall = new MakeCall(getActivity());
+        makeCall.setCallClick(textViewMobile);
+        makeCall.setCallClick(textViewLandline1);
+        makeCall.setCallClick(textViewLandLine2);
 
         loadPreviousData();
     }
@@ -689,6 +688,8 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                     textViewFromExeEscalateNoVisit.setVisibility(View.VISIBLE);
                     textViewFromExeEscalateNoVisit.setText(getString(R.string.warn_not_visited));
                 }
+                makeCall.setCallClick(textViewFromExeMobileNum);
+
             }
 
         } catch (Exception ex) {
@@ -716,14 +717,12 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                     }
                     textViewFromMicoVisitedDate.setText(fromMico.getVisitedDate());
                     textViewMicoRemarks.setText(fromMico.getRemarks());
-                }
-                else
-                {
+                } else {
                     llFromMicoVisitDetails.setVisibility(View.GONE);
                     textViewFromMicoEscalateNoVisit.setVisibility(View.VISIBLE);
                     textViewFromMicoEscalateNoVisit.setText(getString(R.string.warn_not_visited));
                 }
-
+                makeCall.setCallClick(textViewFromMicoMobileNum);
             }
 
         } catch (Exception ex) {
@@ -751,15 +750,13 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                     }
                     textViewFromZsmVisitedDate.setText(fromZsm.getVisitedDate());
                     textViewZsmRemarks.setText(fromZsm.getRemarks());
+                } else {
+                    llFromZsmVisitDetails.setVisibility(View.GONE);
+                    textViewFromZsmEscalateNoVisit.setVisibility(View.VISIBLE);
+                    textViewFromZsmEscalateNoVisit.setText(getString(R.string.warn_not_visited));
                 }
+                makeCall.setCallClick(textViewFromZsmMobileNum);
             }
-            else
-            {
-                llFromZsmVisitDetails.setVisibility(View.GONE);
-                textViewFromZsmEscalateNoVisit.setVisibility(View.VISIBLE);
-                textViewFromZsmEscalateNoVisit.setText(getString(R.string.warn_not_visited));
-            }
-
         } catch (Exception ex) {
             Log.e("Exception", ex.toString());
         }
@@ -800,6 +797,26 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                     .title("My Idea"));
             CameraUpdate location = CameraUpdateFactory.newLatLngZoom(latLng, 12);
             mMap.animateCamera(location);
+
+            googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng arg0) {
+                    try {
+                        if (detailModel != null) {
+                            Bundle bundle = new Bundle();
+                            bundle.putString("name", detailModel.getBill2());
+                            bundle.putString("latitude", detailModel.getLocation().getLatitude());
+                            bundle.putString("longitude", detailModel.getLocation().getLatitude());
+                            FOSMapExploreDialog dialog = new FOSMapExploreDialog();
+                            dialog.setArguments(bundle);
+                            dialog.show(getFragmentManager(), "MapExplorer");
+                        }
+                    } catch (Exception ex) {
+
+                    }
+                }
+            });
+
         } catch (Exception ex) {
             Log.e("Error", ex.toString());
         }
@@ -808,7 +825,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
 
     //region showMessage
     private void showMessage(String title, String message, Constants.MessageType type) {
-        InfoDialog infoDialog = InfoDialog.newInstance(title, message,type);
+        InfoDialog infoDialog = InfoDialog.newInstance(title, message, type);
         infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
     }
     //endregion

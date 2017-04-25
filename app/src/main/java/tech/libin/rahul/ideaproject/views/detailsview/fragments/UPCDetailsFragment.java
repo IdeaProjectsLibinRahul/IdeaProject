@@ -44,6 +44,7 @@ import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
 import tech.libin.rahul.ideaproject.views.detailsview.adapters.FOSSpinnerAdapter;
 import tech.libin.rahul.ideaproject.views.detailsview.dialogs.FOSDateDialog;
+import tech.libin.rahul.ideaproject.views.detailsview.dialogs.FOSMapExploreDialog;
 import tech.libin.rahul.ideaproject.views.detailsview.dialogs.InfoDialog;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.FormSubmitModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.UpcDetailModel;
@@ -303,6 +304,12 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         if (model.getLocation() != null && model.getLocation().getLandmark() != null) {
             editTextLandmark.setText(model.getLocation().getLandmark());
         }
+
+        makeCall = new MakeCall(getActivity());
+        makeCall.setCallClick(textViewMobile);
+        makeCall.setCallClick(textViewAlternateNumber);
+        makeCall.setCallClick(textViewAlternateNumber);
+
         loadPreviousData();
     }
 
@@ -417,6 +424,8 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     textViewFromExeEscalateNoVisit.setVisibility(View.VISIBLE);
                     textViewFromExeEscalateNoVisit.setText(getString(R.string.warn_not_visited));
                 }
+                makeCall.setCallClick(textViewExeMobileNum);
+
             }
 
         } catch (Exception ex) {
@@ -449,6 +458,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     textViewFromMicoEscalateNoVisit.setVisibility(View.VISIBLE);
                     textViewFromMicoEscalateNoVisit.setText(getString(R.string.warn_not_visited));
                 }
+                makeCall.setCallClick(textViewMicoMobileNum);
             }
 
         } catch (Exception ex) {
@@ -481,6 +491,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     textViewFromZsmEscalateNoVisit.setVisibility(View.VISIBLE);
                     textViewFromZsmEscalateNoVisit.setText(getString(R.string.warn_not_visited));
                 }
+                makeCall.setCallClick(textViewZsmMobileNum);
             }
 
         } catch (Exception ex) {
@@ -583,11 +594,6 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                 submitFormData();
             }
         });
-
-        makeCall = new MakeCall(getActivity());
-        makeCall.setCallClick(textViewMobile);
-        makeCall.setCallClick(textViewAlternateNumber);
-        makeCall.setCallClick(textViewAlternateNumber);
     }
     //endregion
 
@@ -670,14 +676,30 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                 .title("My Idea"));
         CameraUpdate location = CameraUpdateFactory.newLatLngZoom(latLng, 12);
         mMap.animateCamera(location);
+
+        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng arg0) {
+                if (detailModel != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("name", detailModel.getCustomerName());
+                    bundle.putString("latitude", detailModel.getLocation().getLatitude());
+                    bundle.putString("longitude", detailModel.getLocation().getLatitude());
+                    FOSMapExploreDialog dialog = new FOSMapExploreDialog();
+                    dialog.setArguments(bundle);
+                    dialog.show(getFragmentManager(), "MapExplorer");
+                }
+            }
+        });
+
     }
     //endregion
 
     //region initMap
     private void initMap() {
         try {
-
             mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+
             View mapView = mapFragment.getView();
             if (mapView != null && switchLocation.getVisibility() == View.VISIBLE) {
                 if (!switchLocation.isChecked()) {
@@ -689,6 +711,7 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             } else {
                 mapView.setVisibility(View.GONE);
             }
+
         } catch (Exception ex) {
             Log.e("Error", ex.toString());
         }
