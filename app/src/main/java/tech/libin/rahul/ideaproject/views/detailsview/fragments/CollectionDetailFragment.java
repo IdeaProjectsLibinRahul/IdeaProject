@@ -48,6 +48,7 @@ import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
 import tech.libin.rahul.ideaproject.views.detailsview.adapters.DetailsViewAdapter;
 import tech.libin.rahul.ideaproject.views.detailsview.adapters.FOSSpinnerAdapter;
 import tech.libin.rahul.ideaproject.views.detailsview.dialogs.FOSDateDialog;
+import tech.libin.rahul.ideaproject.views.detailsview.dialogs.FOSMapExploreDialog;
 import tech.libin.rahul.ideaproject.views.detailsview.dialogs.InfoDialog;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.CollectionDetailModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.FormSubmitModel;
@@ -428,10 +429,6 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
             }
         });
 
-        makeCall = new MakeCall(getActivity());
-        makeCall.setCallClick(textViewMobile);
-        makeCall.setCallClick(textViewLandline1);
-        makeCall.setCallClick(textViewLandLine2);
     }
     //endregion
 
@@ -495,8 +492,6 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
             }
         });
     }
-
-
     //endregion
 
     //region bindDetails
@@ -537,6 +532,11 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
         if (model.getLocation() != null && model.getLocation().getLandmark() != null) {
             editTextLandmark.setText(model.getLocation().getLandmark());
         }
+
+        makeCall = new MakeCall(getActivity());
+        makeCall.setCallClick(textViewMobile);
+        makeCall.setCallClick(textViewLandline1);
+        makeCall.setCallClick(textViewLandLine2);
 
         ArrayList<DetailOtherData> otherData = model.getOther();
         DetailsViewAdapter adapter = new DetailsViewAdapter(otherData);
@@ -688,6 +688,8 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                     textViewFromExeEscalateNoVisit.setVisibility(View.VISIBLE);
                     textViewFromExeEscalateNoVisit.setText(getString(R.string.warn_not_visited));
                 }
+                makeCall.setCallClick(textViewFromExeMobileNum);
+
             }
 
         } catch (Exception ex) {
@@ -720,7 +722,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                     textViewFromMicoEscalateNoVisit.setVisibility(View.VISIBLE);
                     textViewFromMicoEscalateNoVisit.setText(getString(R.string.warn_not_visited));
                 }
-
+                makeCall.setCallClick(textViewFromMicoMobileNum);
             }
 
         } catch (Exception ex) {
@@ -748,13 +750,13 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                     }
                     textViewFromZsmVisitedDate.setText(fromZsm.getVisitedDate());
                     textViewZsmRemarks.setText(fromZsm.getRemarks());
+                } else {
+                    llFromZsmVisitDetails.setVisibility(View.GONE);
+                    textViewFromZsmEscalateNoVisit.setVisibility(View.VISIBLE);
+                    textViewFromZsmEscalateNoVisit.setText(getString(R.string.warn_not_visited));
                 }
-            } else {
-                llFromZsmVisitDetails.setVisibility(View.GONE);
-                textViewFromZsmEscalateNoVisit.setVisibility(View.VISIBLE);
-                textViewFromZsmEscalateNoVisit.setText(getString(R.string.warn_not_visited));
+                makeCall.setCallClick(textViewFromZsmMobileNum);
             }
-
         } catch (Exception ex) {
             Log.e("Exception", ex.toString());
         }
@@ -795,6 +797,26 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                     .title("My Idea"));
             CameraUpdate location = CameraUpdateFactory.newLatLngZoom(latLng, 12);
             mMap.animateCamera(location);
+
+            googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng arg0) {
+                    try {
+                        if (detailModel != null) {
+                            Bundle bundle = new Bundle();
+                            bundle.putString("name", detailModel.getBill2());
+                            bundle.putString("latitude", detailModel.getLocation().getLatitude());
+                            bundle.putString("longitude", detailModel.getLocation().getLatitude());
+                            FOSMapExploreDialog dialog = new FOSMapExploreDialog();
+                            dialog.setArguments(bundle);
+                            dialog.show(getFragmentManager(), "MapExplorer");
+                        }
+                    } catch (Exception ex) {
+
+                    }
+                }
+            });
+
         } catch (Exception ex) {
             Log.e("Error", ex.toString());
         }

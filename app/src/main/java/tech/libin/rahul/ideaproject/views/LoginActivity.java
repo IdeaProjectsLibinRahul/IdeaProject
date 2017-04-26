@@ -20,6 +20,7 @@ import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseActivity;
 import tech.libin.rahul.ideaproject.views.models.Login;
 import tech.libin.rahul.ideaproject.views.models.User;
+import tech.libin.rahul.ideaproject.views.utils.TelephonyInfo;
 import tech.libin.rahul.ideaproject.views.widgets.button.FOSButton;
 import tech.libin.rahul.ideaproject.views.widgets.dialogs.FOSDialog;
 import tech.libin.rahul.ideaproject.views.widgets.edittext.FOSIconEditText;
@@ -128,13 +129,12 @@ public class LoginActivity extends FOSBaseActivity {
                             Config.getInstance().setUser(response);
                             navigateToHome();
                         }
-
                     }
 
                     @Override
                     public void onRequestTimout() {
                         dialog.cancel();
-                        String title = "Request Fail";
+                        String title = "Request Timed Out";
                         fosDialog = FOSDialog.newInstance(LoginActivity.this, title, getResources().getString(R.string.warn_request_timed_out), false);
                         fosDialog.show(getSupportFragmentManager(), "tag");
                     }
@@ -143,12 +143,9 @@ public class LoginActivity extends FOSBaseActivity {
                     public void onRequestFail(FOSError error) {
                         dialog.cancel();
                         String message = error.getErrorMessage();
-                        String title = "Authentication Fail";
+                        String title = "Login Failed";
                         fosDialog = FOSDialog.newInstance(LoginActivity.this, title, message, false);
-
                         fosDialog.show(getSupportFragmentManager(), "tag");
-//                        navigateToHome();
-//                        fosDialog.setMessage(error.getErrorMessage());
                     }
                 });
             }
@@ -158,8 +155,10 @@ public class LoginActivity extends FOSBaseActivity {
     }
 
     private void navigateToHome() {
+        clearField();
         Intent intent = new Intent(LoginActivity.this, FOSHomeActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private boolean isValid() {
@@ -238,5 +237,8 @@ public class LoginActivity extends FOSBaseActivity {
         }
     }
 
-
+    private void clearField() {
+        editTextUserName.setText("");
+        editTextPassword.setText("");
+    }
 }

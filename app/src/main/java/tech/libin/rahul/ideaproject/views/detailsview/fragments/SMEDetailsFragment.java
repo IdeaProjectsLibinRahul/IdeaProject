@@ -48,6 +48,7 @@ import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
 import tech.libin.rahul.ideaproject.views.detailsview.adapters.DetailsViewAdapter;
 import tech.libin.rahul.ideaproject.views.detailsview.adapters.FOSSpinnerAdapter;
 import tech.libin.rahul.ideaproject.views.detailsview.dialogs.FOSDateDialog;
+import tech.libin.rahul.ideaproject.views.detailsview.dialogs.FOSMapExploreDialog;
 import tech.libin.rahul.ideaproject.views.detailsview.dialogs.InfoDialog;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.FormSubmitModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.SmeDetailModel;
@@ -370,10 +371,6 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             }
         });
 
-        makeCall = new MakeCall(getActivity());
-        makeCall.setCallClick(textViewLandLine);
-        makeCall.setCallClick(textViewLandLine2);
-
     }
     //endregion
 
@@ -505,6 +502,9 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             editTextLandmark.setText(model.getLocation().getLandmark());
         }
 
+        makeCall = new MakeCall(getActivity());
+        makeCall.setCallClick(textViewLandLine);
+        makeCall.setCallClick(textViewLandLine2);
         ArrayList<DetailOtherData> otherData = model.getOther();
         DetailsViewAdapter adapter = new DetailsViewAdapter(otherData);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -620,6 +620,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     textViewFromExeEscalateNoVisit.setVisibility(View.VISIBLE);
                     textViewFromExeEscalateNoVisit.setText(getString(R.string.warn_not_visited));
                 }
+                makeCall.setCallClick(textViewExeMobileNum);
             }
 
         } catch (Exception ex) {
@@ -653,6 +654,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     textViewFromMicoEscalateNoVisit.setVisibility(View.VISIBLE);
                     textViewFromMicoEscalateNoVisit.setText(getString(R.string.warn_not_visited));
                 }
+                makeCall.setCallClick(textViewMicoMobileNum);
             }
 
         } catch (Exception ex) {
@@ -685,6 +687,7 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                     textViewFromZsmEscalateNoVisit.setVisibility(View.VISIBLE);
                     textViewFromZsmEscalateNoVisit.setText(getString(R.string.warn_not_visited));
                 }
+                makeCall.setCallClick(textViewZsmMobileNum);
             }
 
         } catch (Exception ex) {
@@ -719,12 +722,32 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
                 .title("here"));
         CameraUpdate location = CameraUpdateFactory.newLatLngZoom(latLng, 12);
         mMap.animateCamera(location);
+
+        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng arg0) {
+                try {
+                    if (detailModel != null) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("name", detailModel.getCcName());
+                        bundle.putString("latitude", detailModel.getLocation().getLatitude());
+                        bundle.putString("longitude", detailModel.getLocation().getLatitude());
+                        FOSMapExploreDialog dialog = new FOSMapExploreDialog();
+                        dialog.setArguments(bundle);
+                        dialog.show(getFragmentManager(), "MapExplorer");
+                    }
+                } catch (Exception ex) {
+
+                }
+            }
+        });
     }
     //endregion
 
     //region initMap
     private void initMap() {
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+
         View mapView = mapFragment.getView();
         if (mapView != null && switchLocation.getVisibility() == View.VISIBLE) {
             if (!switchLocation.isChecked()) {

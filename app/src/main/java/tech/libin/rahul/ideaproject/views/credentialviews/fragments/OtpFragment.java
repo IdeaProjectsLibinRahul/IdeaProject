@@ -1,6 +1,7 @@
 package tech.libin.rahul.ideaproject.views.credentialviews.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
@@ -17,6 +18,8 @@ import tech.libin.rahul.ideaproject.facade.FOSFacadeImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
 import tech.libin.rahul.ideaproject.service.responses.OTPResponse;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
+import tech.libin.rahul.ideaproject.views.LoginActivity;
+import tech.libin.rahul.ideaproject.views.LoginCredentialsActivity;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
 import tech.libin.rahul.ideaproject.views.detailsview.dialogs.InfoDialog;
 import tech.libin.rahul.ideaproject.views.widgets.button.FOSButton;
@@ -30,6 +33,7 @@ import tech.libin.rahul.ideaproject.views.widgets.textview.FOSTextView;
 
 public class OtpFragment extends FOSBaseFragment {
 
+    //region declaration
     public static final String USER_ID = "userId";
     public static final String OTP_FRAGMENT = "OTP_FRAGMENT";
     private View view;
@@ -41,7 +45,9 @@ public class OtpFragment extends FOSBaseFragment {
     private FOSFacade fosFacade;
     private Constants.OtpVerificationType otpType;
     private FOSDialog fosDialog;
+    //endregion
 
+    //region onCreateView
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,7 +60,9 @@ public class OtpFragment extends FOSBaseFragment {
 
         return view;
     }
+    //endregion
 
+    //region parseBundle
     private void parseBundle() {
         Bundle bundle = getArguments();
         otpType = Constants.OtpVerificationType.FORGOT_PASSWORD;
@@ -63,7 +71,9 @@ public class OtpFragment extends FOSBaseFragment {
             otpType = (Constants.OtpVerificationType) bundle.getSerializable(Constants.KEY.OTP_TYPE);
         }
     }
+    //endregion
 
+    //region initComponents
     private void initComponents() {
         fosFacade = new FOSFacadeImpl();
         editTextOtp = (FOSEditText) view.findViewById(R.id.editTextOtp);
@@ -71,7 +81,9 @@ public class OtpFragment extends FOSBaseFragment {
         textViewResendOtp = (FOSTextView) view.findViewById(R.id.textViewResendOtp);
         buttonVerify = (FOSButton) view.findViewById(R.id.buttonOtpVerify);
     }
+    //endregion
 
+    //region startTimer
     private void startTimer() {
         new CountDownTimer(120000, 1000) {
 
@@ -87,7 +99,9 @@ public class OtpFragment extends FOSBaseFragment {
 
         }.start();
     }
+    //endregion
 
+    //region setListeners
     private void setListeners() {
         buttonVerify.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,23 +120,29 @@ public class OtpFragment extends FOSBaseFragment {
             }
         });
     }
+    //endregion
 
+    //region verifyOTP
     private void verifyOTP(String otp) {
         final ProgressDialog dialog = ProgressDialog.show(getActivity(), null, getResources().getString(R.string.requesting), true, true);
         dialog.show();
-        fosFacade.submitOTP(userId,otpType, otp, new ServiceCallback<OTPResponse>() {
+        fosFacade.submitOTP(userId, otpType, otp, new ServiceCallback<OTPResponse>() {
             @Override
             public void onResponse(OTPResponse response) {
                 dialog.dismiss();
-                if(otpType!= Constants.OtpVerificationType.FORGOT_PASSWORD) {
+                if (otpType != Constants.OtpVerificationType.FORGOT_PASSWORD) {
                     String title = "OTP Verified";
                     fosDialog = FOSDialog.newInstance(getActivity(), title, response.getMessage(), true);
                     fosDialog.show(getChildFragmentManager(), "tag");
                     //getActivity().finish();
-                }
-                else
-                {
+                } else {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(LoginCredentialsActivity.VIEW_MODE, Constants.CredentialsMode.RESET_PASSWORD);
+                    bundle.putLong(LoginCredentialsActivity.USER_ID, userId);
+                    Intent intent = new Intent(getContext(), LoginCredentialsActivity.class);
+                    intent.putExtras(bundle);
 
+                    startActivity(intent);
                 }
             }
 
@@ -141,9 +161,12 @@ public class OtpFragment extends FOSBaseFragment {
             }
         });
     }
+    //endregion
 
+    //region showMessage
     private void showMessage(String title, String message, Constants.MessageType type) {
         InfoDialog infoDialog = InfoDialog.newInstance(title, message, type);
         infoDialog.show(getChildFragmentManager(), OTP_FRAGMENT);
     }
+    //endregion
 }

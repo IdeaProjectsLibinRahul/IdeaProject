@@ -47,6 +47,7 @@ import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
 import tech.libin.rahul.ideaproject.views.detailsview.adapters.DetailsViewAdapter;
 import tech.libin.rahul.ideaproject.views.detailsview.adapters.FOSSpinnerAdapter;
 import tech.libin.rahul.ideaproject.views.detailsview.dialogs.FOSDateDialog;
+import tech.libin.rahul.ideaproject.views.detailsview.dialogs.FOSMapExploreDialog;
 import tech.libin.rahul.ideaproject.views.detailsview.dialogs.InfoDialog;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.FormSubmitModel;
 import tech.libin.rahul.ideaproject.views.detailsview.viewmodels.TdDetailModel;
@@ -118,6 +119,10 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
     private Constants.ActivityType activityType;
     private SupportMapFragment mapFragment;
     private GoogleMap mMap;
+    List<SpinnerData> visitStatus;
+    List<SpinnerData> feedback;
+
+
     private FOSTextView textViewFromZsmName;
     private FOSTextView textViewFromZsmMobileNum;
     private FOSTextView textViewFromZsmVisitStatus;
@@ -325,6 +330,11 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
             editTextLandmark.setText(model.getLocation().getLandmark());
         }
 
+        makeCall = new MakeCall(getActivity());
+        makeCall.setCallClick(textViewMobile);
+        makeCall.setCallClick(textViewLandline1);
+        makeCall.setCallClick(textViewLandLine2);
+
         ArrayList<DetailOtherData> otherData = model.getOther();
         DetailsViewAdapter adapter = new DetailsViewAdapter(otherData);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -476,8 +486,8 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                     textViewFromExeEscalateNoVisit.setVisibility(View.VISIBLE);
                     textViewFromExeEscalateNoVisit.setText(getString(R.string.warn_not_visited));
                 }
+                makeCall.setCallClick(textViewFromExeMobileNum);
             }
-
         } catch (Exception ex) {
             Log.e(TAG, ex.toString());
         }
@@ -508,7 +518,7 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                     textViewFromMicoEscalateNoVisit.setVisibility(View.VISIBLE);
                     textViewFromMicoEscalateNoVisit.setText(getString(R.string.warn_not_visited));
                 }
-
+                makeCall.setCallClick(textViewFromMicoMobileNum);
             }
 
         } catch (Exception ex) {
@@ -536,11 +546,12 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                     }
                     textViewFromZsmVisitedDate.setText(fromZsm.getVisitedDate());
                     textViewZsmRemarks.setText(fromZsm.getRemarks());
+                } else {
+                    llFromZsmVisitDetails.setVisibility(View.GONE);
+                    textViewFromZsmEscalateNoVisit.setVisibility(View.VISIBLE);
+                    textViewFromZsmEscalateNoVisit.setText(getString(R.string.warn_not_visited));
                 }
-            } else {
-                llFromZsmVisitDetails.setVisibility(View.GONE);
-                textViewFromZsmEscalateNoVisit.setVisibility(View.VISIBLE);
-                textViewFromZsmEscalateNoVisit.setText(getString(R.string.warn_not_visited));
+                makeCall.setCallClick(textViewFromZsmMobileNum);
             }
 
         } catch (Exception ex) {
@@ -548,98 +559,6 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
         }
     }
     //endregion
-
-//     if (activityType != Constants.ActivityType.NEW_ACTIVITY) {
-//        DetailFromUPCRoleModel fromExecutive = model.getFromExecutive();
-//        if (fromExecutive != null) {
-//            if (fromExecutive.getVisitStatus() != 0) {
-//                SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getVisitStatus(), visitStatus);
-//                if (spinnerElement != null) {
-//                    int position = statusAdapter.getPosition(spinnerElement);
-//                    spnStatus.setSelection(position);
-//                }
-//            }
-//
-//            editTextRemarks.setText(fromExecutive.getRemarks());
-//        }
-
-//    loadExecutiveOwnData(model.getFromExecutive(), model.getReminderDate());
-//
-//    //if not visited
-//        if (((SpinnerData) spnStatus.getSelectedItem()).getId() == Constants.VisitStatus.FOLLOW_UP.getValue()) {
-//        linLayoutFeedback.setVisibility(View.GONE);
-//        linLayoutPaidAmount.setVisibility(View.GONE);
-//        linLayoutReminder.setVisibility(View.VISIBLE);
-//        // textViewReminderDate.setText(getResources().getString(R.string.follow_up_date));
-//    } else {
-//        linLayoutFeedback.setVisibility(View.VISIBLE);
-//        linLayoutReminder.setVisibility(View.GONE);
-//    }
-//
-//        if (linLayoutFeedback.getVisibility() == View.VISIBLE) {
-//        //if amount paid
-//        if (((SpinnerData) spnFeedback.getSelectedItem()).getId() == 1) {
-//            linLayoutPaidAmount.setVisibility(View.VISIBLE);
-//            linLayoutReminder.setVisibility(View.GONE);
-//
-//        } else if (((SpinnerData) spnFeedback.getSelectedItem()).getId() == 2) {
-//            linLayoutPaidAmount.setVisibility(View.GONE);
-//            linLayoutReminder.setVisibility(View.VISIBLE);
-//            // textViewReminderDate.setText(getResources().getString(R.string.pay_on));
-//        }
-//    }
-
-    //endregion
-
-//    //region loadExecutiveOwnData
-//    private void loadExecutiveOwnData(DetailFromUPCRoleModel fromExecutive, String reminder) {
-//        try {
-//
-//            if (activityType != Constants.ActivityType.NEW_ACTIVITY) {
-//                if (fromExecutive != null) {
-//                    if (fromExecutive.getVisitStatus() != 0 && spnStatus != null) {
-//                        SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getVisitStatus(), detailModel.getVisitStatus());
-//                        if (spinnerElement != null) {
-//                            int position = statusAdapter.getPosition(spinnerElement);
-//                            spnStatus.setSelection(position);
-//                        }
-//                    }
-//                    linLayoutPaidAmount.setVisibility(View.GONE);
-//                    linLayoutReminder.setVisibility(View.GONE);
-//                    if (fromExecutive.getFeedback() != 0 && spnFeedback != null) {
-//                        linLayoutFeedback.setVisibility(View.VISIBLE);
-//                        SpinnerData spinnerElement = findSpinnerElementPosition(fromExecutive.getFeedback(), detailModel.getFeedback());
-//                        if (spinnerElement != null) {
-//                            int position = feedbackAdapter.getPosition(spinnerElement);
-//                            spnFeedback.setSelection(position);
-//                        }
-//                        int selectedFeedback = ((SpinnerData) spnFeedback.getSelectedItem()).getId();
-//                        //if amount paid
-//                        if (selectedFeedback == 1) {
-//                            linLayoutPaidAmount.setVisibility(View.VISIBLE);
-//                            linLayoutReminder.setVisibility(View.GONE);
-//                            editTextAmountCollected.setText(fromExecutive.getAmountPaid());
-//
-//                        } else if (selectedFeedback == 2 || selectedFeedback == 3 || selectedFeedback == 7) {
-//                            linLayoutPaidAmount.setVisibility(View.GONE);
-//                            linLayoutReminder.setVisibility(View.VISIBLE);
-//                            //textViewReminderDate.setText(getResources().getString(R.string.pay_on));
-//                            editTextReminder.setText(reminder);
-//                        }
-//                    }
-//                    if ((reminder != null || !reminder.isEmpty()) && fromExecutive.getVisitStatus() == 2) {
-//                        linLayoutReminder.setVisibility(View.VISIBLE);
-//                        textViewReminderDate.setText(getResources().getString(R.string.follow_up_date));
-//                        editTextReminder.setText(reminder);
-//                    }
-//                    editTextRemarks.setText(fromExecutive.getRemarks());
-//                }
-//            }
-//        } catch (Exception ex) {
-//
-//        }
-//    }
-//    //endregion
 
     //region setFomListeners
     private void setFomListeners() {
@@ -737,11 +656,6 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                 submitFormData();
             }
         });
-
-        makeCall = new MakeCall(getActivity());
-        makeCall.setCallClick(textViewMobile);
-        makeCall.setCallClick(textViewLandline1);
-        makeCall.setCallClick(textViewLandLine2);
 
     }
     //endregion
@@ -845,9 +759,27 @@ public class TDDetailsFragment extends FOSBaseFragment implements OnMapReadyCall
                 .title("My Idea"));
         CameraUpdate location = CameraUpdateFactory.newLatLngZoom(latLng, 12);
         mMap.animateCamera(location);
+
+        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng arg0) {
+                try {
+                    if (detailModel != null) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("name", detailModel.getBill2());
+                        bundle.putString("latitude", detailModel.getLocation().getLatitude());
+                        bundle.putString("longitude", detailModel.getLocation().getLatitude());
+                        FOSMapExploreDialog dialog = new FOSMapExploreDialog();
+                        dialog.setArguments(bundle);
+                        dialog.show(getFragmentManager(), "MapExplorer");
+                    }
+                } catch (Exception ex) {
+
+                }
+            }
+        });
     }
     //endregion
-
 
     //region ProgressBar
     private void showProgressBar() {
