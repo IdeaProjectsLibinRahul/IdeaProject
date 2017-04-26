@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.util.Log;
@@ -30,6 +31,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import tech.libin.rahul.ideaproject.R;
@@ -39,9 +41,11 @@ import tech.libin.rahul.ideaproject.facade.FOSFacade;
 import tech.libin.rahul.ideaproject.facade.FOSFacadeImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
 import tech.libin.rahul.ideaproject.service.models.DetailFromUPCRoleModel;
+import tech.libin.rahul.ideaproject.service.models.DetailOtherData;
 import tech.libin.rahul.ideaproject.service.models.SpinnerData;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
+import tech.libin.rahul.ideaproject.views.detailsview.adapters.DetailsViewAdapter;
 import tech.libin.rahul.ideaproject.views.detailsview.adapters.FOSSpinnerAdapter;
 import tech.libin.rahul.ideaproject.views.detailsview.dialogs.FOSDateDialog;
 import tech.libin.rahul.ideaproject.views.detailsview.dialogs.InfoDialog;
@@ -68,11 +72,19 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
     Spinner spnFeedback;
     ScrollView scrollViewDetails;
     ProgressBar progressBarLoading;
+    LinearLayout llFromMicoVisitDetails;
+    LinearLayout llFromZsmVisitDetails;
+    LinearLayout llFromExeVisitDetails;
+    CardView cardViewFromExe;
+    CardView cardViewFromMico;
+    CardView cardViewFromZsm;
+    CardView cardViewFromSubmit;
+    CollectionDetailModel detailModel;
+    MakeCall makeCall;
     private EditText editTextRemarks;
     private EditText editTextReminder;
     private EditText editTextAmountCollected;
     private EditText editTextLandmark;
-
     private FOSTextView textViewName;
     private FOSTextView textViewMobile;
     private FOSTextView textViewCurBalance;
@@ -92,7 +104,6 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
     private FOSTextView textViewLandLine2;
     private FOSTextView textViewAddress;
     private FOSTextView textViewReminderDate;
-
     private FOSTextView textViewFromZsmName;
     private FOSTextView textViewFromZsmMobileNum;
     private FOSTextView textViewFromZsmVisitStatus;
@@ -102,7 +113,6 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
     private FOSTextView textViewZsmRemarks;
     private FOSTextView textViewFromZsmEscalateNoVisit;
     private FOSTextView textViewFromZsmAmountCollectedTitle;
-
     private FOSTextView textViewFromMicoName;
     private FOSTextView textViewFromMicoMobileNum;
     private FOSTextView textViewFromMicoVisitStatus;
@@ -112,7 +122,6 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
     private FOSTextView textViewMicoRemarks;
     private FOSTextView textViewFromMicoEscalateNoVisit;
     private FOSTextView textViewFromMicoAmountCollectedTitle;
-
     private FOSTextView textViewFromExeName;
     private FOSTextView textViewFromExeMobileNum;
     private FOSTextView textViewFromExeMyIdea;
@@ -124,16 +133,6 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
     private FOSTextView textViewExeRemarks;
     private FOSTextView textViewFromExeEscalateNoVisit;
     private FOSTextView textViewFromExeAmountCollectedTitle;
-
-    LinearLayout llFromMicoVisitDetails;
-    LinearLayout llFromZsmVisitDetails;
-    LinearLayout llFromExeVisitDetails;
-
-    CardView cardViewFromExe;
-    CardView cardViewFromMico;
-    CardView cardViewFromZsm;
-    CardView cardViewFromSubmit;
-
     private View view;
     private Button buttonSubmit;
     private Switch switchLocation;
@@ -151,13 +150,8 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
     private GPSTracker gpsTracker;
     private FOSSpinnerAdapter statusAdapter;
     private FOSSpinnerAdapter feedbackAdapter;
-
     private List visitStatus;
     private List<SpinnerData> feedback;
-
-    CollectionDetailModel detailModel;
-
-    MakeCall makeCall;
     //endregion
 
     //region CollectionDetailFragment
@@ -307,12 +301,12 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
 
                 @Override
                 public void onRequestTimout() {
-                    showMessage(getString(R.string.warn_time_out_title), getResources().getString(R.string.warn_request_timed_out),Constants.MessageType.TIME_OUT);
+                    showMessage(getString(R.string.warn_time_out_title), getResources().getString(R.string.warn_request_timed_out), Constants.MessageType.TIME_OUT);
                 }
 
                 @Override
                 public void onRequestFail(FOSError error) {
-                    showMessage(getString(R.string.warn_server_error), error.getErrorMessage(),Constants.MessageType.ERROR);
+                    showMessage(getString(R.string.warn_server_error), error.getErrorMessage(), Constants.MessageType.ERROR);
                 }
             });
         }
@@ -481,7 +475,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                 if (dialog != null) {
                     dialog.cancel();
                 }
-                showMessage(getString(R.string.warn_success),response,Constants.MessageType.TIME_OUT);
+                showMessage(getString(R.string.warn_success), response, Constants.MessageType.TIME_OUT);
             }
 
             @Override
@@ -489,7 +483,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                 if (dialog != null) {
                     dialog.cancel();
                 }
-                showMessage(getString(R.string.warn_time_out_title), getResources().getString(R.string.warn_request_timed_out),Constants.MessageType.TIME_OUT);
+                showMessage(getString(R.string.warn_time_out_title), getResources().getString(R.string.warn_request_timed_out), Constants.MessageType.TIME_OUT);
             }
 
             @Override
@@ -497,7 +491,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                 if (dialog != null) {
                     dialog.cancel();
                 }
-                showMessage(getString(R.string.warn_server_error), error.getErrorMessage(),Constants.MessageType.ERROR);
+                showMessage(getString(R.string.warn_server_error), error.getErrorMessage(), Constants.MessageType.ERROR);
             }
         });
     }
@@ -540,10 +534,15 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
             switchLocation.setVisibility(View.VISIBLE);
         }
 
-        if (model.getLocation() != null && model.getLocation().getLandmark() != null)
-        {
+        if (model.getLocation() != null && model.getLocation().getLandmark() != null) {
             editTextLandmark.setText(model.getLocation().getLandmark());
         }
+
+        ArrayList<DetailOtherData> otherData = model.getOther();
+        DetailsViewAdapter adapter = new DetailsViewAdapter(otherData);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recViewOther.setLayoutManager(layoutManager);
+        recViewOther.setAdapter(adapter);
 
         loadPreviousData();
     }
@@ -716,9 +715,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                     }
                     textViewFromMicoVisitedDate.setText(fromMico.getVisitedDate());
                     textViewMicoRemarks.setText(fromMico.getRemarks());
-                }
-                else
-                {
+                } else {
                     llFromMicoVisitDetails.setVisibility(View.GONE);
                     textViewFromMicoEscalateNoVisit.setVisibility(View.VISIBLE);
                     textViewFromMicoEscalateNoVisit.setText(getString(R.string.warn_not_visited));
@@ -752,9 +749,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
                     textViewFromZsmVisitedDate.setText(fromZsm.getVisitedDate());
                     textViewZsmRemarks.setText(fromZsm.getRemarks());
                 }
-            }
-            else
-            {
+            } else {
                 llFromZsmVisitDetails.setVisibility(View.GONE);
                 textViewFromZsmEscalateNoVisit.setVisibility(View.VISIBLE);
                 textViewFromZsmEscalateNoVisit.setText(getString(R.string.warn_not_visited));
@@ -808,7 +803,7 @@ public class CollectionDetailFragment extends FOSBaseFragment implements OnMapRe
 
     //region showMessage
     private void showMessage(String title, String message, Constants.MessageType type) {
-        InfoDialog infoDialog = InfoDialog.newInstance(title, message,type);
+        InfoDialog infoDialog = InfoDialog.newInstance(title, message, type);
         infoDialog.show(getChildFragmentManager(), SUCCESS_DIALOG);
     }
     //endregion

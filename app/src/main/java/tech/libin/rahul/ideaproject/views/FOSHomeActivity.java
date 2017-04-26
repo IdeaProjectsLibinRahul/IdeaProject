@@ -1,6 +1,9 @@
 package tech.libin.rahul.ideaproject.views;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -64,27 +67,58 @@ public class FOSHomeActivity extends FOSBaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_logout) {
-            FOSFacade fosFacade = new FOSFacadeImpl();
-            User user = Config.getInstance().getUser();
-            fosFacade.doLogout(user.getUserId() + "", new ServiceCallback<String>() {
-                @Override
-                public void onResponse(String response) {
-                    finish();
-                }
-
-                @Override
-                public void onRequestTimout() {
-
-                }
-
-                @Override
-                public void onRequestFail(FOSError error) {
-
-                }
-            });
-
-            finish();
+            doLogout();
         }
         return false;
+    }
+
+    private void doLogout() {
+        FOSFacade fosFacade = new FOSFacadeImpl();
+        User user = Config.getInstance().getUser();
+        fosFacade.doLogout(user.getUserId() + "", new ServiceCallback<String>() {
+            @Override
+            public void onResponse(String response) {
+                finish();
+            }
+
+            @Override
+            public void onRequestTimout() {
+
+            }
+
+            @Override
+            public void onRequestFail(FOSError error) {
+
+            }
+        });
+
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        int backStackEntryCount = fragmentManager.getBackStackEntryCount();
+        if (backStackEntryCount == 0) {
+            new AlertDialog.Builder(FOSHomeActivity.this)
+                    .setTitle(getString(R.string.logout))
+                    .setMessage(R.string.logout_message)
+                    .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                            doLogout();
+                        }
+                    })
+                    .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    }).create().show();
+        } else {
+            super.onBackPressed();
+        }
+
     }
 }

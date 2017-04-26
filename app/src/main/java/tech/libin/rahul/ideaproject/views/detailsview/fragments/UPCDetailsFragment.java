@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.util.Log;
@@ -39,9 +40,11 @@ import tech.libin.rahul.ideaproject.facade.FOSFacade;
 import tech.libin.rahul.ideaproject.facade.FOSFacadeImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
 import tech.libin.rahul.ideaproject.service.models.DetailFromUPCRoleModel;
+import tech.libin.rahul.ideaproject.service.models.DetailOtherData;
 import tech.libin.rahul.ideaproject.service.models.SpinnerData;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
+import tech.libin.rahul.ideaproject.views.detailsview.adapters.DetailsViewAdapter;
 import tech.libin.rahul.ideaproject.views.detailsview.adapters.FOSSpinnerAdapter;
 import tech.libin.rahul.ideaproject.views.detailsview.dialogs.FOSDateDialog;
 import tech.libin.rahul.ideaproject.views.detailsview.dialogs.InfoDialog;
@@ -74,6 +77,14 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     List<SpinnerData> feedbackList;
     ScrollView scrollViewDetails;
     ProgressBar progressBarLoading;
+    LinearLayout llFromMicoVisitDetails;
+    LinearLayout llFromZsmVisitDetails;
+    LinearLayout llFromExeVisitDetails;
+    CardView cardViewFromExe;
+    CardView cardViewFromMico;
+    CardView cardViewFromZsm;
+    CardView cardViewFromSubmit;
+    MakeCall makeCall;
     private FOSTextView textViewCustNum;
     private FOSTextView textViewMobile;
     private FOSTextView textViewUpc;
@@ -83,8 +94,6 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewAlternateNumber;
     private FOSTextView textViewServSeg;
     private FOSTextView textViewAddress;
-
-
     private FOSTextView textViewZsmName;
     private FOSTextView textViewZsmMobileNum;
     private FOSTextView textViewZsmVisitStatus;
@@ -92,7 +101,6 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewZsmFeedback;
     private FOSTextView textViewZsmRemarks;
     private FOSTextView textViewFromZsmEscalateNoVisit;
-
     private FOSTextView textViewMicoName;
     private FOSTextView textViewMicoMobileNum;
     private FOSTextView textViewMicoVisitStatus;
@@ -100,8 +108,6 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewMicoFeedback;
     private FOSTextView textViewMicoRemarks;
     private FOSTextView textViewFromMicoEscalateNoVisit;
-
-
     private FOSTextView textViewExeName;
     private FOSTextView textViewExeMobileNum;
     private FOSTextView textViewExeMyIdea;
@@ -111,17 +117,6 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewExeFeedback;
     private FOSTextView textViewExeRemarks;
     private FOSTextView textViewFromExeEscalateNoVisit;
-
-
-    LinearLayout llFromMicoVisitDetails;
-    LinearLayout llFromZsmVisitDetails;
-    LinearLayout llFromExeVisitDetails;
-
-    CardView cardViewFromExe;
-    CardView cardViewFromMico;
-    CardView cardViewFromZsm;
-    CardView cardViewFromSubmit;
-
     private EditText editTextLandmark;
     private EditText editTextReminder;
     private EditText editTextRemarks;
@@ -136,8 +131,6 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private Constants.ActivityType activityType;
     private SupportMapFragment mapFragment;
     private UpcDetailModel detailModel;
-
-    MakeCall makeCall;
     //endregion
 
     //region onCreateView
@@ -303,6 +296,11 @@ public class UPCDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
         if (model.getLocation() != null && model.getLocation().getLandmark() != null) {
             editTextLandmark.setText(model.getLocation().getLandmark());
         }
+        ArrayList<DetailOtherData> otherData = model.getOther();
+        DetailsViewAdapter adapter = new DetailsViewAdapter(otherData);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recViewOther.setLayoutManager(layoutManager);
+        recViewOther.setAdapter(adapter);
         loadPreviousData();
     }
 

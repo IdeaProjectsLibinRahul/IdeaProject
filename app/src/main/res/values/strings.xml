@@ -138,6 +138,7 @@
     <string name="forgot_password_text">Forgot Password</string>
     <string name="reset_password">Reset Password</string>
     <string name="no_response_message">No response from server</string>
+    <string name="logout_message">App will be logout and exited</string>
 
 
 </resources>

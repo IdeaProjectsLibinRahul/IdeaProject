@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.util.Log;
@@ -21,7 +22,6 @@ import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,8 +33,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import tech.libin.rahul.ideaproject.R;
 import tech.libin.rahul.ideaproject.configurations.Config;
@@ -43,10 +41,11 @@ import tech.libin.rahul.ideaproject.facade.FOSFacade;
 import tech.libin.rahul.ideaproject.facade.FOSFacadeImpl;
 import tech.libin.rahul.ideaproject.service.handlers.ServiceCallback;
 import tech.libin.rahul.ideaproject.service.models.DetailFromSMERoleModel;
-import tech.libin.rahul.ideaproject.service.models.DetailFromUPCRoleModel;
+import tech.libin.rahul.ideaproject.service.models.DetailOtherData;
 import tech.libin.rahul.ideaproject.service.models.SpinnerData;
 import tech.libin.rahul.ideaproject.service.responses.base.FOSError;
 import tech.libin.rahul.ideaproject.views.basecomponents.FOSBaseFragment;
+import tech.libin.rahul.ideaproject.views.detailsview.adapters.DetailsViewAdapter;
 import tech.libin.rahul.ideaproject.views.detailsview.adapters.FOSSpinnerAdapter;
 import tech.libin.rahul.ideaproject.views.detailsview.dialogs.FOSDateDialog;
 import tech.libin.rahul.ideaproject.views.detailsview.dialogs.InfoDialog;
@@ -68,12 +67,19 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     public static final String DATE_DIALOG = "DATE_DIALOG";
     public static final String SUCCESS_DIALOG = "SUCCESS_DIALOG";
     private static final String TAG = SMEDetailsFragment.class.getName();
-    private Spinner spnStatus;
-    private Spinner spnReason;
     ScrollView scrollViewDetails;
     ProgressBar progressBarLoading;
+    LinearLayout llFromMicoVisitDetails;
+    LinearLayout llFromZsmVisitDetails;
+    LinearLayout llFromExeVisitDetails;
+    CardView cardViewFromExe;
+    CardView cardViewFromMico;
+    CardView cardViewFromZsm;
+    CardView cardViewFromSubmit;
+    MakeCall makeCall;
+    private Spinner spnStatus;
+    private Spinner spnReason;
     private EditText editTextLandmark;
-
     private LinearLayout linLayoutFeedback;
     private LinearLayout linLayoutReason;
     private LinearLayout linLayoutReminder;
@@ -109,7 +115,6 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewRatingInfo;
     private FOSSpinnerAdapter statusAdapter;
     private FOSSpinnerAdapter reasonAdapter;
-
     private FOSTextView textViewZsmName;
     private FOSTextView textViewZsmMobileNum;
     private FOSTextView textViewZsmVisitStatus;
@@ -119,7 +124,6 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewFromZsmReasonHead;
     private FOSTextView textViewZsmRemarks;
     private FOSTextView textViewFromZsmEscalateNoVisit;
-
     private FOSTextView textViewMicoName;
     private FOSTextView textViewMicoMobileNum;
     private FOSTextView textViewMicoVisitStatus;
@@ -129,7 +133,6 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewFromMicoReasonHead;
     private FOSTextView textViewMicoRemarks;
     private FOSTextView textViewFromMicoEscalateNoVisit;
-
     private FOSTextView textViewExeName;
     private FOSTextView textViewExeMobileNum;
     private FOSTextView textViewExeMyIdea;
@@ -141,18 +144,6 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     private FOSTextView textViewFromExeReasonHead;
     private FOSTextView textViewExeRemarks;
     private FOSTextView textViewFromExeEscalateNoVisit;
-
-
-    LinearLayout llFromMicoVisitDetails;
-    LinearLayout llFromZsmVisitDetails;
-    LinearLayout llFromExeVisitDetails;
-
-    CardView cardViewFromExe;
-    CardView cardViewFromMico;
-    CardView cardViewFromZsm;
-    CardView cardViewFromSubmit;
-
-    MakeCall makeCall;
     //endregion
 
     //region onCreateView
@@ -387,7 +378,6 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
     //endregion
 
 
-
     //region submitFormData
     private void submitFormData() {
         if (objectId != null) {
@@ -515,6 +505,11 @@ public class SMEDetailsFragment extends FOSBaseFragment implements OnMapReadyCal
             editTextLandmark.setText(model.getLocation().getLandmark());
         }
 
+        ArrayList<DetailOtherData> otherData = model.getOther();
+        DetailsViewAdapter adapter = new DetailsViewAdapter(otherData);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recViewOther.setLayoutManager(layoutManager);
+        recViewOther.setAdapter(adapter);
 
         loadPreviousData();
     }
